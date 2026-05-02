@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://6h6qp8r2ylre"]
+
+[ext_resource type="Script" uid="uid://b0vnlskw1kjnx" path="res://resources/player/attack_data.gd" id="1_cmyj3"]
+[ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="2_ubu7b"]
+
+[sub_resource type="Resource" id="Resource_cmyj3"]
+script = ExtResource("1_cmyj3")
+anim_name = "attack1"
+metadata/_custom_type_script = "uid://b0vnlskw1kjnx"
+
+[sub_resource type="Resource" id="Resource_ubu7b"]
+script = ExtResource("1_cmyj3")
+anim_name = "attack2"
+metadata/_custom_type_script = "uid://b0vnlskw1kjnx"
+
+[resource]
+script = ExtResource("2_ubu7b")
+class_name_id = "warrior"
+combo_chain = Array[ExtResource("1_cmyj3")]([SubResource("Resource_cmyj3"), SubResource("Resource_ubu7b")])
+metadata/_custom_type_script = "uid://7oleemb4eeqr"

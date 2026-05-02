@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://bxaw1bhe0v7yt"]
+
+[ext_resource type="Script" uid="uid://b0vnlskw1kjnx" path="res://resources/player/attack_data.gd" id="1_unnlj"]
+[ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="2_afgh0"]
+
+[resource]
+script = ExtResource("2_afgh0")
+metadata/_custom_type_script = "uid://7oleemb4eeqr"
