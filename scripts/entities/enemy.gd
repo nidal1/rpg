@@ -1,55 +1,64 @@
+# Enemy.gd
 extends Character
-
 class_name Enemy
 
-@onready var animation_tree: AnimationTree = $AnimationTree
-@onready var animation_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
-@onready var animation_BA_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
+@export var speed: float = 150.0
+@export var damage: float = 10.0
 
-func _unhandled_input(event: InputEvent) -> void:
-	pass  # override f Warrior/Mage only — Enemy ma3ndha input
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent
+@onready var detection_zone: Area2D = $DetectionZone
 
-# Warrior.gd — no @export, just load directly
+var target: CharacterBody2D = null
+
 func _ready() -> void:
-	animation_tree.set_active(true)
+	detection_zone.body_entered.connect(_on_detection_zone_body_entered)
+	detection_zone.body_exited.connect(_on_detection_zone_body_exited)
 
-func _load_classe(cls: CharacterClass):
-	max_health = cls.max_health
-	speed = cls.speed
-	combo_chain = cls.combo_chain
-	print("max_health: " + str(max_health) +" - speed: " + str(speed) + " - combo_chain: " , combo_chain )
+func _physics_process(_delta: float) -> void:
+	if target:
+		_chase_target()
+	else:
+		_patrol()
+	move_and_slide()
 
-# ─── State ───────────────────────────────────────────────
+# ─── Detection ───────────────────────────────────────────
+func _on_detection_zone_body_entered(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		target = body
 
-func _on_state_changed(new_state: State) -> void:
-	match new_state:
-		State.IDLE: animation_playback.travel(ANIM_IDLE)
-		State.RUN:  animation_playback.travel(ANIM_RUN)
-		State.ATTACKING: animation_playback.travel("basic_attack")
+func _on_detection_zone_body_exited(body: Node2D) -> void:
+	if body.is_in_group("player"):
+		target = null
 
 # ─── Movement ────────────────────────────────────────────
+func _chase_target() -> void:
+	nav_agent.target_position = target.global_position
+	var next_pos = nav_agent.get_next_path_position()
+	direction = (next_pos - global_position).normalized()
+	velocity = direction * speed
+	if velocity.x != 0:
+		last_facing_dir = sign(velocity.x)
+	_play_movement_animation()
 
-func _move() -> void:
-	pass
-
-func _idle() -> void:
+func _patrol() -> void:
 	velocity = Vector2.ZERO
-	animation_tree.set("parameters/idle/blend_position", last_facing_dir)
+	_play_movement_animation()
 
-func _play_attack_animation(attack: AttackData) -> void:
-	animation_tree.set(
-		"parameters/basic_attack/BasicAttackStateMachine/%s/blend_position" % attack.anim_name,
-		last_facing_dir
-	)
-	animation_BA_playback.travel(attack.anim_name)
+# ─── Combat ──────────────────────────────────────────────
+func _get_attack_damage() -> float:
+	return damage
 
-func _end_combo() -> void:
-	animation_BA_playback.travel("End")
-	super._end_combo()
-	# let _physics_process handle next state naturally
+func take_damage(amount: float) -> void:
+	super.take_damage(amount)
 
-func _on_damage_received(amount: float) -> void:
-	pass  # override f Warrior, Archer... (animation hit, vfx, etc.)
+func _on_damage_received() -> void:
+	print("Enemy hit! health remaining: ", max_health)
+	if max_health <= 0:
+		_die()
 
-func _on_hitbox_area_entered(area: Area2D) -> void:
-	print("From enemy class - hitbox - area: ", area )
+func _die() -> void:
+	queue_free()
+
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	print(area)

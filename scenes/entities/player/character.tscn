@@ -5,32 +5,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_bjvvg"]
 radius = 11.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_myuns"]
-radius = 17.0
-height = 36.0
-
 [node name="Character" type="CharacterBody2D" unique_id=1846937653 groups=["character"]]
 script = ExtResource("1_8akj5")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=806179761]
 position = Vector2(0, -11)
 shape = SubResource("CircleShape2D_bjvvg")
-
-[node name="Camera" type="Camera2D" parent="." unique_id=1836423708]
-position_smoothing_enabled = true
-
-[node name="ComboAttackCD" type="Timer" parent="." unique_id=172725453]
-one_shot = true
-
-[node name="Hurtbox" type="Area2D" parent="." unique_id=629690968]
-position = Vector2(0, -31)
-collision_layer = 32
-collision_mask = 0
-monitoring = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1990663941]
-shape = SubResource("CapsuleShape2D_myuns")
-debug_color = Color(1, 0, 0, 0.41960785)
-
-[connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
