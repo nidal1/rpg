@@ -2,6 +2,8 @@
 extends Character
 class_name Enemy
 
+signal on_spawned(spawn_position: Vector2)
+
 @export var enemy_params: EnemyParams
 
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
@@ -15,6 +17,8 @@ var attack_range: float
 var attack_damage: float
 var speed: float
 var enemy_name: String = ""
+
+var spawn_position: Vector2
 
 # ─── Virtual functions ─────────────────────────────d───────────────
 func _play_attack_animation() -> void: pass
@@ -31,6 +35,7 @@ func _ready() -> void:
 	super._ready()
 	if enemy_params:
 		_load_params(enemy_params)
+		on_spawned.connect(_on_spawned)
 
 func _physics_process(_delta: float) -> void:
 	if not is_instance_valid(target):
@@ -54,7 +59,6 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 	
 
-
 # ─── Movement ────────────────────────────────────────────
 func _chase_target() -> void:
 	if not is_instance_valid(target):
@@ -75,8 +79,18 @@ func _chase_target() -> void:
 		_play_movement_animation()
 
 func _patrol() -> void:
-	_set_state(State.PATROL)
-	velocity = Vector2.ZERO
+	nav_agent.target_position = spawn_position
+	var next_pos = nav_agent.get_next_path_position()
+	direction = global_position.direction_to(next_pos)
+	if direction.length() > 0:
+		velocity = direction * speed
+		if velocity.x != 0:
+			last_facing_dir = sign(velocity.x)
+		
+		_play_movement_animation()
+	else:
+		velocity = Vector2.ZERO
+		_play_idle_animation()
 
 # ─── Combat ──────────────────────────────────────────────
 func _attack() -> void:
@@ -85,7 +99,7 @@ func _attack() -> void:
 	_play_attack_animation()
 
 	await get_tree().create_timer(attack_cooldown).timeout
-	if not is_instance_valid(self): return
+	if not is_instance_valid(self ): return
 	can_attack = true
 
 func _get_attack_damage() -> float:
@@ -98,13 +112,15 @@ func _flash_hit() -> void:
 	modulate = Color.WHITE
 
 func _on_damage_received() -> void:
-	print("Enemy hit! health remaining: ", max_health)
 	_flash_hit()
 	if max_health <= 0:
 		_die()
 
 func _die() -> void:
 	queue_free()
+
+func _on_spawned(_spawn_position: Vector2):
+	spawn_position = _spawn_position
 
 
 # ─── Detection ───────────────────────────────────────────

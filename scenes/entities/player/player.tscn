@@ -15,7 +15,6 @@ speed = 300.0
 character_class = null
 
 [node name="Camera" type="Camera2D" parent="." index="1" unique_id=1339975141]
-zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 
 [node name="ComboAttackCD" type="Timer" parent="." index="2" unique_id=882990530]

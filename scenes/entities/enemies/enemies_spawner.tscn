@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bqqhkgwtk31y3"]
+
+[ext_resource type="Script" uid="uid://b8ali241wtm3n" path="res://scripts/entities/enemies_spawner.gd" id="1_lkp2b"]
+[ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="2_h4dbm"]
+
+[node name="EnemiesSpawner" type="Node2D" unique_id=1617310678 node_paths=PackedStringArray("spawn_point")]
+script = ExtResource("1_lkp2b")
+spawn_point = NodePath("Marker2D")
+enemies = Array[PackedScene]([ExtResource("2_h4dbm"), ExtResource("2_h4dbm"), ExtResource("2_h4dbm")])
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1179470132]
+gizmo_extents = 50.0
