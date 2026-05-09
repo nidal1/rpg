@@ -7,6 +7,7 @@ class_name Warrior
 @onready var hitbox: Area2D = $Hitbox
 
 func _ready() -> void:
+	super._ready()
 	animation_tree.set_active(true)
 	var cls = load("res://resources/classes/warrior.tres")
 	_load_classe(cls)
@@ -29,14 +30,11 @@ func _play_attack_animation(attack: AttackData) -> void:
 	last_facing_dir
 	)
 	animation_BA_playback.travel(attack.anim_name)
-	hitbox.monitoring = true
 
 func _end_combo() -> void:
 	animation_BA_playback.travel("End")
-	hitbox.monitoring = false
 	super._end_combo()
 
-func _on_damage_received() -> void: print("Warrior hit! health remaining: ", max_health)
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	var target_node = area.get_parent()

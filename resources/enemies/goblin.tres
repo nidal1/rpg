@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://d4cdhqfuelgfl"]
+
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="1_ttibx"]
+
+[resource]
+script = ExtResource("1_ttibx")
+enemy_name = "Goblin"
+attack_damage = 50.0
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

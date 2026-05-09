@@ -15,6 +15,5 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 
 [resource]
 script = ExtResource("2_ubu7b")
-class_name_id = "warrior"
 combo_chain = Array[ExtResource("1_cmyj3")]([SubResource("Resource_ubu7b"), SubResource("Resource_qqrho")])
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

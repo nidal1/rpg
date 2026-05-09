@@ -10,9 +10,6 @@ var combo_index: int = -1
 var combo_queued: bool = false
 var combo_chain: Array[AttackData] = []
 
-const ANIM_IDLE = "idle"
-const ANIM_RUN = "run"
-
 # ─── Virtual functions ────────────────────────────────────────────
 func _play_attack_animation(attack: AttackData) -> void: pass
 
@@ -88,7 +85,18 @@ func _on_combo_attack_cd_timeout() -> void:
 	else:
 		_end_combo()
 
-# ─── Hurtbox ─────────────────────────────────────────────
-func _on_hurtbox_area_entered(area: Area2D) -> void:
-	print("hurtbox - player : ", area)
-	take_damage(area.get_parent()._get_attack_damage())
+func _on_damage_received() -> void:
+	print("Player hit! health remaining: ", max_health)
+	_flash_hit()
+	if max_health <= 0:
+		_die()
+
+func _flash_hit() -> void:
+	modulate = Color.RED
+	await get_tree().create_timer(0.3).timeout
+	if not is_instance_valid(self ): return
+	modulate = Color.WHITE
+
+func _die() -> void:
+	print("Player died!")
+	queue_free()

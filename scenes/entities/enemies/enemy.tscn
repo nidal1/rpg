@@ -10,27 +10,32 @@ radius = 17.0
 height = 36.0
 
 [node name="Enemy" unique_id=1846937653 groups=["enemy"] instance=ExtResource("1_4rsfo")]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("2_gflvi")
-speed = 150.0
-damage = 10.0
+enemy_params = null
 
 [node name="NavigationAgent" type="NavigationAgent2D" parent="." index="1" unique_id=1266527253]
+target_desired_distance = 80.0
 
 [node name="DetectionZone" type="Area2D" parent="." index="2" unique_id=1785946638]
 collision_layer = 0
-collision_mask = 0
+collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
 shape = SubResource("CircleShape2D_6ofdk")
-debug_color = Color(1, 1, 0, 0.41960785)
+debug_color = Color(0.50980395, 0.49803922, 1, 0.41960785)
 
 [node name="Hurtbox" type="Area2D" parent="." index="3" unique_id=1770202733]
 position = Vector2(0, -31)
 collision_layer = 64
-collision_mask = 8
+collision_mask = 0
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
 shape = SubResource("CapsuleShape2D_6ofdk")
 debug_color = Color(1, 0, 0, 0.41960785)
 
-[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]
