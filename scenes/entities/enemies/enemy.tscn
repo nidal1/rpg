@@ -37,5 +37,8 @@ monitoring = false
 shape = SubResource("CapsuleShape2D_6ofdk")
 debug_color = Color(1, 0, 0, 0.41960785)
 
+[node name="StateMachine" parent="." index="5" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
+initial_state = NodePath("EnemySpawnedState")
+
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

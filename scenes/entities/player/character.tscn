@@ -5,6 +5,9 @@
 [ext_resource type="Script" uid="uid://80sdx0tr0k5a" path="res://scripts/entities/state_machine/states/idle_state.gd" id="3_ue66m"]
 [ext_resource type="Script" uid="uid://omhqynr3asj4" path="res://scripts/entities/state_machine/states/run_state.gd" id="4_pobbn"]
 [ext_resource type="Script" uid="uid://bkxmyaqiuui3e" path="res://scripts/entities/state_machine/states/attack_state.gd" id="5_hl4sw"]
+[ext_resource type="Script" uid="uid://dw021krot4lbk" path="res://scripts/entities/state_machine/states/enemy_spawned_state.gd" id="6_7vwgy"]
+[ext_resource type="Script" uid="uid://jyn5xqf2drcj" path="res://scripts/entities/state_machine/states/chase_state.gd" id="7_epoxd"]
+[ext_resource type="Script" uid="uid://bplbx4wh020f2" path="res://scripts/entities/state_machine/states/patrol_state.gd" id="8_8cwfr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bjvvg"]
 radius = 11.0
@@ -36,3 +39,14 @@ script = ExtResource("4_pobbn")
 
 [node name="AttackState" type="Node" parent="StateMachine" unique_id=1169546010]
 script = ExtResource("5_hl4sw")
+
+[node name="EnemySpawnedState" type="Node" parent="StateMachine" unique_id=1336781007]
+script = ExtResource("6_7vwgy")
+metadata/_custom_type_script = "uid://dw021krot4lbk"
+
+[node name="ChaseState" type="Node" parent="StateMachine" unique_id=1858639125]
+script = ExtResource("7_epoxd")
+metadata/_custom_type_script = "uid://jyn5xqf2drcj"
+
+[node name="PatrolState" type="Node" parent="StateMachine" unique_id=468482020]
+script = ExtResource("8_8cwfr")

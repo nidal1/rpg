@@ -20,7 +20,7 @@ var enemy_name: String = ""
 
 var spawn_position: Vector2
 
-# ─── Virtual functions ─────────────────────────────d───────────────
+# ─── Virtual functions ────────────────────────────────────────────
 func _play_attack_animation() -> void: pass
 
 func _load_params(params: EnemyParams) -> void:
@@ -33,69 +33,46 @@ func _load_params(params: EnemyParams) -> void:
 
 func _ready() -> void:
 	super._ready()
-	if enemy_params:
-		_load_params(enemy_params)
-		on_spawned.connect(_on_spawned)
+	
 
 func _physics_process(_delta: float) -> void:
-	if not is_instance_valid(target):
-		target = null
-		if current_state != State.PATROL:
-			_patrol()
-		return
-	# Update distance and state
-	var dist = global_position.distance_to(target.global_position)
-	is_target_reached = dist <= attack_range
-	if is_target_reached:
-		velocity = Vector2.ZERO # Stop moving to attack
-		if can_attack:
-			_attack()
-		else:
-			# While waiting for cooldown, look at player
-			_set_state(State.IDLE)
-	else:
-		_chase_target()
-	
 	move_and_slide()
 	
 
 # ─── Movement ────────────────────────────────────────────
+
+func _idle() -> void:
+	direction = Vector2.ZERO
+	velocity = Vector2.ZERO
+	if animation_playback and animation_tree and animation_tree.is_active():
+		animation_playback.travel("idle")
+		_play_idle_animation()
+
+func _move() -> void:
+	velocity = direction.normalized() * speed
+	if velocity.x != 0:
+		last_facing_dir = sign(velocity.x)
+		if animation_playback and animation_tree and animation_tree.is_active():
+			animation_playback.travel("run")
+			_play_movement_animation()
+
 func _chase_target() -> void:
-	if not is_instance_valid(target):
-		target = null
-		_set_state(State.PATROL)
-		return
-
-	_set_state(State.CHASE)
-
+	if not is_instance_valid(target): return
 	nav_agent.target_position = target.global_position
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
-	if direction.length() > 0:
-		velocity = direction * speed
-		if velocity.x != 0:
-			last_facing_dir = sign(velocity.x)
-		
-		_play_movement_animation()
+	_move()
 
 func _patrol() -> void:
 	nav_agent.target_position = spawn_position
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
-	if direction.length() > 0:
-		velocity = direction * speed
-		if velocity.x != 0:
-			last_facing_dir = sign(velocity.x)
-		
-		_play_movement_animation()
-	else:
-		velocity = Vector2.ZERO
-		_play_idle_animation()
+	_move()
 
 # ─── Combat ──────────────────────────────────────────────
 func _attack() -> void:
 	can_attack = false
-	_set_state(State.ATTACKING)
+	animation_playback.travel("basic_attack")
 	_play_attack_animation()
 
 	await get_tree().create_timer(attack_cooldown).timeout
@@ -119,20 +96,14 @@ func _on_damage_received() -> void:
 func _die() -> void:
 	queue_free()
 
-func _on_spawned(_spawn_position: Vector2):
-	spawn_position = _spawn_position
-
-
 # ─── Detection ───────────────────────────────────────────
 func _on_detection_zone_body_entered(body: Node2D) -> void:
-	print("BODY ENTERED THE DETECTION ZONE")
 	if body.is_in_group("player"):
 		target = body
-		_set_state(State.CHASE)
+		state_machine.transition_to("chasestate")
 
 func _on_detection_zone_body_exited(body: Node2D) -> void:
-	print("BODY EXITED THE DETECTION ZONE")
 	if body.is_in_group("player"):
 		target = null
 		is_target_reached = false
-		_set_state(State.PATROL)
+		state_machine.transition_to("patrolstate")

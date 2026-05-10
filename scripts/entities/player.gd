@@ -19,6 +19,11 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed
 	combo_chain = cls.combo_chain.duplicate(true)
 
+# ─── Input ───────────────────────────────────────────────
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if state_machine:
+			state_machine.transition_to("attackstate")
 
 # ─── Physics ─────────────────────────────────────────────
 func _physics_process(_delta: float) -> void:

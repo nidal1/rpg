@@ -51,11 +51,6 @@ func _update_label_state() -> void:
 	else:
 		label.text = DeprecatedState.keys()[current_state]
 
-# ─── Input ───────────────────────────────────────────────
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		state_machine.transition_to("attackstate")
-
 func _process(_delta: float) -> void:
 	# Update label periodically to reflect state changes
 	_update_label_state()

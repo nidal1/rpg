@@ -1,22 +1,21 @@
 extends Enemy
 class_name Goblin
 
-@onready var animation_tree: AnimationTree = $AnimationTree
-@onready var animation_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
-
 func _ready() -> void:
 	super._ready()
+	animation_tree = $AnimationTree
+	animation_playback = animation_tree["parameters/playback"]
 	animation_tree.set_active(true)
 
-func _on_state_changed(new_state: State) -> void:
+func _on_state_changed(new_state: DeprecatedState) -> void:
 	match new_state:
-		State.IDLE, State.PATROL:
+		DeprecatedState.IDLE, DeprecatedState.PATROL:
 			animation_playback.travel(ANIM_IDLE)
 			_play_idle_animation()
-		State.RUN, State.CHASE:
+		DeprecatedState.RUN, DeprecatedState.CHASE:
 			animation_playback.travel(ANIM_RUN)
 			_play_movement_animation()
-		State.ATTACKING:
+		DeprecatedState.ATTACKING:
 			animation_playback.travel("basic_attack")
 			_play_attack_animation()
 
