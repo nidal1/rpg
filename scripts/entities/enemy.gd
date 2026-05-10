@@ -91,7 +91,7 @@ func _flash_hit() -> void:
 func _on_damage_received() -> void:
 	_flash_hit()
 	if max_health <= 0:
-		_die()
+		state_machine.transition_to("deadstate")
 
 func _die() -> void:
 	queue_free()

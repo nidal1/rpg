@@ -13,7 +13,6 @@ func _ready() -> void:
 	
 	for child in get_children():
 		if child is State:
-			print("Found state: ", child.name.to_lower())
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(_on_state_transitioned)
 	

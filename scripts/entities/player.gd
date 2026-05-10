@@ -91,7 +91,7 @@ func _on_damage_received() -> void:
 	print("Player hit! health remaining: ", max_health)
 	_flash_hit()
 	if max_health <= 0:
-		_die()
+		state_machine.transition_to("deadstate")
 
 func _flash_hit() -> void:
 	modulate = Color.RED
@@ -100,5 +100,4 @@ func _flash_hit() -> void:
 	modulate = Color.WHITE
 
 func _die() -> void:
-	print("Player died!")
 	queue_free()
