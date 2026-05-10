@@ -5,6 +5,7 @@ class_name Player
 @export var character_class: CharacterClass
 
 @onready var combo_timer: Timer = $ComboAttackCD
+@onready var attack_state: AttackState = $StateMachine/AttackState
 
 var combo_index: int = -1
 var combo_queued: bool = false
@@ -18,29 +19,18 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed
 	combo_chain = cls.combo_chain.duplicate(true)
 
-# ─── Input ───────────────────────────────────────────────
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_on_attack_pressed()
 
 # ─── Physics ─────────────────────────────────────────────
 func _physics_process(_delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")
 	direction.y = Input.get_axis("move_up", "move_down")
-	if current_state != State.ATTACKING:
-		if direction != Vector2.ZERO:
-			_set_state(State.RUN)
-			_move()
-		else:
-			_set_state(State.IDLE)
-			_idle()
-		move_and_slide()
+	move_and_slide()
 
 # ─── Combo ───────────────────────────────────────────────
 func _on_attack_pressed() -> void: if combo_chain.size() > 0: _attack()
 
 func _attack() -> void:
-	if current_state == State.ATTACKING:
+	if combo_index >= 0:
 		if combo_index < combo_chain.size() - 1:
 			combo_queued = true
 		return
@@ -50,21 +40,27 @@ func _move() -> void:
 	velocity = direction.normalized() * speed
 	if velocity.x != 0:
 		last_facing_dir = sign(velocity.x)
-		_play_movement_animation()
+		if animation_playback and animation_tree and animation_tree.is_active():
+			animation_playback.travel("run")
+			_play_movement_animation()
 
 func _idle() -> void:
 	velocity = Vector2.ZERO
-	_play_idle_animation()
+	if animation_playback and animation_tree and animation_tree.is_active():
+		animation_playback.travel("idle")
+		_play_idle_animation()
 
 func _start_combo() -> void:
 	combo_index = 0
 	combo_queued = false
-	_set_state(State.ATTACKING)
 	_execute_attack()
 
 func _execute_attack() -> void:
+	if combo_index < 0 or combo_index >= combo_chain.size(): return
 	var attack: AttackData = combo_chain[combo_index]
-	_play_attack_animation(attack)
+	if animation_playback and animation_tree and animation_tree.is_active():
+		animation_playback.travel("basic_attack")
+		_play_attack_animation(attack)
 	combo_timer.wait_time = attack.combo_window
 	combo_timer.start()
 
@@ -75,7 +71,8 @@ func _get_attack_damage() -> float:
 func _end_combo() -> void:
 	combo_index = -1
 	combo_queued = false
-	current_state = State.IDLE
+	if attack_state:
+		attack_state.attack_ended.emit()
 
 func _on_combo_attack_cd_timeout() -> void:
 	if combo_queued and combo_index < combo_chain.size() - 1:

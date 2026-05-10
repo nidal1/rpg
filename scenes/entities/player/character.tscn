@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://de57v61nqoh5m"]
 
 [ext_resource type="Script" uid="uid://v2s1bkcxn58h" path="res://scripts/entities/character.gd" id="1_8akj5"]
+[ext_resource type="Script" uid="uid://dh03iyyvsv3r1" path="res://scripts/entities/state_machine/state_machine.gd" id="2_w5xvl"]
+[ext_resource type="Script" uid="uid://80sdx0tr0k5a" path="res://scripts/entities/state_machine/states/idle_state.gd" id="3_ue66m"]
+[ext_resource type="Script" uid="uid://omhqynr3asj4" path="res://scripts/entities/state_machine/states/run_state.gd" id="4_pobbn"]
+[ext_resource type="Script" uid="uid://bkxmyaqiuui3e" path="res://scripts/entities/state_machine/states/attack_state.gd" id="5_hl4sw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bjvvg"]
 radius = 11.0
@@ -17,3 +21,18 @@ offset_top = -120.0
 offset_right = 40.0
 offset_bottom = -97.0
 text = "State"
+
+[node name="StateMachine" type="Node" parent="." unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_w5xvl")
+initial_state = NodePath("IdleState")
+metadata/_custom_type_script = "uid://dh03iyyvsv3r1"
+
+[node name="IdleState" type="Node" parent="StateMachine" unique_id=1863784627]
+script = ExtResource("3_ue66m")
+metadata/_custom_type_script = "uid://80sdx0tr0k5a"
+
+[node name="RunState" type="Node" parent="StateMachine" unique_id=1652181853]
+script = ExtResource("4_pobbn")
+
+[node name="AttackState" type="Node" parent="StateMachine" unique_id=1169546010]
+script = ExtResource("5_hl4sw")

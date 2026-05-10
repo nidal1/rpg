@@ -1,22 +1,23 @@
 extends Player
 class_name Warrior
 
-@onready var animation_tree: AnimationTree = $AnimationTree
-@onready var animation_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
-@onready var animation_BA_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
-@onready var hitbox: Area2D = $Hitbox
 
 func _ready() -> void:
 	super._ready()
+
+	animation_tree = $AnimationTree
+	animation_playback = animation_tree["parameters/playback"]
+	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
+
 	animation_tree.set_active(true)
 	var cls = load("res://resources/classes/warrior.tres")
 	_load_classe(cls)
 
-func _on_state_changed(new_state: State) -> void:
+func _on_state_changed(new_state: DeprecatedState) -> void:
 	match new_state:
-		State.IDLE: animation_playback.travel(ANIM_IDLE)
-		State.RUN: animation_playback.travel(ANIM_RUN)
-		State.ATTACKING: animation_playback.travel("basic_attack")
+		DeprecatedState.IDLE: animation_playback.travel(ANIM_IDLE)
+		DeprecatedState.RUN: animation_playback.travel(ANIM_RUN)
+		DeprecatedState.ATTACKING: animation_playback.travel("basic_attack")
 
 func _play_movement_animation() -> void:
 	animation_tree.set("parameters/run/blend_position", last_facing_dir)
