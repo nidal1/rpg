@@ -1,4 +1,3 @@
-# Enemy.gd
 extends Character
 class_name Enemy
 
@@ -106,7 +105,7 @@ func _flash_hit() -> void:
 func _on_damage_received() -> void:
 	_flash_hit()
 	if max_health <= 0:
-		state_machine.transition_to("deadstate")
+		state_machine.transition_to("enemydeadstate")
 
 func _die() -> void:
 	queue_free()
@@ -131,4 +130,4 @@ func _on_detection_zone_body_exited(body: Node2D) -> void:
 		target = null
 
 func _on_wander_cd_timeout() -> void:
-	state_machine.transition_to("wanderstate")
+	state_machine.transition_to("enemywanderstate")

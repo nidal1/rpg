@@ -2,6 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://de57v61nqoh5m" path="res://scenes/entities/player/character.tscn" id="1_4rsfo"]
 [ext_resource type="Script" uid="uid://dsykxvanie7ju" path="res://scripts/entities/enemy.gd" id="2_gflvi"]
+[ext_resource type="Script" uid="uid://dd3ebqtdfp4bv" path="res://scripts/entities/state_machine/states/enemy/enemy_spawned_state.gd" id="3_wyqsp"]
+[ext_resource type="Script" uid="uid://cilf8fmfqxe4k" path="res://scripts/entities/state_machine/states/enemy/enemy_idle_state.gd" id="4_w6k81"]
+[ext_resource type="Script" uid="uid://b0mrnujmfb82o" path="res://scripts/entities/state_machine/states/enemy/enemy_run_state.gd" id="5_fu215"]
+[ext_resource type="Script" uid="uid://bjk2q11k042i8" path="res://scripts/entities/state_machine/states/enemy/enemy_attack_state.gd" id="6_27tcs"]
+[ext_resource type="Script" uid="uid://0e5gyqtr1y7o" path="res://scripts/entities/state_machine/states/enemy/enemy_patrol_state.gd" id="7_mag4a"]
+[ext_resource type="Script" uid="uid://bj8mwrr6ridli" path="res://scripts/entities/state_machine/states/enemy/enemy_chase_state.gd" id="8_0kssi"]
+[ext_resource type="Script" uid="uid://clj0mo7xovfkd" path="res://scripts/entities/state_machine/states/enemy/enemy_dead_state.gd" id="9_ljcf0"]
+[ext_resource type="Script" uid="uid://b7vnlrb7jyd17" path="res://scripts/entities/state_machine/states/enemy/enemy_wander_state.gd" id="10_8tbu6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ofdk"]
 
@@ -39,6 +47,30 @@ debug_color = Color(1, 0, 0, 0.41960785)
 
 [node name="StateMachine" parent="." index="5" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
 initial_state = NodePath("EnemySpawnedState")
+
+[node name="EnemySpawnedState" type="Node" parent="StateMachine" index="0" unique_id=1748518735]
+script = ExtResource("3_wyqsp")
+
+[node name="EnemyIdleState" type="Node" parent="StateMachine" index="1" unique_id=759886556]
+script = ExtResource("4_w6k81")
+
+[node name="EnemyRunState" type="Node" parent="StateMachine" index="2" unique_id=1908037105]
+script = ExtResource("5_fu215")
+
+[node name="EnemyAttackState" type="Node" parent="StateMachine" index="3" unique_id=1051505464]
+script = ExtResource("6_27tcs")
+
+[node name="EnemyPatrolState" type="Node" parent="StateMachine" index="4" unique_id=1967064093]
+script = ExtResource("7_mag4a")
+
+[node name="EnemyChaseState" type="Node" parent="StateMachine" index="5" unique_id=1187634259]
+script = ExtResource("8_0kssi")
+
+[node name="EnemyDeadState" type="Node" parent="StateMachine" index="6" unique_id=406999447]
+script = ExtResource("9_ljcf0")
+
+[node name="EnemyWanderState" type="Node" parent="StateMachine" index="7" unique_id=359657435]
+script = ExtResource("10_8tbu6")
 
 [node name="WanderCD" type="Timer" parent="." index="6" unique_id=668098841]
 
