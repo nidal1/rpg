@@ -5,7 +5,7 @@ class_name Player
 @export var character_class: CharacterClass
 
 @onready var combo_timer: Timer = $ComboAttackCD
-@onready var attack_state: AttackState = $StateMachine/AttackState
+@onready var attack_state: PlayerAttackState = $StateMachine/PlayerAttackState
 
 var combo_index: int = -1
 var combo_queued: bool = false
@@ -23,7 +23,7 @@ func _load_classe(cls: CharacterClass) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if state_machine:
-			state_machine.transition_to("attackstate")
+			state_machine.transition_to("playerattackstate")
 
 # ─── Physics ─────────────────────────────────────────────
 func _physics_process(_delta: float) -> void:
@@ -91,7 +91,7 @@ func _on_damage_received() -> void:
 	print("Player hit! health remaining: ", max_health)
 	_flash_hit()
 	if max_health <= 0:
-		state_machine.transition_to("deadstate")
+		state_machine.transition_to("playerdeadstate")
 
 func _flash_hit() -> void:
 	modulate = Color.RED

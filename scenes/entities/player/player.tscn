@@ -2,6 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://de57v61nqoh5m" path="res://scenes/entities/player/character.tscn" id="1_1hmtu"]
 [ext_resource type="Script" uid="uid://b1bphifm6e4h2" path="res://scripts/entities/player.gd" id="2_635qg"]
+[ext_resource type="Script" uid="uid://ddumj6cwaboc3" path="res://scripts/entities/state_machine/states/player/player_idle_state.gd" id="3_8akj5"]
+[ext_resource type="Script" uid="uid://isn4yk7wjkyd" path="res://scripts/entities/state_machine/states/player/player_run_state.gd" id="4_bj7e2"]
+[ext_resource type="Script" uid="uid://cbfjljxqfyovd" path="res://scripts/entities/state_machine/states/player/player_attack_state.gd" id="5_1murt"]
+[ext_resource type="Script" uid="uid://dlmyx3rwudqws" path="res://scripts/entities/state_machine/states/player/player_dead_state.gd" id="6_5sj0x"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1hmtu"]
 radius = 17.0
@@ -29,5 +33,20 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" index="0" unique_id=509631267]
 shape = SubResource("CapsuleShape2D_1hmtu")
 debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="StateMachine" parent="." index="5" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
+initial_state = NodePath("PlayerIdleState")
+
+[node name="PlayerIdleState" type="Node" parent="StateMachine" index="0" unique_id=810647044]
+script = ExtResource("3_8akj5")
+
+[node name="PlayerRunState" type="Node" parent="StateMachine" index="1" unique_id=131549775]
+script = ExtResource("4_bj7e2")
+
+[node name="PlayerAttackState" type="Node" parent="StateMachine" index="2" unique_id=2095433837]
+script = ExtResource("5_1murt")
+
+[node name="PlayerDeadState" type="Node" parent="StateMachine" index="3" unique_id=808757208]
+script = ExtResource("6_5sj0x")
 
 [connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
