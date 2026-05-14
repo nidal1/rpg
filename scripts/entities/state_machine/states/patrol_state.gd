@@ -3,6 +3,7 @@ extends State
 class_name PatrolState
 
 func enter() -> void:
+	actor._stop_wandering()
 	# Start with idle animation, _patrol will switch to run if moving
 	if actor.animation_playback:
 		actor.animation_playback.travel("run")

@@ -4,12 +4,14 @@ class_name IdleState
 
 func enter() -> void:
 	actor._idle()
-	if is_instance_valid(actor) and actor is Enemy and actor.target and is_instance_valid(actor.target):
-		actor.is_target_reached = (actor.global_position.distance_to(actor.target.global_position) <= actor.attack_range)
-		if actor.is_target_reached:
-			transitioned.emit("attackstate")
+	if is_instance_valid(actor) and actor is Enemy:
+		if actor.target and is_instance_valid(actor.target):
+			if actor._target_reached():
+				transitioned.emit("attackstate")
+			else:
+				transitioned.emit("chasestate")
 		else:
-			transitioned.emit("chasestate")
+			actor.wander_cd.start()
 
 func physics_update(_delta: float) -> void:
 	if actor.direction != Vector2.ZERO:

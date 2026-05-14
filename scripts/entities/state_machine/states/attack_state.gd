@@ -13,6 +13,7 @@ func enter() -> void:
 			attack_ended.connect(_on_attack_end)
 		actor._on_attack_pressed()
 	elif actor is Enemy:
+		actor._stop_wandering()
 		_enemy_attack_logic()
 
 func _enemy_attack_logic() -> void:
@@ -20,7 +21,7 @@ func _enemy_attack_logic() -> void:
 	actor.velocity = Vector2.ZERO
 	
 	if actor.can_attack:
-		await actor._attack()
+		actor._attack()
 	
 	if not is_instance_valid(actor): return
 	

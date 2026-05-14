@@ -2,6 +2,10 @@
 extends State
 class_name ChaseState
 
+
+func enter() -> void:
+	actor._stop_wandering()
+
 func physics_update(_delta: float) -> void:
 	if not is_instance_valid(actor.target):
 		transitioned.emit("patrolstate")

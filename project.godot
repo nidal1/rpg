@@ -42,6 +42,7 @@ warrior=""
 enemy=""
 player=""
 goblin=""
+enemies_spawner=""
 
 [input]
 

@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://jyn5xqf2drcj" path="res://scripts/entities/state_machine/states/chase_state.gd" id="7_epoxd"]
 [ext_resource type="Script" uid="uid://bplbx4wh020f2" path="res://scripts/entities/state_machine/states/patrol_state.gd" id="8_8cwfr"]
 [ext_resource type="Script" uid="uid://b5dxpjxdoacag" path="res://scripts/entities/state_machine/states/dead_state.gd" id="9_lk27s"]
+[ext_resource type="Script" uid="uid://fe1pxgda72nc" path="res://scripts/entities/state_machine/states/wander_state.gd" id="10_ngxua"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bjvvg"]
 radius = 11.0
@@ -55,3 +56,7 @@ script = ExtResource("8_8cwfr")
 [node name="DeadState" type="Node" parent="StateMachine" unique_id=278883604]
 script = ExtResource("9_lk27s")
 metadata/_custom_type_script = "uid://b5dxpjxdoacag"
+
+[node name="WanderState" type="Node" parent="StateMachine" unique_id=235650765]
+script = ExtResource("10_ngxua")
+metadata/_custom_type_script = "uid://fe1pxgda72nc"

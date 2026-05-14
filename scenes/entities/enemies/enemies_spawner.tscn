@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b8ali241wtm3n" path="res://scripts/entities/enemies_spawner.gd" id="1_lkp2b"]
 [ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="2_h4dbm"]
 
-[node name="EnemiesSpawner" type="Node2D" unique_id=1617310678 node_paths=PackedStringArray("spawn_point")]
+[node name="EnemiesSpawner" type="Node2D" unique_id=1617310678 node_paths=PackedStringArray("spawn_point") groups=["enemies_spawner"]]
 script = ExtResource("1_lkp2b")
 spawn_point = NodePath("Marker2D")
 enemies = Array[PackedScene]([ExtResource("2_h4dbm"), ExtResource("2_h4dbm"), ExtResource("2_h4dbm")])

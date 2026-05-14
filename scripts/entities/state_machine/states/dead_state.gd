@@ -9,6 +9,8 @@ func enter() -> void:
 	
 	# Handle specific death logic via virtual function
 	actor._die()
+	if actor is Enemy:
+		actor.on_died.emit()
 
 func physics_update(_delta: float) -> void:
 	# Ensure the character doesn't move or do anything while dead
