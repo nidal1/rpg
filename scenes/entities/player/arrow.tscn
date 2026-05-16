@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bb06lhlufgtoe"]
+
+[ext_resource type="Texture2D" uid="uid://b1fh3ck8fwwql" path="res://assets/sprites/player/Blue Units/Archer/Arrow.png" id="1_ev78y"]
+[ext_resource type="Script" uid="uid://o8c6hsphsxbs" path="res://scripts/entities/arrow.gd" id="2_p5lq7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p5lq7"]
+size = Vector2(43, 12)
+
+[node name="Arrow" type="Sprite2D" unique_id=2138777995]
+texture = ExtResource("1_ev78y")
+offset = Vector2(20, 0)
+script = ExtResource("2_p5lq7")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=567610632]
+position = Vector2(20, 0)
+collision_layer = 8
+collision_mask = 64
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1353194375]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_p5lq7")
+
+[node name="ArrowLifetime" type="Timer" parent="." unique_id=1121122055]
+wait_time = 10.0
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="timeout" from="ArrowLifetime" to="." method="_on_arrow_lifetime_timeout"]

@@ -43,6 +43,7 @@ enemy=""
 player=""
 goblin=""
 enemies_spawner=""
+archer=""
 
 [input]
 

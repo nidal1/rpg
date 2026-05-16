@@ -602,9 +602,6 @@ parameters/basic_attack/BlendSpace1D/blend_position = 0.0
 parameters/idle/blend_position = 0.0
 parameters/run/blend_position = 0.0
 
-[node name="CollisionShape" parent="." index="3" unique_id=806179761]
-visible = false
-
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 scale = Vector2(20, 20)
 

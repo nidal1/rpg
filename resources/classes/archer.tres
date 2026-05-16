@@ -1,8 +1,15 @@
 [gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://bxaw1bhe0v7yt"]
 
-[ext_resource type="Script" uid="uid://b0vnlskw1kjnx" path="res://resources/player/attack_data.gd" id="1_unnlj"]
+[ext_resource type="Script" uid="uid://bahe5wqw78xlr" path="res://scripts/resources/attack_data.gd" id="1_unnlj"]
 [ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="2_afgh0"]
+
+[sub_resource type="Resource" id="Resource_afgh0"]
+script = ExtResource("1_unnlj")
+anim_name = "attack1"
+combo_window = 2.2
+metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 
 [resource]
 script = ExtResource("2_afgh0")
+combo_chain = Array[ExtResource("1_unnlj")]([SubResource("Resource_afgh0")])
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

@@ -25,12 +25,32 @@ Character.tscn          → CollisionShape2D only (pure base)
 
 ### Script Hierarchy
 ```
-Character.gd    → pure base: state machine, take_damage, virtual functions
-  └── Player.gd → input, combo system, _physics_process, _load_classe
-        └── Warrior.gd  → animation overrides only
-        └── Archer.gd   → animation overrides only
-  └── Enemy.gd  → AI (chase, patrol), NavigationAgent2D, _physics_process
-        └── Goblin.gd   → animation overrides, specific behavior
+Character.gd    → base class: signals, take_damage, virtual functions
+  └── Player.gd → input, combo system, _physics_process
+  └── Enemy.gd  → AI logic, NavigationAgent2D, wander timer
+        └── Goblin.gd → animation overrides, specific behavior
+
+### State Machine Architecture (Node-based)
+- **StateMachine**: Node that manages child State nodes. Transitions via `transitioned(state_name)` signal.
+- **State**: base class for all states. Contains `enter()`, `exit()`, `handle_input()`, `update()`, `physics_update()`.
+- **Naming Convention**: `playeridle`, `playerrun`, `enemyattack`, etc. (lower-case strings used in scene tree).
+
+### Folder Structure
+```
+res://
+├── assets/
+├── scenes/
+├── scripts/
+│   ├── autoloads/
+│   ├── entities/
+│   │   └── state_machine/
+│   │       ├── state_machine.gd, state.gd
+│   │       └── states/
+│   │           ├── player/ (player_idle_state.gd, ...)
+│   │           └── enemy/  (enemy_idle_state.gd, ...)
+│   ├── resources/
+│   └── utils/
+└── resources/
 ```
 
 ### Autoloads
@@ -182,10 +202,10 @@ All animation and behavior-specific logic goes in subclasses via overrides:
 ---
 
 ## Key Rules
-- **Character.gd** = zero animation calls, zero input, zero AI
-- **Player.gd** = zero animation calls, only combo + input logic
-- **Warrior/Goblin.gd** = animation only, no game logic
-- Always `duplicate(true)` combo_chain when loading class resource
-- Always check `is_instance_valid(self)` after any `await`
-- Hitbox CollisionShape enable/disable per animation frame (not always active)
-- Each subclass scene must inherit from correct parent scene (Goblin → Enemy.tscn, not Character.tscn)
+- **State Machine**: States are decoupled into `player/` and `enemy/` subdirectories.
+- **Enemy Logic**: Transitions between states (like `Idle` and `Attack`) are handled reactively in `physics_update`.
+- **Transitions**: Use lower-case strings in `transitioned.emit("statename")` (e.g., `enemyidlestate`, `playerattackstate`).
+- **Cooldowns**: Handled by `await` within the attack functions.
+- Always check `is_instance_valid(actor)` after any `await` inside a State.
+- Hitbox CollisionShape enable/disable per animation frame.
+- Each subclass scene must inherit from correct parent scene.

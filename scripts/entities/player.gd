@@ -70,6 +70,7 @@ func _execute_attack() -> void:
 	combo_timer.start()
 
 func _get_attack_damage() -> float:
+	if combo_chain.size() == 1: return combo_chain[0].damage
 	if combo_index < 0 or combo_index >= combo_chain.size(): return 0.0
 	return combo_chain[combo_index].damage
 
