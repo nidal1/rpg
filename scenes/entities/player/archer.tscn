@@ -522,9 +522,6 @@ arrow_scene = ExtResource("3_fs3x2")
 attack_range = 300.0
 character_class = ExtResource("3_yipsv")
 
-[node name="Camera" parent="." index="1" unique_id=1339975141]
-zoom = Vector2(1.5, 1.5)
-
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="6" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")

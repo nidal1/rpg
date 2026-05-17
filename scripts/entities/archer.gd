@@ -12,6 +12,8 @@ signal _animation_editor_arrow_attack()
 var target: CharacterBody2D = null
 var enemies_in_range: Array[CharacterBody2D] = []
 
+const ARROW_POSITION_OFFSET: Vector2 = Vector2(26.0, -51.0)
+const ARROW_SPRITE_WIDTH: float = 48.0 / 2.2
 
 func _ready() -> void:
 	super._ready()
@@ -49,10 +51,12 @@ func _on_initialized_arrow_attack() -> void:
 
 func _spawn_arrow() -> Arrow:
 	var arrow: Arrow = arrow_scene.instantiate()
-	arrow_spawning_position.position = Vector2(last_facing_dir * 26.0, -51.0)
+	arrow.set_as_top_level(true) # Detach the arrow's transform from the archer
+	arrow_spawning_position.position = Vector2(ARROW_POSITION_OFFSET.x * last_facing_dir, ARROW_POSITION_OFFSET.y)
 	arrows_container.add_child(arrow)
 	arrow.global_position = arrow_spawning_position.global_position
 	arrow.arrow_hit.connect(_on_arrow_hit)
+	arrow.set_max_distance(attack_range - ARROW_POSITION_OFFSET.x - ARROW_SPRITE_WIDTH)
 	return arrow
 
 func _move_arrow(arrow: Arrow, _direction: Vector2) -> void:

@@ -1,25 +1,28 @@
-extends Sprite2D
+extends Area2D
 class_name Arrow
 
 signal arrow_hit(area: Area2D)
 
 
 @export var speed: float = 1000.0
+@export var max_distance: float = 600.0
+
 var direction: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
+var distance_traveled: float = 0.0
 
-@onready var arrow_lifetime: Timer = $ArrowLifetime
-
-func _ready() -> void:
-	arrow_lifetime.start()
 
 func _physics_process(delta: float) -> void:
-	position += velocity * delta
+	var movement = velocity * delta
+	position += movement
+	distance_traveled += movement.length()
+	if distance_traveled > max_distance:
+		queue_free()
 
-func _on_hitbox_area_entered(area: Area2D) -> void:
+func set_max_distance(value: float) -> void:
+	max_distance = value
+
+
+func _on_area_entered(area: Area2D) -> void:
 	arrow_hit.emit(area)
-	queue_free()
-
-
-func _on_arrow_lifetime_timeout() -> void:
 	queue_free()
