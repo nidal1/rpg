@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cp0qpkux861bi" path="res://scenes/entities/player/player.tscn" id="1_diwrq"]
 [ext_resource type="Script" uid="uid://7816qonl71xf" path="res://scripts/entities/mage.gd" id="2_6to3v"]
 [ext_resource type="PackedScene" uid="uid://cwyt3b114uhf8" path="res://scenes/entities/player/water_bullet.tscn" id="3_diwrq"]
+[ext_resource type="Resource" uid="uid://iqd0ffeia76" path="res://resources/classes/mage.tres" id="4_diwrq"]
 [ext_resource type="Texture2D" uid="uid://cf36e0qj6dtkg" path="res://assets/sprites/player/Blue Units/Monk/Heal.png" id="5_diwrq"]
 [ext_resource type="Texture2D" uid="uid://clufmaxnxqhwu" path="res://assets/sprites/player/Blue Units/Monk/Idle.png" id="6_wn0ss"]
 [ext_resource type="Texture2D" uid="uid://cuwypv75fefru" path="res://assets/sprites/player/Blue Units/Monk/Run.png" id="7_stst4"]
@@ -540,6 +541,7 @@ radius = 300.0
 script = ExtResource("2_6to3v")
 bullet_scene = ExtResource("3_diwrq")
 attack_range = 300.0
+character_class = ExtResource("4_diwrq")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="6" unique_id=1016072717]
 position = Vector2(0, -33)

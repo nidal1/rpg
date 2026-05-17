@@ -19,7 +19,7 @@ func _ready() -> void:
 	super._ready()
 
 	_animation_editor_bullet_attack.connect(_on_initialized_bullet_attack)
-	var cls = load("res://resources/classes/archer.tres")
+	var cls = load("res://resources/classes/mage.tres")
 	_load_classe(cls)
 
 

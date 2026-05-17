@@ -3,7 +3,7 @@ class_name WaterBullet
 
 signal bullet_hit(area: Area2D)
 
-@export var speed: float = 300.0
+@export var speed: float = 1000.0
 @export var max_distance: float = 600.0
 
 var direction: Vector2 = Vector2.ZERO
