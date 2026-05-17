@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cwyt3b114uhf8"]
+
+[ext_resource type="Texture2D" uid="uid://d1i0yd1b8wcbw" path="res://assets/sprites/player/Blue Units/Monk/magic.png" id="1_88ebl"]
+[ext_resource type="Script" uid="uid://wom6ogbfkf7l" path="res://scripts/entities/water_bullet.gd" id="1_qc483"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc483"]
+atlas = ExtResource("1_88ebl")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipyd3"]
+atlas = ExtResource("1_88ebl")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x62b5"]
+atlas = ExtResource("1_88ebl")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hs8i7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qc483")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipyd3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x62b5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_88ebl"]
+radius = 17.117243
+
+[node name="WaterBullet" type="Area2D" unique_id=1236852609]
+collision_layer = 8
+collision_mask = 64
+script = ExtResource("1_qc483")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1877268363]
+sprite_frames = SubResource("SpriteFrames_hs8i7")
+frame_progress = 0.3361381
+offset = Vector2(15, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1618972434]
+position = Vector2(16, 0)
+shape = SubResource("CircleShape2D_88ebl")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
