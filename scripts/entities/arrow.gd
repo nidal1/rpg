@@ -1,7 +1,7 @@
 extends Sprite2D
 class_name Arrow
 
-signal _on_arrow_hit(area: Area2D)
+signal arrow_hit(area: Area2D)
 
 
 @export var speed: float = 1000.0
@@ -17,7 +17,7 @@ func _physics_process(delta: float) -> void:
 	position += velocity * delta
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	_on_arrow_hit.emit(area)
+	arrow_hit.emit(area)
 	queue_free()
 
 
