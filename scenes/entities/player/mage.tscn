@@ -540,7 +540,7 @@ radius = 300.0
 [node name="Mage" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_diwrq")]
 script = ExtResource("2_6to3v")
 bullet_scene = ExtResource("3_diwrq")
-attack_range = 300.0
+attack_range = 500.0
 character_class = ExtResource("4_diwrq")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="6" unique_id=1016072717]

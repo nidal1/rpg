@@ -120,6 +120,12 @@ func _wander(_to_position: Vector2) -> void:
 func _stop_wandering() -> void:
 	wander_cd.stop()
 
+func set_target(new_target: CharacterBody2D) -> void:
+	target = new_target
+
+func get_target() -> CharacterBody2D:
+	return target
+
 # ─── Detection ───────────────────────────────────────────
 func _on_detection_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

@@ -4,10 +4,11 @@ class_name Mage
 signal _animation_editor_bullet_attack()
 
 @export var bullet_scene: PackedScene
-@export var attack_range: float = 300.0
+@export var attack_range: float = 500.0
 
 @onready var bullet_spawning_position: Node2D = %BulletSpawningPosition
 @onready var bullets_container: Node2D = %BulletsContainer
+@onready var detection_zone: Area2D = $DetectionZone
 
 var target: CharacterBody2D = null
 var enemies_in_range: Array[CharacterBody2D] = []
@@ -18,6 +19,9 @@ const BULLET_SPRITE_WIDTH: float = 32.0 / 2.0
 func _ready() -> void:
 	super._ready()
 
+	print(attack_range)
+	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
+	print(detection_zone.get_node("CollisionShape2D").shape.radius)
 	_animation_editor_bullet_attack.connect(_on_initialized_bullet_attack)
 	var cls = load("res://resources/classes/mage.tres")
 	_load_classe(cls)
@@ -62,6 +66,9 @@ func _on_bullet_hit(area: Area2D) -> void:
 	var target_node = area.get_parent()
 	if target_node.is_in_group("enemy"):
 		target_node.take_damage(_get_attack_damage())
+
+		if target_node.get_target() != self or not is_instance_valid(target_node.get_target()):
+			target_node.set_target(self )
 
 
 func _on_detection_zone_body_entered(body: Node2D) -> void:
