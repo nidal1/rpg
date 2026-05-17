@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="iDP3Tedckzr1JrJr1VvO">
+    <mxGraphModel dx="4017" dy="2229" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none;" value="PLAYER STATES" vertex="1">
+          <mxGeometry height="40" width="260" x="120" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="PlayerIdleState" vertex="1">
+          <mxGeometry height="60" width="180" x="10" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="PlayerRunState" vertex="1">
+          <mxGeometry height="60" width="180" x="550" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="PlayerAttackState" vertex="1">
+          <mxGeometry height="60" width="200" x="150" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="PlayerDeadState" vertex="1">
+          <mxGeometry height="60" width="200" x="260" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="7" edge="1" parent="1" source="3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="4" value="movement keys pressed">
+          <mxGeometry relative="1" x="0.5" y="40" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8" edge="1" parent="1" source="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="3" value="movement keys released">
+          <mxGeometry relative="1" x="0.6111" y="-20" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" edge="1" parent="1" source="3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="5" value="Left Click">
+          <mxGeometry relative="1" x="0.5769" y="208" as="geometry">
+            <mxPoint x="-28" y="-105" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" edge="1" parent="1" source="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="5" value="Left Click">
+          <mxGeometry relative="1" x="-0.8182" y="-20" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="3" value="combo ended">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12" edge="1" parent="1" source="3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;" target="6" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" edge="1" parent="1" source="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;" target="6" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;endArrow=block;" target="6" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none;" value="ENEMY STATES" vertex="1">
+          <mxGeometry height="40" width="260" x="1018" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="EnemySpawnedState" vertex="1">
+          <mxGeometry height="60" width="220" x="1098" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EnemyIdleState" vertex="1">
+          <mxGeometry height="60" width="220" x="1098" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="EnemyRunState" vertex="1">
+          <mxGeometry height="60" width="220" x="1638" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="EnemyWanderState" vertex="1">
+          <mxGeometry height="60" width="220" x="960" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="EnemyChaseState" vertex="1">
+          <mxGeometry height="60" width="220" x="1368" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EnemyAttackState" vertex="1">
+          <mxGeometry height="60" width="220" x="810" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfe2f3;strokeColor=#6c8ebf;" value="EnemyPatrolState" vertex="1">
+          <mxGeometry height="60" width="220" x="1550" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4cccc;strokeColor=#990000;" value="EnemyDeadState" vertex="1">
+          <mxGeometry height="60" width="220" x="1248" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="16" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="17" value="param load complete">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="17" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="18" value="movement starts">
+          <mxGeometry relative="1" x="-0.0123" y="20" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="18" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="17" value="movement stops">
+          <mxGeometry relative="1" x="0.0123" y="30" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="17" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="19" value="wander timeout">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1190" y="420" />
+              <mxPoint x="1100" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="19" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="17" value="wander finished">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="17" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="20" value="player detected">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1240" y="350" />
+              <mxPoint x="1448" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="17" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="21" value="target already in range">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="21" value="target reached">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" edge="1" parent="1" source="22" target="20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="player detected again">
+          <mxGeometry relative="1" x="0.0372" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="33" edge="1" parent="1" source="22" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="17" value="reached spawn position">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" edge="1" parent="1" source="21" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="17" value="attack finished">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="35" edge="1" parent="1" source="21" target="20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" value="target moved away">
+          <mxGeometry relative="1" x="-0.2397" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1000" y="750" />
+              <mxPoint x="1000" y="770" />
+              <mxPoint x="1450" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="36" edge="1" parent="1" source="17" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37" edge="1" parent="1" source="18" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" x="0.2809" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1698" y="570" />
+              <mxPoint x="1358" y="570" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" edge="1" parent="1" source="19" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="39" edge="1" parent="1" source="20" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1488" y="650" />
+              <mxPoint x="1490" y="650" />
+              <mxPoint x="1490" y="835" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" edge="1" parent="1" source="21" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" edge="1" parent="1" source="22" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="23" value="health &lt;= 0">
+          <mxGeometry relative="1" x="0.3613" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1660" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
