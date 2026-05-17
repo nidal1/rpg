@@ -19,11 +19,6 @@ func _ready() -> void:
 	super._ready()
 
 	_animation_editor_arrow_attack.connect(_on_initialized_arrow_attack)
-
-	animation_tree = $AnimationTree
-	animation_playback = animation_tree["parameters/playback"]
-	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
-	animation_tree.set_active(true)
 	var cls = load("res://resources/classes/archer.tres")
 	_load_classe(cls)
 
@@ -68,23 +63,7 @@ func _on_arrow_hit(area: Area2D) -> void:
 	if target_node.is_in_group("enemy"):
 		target_node.take_damage(_get_attack_damage())
 
-func _play_movement_animation() -> void:
-	animation_tree.set("parameters/run/blend_position", last_facing_dir)
 
-func _play_idle_animation() -> void:
-	animation_tree.set("parameters/idle/blend_position", last_facing_dir)
-
-func _play_attack_animation(attack: AttackData) -> void:
-	animation_tree.set(
-	"parameters/basic_attack/BasicAttackStateMachine/%s/blend_position" % attack.anim_name,
-	last_facing_dir
-	)
-	animation_BA_playback.travel(attack.anim_name)
-
-
-func _end_combo() -> void:
-	animation_BA_playback.travel("End")
-	super._end_combo()
 
 func _on_detection_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):

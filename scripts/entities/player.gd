@@ -12,7 +12,29 @@ var combo_queued: bool = false
 var combo_chain: Array[AttackData] = []
 
 # ─── Virtual functions ────────────────────────────────────────────
-func _play_attack_animation(attack: AttackData) -> void: pass
+func _play_movement_animation() -> void:
+	if animation_tree:
+		animation_tree.set("parameters/run/blend_position", last_facing_dir)
+
+func _play_idle_animation() -> void:
+	if animation_tree:
+		animation_tree.set("parameters/idle/blend_position", last_facing_dir)
+
+func _play_attack_animation(attack: AttackData) -> void:
+	if animation_tree and animation_BA_playback:
+		animation_tree.set(
+			"parameters/basic_attack/BasicAttackStateMachine/%s/blend_position" % attack.anim_name,
+			last_facing_dir
+		)
+		animation_BA_playback.travel(attack.anim_name)
+
+func _ready() -> void:
+	super._ready()
+
+	animation_tree = $AnimationTree
+	animation_playback = animation_tree["parameters/playback"]
+	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
+	animation_tree.set_active(true)
 
 func _load_classe(cls: CharacterClass) -> void:
 	max_health = cls.max_health
@@ -75,6 +97,8 @@ func _get_attack_damage() -> float:
 	return combo_chain[combo_index].damage
 
 func _end_combo() -> void:
+	if animation_BA_playback:
+		animation_BA_playback.travel("End")
 	combo_index = -1
 	combo_queued = false
 	if attack_state:
