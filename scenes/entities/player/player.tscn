@@ -35,6 +35,12 @@ monitoring = false
 shape = SubResource("CapsuleShape2D_1hmtu")
 debug_color = Color(1, 0, 0, 0.41960785)
 
+[node name="Label" parent="." index="4" unique_id=1619467209]
+offset_left = -41.0
+offset_top = -125.0
+offset_right = 39.0
+offset_bottom = -80.0
+
 [node name="StateMachine" parent="." index="5" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
 initial_state = NodePath("PlayerIdleState")
 

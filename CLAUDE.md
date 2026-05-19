@@ -1,211 +1,247 @@
 # CLAUDE.md — 2D Action RPG (Godot 4)
 
 ## Project Overview
-2D Action RPG with dark fantasy + Moroccan/Arabic folklore theme. Medium scope (~3-4 hours gameplay). Built with Godot 4.
-
-## Tech Stack
-- **Engine:** Godot 4.x (GDScript)
-- **Rendering:** 2D, pixel art
-- **Physics:** CharacterBody2D
+A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**.
 
 ---
 
-## Architecture
+## Tech Stack & Commands
+*   **Engine:** Godot 4.x (GDScript)
+*   **Rendering:** 2D pixel art
+*   **Physics:** `CharacterBody2D` for entities, `Area2D` for hitboxes/hurtboxes/projectiles
+*   **Pathfinding:** `NavigationAgent2D` for intelligent enemy pathfinding and obstacle avoidance
+*   **Running the Project:** Execute `godot --path .` from the command line, or open the project folder directly in the Godot 4 Editor.
+
+---
+
+## Architecture & Class Hierarchy
 
 ### Scene Hierarchy
 ```
-Character.tscn          → CollisionShape2D only (pure base)
-  └── Player.tscn       → + Camera2D, ComboAttackCD, Hurtbox
-        └── Warrior.tscn → + AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox
-        └── Archer.tscn  → + AnimatedSprite2D, AnimationPlayer, AnimationTree (no Hitbox)
-        └── Mage.tscn    → + AnimatedSprite2D, AnimationPlayer, AnimationTree (no Hitbox)
-  └── Enemy.tscn        → + NavigationAgent2D, DetectionZone, Hurtbox
-        └── Goblin.tscn  → + AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox
+Character.tscn              → Base CollisionShape2D only (pure parent scene)
+  ├── Player.tscn           → Adds Camera2D, ComboAttackCD, Hurtbox, StateMachine
+  │     ├── Warrior.tscn    → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox (melee)
+  │     ├── Archer.tscn     → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container (ranged)
+  │     └── Mage.tscn       → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container, DetectionZone (spell)
+  └── Enemy.tscn            → Adds NavigationAgent2D, DetectionZone, Hurtbox, StateMachine, WanderCD
+        └── Goblin.tscn     → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox (melee enemy)
 ```
 
 ### Script Hierarchy
 ```
-Character.gd    → base class: signals, take_damage, virtual functions
-  └── Player.gd → input, combo system, _physics_process
-  └── Enemy.gd  → AI logic, NavigationAgent2D, wander timer
-        └── Goblin.gd → animation overrides, specific behavior
-
-### State Machine Architecture (Node-based)
-- **StateMachine**: Node that manages child State nodes. Transitions via `transitioned(state_name)` signal.
-- **State**: base class for all states. Contains `enter()`, `exit()`, `handle_input()`, `update()`, `physics_update()`.
-- **Naming Convention**: `playeridle`, `playerrun`, `enemyattack`, etc. (lower-case strings used in scene tree).
-
-### Folder Structure
+Character.gd (Character)     → Base entity: signals, take_damage, virtual hook functions
+  ├── Player.gd (Player)     → Handles user input, combo management, basic movement & idling, hit flashing
+  │     ├── Warrior.gd       → Warrior class: handles melee hitbox collision triggers
+  │     ├── Archer.gd        → Archer class: targets enemies, spawns and moves Arrow projectiles
+  │     └── Mage.gd          → Mage class: targets enemies, spawns and moves WaterBullet projectiles
+  └── Enemy.gd (Enemy)       → Base AI: targeting logic, NavigationAgent2D pathfinding, wander/chase movement
+        └── Goblin.gd        → Goblin class: handles specific animation transitions and melee hitbox detection
 ```
-res://
-├── assets/
-├── scenes/
-├── scripts/
-│   ├── autoloads/
-│   ├── entities/
-│   │   └── state_machine/
-│   │       ├── state_machine.gd, state.gd
-│   │       └── states/
-│   │           ├── player/ (player_idle_state.gd, ...)
-│   │           └── enemy/  (enemy_idle_state.gd, ...)
-│   ├── resources/
-│   └── utils/
-└── resources/
-```
-
-### Autoloads
-| Name | Path | Purpose |
-|------|------|---------|
-| GameManager | scripts/autoloads/game_manager.gd | Game state, pause |
-| EventBus | scripts/autoloads/event_bus.gd | Global signals |
-| SaveManager | scripts/autoloads/save_manager.gd | Save/load |
 
 ---
 
-## Folder Structure
+## Node-Based State Machine
+
+The state machine separates entity states into decoupled, modular nodes under a parent `StateMachine`.
+
+*   **StateMachine (`state_machine.gd`):** Dynamically registers child nodes inheriting from `State` into a registry dictionary (keys converted to lowercase) and handles `transition_to(state_name)` calls and `transitioned` signal emissions.
+*   **State (`state.gd`):** Abstract base class containing standard lifecycle hooks: `enter()`, `exit()`, `handle_input()`, `update()`, and `physics_update()`. All states reference `actor` (their parent `Character`) and `state_machine`.
+
+### Player States (`states/player/`)
+| Class Name | Lowercase Name | Description |
+| :--- | :--- | :--- |
+| `PlayerIdleState` | `playeridlestate` | Calls `actor._idle()` to stop movement and play idle animation. Transitions to `playerrunstate` if input movement is received. |
+| `PlayerRunState` | `playerrunstate` | Calls `actor._move()` to slide character and play run animations. Transitions to `playeridlestate` if movement input stops. |
+| `PlayerAttackState`| `playerattackstate`| Stops movement and executes `actor._on_attack_pressed()`. Listens to `attack_ended` signal before returning to `playeridlestate`. |
+| `PlayerDeadState`  | `playerdeadstate`  | Stops character movement and triggers custom virtual death logic via `actor._die()`. |
+
+### Enemy States (`states/enemy/`)
+| Class Name | Lowercase Name | Description |
+| :--- | :--- | :--- |
+| `EnemySpawnedState`| `enemyspawnedstate`| Loads custom `EnemyParams`, records initial spawn coordinates, connects to the global spawner's cleanup signals, and transitions to idle. |
+| `EnemyIdleState`   | `enemyidlestate`   | Stops movement, travels to idle animation, and starts the wander cooldown. Transitions to chase or attack states reactively if player enters detection range. |
+| `EnemyWanderState` | `enemywanderstate` | Picks a random cardinal direction (Left, Right, Up, Down) and navigates the enemy to that wander position. Returns to idle on arrival. |
+| `EnemyPatrolState` | `enemypatrolstate` | Directs the enemy to navigate back to its original spawn position if it wandered too far or lost target aggro. |
+| `EnemyRunState`    | `enemyrunstate`    | Basic running state that delegates movement to `actor._move()` based on target headings. |
+| `EnemyChaseState`  | `enemychasestate`  | Updates pathfinding to track player position. Leashes the enemy: transitions back to patrol if player moves beyond `MAX_DISTANCE_TO_SPAWN_LOCATION` (700px). Transitions to attack when target is in range. |
+| `EnemyAttackState` | `enemyattackstate` | Disables velocity and triggers cooldowned attack animation sequence. Transition evaluates target position after each attack completes. |
+| `EnemyDeadState`   | `enemydeadstate`   | Disables movement, triggers death animation, and alerts spawning system to queue respawn. |
+
+---
+
+## Dynamic Gameplay Systems
+
+### Projectiles (`arrow.gd`, `water_bullet.gd`)
+Ranged characters shoot custom instances of projectiles (`Arrow`, `WaterBullet`) extending `Area2D`.
+*   **Properties:** `speed`, `max_distance`, `direction`, `velocity`, `distance_traveled`.
+*   **Lifecycle:** Projectiles are instantiated as **top-level** nodes (`set_as_top_level(true)`) to free their local transforms from the character node. They are added to a specific container (`arrows_container`, `bullets_container`) and automatically `queue_free()` if they exceed their target range or hit obstacles.
+*   **Trigger Mechanism:** Archer and Mage bind a custom callback to animation events via signals (`_animation_editor_arrow_attack` and `_animation_editor_bullet_attack`). This allows the animator to fire arrows/spells at the exact frame the bow string is drawn or the staff is swung.
+
+### Enemies Spawner (`enemies_spawner.gd`)
+A modular system designed to auto-generate waves of enemies around specific level markers.
+*   **Parameters:** `spawn_point`, `enemies` (array of packed scenes), `spawn_circle_radius`, `respawn_cd`, `wander_cd_time`.
+*   **Behavior:** Spawns random enemies at randomized positions within the circular radius. Handles automatic delayed respawning (`respawn_cd`) when an enemy's `on_died` signal fires.
+
+---
+
+## Project Folder Structure
+
 ```
 res://
-├── assets/
-│   ├── sprites/player/{warrior,archer,mage}/
-│   ├── sprites/enemies/
+├── assets/                 → Audio resources, sprite sheets, tilesets, and UI themes
+│   ├── sprites/player/     → Class assets (warrior, archer, mage)
+│   ├── sprites/enemies/    → Monster assets (goblin, etc.)
 │   ├── tilesets/
 │   ├── ui/
 │   └── audio/{sfx,music}/
-├── scenes/
+├── scenes/                 → Game world zones and pre-configured nodes/hierarchies
 │   ├── world/zones/
-│   ├── entities/player/    → character.tscn, player.tscn, warrior.tscn ...
-│   ├── entities/enemies/   → enemy.tscn, goblin.tscn ...
+│   ├── entities/player/    → warrior.tscn, archer.tscn, mage.tscn, player.tscn, character.tscn
+│   ├── entities/enemies/   → enemy.tscn, goblin.tscn
 │   ├── ui/
 │   └── components/
-├── scripts/
-│   ├── autoloads/
-│   ├── resources/          → attack_data.gd, character_classes.gd ...
+├── scripts/                → Gameplay logic scripts
+│   ├── autoloads/          → Global stub services (GameManager, EventBus, SaveManager)
+│   ├── entities/           → Character, Player, Enemy class scripts and spawner scripts
+│   │   └── state_machine/  → base state.gd & state_machine.gd controller scripts
+│   │       └── states/     → player/ and enemy/ subdirectory state implementations
+│   ├── resources/          → Shared core resources (attack_data.gd)
 │   └── utils/
-└── resources/
-    ├── classes/            → warrior.tres, archer.tres ...
-    ├── attacks/            → warrior_attack1.tres ...
+└── resources/              → Concrete .tres files representing game parameters
+    ├── classes/            → warrior.tres, archer.tres, mage.tres (CharacterClass resources)
+    ├── attacks/            → combo attack configurations
+    ├── enemies/            → goblin_params.tres, etc. (EnemyParams resources)
     └── abilities/
 ```
 
 ---
 
-## Physics Layers
-| Layer | Name |
-|-------|------|
-| 1 | world |
-| 2 | player |
-| 3 | enemy |
-| 4 | player_hitbox |
-| 5 | enemy_hitbox |
-| 6 | player_hurtbox |
-| 7 | enemy_hurtbox |
+## Physics Layers & Collision Settings
+
+| Layer | Name | Purpose |
+| :--- | :--- | :--- |
+| **1** | world | Solid walls, terrain collisions, tilemaps |
+| **2** | player | Main Player character physical boundaries |
+| **3** | enemy | Main Enemy physical boundaries |
+| **4** | player_hitbox | Player's damage-dealing areas |
+| **5** | enemy_hitbox | Enemy's damage-dealing areas |
+| **6** | player_hurtbox | Area where player accepts damage |
+| **7** | enemy_hurtbox | Area where enemy accepts damage |
 
 ### Hitbox / Hurtbox Settings
+
 | Node | Layer | Mask | Monitoring | Monitorable |
-|------|-------|------|------------|-------------|
-| Player CollisionShape | 2 | 1 | - | - |
-| Enemy CollisionShape | 3 | 1 | - | - |
-| Player Hurtbox | 6 | none | OFF | ON |
-| Enemy Hurtbox | 7 | none | OFF | ON |
-| Warrior Hitbox | 4 | 7 | ON | OFF |
-| Enemy Hitbox | 5 | 6 | ON | OFF |
+| :--- | :--- | :--- | :--- | :--- |
+| **Player Body CollisionShape** | 2 | 1 | - | - |
+| **Enemy Body CollisionShape** | 3 | 1 | - | - |
+| **Player Hurtbox** | 6 | none | OFF | ON |
+| **Enemy Hurtbox** | 7 | none | OFF | ON |
+| **Warrior Hitbox (Melee)** | 4 | 7 | ON | OFF |
+| **Enemy Hitbox (Melee)** | 5 | 6 | ON | OFF |
 
 ---
 
 ## Node Groups
-```
-Character.tscn  → "character"
-Player.tscn     → "character", "player"
-Warrior.tscn    → "character", "player", "warrior"
-Enemy.tscn      → "character", "enemy"
-Goblin.tscn     → "character", "enemy", "goblin"
-```
+Assign nodes to these groups to keep logic simple and prevent dynamic casting checks:
+*   `Character.tscn` → `"character"`
+*   `Player.tscn` (and subclasses) → `"character"`, `"player"`, plus specific classes like `"warrior"`, `"archer"`, `"mage"`
+*   `Enemy.tscn` (and subclasses) → `"character"`, `"enemy"`, plus specific breeds like `"goblin"`
+*   `EnemiesSpawner` → `"enemies_spawner"`
 
 ---
 
-## Input Map
+## Input Map Action Bindings
+
 | Action | Keys |
-|--------|------|
-| move_left | A / Arrow Left |
-| move_right | D / Arrow Right |
-| move_up | W / Arrow Up |
-| move_down | S / Arrow Down |
-| attack | Mouse Left |
-| interact | E / F |
-| pause | Escape |
-| open_inventory | I / Tab |
+| :--- | :--- |
+| `move_left` | A / Arrow Left |
+| `move_right` | D / Arrow Right |
+| `move_up` | W / Arrow Up |
+| `move_down` | S / Arrow Down |
+| `attack` | Mouse Left |
+| `interact` | E / F |
+| `pause` | Escape |
+| `open_inventory`| I / Tab |
 
 ---
 
-## Resources
+## Resource Schemas
 
-### AttackData (attack_data.gd)
+### CharacterClass (`character_classes.gd`)
+Used to configure initial statistics and combo trees for Warrior, Archer, and Mage:
 ```gdscript
+class_name CharacterClass
+extends Resource
+
+@export var max_health: float = 100.0
+@export var max_mana: float = 50.0
+@export var speed: float = 300.0
+@export var combo_chain: Array[AttackData] = []
+```
+
+### AttackData (`attack_data.gd`)
+Used to define individual beats in a combat combo string:
+```gdscript
+class_name AttackData
+extends Resource
+
 @export var anim_name: String = ""
 @export var damage: float = 10.0
 @export var combo_window: float = 1.2
 ```
 
-### CharacterClass (character_classes.gd)
+### EnemyParams (`enemy_params.gd`)
+Used to load parameters for monsters (e.g., Goblins):
 ```gdscript
-@export var class_name_id: String = ""
+class_name EnemyParams
+extends Resource
+
+@export var enemy_name: String = "Enemy"
 @export var max_health: float = 100.0
-@export var speed: float = 300.0
-@export var combo_chain: Array[AttackData] = []
-@export var base_stats: CharacterStats
-@export var abilities: Array[Ability] = []
+@export var speed: float = 100.0
+@export var attack_damage: float = 10.0
+@export var attack_range: float = 70.0
+@export var attack_cooldown: float = 2.2
 ```
 
 ---
 
-## Combo System
-- `combo_chain: Array[AttackData]` — ordered list of attacks per class
-- `combo_index` — current attack (-1 = not attacking)
-- `combo_queued` — player pressed attack during current attack window
-- `ComboAttackCD` Timer — combo window duration per attack (`attack.combo_window`)
-- Flow: click → `_start_combo` → `_execute_attack` → timer → next or `_end_combo`
+## Combo System & Animations
 
-### AnimationTree Structure (Warrior)
-```
-Root StateMachine
-├── idle    (BlendSpace1D — left/right)
-├── run     (BlendSpace1D — left/right)
-└── basic_attack (BlendSpace / StateMachine)
-    └── BasicAttackStateMachine
-        ├── Start → attack1 → attack2 → End
-        └── Start → attack1 → End (fallback)
-```
-
-### Transition Setup
-```
-attack1 → attack2 : immediate, advanced enabled  (travel from code)
-attack1 → End     : at the end, advanced enabled  (fallback)
-attack2 → End     : at the end, auto
-```
+*   **Logic:** Combos are handled via `combo_chain: Array[AttackData]` and driven by a `ComboAttackCD` Timer.
+*   **Combo Queueing:** Pressing attack during the active window triggers `combo_queued = true`. When the timer expires, the queue proceeds to the next attack in the array or resets to index `-1` (idle).
+*   **Warrior AnimationTree Structure:**
+    ```
+    Root StateMachine
+    ├── idle              (BlendSpace1D — left/right)
+    ├── run               (BlendSpace1D — left/right)
+    └── basic_attack      (Sub-StateMachine)
+        └── BasicAttackStateMachine
+            ├── Start → attack1 → attack2 → End
+            └── Start → attack1 → End (fallback)
+    ```
 
 ---
 
-## Virtual Functions Pattern
-All animation and behavior-specific logic goes in subclasses via overrides:
+## Coding Standards & Virtual Functions
 
-| Function | Where overridden |
-|----------|-----------------|
-| `_on_state_changed(state)` | Warrior.gd, Goblin.gd |
-| `_play_attack_animation(attack)` | Warrior.gd |
-| `_move()` | Warrior.gd, Enemy.gd |
-| `_idle()` | Warrior.gd |
-| `_on_damage_received()` | Warrior.gd, Enemy.gd |
-| `_die()` | Enemy.gd |
-| `_on_movement_updated()` | Goblin.gd |
-| `_get_attack_damage()` | Enemy.gd |
+All entities utilize a **Virtual Functions Override Pattern** to separate core state machine code from concrete class logic:
 
----
+| Function | Overriding Context | Purpose |
+| :--- | :--- | :--- |
+| `_move()` | `Player.gd`, `Enemy.gd` | Implements physics movement (`move_and_slide`) & movement anims |
+| `_idle()` | `Player.gd`, `Enemy.gd` | Implements zero velocity & idle anim travel |
+| `_attack()` | `Player.gd`, `Enemy.gd` | Initiates basic combos or starts attack timers |
+| `_die()` | `Player.gd`, `Enemy.gd` | Triggers death queues & removes entity |
+| `_on_damage_received()`| `Player.gd`, `Enemy.gd` | Controls hit flash, UI logs, and transitions to DeadState |
+| `_play_movement_animation()`| `Player.gd`, `Goblin.gd` | Feeds blend positions to the active AnimationTree |
+| `_play_idle_animation()`| `Player.gd`, `Goblin.gd` | Feeds blend positions to the active AnimationTree |
+| `_play_attack_animation()`| `Player.gd`, `Goblin.gd` | Custom blend positions specifically for weapon attacks |
 
-## Key Rules
-- **State Machine**: States are decoupled into `player/` and `enemy/` subdirectories.
-- **Enemy Logic**: Transitions between states (like `Idle` and `Attack`) are handled reactively in `physics_update`.
-- **Transitions**: Use lower-case strings in `transitioned.emit("statename")` (e.g., `enemyidlestate`, `playerattackstate`).
-- **Cooldowns**: Handled by `await` within the attack functions.
-- Always check `is_instance_valid(actor)` after any `await` inside a State.
-- Hitbox CollisionShape enable/disable per animation frame.
-- Each subclass scene must inherit from correct parent scene.
+### Essential Developer Rules
+
+1.  **Await Safely:** Always check `is_instance_valid(actor)` after any `await` or `create_timer` statement inside a state script (e.g. `await get_tree().create_timer(cooldown).timeout`). If the actor was killed during the delay, referencing it will crash the game.
+2.  **Top-Level Projectiles:** Projectiles must be detached from their shooter's spatial transform hierarchy using `set_as_top_level(true)` to ensure realistic flight lines that are unaffected by shooter movement.
+3.  **State Machine Transitions:** Transition calls use lowercase strings matched dynamically in `state_machine.gd` (e.g., `transitioned.emit("enemychasestate")`). Avoid using enums for state machine transitions.
+4.  **Hitbox Keying:** Enable and disable `CollisionShape2D` nodes on combat Hitboxes directly inside Godot's Animation Player timeline tracks. Do not enable hitboxes manually in persistent update scripts.
+5.  **Scene Inheritance:** Every subclass scene (Warrior, Archer, Mage, Goblin) must be created as an **Inherited Scene** from their respective parent templates (`Player.tscn` or `Enemy.tscn`) to preserve node configurations.
