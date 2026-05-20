@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://djxgnnq5w57bo" path="res://scripts/entities/in_game_ui.gd" id="1_3nhwc"]
 [ext_resource type="Texture2D" uid="uid://cl1jcfogy6vfk" path="res://assets/ui/UI Elements/UI Elements/Human Avatars/Avatars_01.png" id="1_utqgd"]
+[ext_resource type="Texture2D" uid="uid://bsdot04n550l3" path="res://assets/ui/UI Elements/UI Elements/Bars/CirculerBar_Base.png" id="2_spc33"]
 [ext_resource type="Texture2D" uid="uid://dry1t83wn8y2g" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Base_02.png" id="2_t4vqi"]
+[ext_resource type="Texture2D" uid="uid://r5n8eacogfn3" path="res://assets/ui/UI Elements/UI Elements/Bars/CircularBar_Fill.png" id="3_8o238"]
 [ext_resource type="Texture2D" uid="uid://c4np5nctdtyk8" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_red.png" id="3_utqgd"]
 [ext_resource type="Texture2D" uid="uid://ba0di8vxwt2q6" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_blue.png" id="4_utqgd"]
 
@@ -18,16 +20,85 @@ script = ExtResource("1_3nhwc")
 
 [node name="HeroContainer" type="HBoxContainer" parent="." unique_id=385522922]
 layout_mode = 0
-offset_top = 16.0
-offset_right = 455.0
-offset_bottom = 122.0
+offset_left = 64.0
+offset_top = 28.0
+offset_right = 519.0
+offset_bottom = 134.0
 
-[node name="HeroAvatar" type="TextureRect" parent="HeroContainer" unique_id=1137799017]
-unique_name_in_owner = true
+[node name="Container" type="Control" parent="HeroContainer" unique_id=840623060]
+custom_minimum_size = Vector2(106, 106)
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HeroContainer/Container" unique_id=991588088]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+value = 79.0
+fill_mode = 5
+texture_under = ExtResource("2_spc33")
+texture_progress = ExtResource("3_8o238")
+
+[node name="HeroAvatar" type="TextureRect" parent="HeroContainer/Container" unique_id=1137799017]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -53.0
+offset_right = 53.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_utqgd")
 expand_mode = 3
 stretch_mode = 4
+
+[node name="Control" type="Control" parent="HeroContainer/Container" unique_id=1026186025]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="HeroContainer/Container/Control" unique_id=1043498371]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_8o238")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="HeroContainer/Container/Control" unique_id=1723217340]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HeroBars" type="VBoxContainer" parent="HeroContainer" unique_id=994171113]
 layout_mode = 2
