@@ -118,7 +118,7 @@ func _on_combo_attack_cd_timeout() -> void:
 		_end_combo()
 
 func _on_damage_received() -> void:
-	print("Player hit! health remaining: ", current_health)
+	EventBus.update_hp_bar_value.emit(current_health if current_health > 0.0 else 0.0)
 	_flash_hit()
 	if current_health <= 0:
 		state_machine.transition_to("playerdeadstate")
