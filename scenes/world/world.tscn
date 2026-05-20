@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://j2pv12plc4qe" path="res://assets/tilesets/Tilemap_color1.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://bqqhkgwtk31y3" path="res://scenes/entities/enemies/enemies_spawner.tscn" id="3_1fp7r"]
-[ext_resource type="PackedScene" uid="uid://bumm72tsei1p3" path="res://scenes/entities/player/mage.tscn" id="3_6m72w"]
 [ext_resource type="PackedScene" uid="uid://c27gyy0t4r3ge" path="res://scenes/ui/in_game_ui.tscn" id="4_6m72w"]
+[ext_resource type="PackedScene" uid="uid://hovii1v0s7yp" path="res://scenes/entities/player/warrior.tscn" id="4_v5dby"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7r"]
 vertices = PackedVector2Array(32, 32, -32, 32, -32, -32, 32, -32)
@@ -87,5 +87,4 @@ position = Vector2(920, 352)
 
 [node name="InGameUI" parent="CanvasLayer" unique_id=995481230 instance=ExtResource("4_6m72w")]
 
-[node name="Mage" parent="." unique_id=1846937653 instance=ExtResource("3_6m72w")]
-position = Vector2(479, 415)
+[node name="Warrior" parent="." unique_id=1846937653 instance=ExtResource("4_v5dby")]
