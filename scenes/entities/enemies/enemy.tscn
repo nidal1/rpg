@@ -10,6 +10,9 @@
 [ext_resource type="Script" uid="uid://bj8mwrr6ridli" path="res://scripts/entities/state_machine/states/enemy/enemy_chase_state.gd" id="8_0kssi"]
 [ext_resource type="Script" uid="uid://clj0mo7xovfkd" path="res://scripts/entities/state_machine/states/enemy/enemy_dead_state.gd" id="9_ljcf0"]
 [ext_resource type="Script" uid="uid://b7vnlrb7jyd17" path="res://scripts/entities/state_machine/states/enemy/enemy_wander_state.gd" id="10_8tbu6"]
+[ext_resource type="Texture2D" uid="uid://dvr7dqk0dx8vc" path="res://assets/sprites/enemies/Goblin/Goblin.png" id="11_27tcs"]
+[ext_resource type="Texture2D" uid="uid://cnojqlrlaed06" path="res://assets/ui/UI Elements/UI Elements/Bars/SmallBar_Base_03.png" id="12_mag4a"]
+[ext_resource type="Texture2D" uid="uid://blnpc7bekbunn" path="res://assets/ui/UI Elements/UI Elements/Bars/SmallBar_Fill.png" id="13_0kssi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ofdk"]
 
@@ -73,6 +76,27 @@ script = ExtResource("9_ljcf0")
 script = ExtResource("10_8tbu6")
 
 [node name="WanderCD" type="Timer" parent="." index="6" unique_id=668098841]
+
+[node name="EnemyStats" type="HBoxContainer" parent="." index="7" unique_id=2145423036]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EnemyAvatar" type="TextureRect" parent="EnemyStats" index="0" unique_id=95856836]
+layout_mode = 2
+texture = ExtResource("11_27tcs")
+expand_mode = 2
+
+[node name="EnemyHPProgressBar" type="TextureProgressBar" parent="EnemyStats" index="1" unique_id=163314617]
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+texture_under = ExtResource("12_mag4a")
+texture_progress = ExtResource("13_0kssi")
+texture_progress_offset = Vector2(9.995, 0)
+
+[node name="EnemyHPPoints" type="Label" parent="EnemyStats" index="2" unique_id=877632417]
+layout_mode = 2
+text = "100 / 100"
 
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

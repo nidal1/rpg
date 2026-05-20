@@ -49,7 +49,6 @@ func _set_state(new_state: DeprecatedState) -> void:
 # ─── Combat ──────────────────────────────────────────────
 func take_damage(amount: float) -> void:
 	current_health -= amount
-	
 	_on_damage_received()
 
 func _update_label_state() -> void:

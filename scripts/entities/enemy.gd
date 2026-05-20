@@ -11,6 +11,10 @@ signal on_wander_finished
 
 @onready var wander_cd = $WanderCD
 
+@onready var enemy_avatar: TextureRect = $EnemyStats/EnemyAvatar
+@onready var enemy_hp_progress_bar: TextureProgressBar = $EnemyStats/EnemyHPProgressBar
+@onready var enemy_hp_points: Label = $EnemyStats/EnemyHPPoints
+
 var is_target_reached = false
 var can_attack = true
 var target: CharacterBody2D = null
@@ -29,11 +33,28 @@ func _play_attack_animation() -> void: pass
 
 func _load_params(params: EnemyParams) -> void:
 	max_health = params.max_health
+	current_health = max_health
 	speed = params.speed
 	attack_damage = params.attack_damage
 	attack_range = params.attack_range
 	attack_cooldown = params.attack_cooldown
 	name = params.enemy_name
+
+	_initialize_enemy_stats(max_health, params.enemy_avatar)
+
+func _initialize_enemy_stats(_max_health: float, _avatar_texture: Texture2D):
+	_set_hp_progress_bar_max_value( _max_health)
+	_set_hp_progress_bar_value(_max_health)
+	enemy_avatar.texture = _avatar_texture
+
+
+func _set_hp_progress_bar_value(value: float) -> void:
+	enemy_hp_progress_bar.value = max(0.0, min(value, max_health))
+	enemy_hp_points.text = "%d / %d" % [value, max_health]
+
+
+func _set_hp_progress_bar_max_value(value: float) -> void:
+	enemy_hp_progress_bar.max_value = value
 
 func _ready() -> void:
 	super._ready()
@@ -41,7 +62,6 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
-	
 
 # ─── Movement ────────────────────────────────────────────
 
@@ -102,8 +122,9 @@ func _flash_hit() -> void:
 	modulate = Color.WHITE
 
 func _on_damage_received() -> void:
+	_set_hp_progress_bar_value(max(0.0, current_health))
 	_flash_hit()
-	if max_health <= 0:
+	if current_health <= 0:
 		state_machine.transition_to("enemydeadstate")
 
 func _die() -> void:

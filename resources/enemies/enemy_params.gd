@@ -2,6 +2,7 @@ extends Resource
 class_name EnemyParams
 
 @export var enemy_name: String = "Enemy"
+@export var enemy_avatar: Texture2D
 @export var max_health: float = 100.0
 @export var speed: float = 100.0
 @export var attack_damage: float = 10.0

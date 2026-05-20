@@ -1,8 +1,11 @@
 [gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://d4cdhqfuelgfl"]
 
+[ext_resource type="Texture2D" uid="uid://dvr7dqk0dx8vc" path="res://assets/sprites/enemies/Goblin/Goblin.png" id="1_8t8dg"]
 [ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="1_ttibx"]
 
 [resource]
 script = ExtResource("1_ttibx")
 enemy_name = "Goblin"
+enemy_avatar = ExtResource("1_8t8dg")
+max_health = 200.0
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"
