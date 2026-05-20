@@ -18,7 +18,6 @@ var target: CharacterBody2D = null
 var attack_cooldown: float
 var attack_range: float
 var attack_damage: float
-var speed: float
 var enemy_name: String = ""
 
 var wander_cd_time: float = 5.0

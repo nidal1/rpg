@@ -17,7 +17,13 @@ const ANIM_RUN = "run"
 var direction: Vector2 = Vector2.ZERO
 var last_facing_dir: float = 1.0
 var current_state: DeprecatedState = DeprecatedState.IDLE # Deprecated
-var max_health: float = 100.0
+var speed: float = 0.0 # Base movement speed
+
+# TODO: move stats to PLayer class instead of Character class
+var max_mana: float = 0.0
+var max_health: float = 0.0
+var current_health: float = 0.0
+var current_mana: float = 0.0
 
 func _ready() -> void:
 	_update_label_state()
@@ -42,7 +48,7 @@ func _set_state(new_state: DeprecatedState) -> void:
 
 # ─── Combat ──────────────────────────────────────────────
 func take_damage(amount: float) -> void:
-	max_health -= amount
+	current_health -= amount
 	_on_damage_received()
 
 func _update_label_state() -> void:

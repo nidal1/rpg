@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://iqd0ffeia76"]
 
 [ext_resource type="Script" uid="uid://bahe5wqw78xlr" path="res://scripts/resources/attack_data.gd" id="1_51576"]
+[ext_resource type="Texture2D" uid="uid://cxschs4bwwdeu" path="res://assets/ui/UI Elements/UI Elements/Human Avatars/Avatars_04.png" id="1_enydv"]
 [ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="2_enydv"]
 
 [sub_resource type="Resource" id="Resource_enydv"]
@@ -11,5 +12,8 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 
 [resource]
 script = ExtResource("2_enydv")
+avatar_texture = ExtResource("1_enydv")
+max_health = 50.0
+max_mana = 100.0
 combo_chain = Array[ExtResource("1_51576")]([SubResource("Resource_enydv")])
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

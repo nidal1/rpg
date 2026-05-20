@@ -1,11 +1,11 @@
 extends Character
 class_name Player
 
-@export var speed: float = 300.0
 @export var character_class: CharacterClass
 
 @onready var combo_timer: Timer = $ComboAttackCD
 @onready var attack_state: PlayerAttackState = $StateMachine/PlayerAttackState
+
 
 var combo_index: int = -1
 var combo_queued: bool = false
@@ -38,8 +38,13 @@ func _ready() -> void:
 
 func _load_classe(cls: CharacterClass) -> void:
 	max_health = cls.max_health
-	speed = cls.speed
+	current_health = max_health
+	max_mana = cls.max_mana
+	current_mana = max_mana
+	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
+
+	EventBus.initialize_hero_stats.emit(cls.avatar_texture, current_health, current_mana)
 
 # ─── Input ───────────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:

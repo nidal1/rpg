@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://j2pv12plc4qe" path="res://assets/tilesets/Tilemap_color1.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://bqqhkgwtk31y3" path="res://scenes/entities/enemies/enemies_spawner.tscn" id="3_1fp7r"]
 [ext_resource type="PackedScene" uid="uid://bumm72tsei1p3" path="res://scenes/entities/player/mage.tscn" id="3_6m72w"]
-[ext_resource type="PackedScene" uid="uid://dm6vqfjqcuf52" path="res://scenes/ui/world_ui.tscn" id="4_6m72w"]
+[ext_resource type="PackedScene" uid="uid://c27gyy0t4r3ge" path="res://scenes/ui/in_game_ui.tscn" id="4_6m72w"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7r"]
 vertices = PackedVector2Array(32, 32, -32, 32, -32, -32, 32, -32)
@@ -83,9 +83,9 @@ tile_set = SubResource("TileSet_1fp7r")
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(920, 352)
 
-[node name="Mage" parent="." unique_id=1846937653 instance=ExtResource("3_6m72w")]
-position = Vector2(449, 319)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 
-[node name="Control" parent="CanvasLayer" unique_id=995481230 instance=ExtResource("4_6m72w")]
+[node name="InGameUI" parent="CanvasLayer" unique_id=995481230 instance=ExtResource("4_6m72w")]
+
+[node name="Mage" parent="." unique_id=1846937653 instance=ExtResource("3_6m72w")]
+position = Vector2(479, 415)

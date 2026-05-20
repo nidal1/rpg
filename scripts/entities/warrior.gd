@@ -9,8 +9,6 @@ func _ready() -> void:
 	_load_classe(cls)
 
 
-
-
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	var target_node = area.get_parent()
 	if area.name == "Hurtbox" and target_node.is_in_group("enemy"):
