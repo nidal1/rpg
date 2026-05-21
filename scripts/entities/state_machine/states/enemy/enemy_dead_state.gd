@@ -6,6 +6,8 @@ func enter() -> void:
 	actor.velocity = Vector2.ZERO
 	
 	# Handle specific death logic via virtual function
+	EventBus.enemy_died.emit(actor)
+
 	actor._die()
 	actor.on_died.emit()
 

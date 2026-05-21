@@ -30,7 +30,7 @@ custom_minimum_size = Vector2(106, 106)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="HeroContainer/Container" unique_id=991588088]
+[node name="LevelProgressBar" type="TextureProgressBar" parent="HeroContainer/Container" unique_id=991588088]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -83,7 +83,7 @@ grow_vertical = 2
 texture = ExtResource("3_8o238")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="HeroContainer/Container/Control" unique_id=1723217340]
+[node name="LevelLabel" type="Label" parent="HeroContainer/Container/Control" unique_id=1723217340]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

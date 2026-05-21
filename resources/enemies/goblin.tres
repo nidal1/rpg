@@ -8,4 +8,5 @@ script = ExtResource("1_ttibx")
 enemy_name = "Goblin"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
+attack_damage = 5.0
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"
