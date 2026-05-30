@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CharacterStats" format=3 uid="uid://cn4oexm63gtnp"]
+
+[ext_resource type="Script" uid="uid://clqa147vich2f" path="res://resources/stats/character_stats.gd" id="1_1bdra"]
+
+[resource]
+script = ExtResource("1_1bdra")
+STR = 8
+REC = 6
+INT = 1
+DEX = 4
+WIS = 1
+LUC = 2
+metadata/_custom_type_script = "uid://clqa147vich2f"

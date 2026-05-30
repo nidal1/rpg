@@ -19,9 +19,7 @@ const BULLET_SPRITE_WIDTH: float = 32.0 / 2.0
 func _ready() -> void:
 	super._ready()
 
-	print(attack_range)
 	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
-	print(detection_zone.get_node("CollisionShape2D").shape.radius)
 	_animation_editor_bullet_attack.connect(_on_initialized_bullet_attack)
 	var cls = load("res://resources/classes/mage.tres")
 	_load_classe(cls)

@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c2i87n5jc673u"]
+
+[ext_resource type="Script" uid="uid://tyn44f18negb" path="res://scripts/entities/stat_container.gd" id="1_ywitd"]
+
+[node name="StatContainer" type="HBoxContainer" unique_id=359258326]
+size_flags_horizontal = 3
+script = ExtResource("1_ywitd")
+
+[node name="StatNameLabel" type="Label" parent="." unique_id=233959580]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "STR: "
+
+[node name="StatPointLabel" type="Label" parent="." unique_id=679858401]
+layout_mode = 2
+text = "2 "
+
+[node name="Label" type="Label" parent="." unique_id=632334964]
+layout_mode = 2
+text = " points"
+
+[node name="AddStatPointButton" type="Button" parent="." unique_id=1197734909]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "+"
+
+[node name="SubStatPointButton" type="Button" parent="." unique_id=494442157]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "-"

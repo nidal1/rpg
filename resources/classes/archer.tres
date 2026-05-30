@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b6psnmmsr3ntl" path="res://assets/ui/UI Elements/UI Elements/Human Avatars/Avatars_03.png" id="1_afgh0"]
 [ext_resource type="Script" uid="uid://bahe5wqw78xlr" path="res://scripts/resources/attack_data.gd" id="1_unnlj"]
 [ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="2_afgh0"]
+[ext_resource type="Resource" uid="uid://c1wbgr5o4l5q8" path="res://resources/stats/archer_stats.tres" id="2_x1nnw"]
 
 [sub_resource type="Resource" id="Resource_afgh0"]
 script = ExtResource("1_unnlj")
@@ -14,4 +15,5 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 script = ExtResource("2_afgh0")
 avatar_texture = ExtResource("1_afgh0")
 combo_chain = Array[ExtResource("1_unnlj")]([SubResource("Resource_afgh0")])
+base_stats = ExtResource("2_x1nnw")
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

@@ -1,13 +1,24 @@
 extends Node
 
+var player_ref: Character = null
 
 var level_scaler = 1.2
 
+
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
+	EventBus.stat_allocated.connect(allocate_point)
+	EventBus.stat_deallocated.connect(deallocate_point)
+	EventBus.save_stats_points.connect(save_stats_points)
+	EventBus.cancel_stats_points.connect(cancel_stats_points)
 
 
-# leveling -----------------------------------------
+func register_player(player: Character) -> void:
+	player_ref = player
+	PlayerData.initialize(player.character_class)
+	EventBus.initialize_hero_stats_ui.emit(player.character_class)
+
+# ─── XP & Leveling ───────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
 	var xp_reward = enemy.enemy_params.xp_reward
 	if xp_reward > 0:
@@ -21,12 +32,29 @@ func add_xp(amount: int) -> void:
 		level_up()
 
 func level_up() -> void:
-
 	var player_level = PlayerData.get_player_level() + 1
 	PlayerData.set_player_level(player_level)
+	PlayerData.update_available_points()
 
-	scalling_level_up()
-	EventBus.level_up.emit(player_level, PlayerData.get_total_xp_to_next_level())
+	scaling_level_up()
+	EventBus.level_up.emit()
 
-func scalling_level_up() -> void:
+func scaling_level_up() -> void:
 	PlayerData.set_total_xp_to_next_level(int(level_scaler * PlayerData.get_total_xp_to_next_level()))
+
+# ─── Stat Allocation ─────────────────────────────────
+func allocate_point(stat_name: String) -> void:
+	if PlayerData.add_stat_point(stat_name):
+		EventBus.stats_updated.emit()
+
+func deallocate_point(stat_name: String) -> void:
+	if PlayerData.sub_stat_point(stat_name):
+		EventBus.stats_updated.emit()
+
+func save_stats_points():
+	PlayerData.save_stats()
+	EventBus.stats_updated.emit()
+
+func cancel_stats_points():
+	PlayerData.cancel_stats()
+	EventBus.stats_updated.emit()

@@ -44,7 +44,7 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 
-	EventBus.initialize_hero_stats.emit(cls.avatar_texture, current_health, current_mana, PlayerData.get_player_level(), PlayerData.get_total_xp_to_next_level())
+	GameManager.register_player(self )
 
 # ─── Input ───────────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:
