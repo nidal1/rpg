@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bptrc6kcs1fvw"]
+
+[ext_resource type="Script" uid="uid://c68hv6ecgjurv" path="res://scripts/resources/drop.gd" id="1_ppdq5"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cc6rw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppdq5"]
+radius = 36.221542
+
+[node name="Drop" type="Area2D" unique_id=1270814834 groups=["pickable"]]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_ppdq5")
+
+[node name="DropItemImage" type="Sprite2D" parent="." unique_id=771351940]
+texture = SubResource("CompressedTexture2D_cc6rw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=535832986]
+shape = SubResource("CircleShape2D_ppdq5")
+
+[node name="Label" type="Label" parent="." unique_id=1114632269]
+offset_left = -27.0
+offset_top = -63.0
+offset_right = 28.0
+offset_bottom = -40.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Press E"

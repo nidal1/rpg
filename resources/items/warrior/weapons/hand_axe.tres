@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://d3doj1d5ei4y3"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_mdogj"]
+[ext_resource type="Texture2D" uid="uid://bpupyhqkjk8gi" path="res://assets/ui/UI Elements/UI Elements/Icons/weapons/fc1624.png" id="2_o1a8q"]
+[ext_resource type="Script" uid="uid://0mklvnq1d0gb" path="res://resources/items/weapon.gd" id="2_x7r1y"]
+
+[resource]
+script = ExtResource("2_x7r1y")
+weapon_type = 1
+item_name = "Hand Axe"
+icon = ExtResource("2_o1a8q")
+metadata/_custom_type_script = "uid://0mklvnq1d0gb"

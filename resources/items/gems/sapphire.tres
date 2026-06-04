@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Gem" format=3 uid="uid://7atw5c0kod0c"]
+
+[ext_resource type="Texture2D" uid="uid://cbnm2gq5wkfwr" path="res://assets/ui/UI Elements/UI Elements/Icons/gems/fc165.png" id="1_tnk6w"]
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="2_jtogk"]
+
+[resource]
+script = ExtResource("2_jtogk")
+gem_type = 1
+def_bonus = Array[float]([10.0, 20.0, 30.0])
+item_name = "Sapphire"
+icon = ExtResource("1_tnk6w")
+item_type = 2
+metadata/_custom_type_script = "uid://bdni6r45tltxs"

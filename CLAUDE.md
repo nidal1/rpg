@@ -82,6 +82,36 @@ A modular system designed to auto-generate waves of enemies around specific leve
 *   **Parameters:** `spawn_point`, `enemies` (array of packed scenes), `spawn_circle_radius`, `respawn_cd`, `wander_cd_time`.
 *   **Behavior:** Spawns random enemies at randomized positions within the circular radius. Handles automatic delayed respawning (`respawn_cd`) when an enemy's `on_died` signal fires.
 
+### Stat Allocation System (`player_data.gd`, `game_manager.gd`, `in_game_ui.gd`)
+A transactional stat allocation system featuring a working copy and a backup copy:
+*   **Working Copy (`__allocated_stats`):** The active dictionary containing the current stat points allocated. It is queried by `get_total()` to compute active combat stats dynamically in real-time.
+*   **Backup Copy (`__temp_allocated_stats`):** Stores the last saved/committed state of the allocated stats.
+*   **Lifecycle Operations:**
+    *   `save_stats()`: Commits/duplicates the current `__allocated_stats` to the `__temp_allocated_stats` backup.
+    *   `cancel_stats()`: Discards changes by reverting `__allocated_stats` back to the `__temp_allocated_stats` backup.
+*   **UI Safety:** The UI (`in_game_ui.gd`) clears previous children using `queue_free()` before re-instantiating `StatContainer` nodes to prevent duplicate layout entries on initialization/re-open.
+
+### Global Autoloads (Singletons)
+
+The project leverages four major global Autoload nodes for decoupled state management and system communication:
+
+*   **`EventBus` (`event_bus.gd`):** A centralized event broker routing global gameplay, UI updates, and transactional events. It manages signals for:
+    *   *UI Synchronization:* `initialize_hero_stats_ui`, `update_hero_avatar_texture`, `update_hp_bar_value`, `update_mana_bar_value`.
+    *   *Combat & Progression:* `enemy_died`, `xp_changed`, `level_up`.
+    *   *Transactional Stats:* `stat_allocated`, `stat_deallocated`, `stats_updated`, `save_stats_points`, `cancel_stats_points`.
+*   **`PlayerData` (`player_data.gd`):** Holds player-specific data, levels, XP progression, and stats allocations.
+    *   *XP/Leveling:* Manages level values and computes target levels dynamically (e.g., target XP scaling).
+    *   *Transactional Allocations:* Features a working copy (`__allocated_stats`) and a backup copy (`__temp_allocated_stats`) to allow reverting state changes when editing stats in the UI.
+    *   *Calculated Gameplay Stats:* Dynamically calculates attributes (e.g. `get_melee_atk()`, `get_ranged_atk()`, `get_magic_atk()`, `get_max_hp()`, `get_max_mp()`, `get_def()`, `get_resist()`, `get_crit_chance()`, `get_crit_damage()`) combining base character class attributes with user-allocated points.
+*   **`GameManager` (`game_manager.gd`):** The orchestrator coordinating top-level game flow, player initialization, progression, and stat transactions:
+    *   Registers the active player character and initializes `PlayerData` using the player class statistics.
+    *   Listens to `EventBus.enemy_died` to award XP and trigger level-ups.
+    *   Binds event bus transaction signals directly to `PlayerData` allocation routines (e.g., `allocate_point`, `deallocate_point`, `save_stats_points`, `cancel_stats_points`) and broadcasts updates via `EventBus.stats_updated`.
+*   **`SaveManager` (`save_manager.gd`):** Currently a lightweight stub node reserved for future persistence systems.
+
+
+
+
 ---
 
 ## Project Folder Structure

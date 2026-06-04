@@ -45,6 +45,7 @@ player=""
 goblin=""
 enemies_spawner=""
 archer=""
+pickable=""
 
 [input]
 
@@ -100,6 +101,7 @@ open_inventory={
 2d_physics/layer_5="enemy_hitbox"
 2d_physics/layer_6="player_hurtbox"
 2d_physics/layer_7="enemy_hurtbox"
+2d_physics/layer_8="items"
 
 [physics]
 

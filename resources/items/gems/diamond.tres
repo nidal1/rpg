@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Gem" format=3 uid="uid://dk1rrghb1iiml"]
+
+[ext_resource type="Texture2D" uid="uid://bkfx4pwuoo30e" path="res://assets/ui/UI Elements/UI Elements/Icons/gems/fc170.png" id="1_ycvbh"]
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="2_s026l"]
+
+[resource]
+script = ExtResource("2_s026l")
+gem_type = 5
+atk_bonus = Array[float]([5.0, 10.0, 15.0])
+def_bonus = Array[float]([5.0, 10.0, 15.0])
+hp_bonus = Array[float]([5.0, 10.0, 15.0])
+mp_bonus = Array[float]([5.0, 10.0, 15.0])
+crit_bonus = Array[float]([5.0, 10.0, 15.0])
+item_name = "Diamond"
+icon = ExtResource("1_ycvbh")
+item_type = 2
+metadata/_custom_type_script = "uid://bdni6r45tltxs"

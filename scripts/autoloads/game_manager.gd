@@ -3,6 +3,7 @@ extends Node
 var player_ref: Character = null
 
 var level_scaler = 1.2
+var drop_range: float = 50.0
 
 
 func _ready() -> void:
@@ -23,6 +24,8 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	var xp_reward = enemy.enemy_params.xp_reward
 	if xp_reward > 0:
 		add_xp(xp_reward)
+	spawn_enemy_items(enemy)
+
 
 func add_xp(amount: int) -> void:
 	var current_xp = PlayerData.get_current_xp() + amount
@@ -58,3 +61,20 @@ func save_stats_points():
 func cancel_stats_points():
 	PlayerData.cancel_stats()
 	EventBus.stats_updated.emit()
+
+
+# ─── Drop Items ─────────────────────────────────
+func randomize_drop_position(position: Vector2) -> Vector2:
+	return position + Vector2(
+		randf_range(-drop_range, drop_range),
+		randf_range(-drop_range, drop_range)
+	)
+
+func spawn_enemy_items(enemy: Enemy) -> void:
+	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
+	if drop_zone:
+		var drops = enemy._drop_item()
+		for drop in drops:
+			var random_position = randomize_drop_position(enemy.global_position)
+			drop_zone.call_deferred("add_child", drop)
+			drop.set_deferred("global_position", random_position)

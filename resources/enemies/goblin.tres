@@ -1,7 +1,10 @@
 [gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://d4cdhqfuelgfl"]
 
 [ext_resource type="Texture2D" uid="uid://dvr7dqk0dx8vc" path="res://assets/sprites/enemies/Goblin/Goblin.png" id="1_8t8dg"]
+[ext_resource type="Script" uid="uid://c66m4e6klvrao" path="res://resources/items/item.gd" id="1_eoums"]
 [ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="1_ttibx"]
+[ext_resource type="Resource" uid="uid://d3doj1d5ei4y3" path="res://resources/items/warrior/weapons/hand_axe.tres" id="2_3kmag"]
+[ext_resource type="Resource" uid="uid://dslcdescr231p" path="res://resources/items/gems/ruby.tres" id="3_3kmag"]
 
 [resource]
 script = ExtResource("1_ttibx")
@@ -9,4 +12,5 @@ enemy_name = "Goblin"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
 attack_damage = 5.0
+drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_3kmag"), ExtResource("3_3kmag")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

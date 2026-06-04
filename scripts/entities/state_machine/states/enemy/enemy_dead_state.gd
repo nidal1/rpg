@@ -4,13 +4,9 @@ class_name EnemyDeadState
 
 func enter() -> void:
 	actor.velocity = Vector2.ZERO
-	
-	# Handle specific death logic via virtual function
-	EventBus.enemy_died.emit(actor)
-
 	actor._die()
-	actor.on_died.emit()
-
+	EventBus.enemy_died.emit(actor)
+	
 func physics_update(_delta: float) -> void:
 	# Ensure the enemy doesn't move while dead
 	actor.velocity = Vector2.ZERO

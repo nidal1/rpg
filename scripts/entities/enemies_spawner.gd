@@ -8,6 +8,8 @@ extends Node2D
 @export var respawn_cd: float = 5.0
 @export var wander_cd_time: float = 20.0
 
+@onready var drop_zone: Node2D = %DropZone
+
 
 func _ready() -> void:
 	for _i in range(enemies.size()):
@@ -17,7 +19,7 @@ func _spawn_enemy() -> void:
 	var enemy = enemies[randi() % enemies.size()].instantiate()
 	add_child(enemy)
 	enemy.global_position = randomize_spawning_location(global_position)
-	enemy.on_spawned.emit(enemy.global_position)
+	EventBus.enemy_spawned.emit(enemy, enemy.global_position)
 
 
 func randomize_spawning_location(spawn_position: Vector2) -> Vector2:
@@ -37,3 +39,6 @@ func remove_enemy(enemy: Enemy) -> void:
 	# wait certain time and spawn new enemy
 	await get_tree().create_timer(respawn_cd).timeout
 	_spawn_enemy()
+
+func get_drop_zone() -> Node:
+	return drop_zone

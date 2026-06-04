@@ -9,3 +9,4 @@ class_name EnemyParams
 @export var attack_range: float = 70.0
 @export var attack_cooldown: float = 2.2
 @export var xp_reward: int = 25
+@export var drop_list: Array[Item] = []

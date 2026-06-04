@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Gem" format=3 uid="uid://d0yjobwkj7cks"]
+
+[ext_resource type="Texture2D" uid="uid://baonapc1yompe" path="res://assets/ui/UI Elements/UI Elements/Icons/gems/fc162.png" id="1_3gbdc"]
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="2_pe6qp"]
+
+[resource]
+script = ExtResource("2_pe6qp")
+gem_type = 2
+hp_bonus = Array[float]([10.0, 20.0, 30.0])
+item_name = "Emerald"
+icon = ExtResource("1_3gbdc")
+item_type = 2
+metadata/_custom_type_script = "uid://bdni6r45tltxs"

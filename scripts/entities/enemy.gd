@@ -2,7 +2,6 @@ extends Character
 class_name Enemy
 
 signal on_spawned(spawn_position: Vector2)
-signal on_died
 signal on_wander_finished
 
 @export var enemy_params: EnemyParams
@@ -14,6 +13,8 @@ signal on_wander_finished
 @onready var enemy_avatar: TextureRect = $EnemyStats/EnemyAvatar
 @onready var enemy_hp_progress_bar: TextureProgressBar = $EnemyStats/EnemyHPProgressBar
 @onready var enemy_hp_points: Label = $EnemyStats/EnemyHPPoints
+
+var drop_item_scene: PackedScene = preload("res://scenes/entities/items/drop.tscn")
 
 var is_target_reached = false
 var can_attack = true
@@ -43,7 +44,7 @@ func _load_params(params: EnemyParams) -> void:
 	_initialize_enemy_stats(max_health, params.enemy_avatar)
 
 func _initialize_enemy_stats(_max_health: float, _avatar_texture: Texture2D):
-	_set_hp_progress_bar_max_value( _max_health)
+	_set_hp_progress_bar_max_value(_max_health)
 	_set_hp_progress_bar_value(_max_health)
 	enemy_avatar.texture = _avatar_texture
 
@@ -145,6 +146,18 @@ func set_target(new_target: CharacterBody2D) -> void:
 
 func get_target() -> CharacterBody2D:
 	return target
+
+func _drop_item() -> Array[DropItem]:
+	var drops: Array[DropItem] = []
+	print(global_position)
+
+	for item in enemy_params.drop_list:
+		var drop_item: DropItem = drop_item_scene.instantiate()
+		drop_item.item = item
+		drop_item.assign_drop_item_image(item)
+		drops.append(drop_item)
+		
+	return drops
 
 # ─── Detection ───────────────────────────────────────────
 func _on_detection_zone_body_entered(body: Node2D) -> void:

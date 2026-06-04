@@ -11,6 +11,9 @@
 radius = 17.0
 height = 36.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_8akj5"]
+radius = 250.0
+
 [node name="Player" unique_id=1846937653 groups=["player"] instance=ExtResource("1_1hmtu")]
 collision_layer = 2
 collision_mask = 0
@@ -18,6 +21,7 @@ script = ExtResource("2_635qg")
 character_class = null
 
 [node name="Camera" type="Camera2D" parent="." index="1" unique_id=1339975141]
+zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 
 [node name="ComboAttackCD" type="Timer" parent="." index="2" unique_id=882990530]
@@ -54,4 +58,15 @@ script = ExtResource("5_1murt")
 [node name="PlayerDeadState" type="Node" parent="StateMachine" index="3" unique_id=808757208]
 script = ExtResource("6_5sj0x")
 
+[node name="PickableDection" type="Area2D" parent="." index="6" unique_id=678009553]
+collision_layer = 0
+collision_mask = 128
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickableDection" index="0" unique_id=1822611484]
+shape = SubResource("CircleShape2D_8akj5")
+
 [connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
+[connection signal="area_entered" from="PickableDection" to="." method="_on_pickable_dection_area_entered"]
+[connection signal="area_exited" from="PickableDection" to="." method="_on_pickable_dection_area_exited"]
