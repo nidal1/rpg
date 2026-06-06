@@ -29,6 +29,9 @@ var __temp_allocated_stats: Dictionary = {
 	"LUC": 0
 }
 
+
+var __current_drop_table: Array[Item] = []
+
 # ─── Setup ───────────────────────────────────────────
 func initialize(cls: CharacterClass) -> void:
 	__base_stats = cls.base_stats.duplicate()
@@ -154,3 +157,12 @@ func from_base_stats_to_dict() -> Dictionary:
 		"armor_value": __base_stats.armor_value,
 		"armor_resist": __base_stats.armor_resist,
 	}
+
+
+# ─── Drop items ───────────────────────────────────
+
+func add_drop_item(item: Item) -> void:
+	__current_drop_table.append(item)
+
+func remove_drop_item(item: Item) -> void:
+	__current_drop_table.erase(item)

@@ -136,14 +136,12 @@ func _die() -> void:
 func _on_pickable_dection_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pickable"):
 		if area is DropItem:
-			# EventBus.item_picked.emit(area)
-			# area.queue_free()
-			print("Pick item:", area.item.item_name)
+			var item: Item = area.item
+			EventBus.item_picked.emit(item)
 
 
 func _on_pickable_dection_area_exited(area: Area2D) -> void:
 	if area.is_in_group("pickable"):
 		if area is DropItem:
-			# EventBus.item_picked.emit(area)
-			# area.queue_free()
-			print("Remove from hover:", area.item.item_name)
+			var item: Item = area.item
+			EventBus.item_dropped.emit(item)

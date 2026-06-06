@@ -20,3 +20,6 @@ signal save_stats_points()
 signal cancel_stats_points()
 
 signal item_picked(item: Item)
+signal item_dropped(item: Item)
+signal display_dropped_item_hover_info(item: Item)
+signal hide_dropped_item_hover_info(item: Item)

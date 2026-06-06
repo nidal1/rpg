@@ -84,7 +84,6 @@ tile_set = SubResource("TileSet_1fp7r")
 position = Vector2(920, 352)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
-visible = false
 
 [node name="InGameUI" parent="CanvasLayer" unique_id=995481230 instance=ExtResource("4_6m72w")]
 

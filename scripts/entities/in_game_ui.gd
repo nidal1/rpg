@@ -24,12 +24,22 @@ extends Control
 @onready var save_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/SaveStatsButton
 @onready var cancel_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelStatsButton
 
+# Picked items section -------------------------------------------------
+@onready var picked_item_slot_scene: PackedScene = preload("res://scenes/ui/picked_item_slot.tscn")
+@onready var picked_items_container: GridContainer = $Control/PickedItemsTable/MarginContainer/VBoxContainer/ScrollContainer/PickedItemsContainer
+
+var picked_item_slots: Array[PickedItemSlot] = []
+var picked_items_numbers = 20
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hud.visible = false
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
-	
+	EventBus.display_dropped_item_hover_info.connect(_on_display_dropped_item_hover_info)
+	EventBus.hide_dropped_item_hover_info.connect(_on_hide_dropped_item_hover_info)
+	_initialize_picked_items_panel()
 
+	
 func _initialize_hero_stats(cls: CharacterClass) -> void:
 	_initialize_stats_tab()
 	_initialize_hero(cls)
@@ -79,6 +89,32 @@ func _initialize_hero(cls: CharacterClass) -> void:
 	_set_level_label_text("%s" % [PlayerData.get_player_level()])
 	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
 	_set_level_progress_bar_value(PlayerData.get_current_xp())
+
+func _initialize_picked_items_panel() -> void:
+	for i in range(picked_items_numbers):
+		var picked_item_slot_instance: PickedItemSlot = picked_item_slot_scene.instantiate()
+		picked_item_slot_instance.slot_index = i
+		picked_item_slots.append(picked_item_slot_instance)
+		picked_items_container.add_child(picked_item_slot_instance)
+		picked_item_slot_instance.picked_item_button.pressed.connect(func(): _on_picked_item_button_clicked(i))
+
+func _on_display_dropped_item_hover_info(item: Item) -> void:
+	print("displaying item hover info")
+	for i in picked_item_slots:
+		if i.item == null:
+			print("found empty slot - slot %s", i.slot_index)
+			i.set_item(item)
+			return
+
+func _on_hide_dropped_item_hover_info(item: Item) -> void:
+	print("hiding item hover info")
+	for i in picked_item_slots:
+		if i.item == item:
+			i.clear_slot()
+			return
+
+func _on_picked_item_button_clicked(slot_index: int) -> void:
+	print("clicked on slot %s" % slot_index)
 
 
 func _on_level_up() -> void:
@@ -153,3 +189,11 @@ func _on_panel_button_pressed() -> void:
 	__toggle_panel_button()
 
 	__toggle_hud_visibility()
+
+
+func _on_pick_items_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_texture_button_pressed() -> void:
+	print("pressed")

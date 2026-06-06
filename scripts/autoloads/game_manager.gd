@@ -12,6 +12,8 @@ func _ready() -> void:
 	EventBus.stat_deallocated.connect(deallocate_point)
 	EventBus.save_stats_points.connect(save_stats_points)
 	EventBus.cancel_stats_points.connect(cancel_stats_points)
+	EventBus.item_picked.connect(_on_item_picked)
+	EventBus.item_dropped.connect(_on_item_dropped)
 
 
 func register_player(player: Character) -> void:
@@ -78,3 +80,13 @@ func spawn_enemy_items(enemy: Enemy) -> void:
 			var random_position = randomize_drop_position(enemy.global_position)
 			drop_zone.call_deferred("add_child", drop)
 			drop.set_deferred("global_position", random_position)
+
+func _on_item_picked(item: Item) -> void:
+	print("picked item nameL: ", item.item_name)
+	PlayerData.add_drop_item(item)
+	EventBus.display_dropped_item_hover_info.emit(item)
+
+func _on_item_dropped(item: Item) -> void:
+	print("removed item nameL: ", item.item_name)
+	PlayerData.remove_drop_item(item)
+	EventBus.hide_dropped_item_hover_info.emit(item)

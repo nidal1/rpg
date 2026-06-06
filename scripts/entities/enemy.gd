@@ -149,7 +149,6 @@ func get_target() -> CharacterBody2D:
 
 func _drop_item() -> Array[DropItem]:
 	var drops: Array[DropItem] = []
-	print(global_position)
 
 	for item in enemy_params.drop_list:
 		var drop_item: DropItem = drop_item_scene.instantiate()
