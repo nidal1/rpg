@@ -1,12 +1,20 @@
-# state_machine.gd
+## StateMachine
+## A node that manages a collection of State nodes and handles transitions
+## between them. Delegates input and physics updates to the current state.
 extends Node
 class_name StateMachine
 
+# ─── Exported Variables ──────────────────────────────────────────────────────
+## The initial state the machine should enter when ready.
 @export var initial_state: State
 
+# ─── Public Variables ────────────────────────────────────────────────────────
+## The currently active state.
 var current_state: State
+## Dictionary mapping state names (lowercase strings) to their State nodes.
 var states: Dictionary = {}
 
+# ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	# Wait for owner (Character) to be ready
 	await owner.ready
@@ -32,9 +40,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if current_state:
 		current_state.handle_input(event)
 
+# ─── Public Methods ──────────────────────────────────────────────────────────
+## Transitions the state machine to the specified state.
 func transition_to(state_name: String) -> void:
 	_on_state_transitioned(state_name)
 
+# ─── Signal Handlers ─────────────────────────────────────────────────────────
+## Internal handler for state transition signals.
 func _on_state_transitioned(state_name: String) -> void:
 	var new_state = states.get(state_name.to_lower())
 	if not new_state:

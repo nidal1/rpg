@@ -1,11 +1,15 @@
-# enemy_wander_state.gd
+## EnemyWanderState
+## State representing an enemy wandering aimlessly.
 extends State
 class_name EnemyWanderState
 
+# ─── Enums ───────────────────────────────────────────────────────────────────
 enum Directions {LEFT, RIGHT, UP, DOWN}
 
+# ─── Public Variables ────────────────────────────────────────────────────────
 var random_position: Vector2
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor.on_wander_finished.connect(_on_wander_finished)
 	var random_direction = _random_direction()
@@ -17,11 +21,13 @@ func enter() -> void:
 func physics_update(_delta: float) -> void:
 	actor._wander(random_position)
 
+# ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_wander_finished() -> void:
 	if actor.on_wander_finished.is_connected(_on_wander_finished):
 		actor.on_wander_finished.disconnect(_on_wander_finished)
 	transitioned.emit("enemyidlestate")
 
+# ─── Private Methods ─────────────────────────────────────────────────────────
 func _random_direction() -> Vector2:
 	var random_direction = Directions.values().pick_random()
 	match random_direction:

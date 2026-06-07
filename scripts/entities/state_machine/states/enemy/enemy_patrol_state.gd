@@ -1,7 +1,9 @@
-# enemy_patrol_state.gd
+## EnemyPatrolState
+## State representing an enemy returning to its spawn position.
 extends State
 class_name EnemyPatrolState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._stop_wandering()
 	# Start with idle animation, _patrol will switch to run if moving

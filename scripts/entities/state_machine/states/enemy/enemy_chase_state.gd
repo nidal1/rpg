@@ -1,9 +1,12 @@
-# enemy_chase_state.gd
+## EnemyChaseState
+## State representing an enemy actively chasing a target.
 extends State
 class_name EnemyChaseState
 
+# ─── Constants ───────────────────────────────────────────────────────────────
 const MAX_DISTANCE_TO_SPAWN_LOCATION: float = 700.0
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._stop_wandering()
 

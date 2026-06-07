@@ -1,7 +1,9 @@
-# enemy_dead_state.gd
+## EnemyDeadState
+## State representing a dead enemy. Stops movement and handles death logic.
 extends State
 class_name EnemyDeadState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor.velocity = Vector2.ZERO
 	actor._die()

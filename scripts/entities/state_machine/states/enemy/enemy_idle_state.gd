@@ -1,7 +1,9 @@
-# enemy_idle_state.gd
+## EnemyIdleState
+## State representing an enemy standing still, potentially waiting to wander.
 extends State
 class_name EnemyIdleState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._idle()
 	actor.wander_cd.start()

@@ -1,7 +1,9 @@
-# player_idle_state.gd
+## PlayerIdleState
+## State representing the player standing still.
 extends State
 class_name PlayerIdleState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._idle()
 

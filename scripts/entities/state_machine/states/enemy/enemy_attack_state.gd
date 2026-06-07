@@ -1,10 +1,18 @@
-# enemy_attack_state.gd
+## EnemyAttackState
+## State representing an enemy attacking its target.
 extends State
 class_name EnemyAttackState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._stop_wandering()
 
+func physics_update(_delta: float) -> void:
+	# Velocity should be zero during attack
+	actor.velocity = Vector2.ZERO
+	_enemy_attack_logic()
+
+# ─── Private Methods ─────────────────────────────────────────────────────────
 func _enemy_attack_logic() -> void:
 	# Keep velocity zero during attack
 	actor.velocity = Vector2.ZERO
@@ -27,8 +35,3 @@ func _enemy_attack_logic() -> void:
 			transitioned.emit("enemychasestate")
 	else:
 		transitioned.emit("enemyidlestate")
-
-func physics_update(_delta: float) -> void:
-	# Velocity should be zero during attack
-	actor.velocity = Vector2.ZERO
-	_enemy_attack_logic()

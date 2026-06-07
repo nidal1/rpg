@@ -1,7 +1,9 @@
-# enemy_run_state.gd
+## EnemyRunState
+## State representing an enemy moving towards a target or path position.
 extends State
 class_name EnemyRunState
 
+# ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
 	actor._stop_wandering()
 
