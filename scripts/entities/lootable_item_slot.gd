@@ -1,22 +1,21 @@
 extends Panel
-class_name PickedItemSlot
+class_name LootableItemSlot
 
-enum PickedItemSlotState {
+enum LootableItemSlotState {
 	normal,
 	hover,
 	pressed
 }
 
-
-@onready var picked_item_image: TextureRect = $CenterContainer/PickedItemImage
-@onready var picked_item_button: TextureButton = $PickedItemButton
+@onready var lootable_item_image: TextureRect = $CenterContainer/LootableItemImage
+@onready var lootable_item_button: TextureButton = $LootableItemButton
 
 var slot_index: int
 var item: Item = null
 
 var style_box = StyleBoxFlat.new()
 
-var current_slot_state: PickedItemSlotState = PickedItemSlotState.normal
+var current_slot_state: LootableItemSlotState = LootableItemSlotState.normal
 
 const slot_normal_stat_border_color: Color = Color("#1a1a1a")
 const slot_hover_stat_border_color: Color = Color("#525252")
@@ -37,33 +36,33 @@ func _ready() -> void:
 	add_theme_stylebox_override("panel", style_box)
 
 
-	picked_item_button.mouse_entered.connect(func(): _on_picked_item_button_mouse_entered())
-	picked_item_button.mouse_exited.connect(func(): _on_picked_item_button_mouse_exited())
-	picked_item_button.pressed.connect(func(): _on_picked_item_button_mouse_pressed())
+	lootable_item_button.mouse_entered.connect(func(): _on_lootable_item_button_mouse_entered())
+	lootable_item_button.mouse_exited.connect(func(): _on_lootable_item_button_mouse_exited())
+	lootable_item_button.pressed.connect(func(): _on_lootable_item_button_mouse_pressed())
 
 
-func _on_picked_item_button_mouse_entered() -> void:
-	if current_slot_state == PickedItemSlotState.pressed:
+func _on_lootable_item_button_mouse_entered() -> void:
+	if current_slot_state == LootableItemSlotState.pressed:
 		return
-	current_slot_state = PickedItemSlotState.hover
+	current_slot_state = LootableItemSlotState.hover
 	style_box.border_color = slot_hover_stat_border_color
 	add_theme_stylebox_override("panel", style_box)
 
-func _on_picked_item_button_mouse_exited() -> void:
-	if current_slot_state == PickedItemSlotState.pressed:
+func _on_lootable_item_button_mouse_exited() -> void:
+	if current_slot_state == LootableItemSlotState.pressed:
 		return
-	current_slot_state = PickedItemSlotState.normal
+	current_slot_state = LootableItemSlotState.normal
 	style_box.border_color = slot_normal_stat_border_color
 	add_theme_stylebox_override("panel", style_box)
 
 
-func _on_picked_item_button_mouse_pressed() -> void:
-	if current_slot_state != PickedItemSlotState.pressed and item != null:
-		current_slot_state = PickedItemSlotState.pressed
+func _on_lootable_item_button_mouse_pressed() -> void:
+	if current_slot_state != LootableItemSlotState.pressed and item != null:
+		current_slot_state = LootableItemSlotState.pressed
 		style_box.border_color = slot_pressed_stat_border_color
 		add_theme_stylebox_override("panel", style_box)
 	else:
-		current_slot_state = PickedItemSlotState.normal
+		current_slot_state = LootableItemSlotState.normal
 		style_box.border_color = slot_normal_stat_border_color
 		add_theme_stylebox_override("panel", style_box)
 
@@ -72,8 +71,8 @@ func set_item(item_resource: Item) -> void:
 	if not item_resource:
 		return
 	item = item_resource
-	picked_item_image.texture = item.icon
+	lootable_item_image.texture = item.icon
 
 func clear_slot() -> void:
-	picked_item_image.texture = null
+	lootable_item_image.texture = null
 	item = null

@@ -24,20 +24,27 @@ extends Control
 @onready var save_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/SaveStatsButton
 @onready var cancel_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelStatsButton
 
-# Picked items section -------------------------------------------------
-@onready var picked_item_slot_scene: PackedScene = preload("res://scenes/ui/picked_item_slot.tscn")
-@onready var picked_items_container: GridContainer = $Control/PickedItemsTable/MarginContainer/VBoxContainer/ScrollContainer/PickedItemsContainer
+# Lootable items section -------------------------------------------------
+@onready var lootable_item_slot_scene: PackedScene = preload("res://scenes/ui/lootable_item_slot.tscn")
+@onready var lootable_items_container: GridContainer = $Control/LootableItemsTable/MarginContainer/VBoxContainer/ScrollContainer/LootableItemsContainer
+@onready var pick_all_dropped_items_button: Button = $Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer/PickAllDroppedItemsButton
+@onready var pick_selected_dropped_items_button: Button = $Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer/PickSelectedDroppedItemsButton
+@onready var cancel_dropped_items_button: Button = $Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer/CancelDroppedItemsButton
 
-var picked_item_slots: Array[PickedItemSlot] = []
-var picked_items_numbers = 20
+var lootable_item_slots: Array[LootableItemSlot] = []
+var lootable_items_numbers = 20
+var selected_lootable_items: Array[LootableItemSlot] = []
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hud.visible = false
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
-	EventBus.display_dropped_item_hover_info.connect(_on_display_dropped_item_hover_info)
-	EventBus.hide_dropped_item_hover_info.connect(_on_hide_dropped_item_hover_info)
-	_initialize_picked_items_panel()
+	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
+	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
+	# pick_all_dropped_items_button.pressed.connect(_pick_all_dropped_items)
+	pick_selected_dropped_items_button.pressed.connect(_pick_selected_dropped_items)
+	# cancel_dropped_items_button.pressed.connect(_cancel_dropped_items)
+	_initialize_lootable_items_panel()
 
 	
 func _initialize_hero_stats(cls: CharacterClass) -> void:
@@ -90,32 +97,48 @@ func _initialize_hero(cls: CharacterClass) -> void:
 	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
 	_set_level_progress_bar_value(PlayerData.get_current_xp())
 
-func _initialize_picked_items_panel() -> void:
-	for i in range(picked_items_numbers):
-		var picked_item_slot_instance: PickedItemSlot = picked_item_slot_scene.instantiate()
-		picked_item_slot_instance.slot_index = i
-		picked_item_slots.append(picked_item_slot_instance)
-		picked_items_container.add_child(picked_item_slot_instance)
-		picked_item_slot_instance.picked_item_button.pressed.connect(func(): _on_picked_item_button_clicked(i))
+func _initialize_lootable_items_panel() -> void:
+	for i in range(lootable_items_numbers):
+		var lootable_item_slot_instance: LootableItemSlot = lootable_item_slot_scene.instantiate()
+		lootable_item_slot_instance.slot_index = i
+		lootable_item_slots.append(lootable_item_slot_instance)
+		lootable_items_container.add_child(lootable_item_slot_instance)
+		lootable_item_slot_instance.lootable_item_button.pressed.connect(func(): _on_lootable_item_button_clicked(i))
 
-func _on_display_dropped_item_hover_info(item: Item) -> void:
+func _on_display_lootable_item_hover_info(item: Item) -> void:
 	print("displaying item hover info")
-	for i in picked_item_slots:
+	for i in lootable_item_slots:
 		if i.item == null:
 			print("found empty slot - slot %s", i.slot_index)
 			i.set_item(item)
 			return
 
-func _on_hide_dropped_item_hover_info(item: Item) -> void:
+func _on_hide_lootable_item_hover_info(item: Item) -> void:
 	print("hiding item hover info")
-	for i in picked_item_slots:
+	for i in lootable_item_slots:
 		if i.item == item:
+			if i in selected_lootable_items:
+				selected_lootable_items.erase(i)
 			i.clear_slot()
 			return
+	
 
-func _on_picked_item_button_clicked(slot_index: int) -> void:
-	print("clicked on slot %s" % slot_index)
+func _on_lootable_item_button_clicked(slot_index: int) -> void:
+	if lootable_item_slots[slot_index].item != null:
+		var selected = lootable_item_slots[slot_index] in selected_lootable_items
+		if not selected:
+			selected_lootable_items.append(lootable_item_slots[slot_index])
+		else:
+			selected_lootable_items.erase(lootable_item_slots[slot_index])
 
+func _pick_selected_dropped_items():
+	for slot in selected_lootable_items:
+		if slot.item != null:
+			PlayerData.add_inventory_item(slot.item)
+			slot.clear_slot()
+			selected_lootable_items.erase(slot)
+
+	print("inventory: %s", PlayerData.__current_inventory_items.size())
 
 func _on_level_up() -> void:
 	_set_level_label_text("%s" % [PlayerData.get_player_level()])
@@ -189,10 +212,6 @@ func _on_panel_button_pressed() -> void:
 	__toggle_panel_button()
 
 	__toggle_hud_visibility()
-
-
-func _on_pick_items_button_pressed() -> void:
-	pass # Replace with function body.
 
 
 func _on_texture_button_pressed() -> void:

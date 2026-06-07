@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://23puqyvgn0v1"]
 
-[ext_resource type="Script" uid="uid://djvlximmto6ys" path="res://scripts/entities/picked_item_slot.gd" id="1_ejeky"]
+[ext_resource type="Script" uid="uid://djvlximmto6ys" path="res://scripts/entities/lootable_item_slot.gd" id="1_3oxfd"]
 
-[node name="PickedItemSlot" type="Panel" unique_id=28589270]
+[node name="LootableItemSlot" type="Panel" unique_id=28589270]
 custom_minimum_size = Vector2(50, 50)
-script = ExtResource("1_ejeky")
+script = ExtResource("1_3oxfd")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=810724154]
 custom_minimum_size = Vector2(50, 50)
@@ -14,12 +14,12 @@ offset_bottom = 50.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="PickedItemImage" type="TextureRect" parent="CenterContainer" unique_id=387053114]
+[node name="LootableItemImage" type="TextureRect" parent="CenterContainer" unique_id=387053114]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 expand_mode = 1
 
-[node name="PickedItemButton" type="TextureButton" parent="." unique_id=504537541]
+[node name="LootableItemButton" type="TextureButton" parent="." unique_id=504537541]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 0
 offset_right = 50.0

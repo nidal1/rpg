@@ -123,7 +123,7 @@ texture_normal = ExtResource("3_s3j3l")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="PickItems" type="Control" parent="Control" unique_id=307788716]
+[node name="LootableItems" type="Control" parent="Control" unique_id=307788716]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -134,7 +134,7 @@ offset_right = -67.0
 offset_bottom = 181.0
 grow_horizontal = 0
 
-[node name="Texture" type="TextureRect" parent="Control/PickItems" unique_id=698670176]
+[node name="Texture" type="TextureRect" parent="Control/LootableItems" unique_id=698670176]
 layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
@@ -142,7 +142,7 @@ texture = ExtResource("2_spc33")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="PickItemsButton" type="TextureButton" parent="Control/PickItems" unique_id=1893487314]
+[node name="ToggleLootableItemsButton" type="TextureButton" parent="Control/LootableItems" unique_id=1893487314]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -159,7 +159,7 @@ texture_normal = ExtResource("5_wccuv")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="PickedItemsTable" type="Panel" parent="Control" unique_id=1587979812]
+[node name="LootableItemsTable" type="Panel" parent="Control" unique_id=1587979812]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -171,7 +171,7 @@ offset_bottom = 456.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wccuv")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PickedItemsTable" unique_id=1726162190]
+[node name="MarginContainer" type="MarginContainer" parent="Control/LootableItemsTable" unique_id=1726162190]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -184,35 +184,35 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/PickedItemsTable/MarginContainer" unique_id=2132833992]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/LootableItemsTable/MarginContainer" unique_id=2132833992]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer" unique_id=326264776]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer" unique_id=326264776]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PickedItemsContainer" type="GridContainer" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1726137822]
+[node name="LootableItemsContainer" type="GridContainer" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1726137822]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer" unique_id=546621717]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer" unique_id=546621717]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 6
 alignment = 2
 
-[node name="Button" type="Button" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=16752257]
+[node name="PickAllDroppedItemsButton" type="Button" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=16752257]
 layout_mode = 2
 text = "Pick all"
 
-[node name="Button2" type="Button" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1936768596]
+[node name="PickSelectedDroppedItemsButton" type="Button" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1936768596]
 layout_mode = 2
 text = "Pick items"
 
-[node name="Button3" type="Button" parent="Control/PickedItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=655574308]
+[node name="CancelDroppedItemsButton" type="Button" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=655574308]
 layout_mode = 2
 text = "Cancel"
 
@@ -345,4 +345,3 @@ theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 
 [connection signal="pressed" from="Control/HeroPanelControl/PanelButton" to="." method="_on_panel_button_pressed"]
-[connection signal="pressed" from="Control/PickItems/PickItemsButton" to="." method="_on_pick_items_button_pressed"]

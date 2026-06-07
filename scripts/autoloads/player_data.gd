@@ -30,8 +30,8 @@ var __temp_allocated_stats: Dictionary = {
 }
 
 
-var __current_drop_table: Array[Item] = []
-
+var __lootable_items: Array[Item] = []
+var __current_inventory_items: Array[Item] = []
 # ─── Setup ───────────────────────────────────────────
 func initialize(cls: CharacterClass) -> void:
 	__base_stats = cls.base_stats.duplicate()
@@ -161,8 +161,14 @@ func from_base_stats_to_dict() -> Dictionary:
 
 # ─── Drop items ───────────────────────────────────
 
-func add_drop_item(item: Item) -> void:
-	__current_drop_table.append(item)
+func add_lootable_item(item: Item) -> void:
+	__lootable_items.append(item)
 
-func remove_drop_item(item: Item) -> void:
-	__current_drop_table.erase(item)
+func remove_lootable_item(item: Item) -> void:
+	__lootable_items.erase(item)
+
+func add_inventory_item(item: Item) -> void:
+	__current_inventory_items.append(item)
+
+func remove_inventory_item(item: Item) -> void:
+	__current_inventory_items.erase(item)
