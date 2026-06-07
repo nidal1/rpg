@@ -1,11 +1,16 @@
+## GameManager
+## Manages core game loops, leveling, experience, and global interactions.
 extends Node
 
+# ─── Public Variables ────────────────────────────────────────────────────────
+## Reference to the current player character.
 var player_ref: Character = null
-
-var level_scaler = 1.2
+## Modifier applied to the required XP for each subsequent level.
+var level_scaler: float = 1.2
+## Range within which items drop from defeated enemies.
 var drop_range: float = 50.0
 
-
+# ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.stat_allocated.connect(allocate_point)
@@ -16,20 +21,14 @@ func _ready() -> void:
 	EventBus.lootable_item_removed.connect(_on_lootable_item_removed)
 	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
 
-
+# ─── Public Methods ──────────────────────────────────────────────────────────
+## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
 	PlayerData.initialize(player.character_class)
 	EventBus.initialize_hero_stats_ui.emit(player.character_class)
 
-# ─── XP & Leveling ───────────────────────────────────
-func _on_enemy_died(enemy: Enemy) -> void:
-	var xp_reward = enemy.enemy_params.xp_reward
-	if xp_reward > 0:
-		add_xp(xp_reward)
-	spawn_enemy_items(enemy)
-
-
+## Adds experience points to the player.
 func add_xp(amount: int) -> void:
 	var current_xp = PlayerData.get_current_xp() + amount
 	PlayerData.set_current_xp(current_xp)
@@ -37,42 +36,46 @@ func add_xp(amount: int) -> void:
 	if current_xp >= PlayerData.get_total_xp_to_next_level():
 		level_up()
 
+## Handles the level up logic for the player.
 func level_up() -> void:
 	var player_level = PlayerData.get_player_level() + 1
 	PlayerData.set_player_level(player_level)
 	PlayerData.update_available_points()
-
 	scaling_level_up()
 	EventBus.level_up.emit()
 
+## Scales the required XP for the next level up.
 func scaling_level_up() -> void:
 	PlayerData.set_total_xp_to_next_level(int(level_scaler * PlayerData.get_total_xp_to_next_level()))
 
-# ─── Stat Allocation ─────────────────────────────────
+## Allocates a point to a specific stat.
 func allocate_point(stat_name: String) -> void:
 	if PlayerData.add_stat_point(stat_name):
 		EventBus.stats_updated.emit()
 
+## Deallocates a point from a specific stat.
 func deallocate_point(stat_name: String) -> void:
 	if PlayerData.sub_stat_point(stat_name):
 		EventBus.stats_updated.emit()
 
-func save_stats_points():
+## Saves the allocated stat points.
+func save_stats_points() -> void:
 	PlayerData.save_stats()
 	EventBus.stats_updated.emit()
 
-func cancel_stats_points():
+## Cancels the allocated stat points.
+func cancel_stats_points() -> void:
 	PlayerData.cancel_stats()
 	EventBus.stats_updated.emit()
 
-
-# ─── Lootable Items ─────────────────────────────────
+## Randomizes a position near the specified position within the drop range.
 func randomize_drop_position(position: Vector2) -> Vector2:
 	return position + Vector2(
 		randf_range(-drop_range, drop_range),
 		randf_range(-drop_range, drop_range)
 	)
 
+## Spawns items dropped by a defeated enemy into the drop zone.
 func spawn_enemy_items(enemy: Enemy) -> void:
 	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
 	if drop_zone:
@@ -81,6 +84,13 @@ func spawn_enemy_items(enemy: Enemy) -> void:
 			var random_position = randomize_drop_position(enemy.global_position)
 			drop_zone.call_deferred("add_child", drop)
 			drop.set_deferred("global_position", random_position)
+
+# ─── Signal Handlers ─────────────────────────────────────────────────────────
+func _on_enemy_died(enemy: Enemy) -> void:
+	var xp_reward = enemy.enemy_params.xp_reward
+	if xp_reward > 0:
+		add_xp(xp_reward)
+	spawn_enemy_items(enemy)
 
 func _on_lootable_item_added(item: Item) -> void:
 	print("picked item nameL: ", item.item_name)
