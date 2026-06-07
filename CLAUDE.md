@@ -19,7 +19,7 @@ A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium
 ### Scene Hierarchy
 ```
 Character.tscn              → Base CollisionShape2D only (pure parent scene)
-  ├── Player.tscn           → Adds Camera2D, ComboAttackCD, Hurtbox, StateMachine
+  ├── Player.tscn           → Adds Camera2D, ComboAttackCD, Hurtbox, StateMachine, PickableDetection
   │     ├── Warrior.tscn    → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox (melee)
   │     ├── Archer.tscn     → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container (ranged)
   │     └── Mage.tscn       → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container, DetectionZone (spell)
@@ -29,12 +29,12 @@ Character.tscn              → Base CollisionShape2D only (pure parent scene)
 
 ### Script Hierarchy
 ```
-Character.gd (Character)     → Base entity: signals, take_damage, virtual hook functions
+Character.gd (Character)     → Base entity: constants, health/mana stats, virtual hook functions, take_damage
   ├── Player.gd (Player)     → Handles user input, combo management, basic movement & idling, hit flashing
   │     ├── Warrior.gd       → Warrior class: handles melee hitbox collision triggers
   │     ├── Archer.gd        → Archer class: targets enemies, spawns and moves Arrow projectiles
   │     └── Mage.gd          → Mage class: targets enemies, spawns and moves WaterBullet projectiles
-  └── Enemy.gd (Enemy)       → Base AI: targeting logic, NavigationAgent2D pathfinding, wander/chase movement
+  └── Enemy.gd (Enemy)       → Base AI: targeting logic, NavigationAgent2D pathfinding, wander/chase movement, item dropping
         └── Goblin.gd        → Goblin class: handles specific animation transitions and melee hitbox detection
 ```
 
@@ -71,6 +71,12 @@ The state machine separates entity states into decoupled, modular nodes under a 
 
 ## Dynamic Gameplay Systems
 
+### Lootable Items (Inventory & Drops)
+*   **Naming Convention**: All dropped items and picked items follow the `Lootable Item` naming convention in both UI and logic.
+*   **Mechanic**: Enemies drop `DropItem` (Area2D) physical objects into a `DropZone` when defeated. 
+*   **Player Detection**: The player has a `PickableDetection` Area2D that identifies overlapping `DropItem` nodes. When an item enters the zone, `EventBus.lootable_item_added` is emitted.
+*   **UI Integration**: The `InGameUI` catches the signal and populates `LootableItemSlot` panels in a dynamic GridContainer. Players can multi-select slots to pick them up, triggering `EventBus.selected_lootable_items_picked_up`.
+
 ### Projectiles (`arrow.gd`, `water_bullet.gd`)
 Ranged characters shoot custom instances of projectiles (`Arrow`, `WaterBullet`) extending `Area2D`.
 *   **Properties:** `speed`, `max_distance`, `direction`, `velocity`, `distance_traveled`.
@@ -78,9 +84,10 @@ Ranged characters shoot custom instances of projectiles (`Arrow`, `WaterBullet`)
 *   **Trigger Mechanism:** Archer and Mage bind a custom callback to animation events via signals (`_animation_editor_arrow_attack` and `_animation_editor_bullet_attack`). This allows the animator to fire arrows/spells at the exact frame the bow string is drawn or the staff is swung.
 
 ### Enemies Spawner (`enemies_spawner.gd`)
-A modular system designed to auto-generate waves of enemies around specific level markers.
+A modular system designed to auto-generate waves of enemies around specific level markers and manage physical drops.
 *   **Parameters:** `spawn_point`, `enemies` (array of packed scenes), `spawn_circle_radius`, `respawn_cd`, `wander_cd_time`.
 *   **Behavior:** Spawns random enemies at randomized positions within the circular radius. Handles automatic delayed respawning (`respawn_cd`) when an enemy's `on_died` signal fires.
+*   **Drop Cleanup:** Listens to `selected_lootable_items_picked_up` to `queue_free()` the 2D sprites from the level's `DropZone` once they are picked up.
 
 ### Stat Allocation System (`player_data.gd`, `game_manager.gd`, `in_game_ui.gd`)
 A transactional stat allocation system featuring a working copy and a backup copy:
@@ -89,28 +96,26 @@ A transactional stat allocation system featuring a working copy and a backup cop
 *   **Lifecycle Operations:**
     *   `save_stats()`: Commits/duplicates the current `__allocated_stats` to the `__temp_allocated_stats` backup.
     *   `cancel_stats()`: Discards changes by reverting `__allocated_stats` back to the `__temp_allocated_stats` backup.
-*   **UI Safety:** The UI (`in_game_ui.gd`) clears previous children using `queue_free()` before re-instantiating `StatContainer` nodes to prevent duplicate layout entries on initialization/re-open.
 
-### Global Autoloads (Singletons)
+---
+
+## Global Autoloads (Singletons)
 
 The project leverages four major global Autoload nodes for decoupled state management and system communication:
 
 *   **`EventBus` (`event_bus.gd`):** A centralized event broker routing global gameplay, UI updates, and transactional events. It manages signals for:
     *   *UI Synchronization:* `initialize_hero_stats_ui`, `update_hero_avatar_texture`, `update_hp_bar_value`, `update_mana_bar_value`.
-    *   *Combat & Progression:* `enemy_died`, `xp_changed`, `level_up`.
+    *   *Combat & Progression:* `enemy_died`, `enemy_spawned`, `xp_changed`, `level_up`.
     *   *Transactional Stats:* `stat_allocated`, `stat_deallocated`, `stats_updated`, `save_stats_points`, `cancel_stats_points`.
-*   **`PlayerData` (`player_data.gd`):** Holds player-specific data, levels, XP progression, and stats allocations.
+    *   *Lootable Items:* `lootable_item_added`, `lootable_item_removed`, `display_lootable_item_hover_info`, `hide_lootable_item_hover_info`, `selected_lootable_items_picked_up`.
+*   **`PlayerData` (`player_data.gd`):** Holds player-specific data, levels, XP progression, inventory (`__current_inventory_items`), detected loot (`__lootable_items`), and stats allocations.
     *   *XP/Leveling:* Manages level values and computes target levels dynamically (e.g., target XP scaling).
-    *   *Transactional Allocations:* Features a working copy (`__allocated_stats`) and a backup copy (`__temp_allocated_stats`) to allow reverting state changes when editing stats in the UI.
     *   *Calculated Gameplay Stats:* Dynamically calculates attributes (e.g. `get_melee_atk()`, `get_ranged_atk()`, `get_magic_atk()`, `get_max_hp()`, `get_max_mp()`, `get_def()`, `get_resist()`, `get_crit_chance()`, `get_crit_damage()`) combining base character class attributes with user-allocated points.
 *   **`GameManager` (`game_manager.gd`):** The orchestrator coordinating top-level game flow, player initialization, progression, and stat transactions:
     *   Registers the active player character and initializes `PlayerData` using the player class statistics.
     *   Listens to `EventBus.enemy_died` to award XP and trigger level-ups.
-    *   Binds event bus transaction signals directly to `PlayerData` allocation routines (e.g., `allocate_point`, `deallocate_point`, `save_stats_points`, `cancel_stats_points`) and broadcasts updates via `EventBus.stats_updated`.
-*   **`SaveManager` (`save_manager.gd`):** Currently a lightweight stub node reserved for future persistence systems.
-
-
-
+    *   Binds event bus transaction signals directly to `PlayerData` allocation routines and broadcasts updates via `EventBus.stats_updated`.
+*   **`SaveManager` (`save_manager.gd`):** Stub node reserved for handling persistence logic (saving/loading player progress).
 
 ---
 
@@ -128,14 +133,15 @@ res://
 │   ├── world/zones/
 │   ├── entities/player/    → warrior.tscn, archer.tscn, mage.tscn, player.tscn, character.tscn
 │   ├── entities/enemies/   → enemy.tscn, goblin.tscn
-│   ├── ui/
+│   ├── entities/items/     → drop.tscn
+│   ├── ui/                 → in_game_ui.tscn, lootable_item_slot.tscn, stat_container.tscn
 │   └── components/
 ├── scripts/                → Gameplay logic scripts
-│   ├── autoloads/          → Global stub services (GameManager, EventBus, SaveManager)
-│   ├── entities/           → Character, Player, Enemy class scripts and spawner scripts
-│   │   └── state_machine/  → base state.gd & state_machine.gd controller scripts
+│   ├── autoloads/          → Global stub services (event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd)
+│   ├── entities/           → Character, Player, Enemy, Archer, Mage, Warrior, Goblin, in_game_ui, lootable_item_slot, stat_container, arrow, water_bullet, enemies_spawner
+│   │   └── state_machine/  → state.gd & state_machine.gd controller scripts
 │   │       └── states/     → player/ and enemy/ subdirectory state implementations
-│   ├── resources/          → Shared core resources (attack_data.gd)
+│   ├── resources/          → Shared core resources (attack_data.gd, drop.gd)
 │   └── utils/
 └── resources/              → Concrete .tres files representing game parameters
     ├── classes/            → warrior.tres, archer.tres, mage.tres (CharacterClass resources)
@@ -168,30 +174,6 @@ res://
 | **Enemy Hurtbox** | 7 | none | OFF | ON |
 | **Warrior Hitbox (Melee)** | 4 | 7 | ON | OFF |
 | **Enemy Hitbox (Melee)** | 5 | 6 | ON | OFF |
-
----
-
-## Node Groups
-Assign nodes to these groups to keep logic simple and prevent dynamic casting checks:
-*   `Character.tscn` → `"character"`
-*   `Player.tscn` (and subclasses) → `"character"`, `"player"`, plus specific classes like `"warrior"`, `"archer"`, `"mage"`
-*   `Enemy.tscn` (and subclasses) → `"character"`, `"enemy"`, plus specific breeds like `"goblin"`
-*   `EnemiesSpawner` → `"enemies_spawner"`
-
----
-
-## Input Map Action Bindings
-
-| Action | Keys |
-| :--- | :--- |
-| `move_left` | A / Arrow Left |
-| `move_right` | D / Arrow Right |
-| `move_up` | W / Arrow Up |
-| `move_down` | S / Arrow Down |
-| `attack` | Mouse Left |
-| `interact` | E / F |
-| `pause` | Escape |
-| `open_inventory`| I / Tab |
 
 ---
 
@@ -232,28 +214,15 @@ extends Resource
 @export var attack_damage: float = 10.0
 @export var attack_range: float = 70.0
 @export var attack_cooldown: float = 2.2
+@export var drop_list: Array[Item] = []
 ```
 
 ---
 
-## Combo System & Animations
-
-*   **Logic:** Combos are handled via `combo_chain: Array[AttackData]` and driven by a `ComboAttackCD` Timer.
-*   **Combo Queueing:** Pressing attack during the active window triggers `combo_queued = true`. When the timer expires, the queue proceeds to the next attack in the array or resets to index `-1` (idle).
-*   **Warrior AnimationTree Structure:**
-    ```
-    Root StateMachine
-    ├── idle              (BlendSpace1D — left/right)
-    ├── run               (BlendSpace1D — left/right)
-    └── basic_attack      (Sub-StateMachine)
-        └── BasicAttackStateMachine
-            ├── Start → attack1 → attack2 → End
-            └── Start → attack1 → End (fallback)
-    ```
-
----
-
 ## Coding Standards & Virtual Functions
+
+The project rigorously enforces the official GDScript structure across all `.gd` scripts, utilizing `##` for documentation and preserving order: 
+`extends` -> `class_name` -> `signals` -> `constants` -> `exports` -> `public/onready vars` -> `built-in overrides` -> `public methods` -> `virtual methods` -> `private methods` -> `signal handlers`.
 
 All entities utilize a **Virtual Functions Override Pattern** to separate core state machine code from concrete class logic:
 
