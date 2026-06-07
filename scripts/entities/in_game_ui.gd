@@ -42,7 +42,7 @@ func _ready():
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	# pick_all_dropped_items_button.pressed.connect(_pick_all_dropped_items)
-	pick_selected_dropped_items_button.pressed.connect(_pick_selected_dropped_items)
+	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	# cancel_dropped_items_button.pressed.connect(_cancel_dropped_items)
 	_initialize_lootable_items_panel()
 
@@ -103,7 +103,7 @@ func _initialize_lootable_items_panel() -> void:
 		lootable_item_slot_instance.slot_index = i
 		lootable_item_slots.append(lootable_item_slot_instance)
 		lootable_items_container.add_child(lootable_item_slot_instance)
-		lootable_item_slot_instance.lootable_item_button.pressed.connect(func(): _on_lootable_item_button_clicked(i))
+		lootable_item_slot_instance.lootable_item_button.pressed.connect(func(): _on_lootable_item_slot_clicked(i))
 
 func _on_display_lootable_item_hover_info(item: Item) -> void:
 	print("displaying item hover info")
@@ -123,7 +123,8 @@ func _on_hide_lootable_item_hover_info(item: Item) -> void:
 			return
 	
 
-func _on_lootable_item_button_clicked(slot_index: int) -> void:
+# Select and deselect lootable item slots
+func _on_lootable_item_slot_clicked(slot_index: int) -> void:
 	if lootable_item_slots[slot_index].item != null:
 		var selected = lootable_item_slots[slot_index] in selected_lootable_items
 		if not selected:
@@ -131,14 +132,20 @@ func _on_lootable_item_button_clicked(slot_index: int) -> void:
 		else:
 			selected_lootable_items.erase(lootable_item_slots[slot_index])
 
-func _pick_selected_dropped_items():
+func _pick_selected_lootable_items():
+	var slots: Array[Item] = []
+	var temp_slot = []
 	for slot in selected_lootable_items:
 		if slot.item != null:
-			PlayerData.add_inventory_item(slot.item)
-			slot.clear_slot()
-			selected_lootable_items.erase(slot)
+			slots.append(slot.item)
+			temp_slot.append(slot)
+	
+	for slot in temp_slot:
+		slot.clear_slot()
+		selected_lootable_items.erase(slot)
+	
+	EventBus.selected_lootable_items_picked_up.emit(slots)
 
-	print("inventory: %s", PlayerData.__current_inventory_items.size())
 
 func _on_level_up() -> void:
 	_set_level_label_text("%s" % [PlayerData.get_player_level()])

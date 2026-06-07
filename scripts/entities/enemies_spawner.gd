@@ -5,7 +5,7 @@ extends Node2D
 
 @export var enemies: Array[PackedScene]
 @export var spawn_circle_radius: float = 100.0
-@export var respawn_cd: float = 5.0
+@export var respawn_cd: float = 60.0
 @export var wander_cd_time: float = 20.0
 
 @onready var drop_zone: Node2D = %DropZone
@@ -14,6 +14,8 @@ extends Node2D
 func _ready() -> void:
 	for _i in range(enemies.size()):
 		_spawn_enemy()
+
+	EventBus.selected_lootable_items_picked_up.connect(remove_selected_drops)
 
 func _spawn_enemy() -> void:
 	var enemy = enemies[randi() % enemies.size()].instantiate()
@@ -42,3 +44,8 @@ func remove_enemy(enemy: Enemy) -> void:
 
 func get_drop_zone() -> Node:
 	return drop_zone
+
+func remove_selected_drops(items: Array[Item]) -> void:
+	for drop in drop_zone.get_children():
+		if drop.item in items:
+			drop.queue_free()

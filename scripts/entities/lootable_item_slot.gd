@@ -76,3 +76,6 @@ func set_item(item_resource: Item) -> void:
 func clear_slot() -> void:
 	lootable_item_image.texture = null
 	item = null
+	current_slot_state = LootableItemSlotState.normal
+	style_box.border_color = slot_normal_stat_border_color
+	add_theme_stylebox_override("panel", style_box)

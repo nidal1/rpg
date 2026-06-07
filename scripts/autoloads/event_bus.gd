@@ -23,3 +23,5 @@ signal lootable_item_added(item: Item)
 signal lootable_item_removed(item: Item)
 signal display_lootable_item_hover_info(item: Item)
 signal hide_lootable_item_hover_info(item: Item)
+
+signal selected_lootable_items_picked_up(slots: Array[Item])

@@ -14,6 +14,7 @@ func _ready() -> void:
 	EventBus.cancel_stats_points.connect(cancel_stats_points)
 	EventBus.lootable_item_added.connect(_on_lootable_item_added)
 	EventBus.lootable_item_removed.connect(_on_lootable_item_removed)
+	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
 
 
 func register_player(player: Character) -> void:
@@ -65,7 +66,7 @@ func cancel_stats_points():
 	EventBus.stats_updated.emit()
 
 
-# ─── Drop Items ─────────────────────────────────
+# ─── Lootable Items ─────────────────────────────────
 func randomize_drop_position(position: Vector2) -> Vector2:
 	return position + Vector2(
 		randf_range(-drop_range, drop_range),
@@ -90,3 +91,10 @@ func _on_lootable_item_removed(item: Item) -> void:
 	print("removed item nameL: ", item.item_name)
 	PlayerData.remove_lootable_item(item)
 	EventBus.hide_lootable_item_hover_info.emit(item)
+
+func _on_selected_lootable_items_picked_up(slots: Array[Item]) -> void:
+	for slot in slots:
+		if slot != null:
+			PlayerData.add_inventory_item(slot)
+	
+	print("inventory: %s", PlayerData.__current_inventory_items.size())
