@@ -40,10 +40,12 @@ offset_left = 64.0
 offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
-current_tab = 0
+current_tab = 1
 tab_0/title = "Stats"
+tab_1/title = "Inventory"
 
 [node name="StatsPanel" type="Panel" parent="HUD/TabContainer" unique_id=651739754]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Stats"
@@ -83,6 +85,32 @@ text = "save"
 [node name="CancelStatsButton" type="Button" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1296302179]
 layout_mode = 2
 text = "cancel"
+
+[node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
+layout_mode = 2
+metadata/_tab_index = 1
+metadata/_tab_name = "Inventory"
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/TabContainer/InventoryPanel" unique_id=494295017]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer" unique_id=599233294]
+layout_mode = 2
+
+[node name="InventoryContainer" type="GridContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/ScrollContainer" unique_id=1767503483]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 8
 
 [node name="Control" type="Control" parent="." unique_id=1386049986]
 layout_mode = 1
@@ -207,6 +235,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LootableItemsTable" type="Panel" parent="Control" unique_id=1587979812]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

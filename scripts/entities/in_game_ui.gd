@@ -12,6 +12,9 @@ var lootable_item_slots: Array[LootableItemSlot] = []
 var lootable_items_numbers = 20
 var selected_lootable_items: Array[LootableItemSlot] = []
 
+var inventory_slots: Array[InventorySlot] = []
+var inventory_slots_number = 56
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 # Hero stats section
 @onready var hero_avatar: TextureRect = %HeroAvatar
@@ -44,6 +47,11 @@ var selected_lootable_items: Array[LootableItemSlot] = []
 @onready var items_label: Label = $Control/LootableItems/LootableItemsNotiication/ItemsLabel
 @onready var lootable_items_table: Panel = $Control/LootableItemsTable
 
+# Inventory items section
+@onready var inventory_slot_scene: PackedScene = preload("res://scenes/ui/inventory_slot.tscn")
+@onready var inventory_container: GridContainer = $HUD/TabContainer/InventoryPanel/MarginContainer/ScrollContainer/InventoryContainer
+
+
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -53,11 +61,15 @@ func _ready() -> void:
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
+	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
+	# EventBus.items_removed_from_inventory.connect(_on_items_removed_from_inventory)
 	
+	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
 	
 	_initialize_lootable_items_panel()
+	_initialize_inventory_tab()
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Updates the entire stats UI by reading from PlayerData.
@@ -146,7 +158,24 @@ func _initialize_lootable_items_panel() -> void:
 		lootable_items_container.add_child(lootable_item_slot_instance)
 		lootable_item_slot_instance.lootable_item_button.pressed.connect(func(): _on_lootable_item_slot_clicked(i))
 
+func _initialize_inventory_tab() -> void:
+	for i in range(inventory_slots_number):
+		var inventory_slot_instance: InventorySlot = inventory_slot_scene.instantiate()
+		inventory_slot_instance.slot_index = i
+		inventory_slots.append(inventory_slot_instance)
+		inventory_container.add_child(inventory_slot_instance)
+
 # ─── Logic Methods ───────────────────────────────────────────────────────────
+func _pick_all_lootable_items() -> void:
+	var slots: Array[Item] = []
+	for i in lootable_item_slots:
+		if i.item != null:
+			slots.append(i.item)
+			i.clear_slot()
+			items_label.text = str(int(items_label.text) - 1)
+	selected_lootable_items.clear()
+	EventBus.selected_lootable_items_picked_up.emit(slots)
+
 func _pick_selected_lootable_items() -> void:
 	var slots: Array[Item] = []
 	var temp_slot = []
@@ -217,3 +246,10 @@ func _on_panel_button_pressed() -> void:
 
 func _on_toggle_lootable_items_button_pressed() -> void:
 	__toggle_lootable_items_panel()
+
+func _on_items_added_to_inventory(slots: Array[Item]) -> void:
+	for slot in slots:
+		for i in inventory_slots:
+			if i.item == null:
+				i.set_item(slot)
+				break

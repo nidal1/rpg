@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://crl0ohy8w8e71"]
+
+[ext_resource type="Script" uid="uid://c3djttp6p7cqh" path="res://scripts/entities/inventory_slot.gd" id="1_ru537"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ulc1b"]
+bg_color = Color(0.13174221, 0.13174239, 0.1317423, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ru537"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4ab7"]
+bg_color = Color(0.6, 0.6, 0.6, 0.101960786)
+
+[node name="inventorySlot" type="Panel" unique_id=571981147]
+custom_minimum_size = Vector2(50, 50)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ulc1b")
+script = ExtResource("1_ru537")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1092220266]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InventorySlotIcon" type="TextureRect" parent="CenterContainer" unique_id=17578098]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+expand_mode = 1
+
+[node name="inventorySlotButton" type="Button" parent="." unique_id=169247047]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_ru537")
+theme_override_styles/hover = SubResource("StyleBoxFlat_r4ab7")
+
+[node name="ContextMenu" type="PopupMenu" parent="." unique_id=679955840]
+oversampling_override = 1.0
+
+[connection signal="pressed" from="inventorySlotButton" to="." method="_on_inventory_slot_button_pressed"]

@@ -46,3 +46,10 @@ signal display_lootable_item_hover_info(item: Item)
 signal hide_lootable_item_hover_info(item: Item)
 ## Emitted when selected lootable items are actually picked up into the inventory.
 signal selected_lootable_items_picked_up(slots: Array[Item])
+
+# ─── Inventory Signals ───────────────────────────────────────────────────────
+## Emitted when an item is added to the inventory.
+signal items_added_to_inventory(slots: Array[Item])
+
+## Emitted when an item is removed from the inventory.
+signal items_removed_from_inventory(slots: Array[Item])

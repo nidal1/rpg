@@ -107,4 +107,5 @@ func _on_selected_lootable_items_picked_up(slots: Array[Item]) -> void:
 		if slot != null:
 			PlayerData.add_inventory_item(slot)
 	
+	EventBus.items_added_to_inventory.emit(slots)
 	print("inventory: %s", PlayerData.__current_inventory_items.size())
