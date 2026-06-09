@@ -12,7 +12,7 @@ radius = 17.0
 height = 36.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8akj5"]
-radius = 250.0
+radius = 60.0
 
 [node name="Player" unique_id=1846937653 groups=["player"] instance=ExtResource("1_1hmtu")]
 collision_layer = 2
@@ -21,7 +21,6 @@ script = ExtResource("2_635qg")
 character_class = null
 
 [node name="Camera" type="Camera2D" parent="." index="1" unique_id=1339975141]
-zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 
 [node name="ComboAttackCD" type="Timer" parent="." index="2" unique_id=882990530]

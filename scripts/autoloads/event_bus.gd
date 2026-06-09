@@ -53,3 +53,6 @@ signal items_added_to_inventory(slots: Array[Item])
 
 ## Emitted when an item is removed from the inventory.
 signal items_removed_from_inventory(slots: Array[Item])
+
+## Emitted when an item is dropped from an inventory slot.
+signal item_dropped_from_inventory(slot: Item)

@@ -27,3 +27,7 @@ offset_bottom = -40.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 text = "Press E"
+
+[node name="DropCD" type="Timer" parent="." unique_id=1739017826]
+
+[connection signal="timeout" from="DropCD" to="." method="_on_drop_cd_timeout"]

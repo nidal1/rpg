@@ -20,6 +20,7 @@ func _ready() -> void:
 	EventBus.lootable_item_added.connect(_on_lootable_item_added)
 	EventBus.lootable_item_removed.connect(_on_lootable_item_removed)
 	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
+	EventBus.item_dropped_from_inventory.connect(_on_item_dropped_from_inventory)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
@@ -69,10 +70,10 @@ func cancel_stats_points() -> void:
 	EventBus.stats_updated.emit()
 
 ## Randomizes a position near the specified position within the drop range.
-func randomize_drop_position(position: Vector2) -> Vector2:
+func randomize_drop_position(position: Vector2, _drop_range: float = drop_range) -> Vector2:
 	return position + Vector2(
-		randf_range(-drop_range, drop_range),
-		randf_range(-drop_range, drop_range)
+		randf_range(-_drop_range, _drop_range),
+		randf_range(-_drop_range, _drop_range)
 	)
 
 ## Spawns items dropped by a defeated enemy into the drop zone.
@@ -85,6 +86,15 @@ func spawn_enemy_items(enemy: Enemy) -> void:
 			drop_zone.call_deferred("add_child", drop)
 			drop.set_deferred("global_position", random_position)
 
+func drop_item(item: Item) -> void:
+	var drop_scene = load("res://scenes/entities/items/drop.tscn").instantiate()
+	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
+	if drop_zone:
+		var random_position = randomize_drop_position(player_ref.global_position)
+		drop_scene.item = item
+		drop_zone.add_child(drop_scene)
+		drop_scene.global_position = random_position
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
 	var xp_reward = enemy.enemy_params.xp_reward
@@ -93,12 +103,10 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	spawn_enemy_items(enemy)
 
 func _on_lootable_item_added(item: Item) -> void:
-	print("picked item nameL: ", item.item_name)
 	PlayerData.add_lootable_item(item)
 	EventBus.display_lootable_item_hover_info.emit(item)
 
 func _on_lootable_item_removed(item: Item) -> void:
-	print("removed item nameL: ", item.item_name)
 	PlayerData.remove_lootable_item(item)
 	EventBus.hide_lootable_item_hover_info.emit(item)
 
@@ -109,3 +117,7 @@ func _on_selected_lootable_items_picked_up(slots: Array[Item]) -> void:
 	
 	EventBus.items_added_to_inventory.emit(slots)
 	print("inventory: %s", PlayerData.__current_inventory_items.size())
+
+func _on_item_dropped_from_inventory(item: Item) -> void:
+	drop_item(item)
+	PlayerData.remove_inventory_item(item)
