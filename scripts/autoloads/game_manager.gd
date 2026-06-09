@@ -78,7 +78,7 @@ func randomize_drop_position(position: Vector2, _drop_range: float = drop_range)
 
 ## Spawns items dropped by a defeated enemy into the drop zone.
 func spawn_enemy_items(enemy: Enemy) -> void:
-	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
+	var drop_zone = enemy.get_parent().get_drop_zone()
 	if drop_zone:
 		var drops = enemy._drop_item()
 		for drop in drops:
@@ -88,6 +88,8 @@ func spawn_enemy_items(enemy: Enemy) -> void:
 
 func drop_item(item: Item) -> void:
 	var drop_scene = load("res://scenes/entities/items/drop.tscn").instantiate()
+	# TODO: later look at the nearest enemies spawner's drop zone and set the item there
+	# later maybe it will be a special pool for dropped items
 	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
 	if drop_zone:
 		var random_position = randomize_drop_position(player_ref.global_position)

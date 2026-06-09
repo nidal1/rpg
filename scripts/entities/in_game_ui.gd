@@ -202,7 +202,7 @@ func __toggle_panel_button() -> void:
 
 func __toggle_hud_visibility() -> void:
 	hud.visible = !hud.visible
-	get_tree().paused = hud.visible
+	#get_tree().paused = hud.visible
 
 func __toggle_lootable_items_panel() -> void:
 	lootable_items_table.visible = !lootable_items_table.visible
