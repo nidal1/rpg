@@ -7,9 +7,19 @@
 [ext_resource type="Texture2D" uid="uid://r5n8eacogfn3" path="res://assets/ui/UI Elements/UI Elements/Bars/CircularBar_Fill.png" id="3_8o238"]
 [ext_resource type="Texture2D" uid="uid://3blidsurekre" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_05.png" id="3_s3j3l"]
 [ext_resource type="Texture2D" uid="uid://c4np5nctdtyk8" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_red.png" id="3_utqgd"]
+[ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="4_i8k7l"]
 [ext_resource type="Texture2D" uid="uid://dvaougq23uh8d" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_09.png" id="4_s3j3l"]
+[ext_resource type="Texture2D" uid="uid://djvidsc2l0pfc" path="res://assets/sprites/player/Blue Units/Warrior/Warrior.png" id="4_ulc1b"]
 [ext_resource type="Texture2D" uid="uid://ba0di8vxwt2q6" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_blue.png" id="4_utqgd"]
+[ext_resource type="Texture2D" uid="uid://33sb8a878k66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_2.png" id="5_sy304"]
 [ext_resource type="Texture2D" uid="uid://bvjae5rkkw5sd" path="res://assets/ui/UI Elements/UI Elements/Icons/fc6.png" id="5_wccuv"]
+[ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="6_mexbj"]
+[ext_resource type="Texture2D" uid="uid://cuslvps177wfi" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_4.png" id="7_p7bhm"]
+[ext_resource type="Texture2D" uid="uid://di1mdx6626ce5" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_6.png" id="9_mexbj"]
+[ext_resource type="Texture2D" uid="uid://ilool20evaxa" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_9.png" id="9_y68uj"]
+[ext_resource type="Texture2D" uid="uid://0lud3t4ji2du" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_7.png" id="10_2mxn5"]
+[ext_resource type="Texture2D" uid="uid://b3y183bg8576m" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_5.png" id="10_p7bhm"]
+[ext_resource type="Texture2D" uid="uid://bie6mta5n5i4b" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_8.png" id="11_x5m13"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wccuv"]
 bg_color = Color(0.029506557, 0.029506557, 0.029506557, 1)
@@ -40,9 +50,10 @@ offset_left = 64.0
 offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
-current_tab = 1
+current_tab = 2
 tab_0/title = "Stats"
 tab_1/title = "Inventory"
+tab_2/title = "Equipements"
 
 [node name="StatsPanel" type="Panel" parent="HUD/TabContainer" unique_id=651739754]
 visible = false
@@ -87,6 +98,7 @@ layout_mode = 2
 text = "cancel"
 
 [node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_name = "Inventory"
@@ -111,6 +123,209 @@ layout_mode = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 8
+
+[node name="EquipementsPanel" type="Panel" parent="HUD/TabContainer" unique_id=1387920178]
+layout_mode = 2
+metadata/_tab_index = 2
+metadata/_tab_name = "Equipements"
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/TabContainer/EquipementsPanel" unique_id=274030432]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer" unique_id=1299132125]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1246977906]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Panel" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1862026427]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel" unique_id=1817423657]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel/CenterContainer" unique_id=1183163842]
+layout_mode = 2
+texture = ExtResource("4_i8k7l")
+
+[node name="Panel2" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1960910398]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel2" unique_id=287910081]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel2/CenterContainer" unique_id=448215670]
+layout_mode = 2
+texture = ExtResource("5_sy304")
+
+[node name="Panel3" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=343866616]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel3" unique_id=875986375]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel3/CenterContainer" unique_id=745992978]
+layout_mode = 2
+texture = ExtResource("6_mexbj")
+
+[node name="Panel4" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=937009933]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel4" unique_id=2021591638]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer/Panel4/CenterContainer" unique_id=297813764]
+layout_mode = 2
+texture = ExtResource("7_p7bhm")
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=712566337]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/CenterContainer" unique_id=1362067185]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("4_ulc1b")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1496058745]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Panel" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1443442505]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel" unique_id=1177574803]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel/CenterContainer" unique_id=319706557]
+layout_mode = 2
+texture = ExtResource("9_y68uj")
+
+[node name="Panel2" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=630027172]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel2" unique_id=678764799]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel2/HBoxContainer" unique_id=1360823972]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel2/HBoxContainer/CenterContainer" unique_id=345351296]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("10_2mxn5")
+expand_mode = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel2/HBoxContainer" unique_id=1269897276]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel2/HBoxContainer/CenterContainer2" unique_id=57585116]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("11_x5m13")
+expand_mode = 1
+
+[node name="Panel3" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=906224035]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel3" unique_id=486960726]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel3/CenterContainer" unique_id=948232240]
+layout_mode = 2
+texture = ExtResource("9_mexbj")
+
+[node name="Panel4" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1016539435]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel4" unique_id=1241238692]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/VBoxContainer2/Panel4/CenterContainer" unique_id=569993720]
+layout_mode = 2
+texture = ExtResource("10_p7bhm")
 
 [node name="Control" type="Control" parent="." unique_id=1386049986]
 layout_mode = 1
