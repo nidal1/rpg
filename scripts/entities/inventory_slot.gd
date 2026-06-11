@@ -18,6 +18,10 @@ func _ready() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if not item:
+			return
+		if item is not Equipable:
+			context_menu.set_item_hidden(0, true)
 		context_menu.popup()
 		# position = mouse position
 		context_menu.position = get_screen_position() + event.position
@@ -30,7 +34,8 @@ func _on_context_menu_item_pressed(id: int) -> void:
 		
 	
 func _equip() -> void:
-	print("equip item")
+	EventBus.item_equipped.emit(item)
+	clear_slot()
 
 func _use() -> void:
 	print("use item")

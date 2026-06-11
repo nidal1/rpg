@@ -51,6 +51,17 @@ var inventory_slots_number = 56
 @onready var inventory_slot_scene: PackedScene = preload("res://scenes/ui/inventory_slot.tscn")
 @onready var inventory_container: GridContainer = $HUD/TabContainer/InventoryPanel/MarginContainer/ScrollContainer/InventoryContainer
 
+# Equipement section
+@onready var helmet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/HelmetSlot
+@onready var chest_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/ChestSlot
+@onready var weapon_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/WeaponSlot
+@onready var boots_s_lot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/BootsSLot
+@onready var pet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/PetSlot
+@onready var amulet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot
+@onready var ring_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot
+@onready var shield_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/ShieldSlot
+@onready var cloak_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/CloakSlot
+
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -63,6 +74,7 @@ func _ready() -> void:
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
 	# EventBus.items_removed_from_inventory.connect(_on_items_removed_from_inventory)
+	EventBus.item_equipped.connect(_on_item_equipped)
 	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
@@ -207,6 +219,7 @@ func __toggle_hud_visibility() -> void:
 func __toggle_lootable_items_panel() -> void:
 	lootable_items_table.visible = !lootable_items_table.visible
 
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_display_lootable_item_hover_info(item: Item) -> void:
 	for i in lootable_item_slots:
@@ -253,3 +266,33 @@ func _on_items_added_to_inventory(slots: Array[Item]) -> void:
 			if i.item == null:
 				i.set_item(slot)
 				break
+
+func _on_item_equipped(item: Equipable) -> void:
+	if item is Weapon:
+		weapon_slot.set_item(item)
+		return
+	if item is Armor:
+		if item.armor_type == Armor.ArmorType.HELMET:
+			helmet_slot.set_item(item)
+			return
+		if item.armor_type == Armor.ArmorType.CHEST:
+			chest_slot.set_item(item)
+			return
+		if item.armor_type == Armor.ArmorType.BOOTS:
+			boots_s_lot.set_item(item)
+			return
+		# if item.armor_type == Armor.ArmorType.GLOVES:
+		# 	gloves_slot.set_item(item)
+		# 	return
+		if item.armor_type == Armor.ArmorType.RING:
+			ring_slot.set_item(item)
+			return
+		if item.armor_type == Armor.ArmorType.AMULET:
+			amulet_slot.set_item(item)
+			return
+		if item.armor_type == Armor.ArmorType.CLOAK:
+			cloak_slot.set_item(item)
+			return
+		if item.armor_type == Armor.ArmorType.SHIELD:
+			shield_slot.set_item(item)
+			return

@@ -1,7 +1,7 @@
 class_name Armor
 extends Equipable
 
-enum ArmorType {HELMET, CHEST, BOOTS, GLOVES, SHIELD}
+enum ArmorType {HELMET, CHEST, BOOTS, GLOVES, SHIELD, RING, AMULET, CLOAK}
 
 @export var armor_type: ArmorType
 @export var base_defense: float = 5.0

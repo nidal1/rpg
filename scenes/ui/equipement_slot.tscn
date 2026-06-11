@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://sn8ol5sspwg5"]
+
+[ext_resource type="Script" uid="uid://byefa5snk07d4" path="res://scripts/entities/equipement_slot.gd" id="1_kifjb"]
+[ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="1_u4kav"]
+
+[node name="EquipementSlot" type="Panel" unique_id=2113032951]
+custom_minimum_size = Vector2(80, 80)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_kifjb")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1063449013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlaceholderEquipementImage" type="TextureRect" parent="CenterContainer" unique_id=924975805]
+layout_mode = 2
+texture = ExtResource("1_u4kav")
+
+[node name="EquipementImage" type="TextureRect" parent="CenterContainer" unique_id=137511537]
+layout_mode = 2
+
+[node name="ContextMenu" type="PopupMenu" parent="." unique_id=1497035597]

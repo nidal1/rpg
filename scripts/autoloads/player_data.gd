@@ -37,7 +37,19 @@ var __temp_allocated_stats: Dictionary = {
 	"LUC": 0
 }
 var __lootable_items: Array[Item] = []
-var __current_inventory_items: Array[Item] = []
+var __inventory_items: Array[Item] = []
+var __equipable_items: Dictionary = {
+	"HELMET": null,
+	"CHEST": null,
+	"GLOVES": null,
+	"BOOTS": null,
+	"SHIELD": null,
+	"WEAPON": null,
+	"RING": null,
+	"AMULET": null,
+	"CLOAK": null,
+	"PET": null
+}
 
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
@@ -201,8 +213,28 @@ func remove_lootable_item(item: Item) -> void:
 
 ## Adds an item to the player's inventory.
 func add_inventory_item(item: Item) -> void:
-	__current_inventory_items.append(item)
+	__inventory_items.append(item)
 
 ## Removes an item from the player's inventory.
 func remove_inventory_item(item: Item) -> void:
-	__current_inventory_items.erase(item)
+	__inventory_items.erase(item)
+
+
+# ─── Equipment ───────────────────────────────────────────────────────────────
+func get_equipements() -> Dictionary:
+	return __equipable_items
+
+## Adds an equipable item to the player's equipment.
+func add_equipable_item(item: Equipable) -> void:
+	if is_instance_valid(item):
+		if item is Weapon:
+			__equipable_items["WEAPON"] = item
+			return
+		if item is Armor:
+			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = item
+			return
+
+
+## Removes an equipable item from the player's equipment.
+func remove_equipable_item(item: Equipable) -> void:
+	__equipable_items[item.armor_type] = null
