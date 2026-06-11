@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Armor" format=3 uid="uid://cu4t1lk20nebc"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_0ym04"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="2_bxq2t"]
+[ext_resource type="Script" uid="uid://qqp7c1rs63t2" path="res://resources/items/armor.gd" id="2_x53bx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ao6e"]
+atlas = ExtResource("2_bxq2t")
+region = Rect2(576, 0, 64, 64)
+
+[resource]
+script = ExtResource("2_x53bx")
+armor_type = 1
+base_defense = 15.0
+player_type = 0
+item_name = "Copper Breastplate"
+icon = SubResource("AtlasTexture_2ao6e")
+metadata/_custom_type_script = "uid://qqp7c1rs63t2"

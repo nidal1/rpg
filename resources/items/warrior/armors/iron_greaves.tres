@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Armor" format=3 uid="uid://qt0fv2d78hop"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_31won"]
+[ext_resource type="Script" uid="uid://qqp7c1rs63t2" path="res://resources/items/armor.gd" id="2_pisd7"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="2_xt4vb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfh83"]
+atlas = ExtResource("2_xt4vb")
+region = Rect2(0, 512, 64, 64)
+
+[resource]
+script = ExtResource("2_pisd7")
+armor_type = 2
+base_defense = 6.0
+player_type = 0
+item_name = "Iron Greaves"
+icon = SubResource("AtlasTexture_nfh83")
+metadata/_custom_type_script = "uid://qqp7c1rs63t2"

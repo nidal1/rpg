@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Weapon" format=3 uid="uid://b32nemapy2nom"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_5aa8v"]
+[ext_resource type="Texture2D" uid="uid://p316rkhlwrqw" path="res://assets/sprites/items/weapons.png" id="2_p2emn"]
+[ext_resource type="Script" uid="uid://0mklvnq1d0gb" path="res://resources/items/weapon.gd" id="2_x7435"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xe07c"]
+atlas = ExtResource("2_p2emn")
+region = Rect2(0, 0, 64, 64)
+
+[resource]
+script = ExtResource("2_x7435")
+weapon_type = 4
+base_attack_power = 5.0
+player_type = 0
+item_name = "Iron Dagger"
+icon = SubResource("AtlasTexture_xe07c")
+metadata/_custom_type_script = "uid://0mklvnq1d0gb"

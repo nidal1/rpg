@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Armor" format=3 uid="uid://b21e7elk7se3x"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_0a2lu"]
+[ext_resource type="Script" uid="uid://qqp7c1rs63t2" path="res://resources/items/armor.gd" id="2_b5dx6"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="2_chtn4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktv4j"]
+atlas = ExtResource("2_chtn4")
+region = Rect2(0, 1, 64, 64)
+
+[resource]
+script = ExtResource("2_b5dx6")
+armor_type = 4
+base_defense = 4.0
+player_type = 0
+item_name = "Round Wooden Shield"
+icon = SubResource("AtlasTexture_ktv4j")
+metadata/_custom_type_script = "uid://qqp7c1rs63t2"

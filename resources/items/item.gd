@@ -1,7 +1,7 @@
 class_name Item
 extends Resource
 
-enum ItemType {WEAPON, ARMOR, GEM, CONSUMABLE}
+enum ItemType {EQUIPABLE, CONSUMABLE, QUEST, ENCHANTMENT}
 enum Rarity {COMMON, UNCOMMON, RARE, EPIC, LEGENDARY}
 
 @export var item_name: String = ""

@@ -1,5 +1,5 @@
 class_name Weapon
-extends Item
+extends Equipable
 
 enum WeaponType {SWORD, AXE, BOW, STAFF, DAGGER}
 

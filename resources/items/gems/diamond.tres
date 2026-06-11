@@ -13,5 +13,5 @@ mp_bonus = Array[float]([5.0, 10.0, 15.0])
 crit_bonus = Array[float]([5.0, 10.0, 15.0])
 item_name = "Diamond"
 icon = ExtResource("1_ycvbh")
-item_type = 2
+item_type = 3
 metadata/_custom_type_script = "uid://bdni6r45tltxs"

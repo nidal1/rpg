@@ -1,5 +1,5 @@
 class_name Armor
-extends Item
+extends Equipable
 
 enum ArmorType {HELMET, CHEST, BOOTS, GLOVES, SHIELD}
 

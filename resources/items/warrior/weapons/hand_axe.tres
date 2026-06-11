@@ -7,6 +7,7 @@
 [resource]
 script = ExtResource("2_x7r1y")
 weapon_type = 1
+player_type = 0
 item_name = "Hand Axe"
 icon = ExtResource("2_o1a8q")
 metadata/_custom_type_script = "uid://0mklvnq1d0gb"

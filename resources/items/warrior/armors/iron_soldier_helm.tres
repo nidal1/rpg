@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Armor" format=3 uid="uid://qqkixnq2twto"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_54gt4"]
+[ext_resource type="Script" uid="uid://qqp7c1rs63t2" path="res://resources/items/armor.gd" id="2_3xa63"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="2_lcsih"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5o5b"]
+atlas = ExtResource("2_lcsih")
+region = Rect2(0, 384, 64, 64)
+
+[resource]
+script = ExtResource("2_3xa63")
+base_defense = 8.0
+player_type = 0
+item_name = "Iron Soldier Helm"
+icon = SubResource("AtlasTexture_n5o5b")
+metadata/_custom_type_script = "uid://qqp7c1rs63t2"
