@@ -6,9 +6,8 @@
 [ext_resource type="Resource" uid="uid://cu4t1lk20nebc" path="res://resources/items/warrior/armors/copper_breastplate.tres" id="2_k3uoj"]
 [ext_resource type="Resource" uid="uid://qt0fv2d78hop" path="res://resources/items/warrior/armors/iron_greaves.tres" id="3_brirc"]
 [ext_resource type="Resource" uid="uid://qqkixnq2twto" path="res://resources/items/warrior/armors/iron_soldier_helm.tres" id="4_bohdm"]
-[ext_resource type="Resource" uid="uid://b21e7elk7se3x" path="res://resources/items/warrior/armors/round_wooden_shield.tres" id="5_wwmg8"]
-[ext_resource type="Resource" uid="uid://b32nemapy2nom" path="res://resources/items/warrior/weapons/iron_dagger.tres" id="6_5jkbs"]
-[ext_resource type="Resource" uid="uid://b080r2udgej8t" path="res://resources/items/gems/amethyst.tres" id="7_brirc"]
+[ext_resource type="Resource" uid="uid://d3doj1d5ei4y3" path="res://resources/items/warrior/weapons/hand_axe.tres" id="5_k3uoj"]
+[ext_resource type="Resource" uid="uid://b32nemapy2nom" path="res://resources/items/warrior/weapons/iron_dagger.tres" id="6_brirc"]
 
 [resource]
 script = ExtResource("1_ttibx")
@@ -16,5 +15,5 @@ enemy_name = "Goblin"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
 attack_damage = 5.0
-drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_k3uoj"), ExtResource("3_brirc"), ExtResource("4_bohdm"), ExtResource("5_wwmg8"), ExtResource("6_5jkbs"), ExtResource("7_brirc")])
+drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_k3uoj"), ExtResource("3_brirc"), ExtResource("4_bohdm"), ExtResource("5_k3uoj"), ExtResource("6_brirc")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

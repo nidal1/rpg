@@ -21,7 +21,7 @@ func _ready() -> void:
 	EventBus.lootable_item_removed.connect(_on_lootable_item_removed)
 	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
 	EventBus.item_dropped_from_inventory.connect(_on_item_dropped_from_inventory)
-	EventBus.item_equipped.connect(_on_item_equipped)
+	EventBus.equip_item.connect(_on_equip_item)
 	EventBus.item_unequipped.connect(_on_item_unequipped)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
@@ -125,8 +125,25 @@ func _on_item_dropped_from_inventory(item: Item) -> void:
 	drop_item(item)
 	PlayerData.remove_inventory_item(item)
 
-func _on_item_equipped(item: Equipable) -> void:
-	PlayerData.add_equipable_item(item)
+func _on_equip_item(inventory_slot: InventorySlot) -> void:
+	var item = inventory_slot.get_item() as Equipable
+	if item.player_type == CharacterClass.PlayerType.ALL or item.player_type == player_ref.character_class.player_type:
+		var item_type
+		if item is Armor:
+			item_type = Armor.ArmorType.keys()[item.armor_type]
+		elif item is Weapon:
+			item_type = "WEAPON"
+		if not PlayerData.get_equipements()[item_type]:
+			PlayerData.add_equipable_item(item)
+			EventBus.item_equipped.emit(inventory_slot)
+		else:
+			# swap item
+			var old_item = PlayerData.get_equipements()[item_type]
+			PlayerData.add_equipable_item(item)
+			PlayerData.add_inventory_item(old_item)
+			EventBus.item_equipped.emit(inventory_slot)
+			inventory_slot.clear_slot()
+			inventory_slot.set_item(old_item)
 
 func _on_item_unequipped(item: Equipable) -> void:
 	PlayerData.add_inventory_item(item)

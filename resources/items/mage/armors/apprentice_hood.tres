@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Armor" format=3 uid="uid://m85goj7xjllb"]
+
+[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_nx8qt"]
+[ext_resource type="Script" uid="uid://qqp7c1rs63t2" path="res://resources/items/armor.gd" id="2_c8fnw"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="2_jpkip"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54cw1"]
+atlas = ExtResource("2_jpkip")
+region = Rect2(0, 576, 64, 64)
+
+[resource]
+script = ExtResource("2_c8fnw")
+base_defense = 2.0
+player_type = 2
+item_name = "Apprentice Hood"
+icon = SubResource("AtlasTexture_54cw1")
+metadata/_custom_type_script = "uid://qqp7c1rs63t2"

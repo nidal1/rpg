@@ -13,6 +13,7 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 
 [resource]
 script = ExtResource("2_afgh0")
+player_type = 1
 avatar_texture = ExtResource("1_afgh0")
 combo_chain = Array[ExtResource("1_unnlj")]([SubResource("Resource_afgh0")])
 base_stats = ExtResource("2_x1nnw")

@@ -32,10 +32,10 @@ func _on_context_menu_item_pressed(id: int) -> void:
 		1: _use()
 		2: _drop()
 		
-	
+
 func _equip() -> void:
-	EventBus.item_equipped.emit(item)
-	clear_slot()
+	var inventory_slot: InventorySlot = self
+	EventBus.equip_item.emit(inventory_slot)
 
 func _use() -> void:
 	print("use item")
@@ -44,6 +44,8 @@ func _drop() -> void:
 	EventBus.item_dropped_from_inventory.emit(item)
 	clear_slot()
 
+func get_item() -> Item:
+	return item
 
 func _on_inventory_slot_button_pressed() -> void:
 	print("pressed")

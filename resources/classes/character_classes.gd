@@ -1,6 +1,9 @@
 class_name CharacterClass
 extends Resource
 
+enum PlayerType {WARRIOR, ARCHER, MAGE, PRIEST, ALL}
+
+@export var player_type: PlayerType = PlayerType.WARRIOR
 @export var avatar_texture: Texture2D
 @export var max_health: float = 100.0
 @export var max_mana: float = 50.0

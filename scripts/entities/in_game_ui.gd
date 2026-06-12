@@ -267,32 +267,43 @@ func _on_items_added_to_inventory(slots: Array[Item]) -> void:
 				i.set_item(slot)
 				break
 
-func _on_item_equipped(item: Equipable) -> void:
+func _on_item_equipped(inventory_slot: InventorySlot) -> void:
+	var item: Equipable = inventory_slot.get_item() as Equipable
+	if item == null:
+		return
 	if item is Weapon:
 		weapon_slot.set_item(item)
+		inventory_slot.clear_slot()
 		return
 	if item is Armor:
 		if item.armor_type == Armor.ArmorType.HELMET:
 			helmet_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		if item.armor_type == Armor.ArmorType.CHEST:
 			chest_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		if item.armor_type == Armor.ArmorType.BOOTS:
 			boots_s_lot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		# if item.armor_type == Armor.ArmorType.GLOVES:
 		# 	gloves_slot.set_item(item)
 		# 	return
 		if item.armor_type == Armor.ArmorType.RING:
 			ring_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		if item.armor_type == Armor.ArmorType.AMULET:
 			amulet_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		if item.armor_type == Armor.ArmorType.CLOAK:
 			cloak_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
 		if item.armor_type == Armor.ArmorType.SHIELD:
 			shield_slot.set_item(item)
+			inventory_slot.clear_slot()
 			return
