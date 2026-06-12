@@ -80,11 +80,44 @@ The state machine separates entity states into decoupled, modular nodes under a 
 ### Inventory System (`inventory_slot.gd`, `in_game_ui.gd`)
 A full 56-slot grid-based inventory displayed in the **Inventory Tab** of the HUD panel.
 *   **`InventorySlot`:** Each slot holds one `Item` reference and displays its icon via a `TextureRect`. Right-clicking opens a `PopupMenu` with three actions:
-    *   **Equip** — stub for future equip logic.
+    *   **Equip** — only shown if the item is an `Equipable` subtype. Emits `EventBus.equip_item(inventory_slot)`.
     *   **Use** — stub for future consumable logic.
     *   **Drop** — emits `EventBus.item_dropped_from_inventory(item)`, clears the slot, and spawns the item back into the world near the player.
-*   **Item Drop-back Flow:** `GameManager._on_item_dropped_from_inventory()` instantiates a `drop.tscn`, locates the nearest `enemies_spawner`'s drop zone, and places the item at a randomized position near the player.
+*   **Item Drop-back Flow:** `GameManager._on_item_dropped_from_inventory()` instantiates a `drop.tscn`, locates the nearest `enemies_spawner` group node's drop zone, and places the item at a randomized position near the player.
 *   **Signals:** `items_added_to_inventory(slots: Array[Item])` and `items_removed_from_inventory(slots: Array[Item])` are broadcast after batch inventory changes.
+
+### Equipment System (`equipement_slot.gd`, `in_game_ui.gd`, `player_data.gd`)
+A full 10-slot equipment panel under the **Equipements Tab** of the HUD. Each physical slot is an `EquipementSlot` scene (Panel node) with an optional placeholder texture and a right-click `Unequip` context menu.
+
+**Equipment Slots (keyed by `slot_key`):**
+| Slot Key | Armor Type / Category | UI Node |
+| :--- | :--- | :--- |
+| `HELMET` | `Armor.ArmorType.HELMET` | `HelmetSlot` |
+| `CHEST` | `Armor.ArmorType.CHEST` | `ChestSlot` |
+| `BOOTS` | `Armor.ArmorType.BOOTS` | `BootsSlot` |
+| `SHIELD` | `Armor.ArmorType.SHIELD` | `ShieldSlot` |
+| `RING` | `Armor.ArmorType.RING` | `RingSlot` |
+| `AMULET` | `Armor.ArmorType.AMULET` | `AmuletSlot` |
+| `CLOAK` | `Armor.ArmorType.CLOAK` | `CloakSlot` |
+| `WEAPON` | `Weapon` type | `WeaponSlot` |
+| `PET` | _(reserved)_ | `PetSlot` |
+
+**Equip Flow:**
+1.  Player right-clicks an `InventorySlot` containing an `Equipable` item and selects "Equip".
+2.  `EventBus.equip_item(inventory_slot)` is emitted.
+3.  `GameManager._on_equip_item()` verifies the item's `player_type` matches the active class (or is `PlayerType.ALL`).
+4.  If the target slot is empty: `PlayerData.add_equipable_item(item)` is called, then `EventBus.item_equipped.emit(inventory_slot)`.
+5.  If the target slot already has an item (**swap**): the old item is moved to inventory via `PlayerData.add_inventory_item(old_item)`, and the new item takes its place.
+6.  `InGameUI._on_item_equipped()` then updates the correct `EquipementSlot` visually and clears the `InventorySlot`.
+
+**Unequip Flow:**
+1.  Player right-clicks an occupied `EquipementSlot` and selects "Unequip".
+2.  `EventBus.item_unequipped(item)` is emitted.
+3.  `GameManager._on_item_unequipped()` calls `PlayerData.add_inventory_item(item)` and `PlayerData.remove_equipable_item(item)`.
+4.  `EventBus.items_added_to_inventory` is emitted to trigger UI refresh.
+
+**Class Restriction:**  
+`Equipable` items carry a `player_type: CharacterClass.PlayerType` field. Items with `PlayerType.ALL` can be equipped by any class. Items with a specific type (e.g., `WARRIOR`) can only be equipped if `player_ref.character_class.player_type` matches.
 
 ### Projectiles (`arrow.gd`, `water_bullet.gd`)
 Ranged characters shoot custom instances of projectiles (`Arrow`, `WaterBullet`) extending `Area2D`.
@@ -105,6 +138,7 @@ A transactional stat allocation system featuring a working copy and a backup cop
 *   **Lifecycle Operations:**
     *   `save_stats()`: Commits/duplicates the current `__allocated_stats` to the `__temp_allocated_stats` backup.
     *   `cancel_stats()`: Discards changes by reverting `__allocated_stats` back to the `__temp_allocated_stats` backup.
+*   **`allocate_point_saved` flag:** Set to `true` once points are saved (i.e., no remaining points to allocate). Blocks further allocation or deallocation until cancelled or a new level-up occurs.
 
 ---
 
@@ -118,15 +152,26 @@ The project leverages four major global Autoload nodes for decoupled state manag
     *   *Transactional Stats:* `stat_allocated`, `stat_deallocated`, `stats_updated`, `save_stats_points`, `cancel_stats_points`.
     *   *Lootable Items:* `lootable_item_added`, `lootable_item_removed`, `display_lootable_item_hover_info`, `hide_lootable_item_hover_info`, `selected_lootable_items_picked_up`.
     *   *Inventory:* `items_added_to_inventory`, `items_removed_from_inventory`, `item_dropped_from_inventory`.
-*   **`PlayerData` (`player_data.gd`):** Holds player-specific data, levels, XP progression, inventory (`__current_inventory_items`), detected loot (`__lootable_items`), and stats allocations.
+    *   *Equipment:* `equip_item(inventory_slot)`, `item_equipped(inventory_slot)`, `item_unequipped(item)`, `switch_equipements()`.
+*   **`PlayerData` (`player_data.gd`):** Holds player-specific data, levels, XP progression, inventory (`__inventory_items`), detected loot (`__lootable_items`), active equipment (`__equipable_items`), and stats allocations.
     *   *XP/Leveling:* Manages level values and computes target levels dynamically (e.g., target XP scaling).
-    *   *Calculated Gameplay Stats:* Dynamically calculates attributes (e.g. `get_melee_atk()`, `get_ranged_atk()`, `get_magic_atk()`, `get_max_hp()`, `get_max_mp()`, `get_def()`, `get_resist()`, `get_crit_chance()`, `get_crit_damage()`) combining base character class attributes with user-allocated points.
+    *   *Calculated Gameplay Stats:* Dynamically calculates attributes combining base class `CharacterStats` with user-allocated points. Stat abbreviations map to full `CharacterStats` field names inside `get_total()`:
+        *   `STR` → `__base_stats.strength`
+        *   `REC` → `__base_stats.recovery`
+        *   `INT` → `__base_stats.intelligence`
+        *   `WIS` → `__base_stats.wisdom`
+        *   `DEX` → `__base_stats.dexterity`
+        *   `LUC` → `__base_stats.luck`
+    *   *Stat Formulas:* `get_melee_atk()`, `get_ranged_atk()`, `get_magic_atk()`, `get_max_hp()`, `get_max_mp()`, `get_def()`, `get_resist()`, `get_crit_chance()`, `get_crit_damage()`.
     *   *Inventory Management:* Provides `add_inventory_item(item)` and `remove_inventory_item(item)` to manage the 56-slot flat `Array[Item]`.
+    *   *Equipment Management:* `__equipable_items` dictionary with 10 keyed slots (`HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `WEAPON`, `RING`, `AMULET`, `CLOAK`, `PET`). Managed by `add_equipable_item(item)` and `remove_equipable_item(item)`, which key items by armor type string or `"WEAPON"`.
 *   **`GameManager` (`game_manager.gd`):** The orchestrator coordinating top-level game flow, player initialization, progression, and stat transactions:
     *   Registers the active player character and initializes `PlayerData` using the player class statistics.
     *   Listens to `EventBus.enemy_died` to award XP (from `enemy_params.xp_reward`) and trigger level-ups.
     *   Binds event bus transaction signals directly to `PlayerData` allocation routines and broadcasts updates via `EventBus.stats_updated`.
     *   Handles `item_dropped_from_inventory` to re-spawn `DropItem` instances into the nearest spawner's drop zone near the player.
+    *   Handles `equip_item` — validates class restriction via `player_type`, swaps items if slot is occupied, and emits `item_equipped`.
+    *   Handles `item_unequipped` — moves the item back to inventory and triggers `items_added_to_inventory`.
 *   **`SaveManager` (`save_manager.gd`):** Stub node reserved for handling persistence logic (saving/loading player progress).
 
 ---
@@ -141,28 +186,63 @@ res://
 │   ├── tilesets/
 │   ├── ui/
 │   └── audio/{sfx,music}/
+├── data/
+│   └── items_data.json     → Master item reference database (see below)
 ├── scenes/                 → Game world zones and pre-configured nodes/hierarchies
 │   ├── world/zones/
 │   ├── entities/player/    → warrior.tscn, archer.tscn, mage.tscn, player.tscn, character.tscn, arrow.tscn, water_bullet.tscn
 │   ├── entities/enemies/   → enemy.tscn, goblin.tscn, enemies_spawner.tscn
 │   ├── entities/items/     → drop.tscn
 │   ├── entities/npcs/      → (reserved)
-│   ├── ui/                 → in_game_ui.tscn, lootable_item_slot.tscn, stat_container.tscn, inventory_slot.tscn
+│   ├── ui/                 → in_game_ui.tscn, lootable_item_slot.tscn, stat_container.tscn, inventory_slot.tscn, equipement_slot.tscn
 │   └── components/         → (reserved)
 ├── scripts/                → Gameplay logic scripts
 │   ├── autoloads/          → Global stub services (event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd)
-│   ├── entities/           → Character, Player, Enemy, Archer, Mage, Warrior, Goblin, in_game_ui, lootable_item_slot, inventory_slot, stat_container, arrow, water_bullet, enemies_spawner
+│   ├── entities/           → Character, Player, Enemy, Archer, Mage, Warrior, Goblin, in_game_ui, lootable_item_slot, inventory_slot, equipement_slot, stat_container, arrow, water_bullet, enemies_spawner
 │   │   └── state_machine/  → state.gd & state_machine.gd controller scripts
 │   │       └── states/     → player/ and enemy/ subdirectory state implementations
 │   ├── resources/          → Shared core resources (attack_data.gd, drop.gd)
 │   └── utils/
 └── resources/              → Concrete .tres files representing game parameters
-    ├── classes/            → warrior.tres, archer.tres, mage.tres, healer.tres (CharacterClass resources)
-    ├── stats/              → warrior_stats.tres, archer_stats.tres, mage_stats.tres, priest.tres (CharacterStats resources)
+    ├── classes/            → warrior.tres, archer.tres, mage.tres, priest.tres + character_classes.gd
+    ├── stats/              → warrior_stats.tres, archer_stats.tres, mage_stats.tres, priest.tres + character_stats.gd
     ├── attacks/            → combo attack configurations
     ├── enemies/            → goblin.tres (EnemyParams resources)
-    ├── items/              → item.gd, weapon.gd, armor.gd, gem.gd + warrior/ and gems/ subdirs
-    └── abilities/
+    └── items/              → item.gd, equipable.gd, weapon.gd, armor.gd, gem.gd
+        ├── gems/           → amethyst.tres, diamond.tres, emerald.tres, ruby.tres, sapphire.tres, topaz.tres
+        ├── warrior/
+        │   ├── weapons/    → hand_axe.tres, iron_dagger.tres
+        │   └── armors/     → copper_breastplate.tres, iron_greaves.tres, iron_soldier_helm.tres, round_wooden_shield.tres
+        └── mage/
+            ├── weapons/    → (reserved)
+            └── armors/     → (reserved)
+```
+
+---
+
+## Data Files
+
+### `data/items_data.json` — Master Item Reference Database
+A large flat JSON reference database describing all items in the game world organized by tier and category. **This file is reference data only and is NOT loaded at runtime.** It documents the sprite sheet grid coordinates (`column_x`, `row_y`) for locating icons on the spritesheet, item IDs, level requirements, and base stats.
+
+**Structure:**
+```json
+{
+  "weapons_database": {
+    "iron_tier":       [ { "id": "w_ir_XX", "name": "...", "type": "...", "grid_coordinate": {...}, "required_level": N, "base_damage": N }, ... ],
+    "gold_tier":       [ ... ],
+    "azure_tier":      [ ... ],
+    "mythic_and_rare_tier": [ ... ]
+  },
+  "armors_database": {
+    "shields_and_early_sets":      [ { "id": "a_sh_XX", "name": "...", "type": "Shield/Chest/...", "grid_coordinate": {...}, "required_level": N, "base_defense": N }, ... ],
+    "heavy_plate_tier":            [ ... ],
+    "mage_and_rogue_cloth_tier":   [ ... ],
+    "dark_fantasy_and_exotic_tier":[ ... ],
+    "crystals_shields_and_boots":  [ ... ],
+    "accessories_and_rings":       [ { ..., "bonus_mana": N } or { ..., "bonus_attack": N }, ... ]
+  }
+}
 ```
 
 ---
@@ -195,11 +275,14 @@ res://
 ## Resource Schemas
 
 ### CharacterClass (`character_classes.gd`)
-Used to configure initial statistics and combo trees for Warrior, Archer, Mage, and Healer:
+Used to configure initial statistics and combo trees for Warrior, Archer, Mage, and Priest. Also defines the `PlayerType` enum used for item class restrictions:
 ```gdscript
 class_name CharacterClass
 extends Resource
 
+enum PlayerType { WARRIOR, ARCHER, MAGE, PRIEST, ALL }
+
+@export var player_type: PlayerType = PlayerType.WARRIOR
 @export var avatar_texture: Texture2D
 @export var max_health: float = 100.0
 @export var max_mana: float = 50.0
@@ -209,7 +292,7 @@ extends Resource
 ```
 
 ### CharacterStats (`character_stats.gd`)
-Holds the base stat values for a character class. Loaded by `PlayerData.initialize()` to seed the allocation system:
+Holds the base stat values for a character class. Loaded by `PlayerData.initialize()` to seed the allocation system. The exported property names use full abbreviated-style keys (`STR`, `REC`, etc.), but `PlayerData.get_total()` reads their lowercase named counterparts (`strength`, `recovery`, etc.) from the duplicated resource:
 ```gdscript
 class_name CharacterStats
 extends Resource
@@ -256,14 +339,20 @@ extends Resource
 ```
 
 ### Item System (`resources/items/`)
-A class hierarchy for all in-game items. All types extend the base `Item` resource.
+A 4-level class hierarchy for all in-game items. The inheritance chain is:
+```
+Item  →  Equipable  →  Weapon
+                   →  Armor
+     →  (Consumable, Quest, Enchantment — future types via ItemType enum)
+Gem  →  Item  (Gem is not Equipable, it is socketed into Weapon/Armor)
+```
 
 #### Item (base — `item.gd`)
 ```gdscript
 class_name Item
 extends Resource
 
-enum ItemType { WEAPON, ARMOR, GEM, CONSUMABLE }
+enum ItemType { EQUIPABLE, CONSUMABLE, QUEST, ENCHANTMENT }
 enum Rarity   { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY }
 
 @export var item_name: String = ""
@@ -272,11 +361,21 @@ enum Rarity   { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY }
 @export var item_type: ItemType
 @export var rarity: Rarity = Rarity.COMMON
 ```
+> **Note:** `ItemType.EQUIPABLE` is now used instead of the older `WEAPON`/`ARMOR` split. The subclass (`Weapon` or `Armor`) determines the actual equip behavior.
+
+#### Equipable (`equipable.gd`)
+An intermediate class between `Item` and the concrete equippable types. Carries the class restriction:
+```gdscript
+class_name Equipable
+extends Item
+
+@export var player_type: CharacterClass.PlayerType = CharacterClass.PlayerType.ALL
+```
 
 #### Weapon (`weapon.gd`)
 ```gdscript
 class_name Weapon
-extends Item
+extends Equipable
 
 enum WeaponType { SWORD, AXE, BOW, STAFF, DAGGER }
 
@@ -291,9 +390,9 @@ func get_total_attack_power() -> float  # base + gem ATK bonuses
 #### Armor (`armor.gd`)
 ```gdscript
 class_name Armor
-extends Item
+extends Equipable
 
-enum ArmorType { HELMET, CHEST, BOOTS, GLOVES, SHIELD }
+enum ArmorType { HELMET, CHEST, BOOTS, GLOVES, SHIELD, RING, AMULET, CLOAK }
 
 @export var armor_type: ArmorType
 @export var base_defense: float = 5.0
@@ -303,6 +402,7 @@ enum ArmorType { HELMET, CHEST, BOOTS, GLOVES, SHIELD }
 
 func get_total_defense() -> float  # base_defense + gem DEF bonuses
 ```
+> **Note:** `ArmorType` was extended beyond the original `HELMET/CHEST/BOOTS/GLOVES/SHIELD` to also include `RING`, `AMULET`, and `CLOAK` for the accessory equipment slots.
 
 #### Gem (`gem.gd`)
 Socketed into `Weapon.gems` or `Armor.gems`. Each gem has per-level bonus arrays (levels 1–3):
@@ -357,3 +457,5 @@ All entities utilize a **Virtual Functions Override Pattern** to separate core s
 4.  **Hitbox Keying:** Enable and disable `CollisionShape2D` nodes on combat Hitboxes directly inside Godot's Animation Player timeline tracks. Do not enable hitboxes manually in persistent update scripts.
 5.  **Scene Inheritance:** Every subclass scene (Warrior, Archer, Mage, Goblin) must be created as an **Inherited Scene** from their respective parent templates (`Player.tscn` or `Enemy.tscn`) to preserve node configurations.
 6.  **Item Drop-back:** When dropping items from inventory, use `GameManager.drop_item(item)` which locates the nearest `enemies_spawner` group node's drop zone. Do not add drop scenes directly to the scene tree from UI scripts.
+7.  **Equipment Validation:** Always validate `player_type` before equipping. Use `GameManager._on_equip_item()` (triggered via `EventBus.equip_item`) — never equip items directly from UI scripts. This ensures class restriction and swap logic are consistently applied.
+8.  **Equipment Keys:** `PlayerData.__equipable_items` uses string keys matching `Armor.ArmorType.keys()[item.armor_type]` for armors and hardcoded `"WEAPON"` for weapons. These keys must match exactly the dictionary keys (`HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, `WEAPON`, `PET`).
