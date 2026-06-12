@@ -57,6 +57,7 @@ signal items_removed_from_inventory(slots: Array[Item])
 ## Emitted when an item is dropped from an inventory slot.
 signal item_dropped_from_inventory(slot: Item)
 
+# ─── Equipement Signals ──────────────────────────────────────────────────────
 ## Emitted when an item is equipped.
 signal item_equipped(item: Equipable)
 

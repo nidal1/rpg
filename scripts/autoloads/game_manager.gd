@@ -22,6 +22,7 @@ func _ready() -> void:
 	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
 	EventBus.item_dropped_from_inventory.connect(_on_item_dropped_from_inventory)
 	EventBus.item_equipped.connect(_on_item_equipped)
+	EventBus.item_unequipped.connect(_on_item_unequipped)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
@@ -126,3 +127,10 @@ func _on_item_dropped_from_inventory(item: Item) -> void:
 
 func _on_item_equipped(item: Equipable) -> void:
 	PlayerData.add_equipable_item(item)
+
+func _on_item_unequipped(item: Equipable) -> void:
+	PlayerData.add_inventory_item(item)
+	PlayerData.remove_equipable_item(item)
+	
+	var _items_to_add: Array[Item] = [item]
+	EventBus.items_added_to_inventory.emit(_items_to_add)

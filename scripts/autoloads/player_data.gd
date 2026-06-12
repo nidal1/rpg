@@ -237,4 +237,9 @@ func add_equipable_item(item: Equipable) -> void:
 
 ## Removes an equipable item from the player's equipment.
 func remove_equipable_item(item: Equipable) -> void:
-	__equipable_items[item.armor_type] = null
+	if item is Weapon:
+		__equipable_items["WEAPON"] = null
+		return
+	if item is Armor:
+		__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
+		return
