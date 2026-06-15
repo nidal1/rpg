@@ -16,7 +16,7 @@ var inventory_slots: Array[InventorySlot] = []
 var inventory_slots_number = 56
 
 var item_table_details_visible: bool = false
-var item_table_details_instance: WeaponTableDetails
+var item_table_details_instance: EquipableTableDetails
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 # Hero stats section
@@ -67,7 +67,8 @@ var item_table_details_instance: WeaponTableDetails
 
 # Global Popups
 @onready var popups: Node2D = $Popups
-@export var item_table_details_scene: PackedScene
+@export var armor_table_details_scene: PackedScene
+@export var weapon_table_details_scene: PackedScene
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -320,11 +321,12 @@ func _on_item_equipped(inventory_slot: InventorySlot) -> void:
 func _on_show_item_table_details(item: Item) -> void:
 	if item_table_details_instance or item_table_details_visible:
 		return
-	item_table_details_instance = item_table_details_scene.instantiate()
-	popups.add_child(item_table_details_instance)
 	if item is Weapon:
-		item_table_details_instance.set_weapon_item(item as Weapon)
-	
+		item_table_details_instance = weapon_table_details_scene.instantiate()
+	if item is Armor:
+		item_table_details_instance = armor_table_details_scene.instantiate()
+	popups.add_child(item_table_details_instance)
+	item_table_details_instance.set_equipable_item(item as Equipable)
 	var mouse_pos = get_global_mouse_position()
 	var item_table_details_size = item_table_details_instance.get_size()
 	item_table_details_instance.position = mouse_pos

@@ -37,3 +37,6 @@ func get_crit_bonus() -> float:
 	if crit_bonus.size() == 0:
 		return 0.0
 	return crit_bonus[gem_level - 1]
+
+func get_resist_bonus() -> float:
+	return 0.0

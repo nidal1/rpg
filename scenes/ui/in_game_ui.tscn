@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cqcoh075il3l6" path="res://scenes/ui/item/weapon_table_details.tscn" id="4_b7ceb"]
 [ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="4_i8k7l"]
 [ext_resource type="Texture2D" uid="uid://dvaougq23uh8d" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_09.png" id="4_s3j3l"]
+[ext_resource type="PackedScene" uid="uid://cdc0ww7ryyc54" path="res://scenes/ui/item/armor_table_details.tscn" id="4_splfo"]
 [ext_resource type="Texture2D" uid="uid://djvidsc2l0pfc" path="res://assets/sprites/player/Blue Units/Warrior/Warrior.png" id="4_ulc1b"]
 [ext_resource type="Texture2D" uid="uid://ba0di8vxwt2q6" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_blue.png" id="4_utqgd"]
 [ext_resource type="Texture2D" uid="uid://33sb8a878k66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_2.png" id="5_sy304"]
@@ -38,7 +39,8 @@ mouse_filter = 2
 script = ExtResource("1_3nhwc")
 openTexture = ExtResource("3_s3j3l")
 closeTexture = ExtResource("4_s3j3l")
-item_table_details_scene = ExtResource("4_b7ceb")
+armor_table_details_scene = ExtResource("4_splfo")
+weapon_table_details_scene = ExtResource("4_b7ceb")
 
 [node name="HUD" type="Panel" parent="." unique_id=146381664]
 layout_mode = 1
