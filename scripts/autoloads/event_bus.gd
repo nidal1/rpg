@@ -77,6 +77,14 @@ signal items_removed_from_inventory(slots: Array[Item])
 @warning_ignore("UNUSED_SIGNAL")
 signal item_dropped_from_inventory(slot: Item)
 
+## Emitted when try to show item table details.
+@warning_ignore("UNUSED_SIGNAL")
+signal show_item_table_details(item: Item)
+
+## Emitted when try to hide item table details.
+@warning_ignore("UNUSED_SIGNAL")
+signal hide_item_table_details()
+
 # ─── Equipement Signals ──────────────────────────────────────────────────────
 ## Emitted when try to equip an item.
 @warning_ignore("UNUSED_SIGNAL")

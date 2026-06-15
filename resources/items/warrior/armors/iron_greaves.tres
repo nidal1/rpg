@@ -13,6 +13,7 @@ script = ExtResource("2_pisd7")
 armor_type = 2
 base_defense = 6.0
 player_type = 0
+gems_slots_count = 2
 item_name = "Iron Greaves"
 icon = SubResource("AtlasTexture_nfh83")
 metadata/_custom_type_script = "uid://qqp7c1rs63t2"

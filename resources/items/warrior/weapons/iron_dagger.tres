@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="1_5aa8v"]
 [ext_resource type="Texture2D" uid="uid://p316rkhlwrqw" path="res://assets/sprites/items/weapons.png" id="2_p2emn"]
 [ext_resource type="Script" uid="uid://0mklvnq1d0gb" path="res://resources/items/weapon.gd" id="2_x7435"]
+[ext_resource type="Resource" uid="uid://dslcdescr231p" path="res://resources/items/gems/ruby.tres" id="2_xe07c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xe07c"]
 atlas = ExtResource("2_p2emn")
@@ -13,6 +14,8 @@ script = ExtResource("2_x7435")
 weapon_type = 4
 base_attack_power = 5.0
 player_type = 0
+gems_slots_count = 2
+gems = Array[ExtResource("1_5aa8v")]([ExtResource("2_xe07c")])
 item_name = "Iron Dagger"
 icon = SubResource("AtlasTexture_xe07c")
 metadata/_custom_type_script = "uid://0mklvnq1d0gb"

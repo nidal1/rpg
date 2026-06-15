@@ -6,8 +6,6 @@ enum ArmorType {HELMET, CHEST, BOOTS, GLOVES, SHIELD, RING, AMULET, CLOAK}
 @export var armor_type: ArmorType
 @export var base_defense: float = 5.0
 @export var base_resist: float = 0.0
-@export var level: int = 1
-@export var gems: Array[Gem] = []
 
 func get_total_defense() -> float:
 	var total = base_defense

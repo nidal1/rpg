@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dg7jvl8tr1wj"]
+
+[ext_resource type="Script" uid="uid://bigw2ldisb5d3" path="res://scripts/entities/gem_panel.gd" id="1_xbxvd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gd4e4"]
+bg_color = Color(0.12298482, 0.12298491, 0.12298482, 1)
+
+[node name="GemPanel" type="Panel" unique_id=857633836]
+custom_minimum_size = Vector2(18, 18)
+theme_override_styles/panel = SubResource("StyleBoxFlat_gd4e4")
+script = ExtResource("1_xbxvd")
+
+[node name="GemImage" type="TextureRect" parent="." unique_id=285471234]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1

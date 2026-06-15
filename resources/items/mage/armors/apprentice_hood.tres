@@ -12,6 +12,7 @@ region = Rect2(0, 576, 64, 64)
 script = ExtResource("2_c8fnw")
 base_defense = 2.0
 player_type = 2
+gems_slots_count = 2
 item_name = "Apprentice Hood"
 icon = SubResource("AtlasTexture_54cw1")
 metadata/_custom_type_script = "uid://qqp7c1rs63t2"

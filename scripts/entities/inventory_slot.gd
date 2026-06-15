@@ -1,8 +1,10 @@
 extends Panel
 class_name InventorySlot
 
+
 var slot_index: int
 var item: Item
+
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var context_menu: PopupMenu = $ContextMenu
@@ -57,3 +59,11 @@ func clear_slot() -> void:
 func set_item(new_item: Item) -> void:
 	item = new_item
 	inventory_slot_icon.texture = item.icon
+
+
+func _on_mouse_entered() -> void:
+	if item: EventBus.show_item_table_details.emit(item)
+
+
+func _on_mouse_exited() -> void:
+	if item: EventBus.hide_item_table_details.emit()

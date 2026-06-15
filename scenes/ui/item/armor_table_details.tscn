@@ -1,0 +1,305 @@
+[gd_scene format=3 uid="uid://cdc0ww7ryyc54"]
+
+[ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="1_anxtm"]
+[ext_resource type="Texture2D" uid="uid://bsxcyr5gxdkrc" path="res://assets/ui/UI Elements/UI Elements/Icons/gems/fc161.png" id="2_mwidw"]
+[ext_resource type="Texture2D" uid="uid://dc7y040k4f1pv" path="res://assets/ui/UI Elements/UI Elements/Icons/gems/fc163.png" id="3_wfqw8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bngwc"]
+bg_color = Color(0.032967977, 0.032968, 0.03296794, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gd4e4"]
+bg_color = Color(0.12298482, 0.12298491, 0.12298482, 1)
+
+[node name="ArmorTableDetails" type="Panel" unique_id=1223132836]
+custom_minimum_size = Vector2(260, 350)
+offset_right = 260.0
+offset_bottom = 445.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bngwc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=224878343]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer" unique_id=2078132728]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel" unique_id=1552191856]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/MarginContainer" unique_id=1295675760]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=197519746]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 12
+text = "Item name"
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=991128491]
+layout_mode = 2
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 12
+text = "[player_class]"
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="VBoxContainer" unique_id=518273552]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel2" unique_id=1289101982]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=973510409]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("1_anxtm")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=1136577131]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer" unique_id=339197944]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=28958994]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Item category"
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1012092870]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Item Rarety"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=376972419]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1415591534]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1160412958]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Level: 70"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=26366046]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1585012165]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 12
+text = "Defense: "
+
+[node name="Label4" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1585851693]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.35686275, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "110"
+
+[node name="Label3" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=261563822]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "+2"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1765196942]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=655344944]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 12
+text = "Resistance: "
+
+[node name="Label4" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1353135142]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "110"
+
+[node name="Label3" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=177047866]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1956063514]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=158096658]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=2105155518]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "REC +35"
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1652542039]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.35686275, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "+20"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1730604377]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=988259509]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "INT +35"
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1231990494]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.35686275, 0, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=210913776]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1516266878]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "WIS +35"
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1351523053]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.35686275, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "+3"
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=2007679839]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26803678, 0.48594618, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Tradable"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=18123759]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "this is a descriptionthis is a descriptionthis is a descriptionthis is a descriptionthis is a descriptionthis is a description"
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="Panel3" type="Panel" parent="VBoxContainer" unique_id=743995587]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel3" unique_id=1296415678]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel3/MarginContainer" unique_id=1744421455]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer" unique_id=1681688132]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gd4e4")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer/Panel" unique_id=228431157]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_mwidw")
+expand_mode = 1
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer" unique_id=1842860155]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gd4e4")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer/Panel2" unique_id=334434314]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_wfqw8")
+expand_mode = 1
+
+[node name="Panel3" type="Panel" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer" unique_id=831199191]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gd4e4")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer/Panel3" unique_id=1514887440]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Panel4" type="Panel" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer" unique_id=1827771010]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gd4e4")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Panel3/MarginContainer/HBoxContainer/Panel4" unique_id=1281005397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1

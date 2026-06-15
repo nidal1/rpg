@@ -14,16 +14,26 @@ enum GemType {RUBY, SAPPHIRE, EMERALD, TOPAZ, AMETHYST, DIAMOND}
 @export var crit_bonus: Array[float] = []
 
 func get_atk_bonus() -> float:
+	if atk_bonus.size() == 0:
+		return 0.0
 	return atk_bonus[gem_level - 1]
 
 func get_def_bonus() -> float:
+	if def_bonus.size() == 0:
+		return 0.0
 	return def_bonus[gem_level - 1]
 
 func get_hp_bonus() -> float:
+	if hp_bonus.size() == 0:
+		return 0.0
 	return hp_bonus[gem_level - 1]
 
 func get_mp_bonus() -> float:
+	if mp_bonus.size() == 0:
+		return 0.0
 	return mp_bonus[gem_level - 1]
 
 func get_crit_bonus() -> float:
+	if crit_bonus.size() == 0:
+		return 0.0
 	return crit_bonus[gem_level - 1]

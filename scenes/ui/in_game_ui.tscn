@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://3blidsurekre" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_05.png" id="3_s3j3l"]
 [ext_resource type="Texture2D" uid="uid://c4np5nctdtyk8" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_red.png" id="3_utqgd"]
 [ext_resource type="PackedScene" uid="uid://sn8ol5sspwg5" path="res://scenes/ui/equipement_slot.tscn" id="4_2mxn5"]
+[ext_resource type="PackedScene" uid="uid://cqcoh075il3l6" path="res://scenes/ui/item/weapon_table_details.tscn" id="4_b7ceb"]
 [ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="4_i8k7l"]
 [ext_resource type="Texture2D" uid="uid://dvaougq23uh8d" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_09.png" id="4_s3j3l"]
 [ext_resource type="Texture2D" uid="uid://djvidsc2l0pfc" path="res://assets/sprites/player/Blue Units/Warrior/Warrior.png" id="4_ulc1b"]
@@ -37,6 +38,7 @@ mouse_filter = 2
 script = ExtResource("1_3nhwc")
 openTexture = ExtResource("3_s3j3l")
 closeTexture = ExtResource("4_s3j3l")
+item_table_details_scene = ExtResource("4_b7ceb")
 
 [node name="HUD" type="Panel" parent="." unique_id=146381664]
 layout_mode = 1
@@ -52,7 +54,7 @@ offset_left = 64.0
 offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
-current_tab = 2
+current_tab = 1
 tab_0/title = "Stats"
 tab_1/title = "Inventory"
 tab_2/title = "Equipements"
@@ -100,7 +102,6 @@ layout_mode = 2
 text = "cancel"
 
 [node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_name = "Inventory"
@@ -127,6 +128,7 @@ theme_override_constants/v_separation = 4
 columns = 8
 
 [node name="EquipementsPanel" type="Panel" parent="HUD/TabContainer" unique_id=1387920178]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 metadata/_tab_name = "Equipements"
@@ -586,6 +588,8 @@ size_flags_horizontal = 0
 theme_override_constants/line_spacing = 5
 theme_override_font_sizes/font_size = 14
 text = "100 / 100"
+
+[node name="Popups" type="Node2D" parent="." unique_id=1004954947]
 
 [connection signal="pressed" from="Control/HeroPanelControl/PanelButton" to="." method="_on_panel_button_pressed"]
 [connection signal="pressed" from="Control/LootableItems/ToggleLootableItemsButton" to="." method="_on_toggle_lootable_items_button_pressed"]

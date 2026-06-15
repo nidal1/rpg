@@ -15,6 +15,9 @@ var selected_lootable_items: Array[LootableItemSlot] = []
 var inventory_slots: Array[InventorySlot] = []
 var inventory_slots_number = 56
 
+var item_table_details_visible: bool = false
+var item_table_details_instance: WeaponTableDetails
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 # Hero stats section
 @onready var hero_avatar: TextureRect = %HeroAvatar
@@ -62,6 +65,9 @@ var inventory_slots_number = 56
 @onready var shield_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/ShieldSlot
 @onready var cloak_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/CloakSlot
 
+# Global Popups
+@onready var popups: Node2D = $Popups
+@export var item_table_details_scene: PackedScene
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -75,6 +81,9 @@ func _ready() -> void:
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
 	# EventBus.items_removed_from_inventory.connect(_on_items_removed_from_inventory)
 	EventBus.item_equipped.connect(_on_item_equipped)
+
+	EventBus.show_item_table_details.connect(_on_show_item_table_details)
+	EventBus.hide_item_table_details.connect(_on_hide_item_table_details)
 	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
@@ -307,3 +316,29 @@ func _on_item_equipped(inventory_slot: InventorySlot) -> void:
 			shield_slot.set_item(item)
 			inventory_slot.clear_slot()
 			return
+
+func _on_show_item_table_details(item: Item) -> void:
+	if item_table_details_instance or item_table_details_visible:
+		return
+	item_table_details_instance = item_table_details_scene.instantiate()
+	popups.add_child(item_table_details_instance)
+	if item is Weapon:
+		item_table_details_instance.set_weapon_item(item as Weapon)
+	
+	var mouse_pos = get_global_mouse_position()
+	var item_table_details_size = item_table_details_instance.get_size()
+	item_table_details_instance.position = mouse_pos
+	if mouse_pos.x + item_table_details_size.x > get_viewport().size.x:
+		item_table_details_instance.position -= mouse_pos - Vector2(item_table_details_size.x, 0)
+	
+	if mouse_pos.y + item_table_details_size.y > get_viewport().size.y:
+		item_table_details_instance.position -= Vector2(0, mouse_pos.y + item_table_details_size.y - get_viewport().size.y)
+		
+		
+	item_table_details_instance.show()
+
+func _on_hide_item_table_details() -> void:
+	if item_table_details_instance:
+		item_table_details_instance.hide()
+		item_table_details_instance.queue_free()
+		item_table_details_instance = null

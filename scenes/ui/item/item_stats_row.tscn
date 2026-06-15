@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://j1ohhktdkpag"]
+
+[ext_resource type="Script" uid="uid://ppbx4d3ffv1c" path="res://scripts/entities/item_stats_row.gd" id="1_m5w4t"]
+
+[node name="ItemStatsRow" type="HBoxContainer" unique_id=1538732713]
+script = ExtResource("1_m5w4t")
+
+[node name="ItemStatsKeyLabel" type="Label" parent="." unique_id=1324443457]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "REC"
+
+[node name="ItemStatsValueLabel" type="Label" parent="." unique_id=2131277406]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "+35"
+
+[node name="ItemStatsUpgradeLabel" type="Label" parent="." unique_id=573103070]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.35686275, 0, 1)
+theme_override_font_sizes/font_size = 12

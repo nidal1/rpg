@@ -13,6 +13,7 @@ script = ExtResource("2_b5dx6")
 armor_type = 4
 base_defense = 4.0
 player_type = 0
+gems_slots_count = 2
 item_name = "Round Wooden Shield"
 icon = SubResource("AtlasTexture_ktv4j")
 metadata/_custom_type_script = "uid://qqp7c1rs63t2"

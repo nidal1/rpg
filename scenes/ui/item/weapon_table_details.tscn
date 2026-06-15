@@ -1,0 +1,179 @@
+[gd_scene format=3 uid="uid://cqcoh075il3l6"]
+
+[ext_resource type="Script" uid="uid://d3ecx4ic3w6yu" path="res://scripts/entities/weapon_table_details.gd" id="1_v4fyr"]
+[ext_resource type="PackedScene" uid="uid://j1ohhktdkpag" path="res://scenes/ui/item/item_stats_row.tscn" id="2_ubg88"]
+[ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="2_vmc4a"]
+[ext_resource type="PackedScene" uid="uid://dg7jvl8tr1wj" path="res://scenes/ui/item/gem_panel.tscn" id="3_1ajhk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bngwc"]
+bg_color = Color(0.032967977, 0.032968, 0.03296794, 1)
+
+[node name="WeaponTableDetails" type="Panel" unique_id=1040122434]
+z_index = 1
+custom_minimum_size = Vector2(260, 350)
+offset_right = 260.0
+offset_bottom = 445.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bngwc")
+script = ExtResource("1_v4fyr")
+item_stats_row_scene = ExtResource("2_ubg88")
+gem_slot_scene = ExtResource("3_1ajhk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1583049894]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer" unique_id=1662823980]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel" unique_id=251182020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/MarginContainer" unique_id=1562089748]
+layout_mode = 2
+
+[node name="ItemNameLabel" type="Label" parent="VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1306505810]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 12
+text = "Item name"
+vertical_alignment = 1
+
+[node name="PlayerClassLabel" type="Label" parent="VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=556191198]
+layout_mode = 2
+theme_override_constants/line_spacing = 6
+theme_override_font_sizes/font_size = 12
+text = "[player_class]"
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="VBoxContainer" unique_id=888952796]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel2" unique_id=1391146776]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemImage" type="TextureRect" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=775525157]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("2_vmc4a")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=1699731927]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer" unique_id=236114322]
+layout_mode = 2
+alignment = 1
+
+[node name="ItemCategoryLabel" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=179879207]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Item category"
+
+[node name="IemRaretyLabel" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1584405177]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Item Rarety"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=2044076299]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" unique_id=1644844558]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemLevelLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1989612483]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Level: 70"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1758970582]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=851813077]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 12
+text = "ATK: "
+
+[node name="AttackLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1920229812]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "464 - 485"
+
+[node name="ItemUpgradeLevelLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=697406048]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="ItemStatsContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=275416214]
+layout_mode = 2
+
+[node name="TradablityLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=5875180]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.26803678, 0.48594618, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Tradable"
+vertical_alignment = 1
+
+[node name="ItemDescriptionLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=827217255]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "this is a descriptionthis is a descriptionthis is a descriptionthis is a descriptionthis is a descriptionthis is a description"
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="Panel3" type="Panel" parent="VBoxContainer" unique_id=771073751]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel3" unique_id=1427987078]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GemsSlotsContainer" type="HBoxContainer" parent="VBoxContainer/Panel3/MarginContainer" unique_id=851362593]
+layout_mode = 2
