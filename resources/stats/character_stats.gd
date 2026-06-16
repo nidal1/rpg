@@ -11,5 +11,5 @@ class_name CharacterStats
 
 # ─── Weapon Power (set by equipment later) ───────────
 @export var weapon_power: float = 0.0
-@export var armor_value: float = 0.0
+@export var armor_defense: float = 0.0
 @export var armor_resist: float = 0.0

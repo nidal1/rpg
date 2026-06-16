@@ -135,6 +135,14 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 			item_type = "WEAPON"
 		if not PlayerData.get_equipements()[item_type]:
 			PlayerData.add_equipable_item(item)
+			var base_stats = PlayerData.get_base_stats()
+			print("base stats: ", base_stats.weapon_power)
+			print("base stats: ", base_stats.armor_defense)
+			print("base stats: ", base_stats.armor_resist)
+			player_ref.character_class.set_class_stats(base_stats)
+			print("class stats: ", base_stats.weapon_power)
+			print("class stats: ", base_stats.armor_defense)
+			print("class stats: ", base_stats.armor_resist)
 			EventBus.item_equipped.emit(inventory_slot)
 		else:
 			# swap item

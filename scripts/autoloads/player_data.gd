@@ -54,7 +54,7 @@ var __equipable_items: Dictionary = {
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
 func initialize(cls: CharacterClass) -> void:
-	__base_stats = cls.base_stats.duplicate()
+	__base_stats = cls.get_class_stats()
 	__allocated_stats = from_base_stats_to_dict()
 	__temp_allocated_stats = from_base_stats_to_dict()
 
@@ -139,6 +139,9 @@ func cancel_stats() -> void:
 	__allocated_stats = __temp_allocated_stats.duplicate()
 	allocate_point_saved = false
 
+func get_base_stats() -> CharacterStats:
+	return __base_stats
+
 # ─── Computed Stats ──────────────────────────────────────────────────────────
 ## Gets the total value of a stat including base and allocated points.
 func get_total(_stat_name: String) -> int:
@@ -174,7 +177,7 @@ func get_max_mp() -> float:
 
 ## Calculates physical defense.
 func get_def() -> float:
-	return get_total("REC") + __base_stats.armor_value
+	return get_total("REC") + __base_stats.armor_defense
 
 ## Calculates magical resistance.
 func get_resist() -> float:
@@ -198,9 +201,27 @@ func from_base_stats_to_dict() -> Dictionary:
 		"DEX": __base_stats.DEX,
 		"LUC": __base_stats.LUC,
 		"weapon_power": __base_stats.weapon_power,
-		"armor_value": __base_stats.armor_value,
+		"armor_defense": __base_stats.armor_defense,
 		"armor_resist": __base_stats.armor_resist,
 	}
+
+func get_base_weapon_power() -> float:
+	return __base_stats.weapon_power
+
+func get_base_armor_defense() -> float:
+	return __base_stats.armor_defense
+
+func get_base_armor_resist() -> float:
+	return __base_stats.armor_resist
+
+func set_base_weapon_power(power: float) -> void:
+	__base_stats.weapon_power = power
+
+func set_base_armor_defense(value: float) -> void:
+	__base_stats.armor_defense = value
+
+func set_base_armor_resist(resist: float) -> void:
+	__base_stats.armor_resist = resist
 
 # ─── Inventory & Items ───────────────────────────────────────────────────────
 ## Adds an item to the list of lootable items currently in range.
@@ -228,18 +249,35 @@ func get_equipements() -> Dictionary:
 func add_equipable_item(item: Equipable) -> void:
 	if is_instance_valid(item):
 		if item is Weapon:
+			if is_instance_valid(__equipable_items["WEAPON"]):
+				remove_equipable_item(__equipable_items["WEAPON"])
 			__equipable_items["WEAPON"] = item
+			var new_weapon_power = item.base_attack_power + get_base_weapon_power()
+			set_base_weapon_power(new_weapon_power)
 			return
 		if item is Armor:
-			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = item
+			if is_instance_valid(__equipable_items[Armor.ArmorType.keys()[item.armor_type]]):
+				remove_equipable_item(__equipable_items[Armor.ArmorType.keys()[item.armor_type]])
+			var new_armor_defense = item.base_defense + get_base_armor_defense()
+			var new_armor_resist = item.base_resist + get_base_armor_resist()
+			set_base_armor_defense(new_armor_defense)
+			set_base_armor_resist(new_armor_resist)
 			return
 
 
 ## Removes an equipable item from the player's equipment.
 func remove_equipable_item(item: Equipable) -> void:
 	if item is Weapon:
-		__equipable_items["WEAPON"] = null
+		if is_instance_valid(__equipable_items["WEAPON"]):
+			__equipable_items["WEAPON"] = null
+			var new_weapon_power = get_base_weapon_power() - item.base_attack_power
+			set_base_weapon_power(new_weapon_power)
 		return
 	if item is Armor:
-		__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
+		if is_instance_valid(__equipable_items[Armor.ArmorType.keys()[item.armor_type]]):
+			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
+			var new_armor_defense = get_base_armor_defense() - item.base_armor_defense
+			var new_armor_resist = get_base_armor_resist() - item.base_armor_resist
+			set_base_armor_defense(new_armor_defense)
+			set_base_armor_resist(new_armor_resist)
 		return

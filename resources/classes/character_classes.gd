@@ -10,3 +10,9 @@ enum PlayerType {WARRIOR, ARCHER, MAGE, PRIEST, ALL}
 @export var speed: float = 300.0
 @export var combo_chain: Array[AttackData] = []
 @export var base_stats: CharacterStats
+
+func set_class_stats(stats: CharacterStats) -> void:
+	base_stats = stats.duplicate(true)
+
+func get_class_stats() -> CharacterStats:
+	return base_stats.duplicate(true)

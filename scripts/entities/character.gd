@@ -57,6 +57,8 @@ func _process(_delta: float) -> void:
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
 	var reduced_damage = max(1.0, amount - _get_defense())
+	if self is Player:
+		print("reduced damage: ", reduced_damage)
 	current_health -= reduced_damage
 	_on_damage_received()
 
