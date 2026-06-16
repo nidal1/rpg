@@ -89,7 +89,6 @@ func _on_damage_received() -> void:
 		state_machine.transition_to("enemydeadstate")
 
 func _get_attack_damage() -> float:
-	print("Enemy attack damage: %f" % attack_damage)
 	return attack_damage
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
