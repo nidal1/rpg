@@ -56,7 +56,8 @@ func _process(_delta: float) -> void:
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
-	current_health -= amount
+	var reduced_damage = max(1.0, amount - _get_defense())
+	current_health -= reduced_damage
 	_on_damage_received()
 
 # ─── Virtual Methods ─────────────────────────────────────────────────────────
@@ -78,7 +79,8 @@ func _play_idle_animation() -> void: pass
 func _on_state_changed(new_state: DeprecatedState) -> void: pass
 ## Virtual method that returns the current attack damage.
 func _get_attack_damage() -> float: return 0.0
-
+## Virtual method that returns the current defense.
+func _get_defense() -> float: return 0.0
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Updates the debug label with the current state name.
 func _update_label_state() -> void:

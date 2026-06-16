@@ -144,12 +144,12 @@ func cancel_stats() -> void:
 func get_total(_stat_name: String) -> int:
 	var base_value: int = 0
 	match _stat_name:
-		"STR": base_value = __base_stats.strength
-		"REC": base_value = __base_stats.recovery
-		"INT": base_value = __base_stats.intelligence
-		"WIS": base_value = __base_stats.wisdom
-		"DEX": base_value = __base_stats.dexterity
-		"LUC": base_value = __base_stats.luck
+		"STR": base_value = __base_stats.STR
+		"REC": base_value = __base_stats.REC
+		"INT": base_value = __base_stats.INT
+		"WIS": base_value = __base_stats.WIS
+		"DEX": base_value = __base_stats.DEX
+		"LUC": base_value = __base_stats.LUC
 	return base_value + __allocated_stats.get(_stat_name, 0)
 
 ## Calculates melee attack power.

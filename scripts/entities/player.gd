@@ -79,9 +79,21 @@ func _play_idle_animation() -> void:
 		animation_tree.set("parameters/idle/blend_position", last_facing_dir)
 
 func _get_attack_damage() -> float:
-	if combo_chain.size() == 1: return combo_chain[0].damage
-	if combo_index < 0 or combo_index >= combo_chain.size(): return 0.0
-	return combo_chain[combo_index].damage
+	var base_damage: float = 0.0
+	if combo_chain.size() == 1:
+		base_damage = combo_chain[0].damage
+	elif combo_index >= 0 and combo_index < combo_chain.size():
+		base_damage = combo_chain[combo_index].damage
+	
+	# combine attack-specific damage with stat-based power
+	match character_class.player_type:
+		CharacterClass.PlayerType.WARRIOR:
+			return base_damage + PlayerData.get_melee_atk()
+		CharacterClass.PlayerType.ARCHER:
+			return base_damage + PlayerData.get_ranged_atk()
+		CharacterClass.PlayerType.MAGE, CharacterClass.PlayerType.PRIEST:
+			return base_damage + PlayerData.get_magic_atk()
+		_: return base_damage
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Initializes the player's stats based on the selected class.
@@ -93,7 +105,7 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 
-	GameManager.register_player(self)
+	GameManager.register_player(self )
 
 ## Triggers the attack animation.
 func _play_attack_animation(attack: AttackData) -> void:
@@ -133,8 +145,11 @@ func _end_combo() -> void:
 func _flash_hit() -> void:
 	modulate = Color.RED
 	await get_tree().create_timer(0.3).timeout
-	if not is_instance_valid(self): return
+	if not is_instance_valid(self ): return
 	modulate = Color.WHITE
+
+func _get_defense() -> float:
+	return PlayerData.get_def()
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_pressed() -> void:

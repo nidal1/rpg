@@ -1,4 +1,4 @@
-## AttackData
+	## AttackData
 ## Resource containing data about a specific attack animation and its properties.
 extends Resource
 class_name AttackData
