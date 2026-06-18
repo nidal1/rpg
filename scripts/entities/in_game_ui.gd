@@ -152,6 +152,8 @@ func _initialize_stats_tab() -> void:
 			child.queue_free()
 
 	for stat_name in PlayerData.STAT_NAMES:
+		if stat_name in ["MP", "HP"]:
+			continue
 		var stat_container_instance: StatContainer = stat_container_scene.instantiate()
 		stats_container.add_child(stat_container_instance)
 		stat_container_instance.set_stat_name(stat_name)
@@ -162,12 +164,12 @@ func _initialize_stats_tab() -> void:
 
 func _initialize_hero(cls: CharacterClass) -> void:
 	_set_hero_avatar_texture(cls.avatar_texture)
-	_set_hp_max_value(cls.max_health)
-	_set_hp_bar_value(cls.max_health)
-	_set_mana_max_value(cls.max_mana)
-	_set_mana_bar_value(cls.max_mana)
-	_set_hp_label_text("%s / %s" % [cls.max_health, cls.max_health])
-	_set_mana_label_text("%s / %s" % [cls.max_mana, cls.max_mana])
+	_set_hp_max_value(cls.get_class_stats().max_health)
+	_set_hp_bar_value(cls.get_class_stats().max_health)
+	_set_mana_max_value(cls.get_class_stats().max_mana)
+	_set_mana_bar_value(cls.get_class_stats().max_mana)
+	_set_hp_label_text("%s / %s" % [cls.get_class_stats().max_health, cls.get_class_stats().max_health])
+	_set_mana_label_text("%s / %s" % [cls.get_class_stats().max_mana, cls.get_class_stats().max_mana])
 	_set_level_label_text("%s" % [PlayerData.get_player_level()])
 	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
 	_set_level_progress_bar_value(PlayerData.get_current_xp())

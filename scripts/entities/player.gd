@@ -29,6 +29,8 @@ func _ready() -> void:
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
 	animation_tree.set_active(true)
 
+	EventBus.update_stats.connect(_on_update_stats)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if state_machine:
@@ -98,10 +100,6 @@ func _get_attack_damage() -> float:
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Initializes the player's stats based on the selected class.
 func _load_classe(cls: CharacterClass) -> void:
-	max_health = cls.max_health
-	current_health = max_health
-	max_mana = cls.max_mana
-	current_mana = max_mana
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 
@@ -175,3 +173,9 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 		if area is DropItem:
 			var item: Item = area.item
 			EventBus.lootable_item_removed.emit(item)
+
+func _on_update_stats(cs: CharacterStats):
+	print("update stats: ", cs)
+	character_class.base_stats = cs
+	max_health = cs.max_health
+	max_mana = cs.max_mana

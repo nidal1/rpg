@@ -18,7 +18,6 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 [resource]
 script = ExtResource("2_ubu7b")
 avatar_texture = ExtResource("1_ubu7b")
-max_mana = 100.0
 combo_chain = Array[ExtResource("1_cmyj3")]([SubResource("Resource_ubu7b"), SubResource("Resource_qqrho")])
 base_stats = ExtResource("2_qqrho")
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

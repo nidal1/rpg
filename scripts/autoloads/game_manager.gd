@@ -28,8 +28,15 @@ func _ready() -> void:
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
-	PlayerData.initialize(player.character_class)
-	EventBus.initialize_hero_stats_ui.emit(player.character_class)
+	PlayerData.initialize(player_ref.character_class.duplicate())
+	var base_stats = PlayerData.get_base_stats()
+	player_ref.character_class.set_class_stats(base_stats)
+	player_ref.max_health = base_stats.max_health
+	player_ref.current_health = base_stats.max_health
+
+	player_ref.max_mana = base_stats.max_mana
+	player_ref.current_mana = base_stats.max_mana
+	EventBus.initialize_hero_stats_ui.emit(player_ref.character_class)
 
 ## Adds experience points to the player.
 func add_xp(amount: int) -> void:
@@ -135,17 +142,28 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 			item_type = "WEAPON"
 		if not PlayerData.get_equipements()[item_type]:
 			PlayerData.add_equipable_item(item)
-			var base_stats = PlayerData.get_base_stats()
-			player_ref.character_class.set_class_stats(base_stats)
+			PlayerData.calculate_equipement_stats_bonus(item)
+			PlayerData.remove_inventory_item(item)
 			EventBus.item_equipped.emit(inventory_slot)
 		else:
 			# swap item
 			var old_item = PlayerData.get_equipements()[item_type]
+			PlayerData.remove_equipable_item(old_item)
+			PlayerData.calculate_equipement_stats_bonus(old_item, "unequip")
+
 			PlayerData.add_equipable_item(item)
+			PlayerData.calculate_equipement_stats_bonus(item)
+
 			PlayerData.add_inventory_item(old_item)
+			PlayerData.remove_inventory_item(item)
+
 			EventBus.item_equipped.emit(inventory_slot)
+
 			inventory_slot.clear_slot()
 			inventory_slot.set_item(old_item)
+
+		var cs = PlayerData.get_base_stats()
+		EventBus.update_stats.emit(cs)
 
 func _on_item_unequipped(item: Equipable) -> void:
 	PlayerData.add_inventory_item(item)
@@ -153,3 +171,5 @@ func _on_item_unequipped(item: Equipable) -> void:
 	
 	var _items_to_add: Array[Item] = [item]
 	EventBus.items_added_to_inventory.emit(_items_to_add)
+	var cs = PlayerData.get_base_stats()
+	EventBus.update_stats.emit(cs)

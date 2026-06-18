@@ -30,7 +30,7 @@ signal xp_changed(current: int)
 @warning_ignore("UNUSED_SIGNAL")
 signal level_up(new_level: int)
 
-# ─── Stats Allocation Signals ────────────────────────────────────────────────
+# ─── Stats and Stats Allocation Signals ────────────────────────────────────────────────
 ## Emitted when a stat point is allocated.
 @warning_ignore("UNUSED_SIGNAL")
 signal stat_allocated(stat_name: String)
@@ -40,6 +40,9 @@ signal stat_deallocated(stat_name: String)
 ## Emitted when stats are updated in the UI.
 @warning_ignore("UNUSED_SIGNAL")
 signal stats_updated()
+## Emitted when update stats
+@warning_ignore("UNUSED_SIGNAL")
+signal update_stats(stats: CharacterStats)
 ## Emitted to save the current stat points allocation.
 @warning_ignore("UNUSED_SIGNAL")
 signal save_stats_points()
