@@ -77,6 +77,7 @@ func _ready() -> void:
 	lootable_items_table.visible = false
 	
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
+	EventBus.update_hero_stats_ui.connect(_on_update_hero_stats_ui)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
@@ -100,6 +101,14 @@ func update_stats() -> void:
 		if child is StatContainer:
 			child.set_stat_point(PlayerData.get_allocated_stat(child.stat_name))
 	_set_stats_points_label_text("Stats points: %s" % PlayerData.get_stat_points_available())
+
+func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
+	_set_hp_max_value(stats.get_max_hp())
+	_set_mana_max_value(stats.get_max_mp())
+	var current_hp = hp_label.text.split(" / ")[0].to_int()
+	var current_mana = mana_label.text.split(" / ")[0].to_int()
+	_set_hp_label_text("%s / %s" % [current_hp, stats.get_max_hp()])
+	_set_mana_label_text("%s / %s" % [current_mana, stats.get_max_mp()])
 
 ## Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
@@ -151,9 +160,7 @@ func _initialize_stats_tab() -> void:
 		if child is StatContainer:
 			child.queue_free()
 
-	for stat_name in PlayerData.STAT_NAMES:
-		if stat_name in ["MP", "HP"]:
-			continue
+	for stat_name in PlayerData.STAT_NAMES_NO_FLT:
 		var stat_container_instance: StatContainer = stat_container_scene.instantiate()
 		stats_container.add_child(stat_container_instance)
 		stat_container_instance.set_stat_name(stat_name)

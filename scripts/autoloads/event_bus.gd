@@ -7,6 +7,9 @@ extends Node
 ## Emitted to initialize the hero stats UI.
 signal initialize_hero_stats_ui(cls: CharacterClass)
 @warning_ignore("UNUSED_SIGNAL")
+## Emitted to update the hero stats UI.
+signal update_hero_stats_ui(stats: CharacterStats)
+@warning_ignore("UNUSED_SIGNAL")
 ## Emitted when the hero's avatar texture is updated.
 signal update_hero_avatar_texture(texture: Texture2D)
 ## Emitted to update the HP bar UI value.

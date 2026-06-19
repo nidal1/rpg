@@ -31,11 +31,12 @@ func register_player(player: Character) -> void:
 	PlayerData.initialize(player_ref.character_class.duplicate())
 	var base_stats = PlayerData.get_base_stats()
 	player_ref.character_class.set_class_stats(base_stats)
-	player_ref.max_health = base_stats.max_health
-	player_ref.current_health = base_stats.max_health
+	
+	player_ref.max_health = base_stats.get_max_hp()
+	player_ref.current_health = base_stats.get_max_hp()
 
-	player_ref.max_mana = base_stats.max_mana
-	player_ref.current_mana = base_stats.max_mana
+	player_ref.max_mana = base_stats.get_max_mp()
+	player_ref.current_mana = base_stats.get_max_mp()
 	EventBus.initialize_hero_stats_ui.emit(player_ref.character_class)
 
 ## Adds experience points to the player.
@@ -162,8 +163,7 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 			inventory_slot.clear_slot()
 			inventory_slot.set_item(old_item)
 
-		var cs = PlayerData.get_base_stats()
-		EventBus.update_stats.emit(cs)
+		EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
 
 func _on_item_unequipped(item: Equipable) -> void:
 	PlayerData.add_inventory_item(item)
@@ -171,5 +171,4 @@ func _on_item_unequipped(item: Equipable) -> void:
 	
 	var _items_to_add: Array[Item] = [item]
 	EventBus.items_added_to_inventory.emit(_items_to_add)
-	var cs = PlayerData.get_base_stats()
-	EventBus.update_stats.emit(cs)
+	EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())

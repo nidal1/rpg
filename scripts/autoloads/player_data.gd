@@ -6,6 +6,8 @@ extends Node
 # ─── Constants ───────────────────────────────────────────────────────────────
 ## List of available stat names.
 const STAT_NAMES = ["HP", "MP", "STR", "REC", "INT", "WIS", "DEX", "LUC"]
+## List of available stat names without HP and MP.
+const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 ## Number of stat points awarded per level up.
 const POINTS_STATS_PER_LEVEL = 5
 
@@ -28,14 +30,7 @@ var __allocated_stats: Dictionary = {
 	"DEX": 0,
 	"LUC": 0
 }
-var __temp_allocated_stats: Dictionary = {
-	"STR": 0,
-	"REC": 0,
-	"INT": 0,
-	"WIS": 0,
-	"DEX": 0,
-	"LUC": 0
-}
+var __temp_allocated_stats: Dictionary = __allocated_stats.duplicate()
 var __lootable_items: Array[Item] = []
 var __inventory_items: Array[Item] = []
 var __equipable_items: Dictionary = {
@@ -55,8 +50,6 @@ var __equipable_items: Dictionary = {
 ## Initializes the player data using the base stats from their class.
 func initialize(cls: CharacterClass) -> void:
 	__base_stats = cls.get_class_stats()
-	__base_stats.max_health = get_max_hp()
-	__base_stats.max_mana = get_max_mp()
 	__allocated_stats = from_allocated_stats_to_dict()
 	__temp_allocated_stats = from_allocated_stats_to_dict()
 
@@ -113,7 +106,7 @@ func update_available_points() -> void:
 
 ## Adds a stat point to the specified stat.
 func add_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() <= 0 or allocate_point_saved or _stat_name not in STAT_NAMES:
+	if get_stat_points_available() <= 0 or allocate_point_saved or _stat_name not in STAT_NAMES_NO_FLT:
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) + 1)
 	set_stat_points_available(get_stat_points_available() - 1)
@@ -121,7 +114,7 @@ func add_stat_point(_stat_name: String) -> bool:
 
 ## Subtracts a stat point from the specified stat.
 func sub_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() >= __temp_stat_points_available or allocate_point_saved or _stat_name not in STAT_NAMES:
+	if get_stat_points_available() >= __temp_stat_points_available or allocate_point_saved or _stat_name not in STAT_NAMES_NO_FLT:
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) - 1)
 	set_stat_points_available(get_stat_points_available() + 1)
@@ -198,46 +191,6 @@ func get_ranged_atk() -> float:
 ## Calculates magic attack power.
 func get_magic_atk() -> float:
 	return floor(get_total("INT") * 1.3) + floor(get_total("WIS") * 0.2) + __base_stats.weapon_power
-
-## Calculates maximum health points.
-func get_max_hp() -> float:
-	return 100.0 + (get_total("REC") * 5.0)
-
-## Calculates maximum mana points.
-func get_max_mp() -> float:
-	return 50.0 + (get_total("WIS") * 5.0)
-
-## Calculates physical defense.
-func get_def() -> float:
-	return get_total("REC") + __base_stats.armor_defense
-
-## Calculates magical resistance.
-func get_resist() -> float:
-	return get_total("WIS") + __base_stats.armor_resist
-
-## Calculates critical hit chance percentage.
-func get_crit_chance() -> float:
-	return get_total("LUC") * 0.2 # percent
-
-## Calculates critical hit damage multiplier.
-func get_crit_damage() -> float:
-	return 1.5 + (get_total("LUC") * 0.0075) # multiplier
-
-## Converts base stats to a dictionary format.
-func from_base_stats_to_dict() -> Dictionary:
-	return {
-		"max_health": get_max_hp(),
-		"max_mana": get_max_mp(),
-		"STR": __base_stats.STR,
-		"REC": __base_stats.REC,
-		"INT": __base_stats.INT,
-		"WIS": __base_stats.WIS,
-		"DEX": __base_stats.DEX,
-		"LUC": __base_stats.LUC,
-		"weapon_power": __base_stats.weapon_power,
-		"armor_defense": __base_stats.armor_defense,
-		"armor_resist": __base_stats.armor_resist,
-	}
 
 ## Converts allocated base stats to a dictionary format.
 func from_allocated_stats_to_dict() -> Dictionary:

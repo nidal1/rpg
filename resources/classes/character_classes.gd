@@ -13,4 +13,4 @@ func set_class_stats(stats: CharacterStats) -> void:
 	base_stats = stats.duplicate(true)
 
 func get_class_stats() -> CharacterStats:
-	return base_stats.duplicate(true)
+	return base_stats.get_instance()

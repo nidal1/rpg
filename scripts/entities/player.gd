@@ -29,7 +29,6 @@ func _ready() -> void:
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
 	animation_tree.set_active(true)
 
-	EventBus.update_stats.connect(_on_update_stats)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -103,7 +102,7 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 
-	GameManager.register_player(self )
+	GameManager.register_player(self)
 
 ## Triggers the attack animation.
 func _play_attack_animation(attack: AttackData) -> void:
@@ -143,11 +142,11 @@ func _end_combo() -> void:
 func _flash_hit() -> void:
 	modulate = Color.RED
 	await get_tree().create_timer(0.3).timeout
-	if not is_instance_valid(self ): return
+	if not is_instance_valid(self): return
 	modulate = Color.WHITE
 
 func _get_defense() -> float:
-	return PlayerData.get_def()
+	return PlayerData.get_base_stats().get_def()
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_pressed() -> void:
@@ -173,9 +172,3 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 		if area is DropItem:
 			var item: Item = area.item
 			EventBus.lootable_item_removed.emit(item)
-
-func _on_update_stats(cs: CharacterStats):
-	print("update stats: ", cs)
-	character_class.base_stats = cs
-	max_health = cs.max_health
-	max_mana = cs.max_mana
