@@ -48,10 +48,10 @@ var __equipable_items: Dictionary = {
 
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
-func initialize(cls: CharacterClass) -> void:
-	__base_stats = cls.get_class_stats()
-	__allocated_stats = from_allocated_stats_to_dict()
-	__temp_allocated_stats = from_allocated_stats_to_dict()
+func initialize(stats: CharacterStats) -> void:
+	__base_stats = stats.get_instance()
+	__allocated_stats = stats.get_allocated_stats()
+	__temp_allocated_stats = __allocated_stats.duplicate()
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -137,36 +137,7 @@ func cancel_stats() -> void:
 func get_base_stats() -> CharacterStats:
 	return __base_stats
 
-func set_base_stats_bonus(key: String, value: int) -> void:
-	match key:
-		"max_health": __base_stats.max_health += value
-		"max_mana": __base_stats.max_mana += value
-		"STR": __base_stats.STR += value
-		"REC": __base_stats.REC += value
-		"INT": __base_stats.INT += value
-		"WIS": __base_stats.WIS += value
-		"DEX": __base_stats.DEX += value
-		"LUC": __base_stats.LUC += value
-		"weapon_power": __base_stats.weapon_power += value
-		"armor_defense": __base_stats.armor_defense += value
-		"armor_resist": __base_stats.armor_resist += value
-
-func remove_base_stats_bonus(key: String, value: int) -> void:
-	match key:
-		"max_health": __base_stats.max_health -= value
-		"max_mana": __base_stats.max_mana -= value
-		"HP": __base_stats.max_health -= value
-		"MP": __base_stats.max_mana -= value
-		"STR": __base_stats.STR -= value
-		"REC": __base_stats.REC -= value
-		"INT": __base_stats.INT -= value
-		"WIS": __base_stats.WIS -= value
-		"DEX": __base_stats.DEX -= value
-		"LUC": __base_stats.LUC -= value
-		"weapon_power": __base_stats.weapon_power -= value
-		"armor_defense": __base_stats.armor_defense -= value
-		"armor_resist": __base_stats.armor_resist -= value
-
+	
 # ─── Computed Stats ──────────────────────────────────────────────────────────
 ## Gets the total value of a stat including base and allocated points.
 func get_total(_stat_name: String) -> int:
@@ -180,18 +151,6 @@ func get_total(_stat_name: String) -> int:
 		"LUC": base_value = __base_stats.LUC
 	return base_value + __allocated_stats.get(_stat_name, 0)
 
-## Calculates melee attack power.
-func get_melee_atk() -> float:
-	return floor(get_total("STR") * 1.3) + floor(get_total("DEX") * 0.25) + __base_stats.weapon_power
-
-## Calculates ranged attack power.
-func get_ranged_atk() -> float:
-	return get_total("STR") + (get_total("LUC") * 0.3) + (get_total("DEX") * 0.2) + __base_stats.weapon_power
-
-## Calculates magic attack power.
-func get_magic_atk() -> float:
-	return floor(get_total("INT") * 1.3) + floor(get_total("WIS") * 0.2) + __base_stats.weapon_power
-
 ## Converts allocated base stats to a dictionary format.
 func from_allocated_stats_to_dict() -> Dictionary:
 	return {
@@ -204,13 +163,13 @@ func from_allocated_stats_to_dict() -> Dictionary:
 	}
 
 func get_base_weapon_power() -> float:
-	return __base_stats.weapon_power
+	return __base_stats.get_total("weapon_power")
 
 func get_base_armor_defense() -> float:
-	return __base_stats.armor_defense
+	return __base_stats.get_total("armor_defense")
 
 func get_base_armor_resist() -> float:
-	return __base_stats.armor_resist
+	return __base_stats.get_total("armor_resist")
 
 func set_base_weapon_power(power: float) -> void:
 	__base_stats.weapon_power = power
@@ -259,7 +218,7 @@ func remove_equipable_item(item: Equipable) -> void:
 	var sb = item.get_assigned_stats_bonus()
 	if sb and sb.size() > 0:
 		for s in sb:
-			remove_base_stats_bonus(s, sb[s])
+			__base_stats.remove_stat_bonus(s, sb[s])
 	if item is Weapon:
 		if is_instance_valid(__equipable_items["WEAPON"]):
 			__equipable_items["WEAPON"] = null
@@ -269,6 +228,7 @@ func remove_equipable_item(item: Equipable) -> void:
 	if item is Armor:
 		if is_instance_valid(__equipable_items[Armor.ArmorType.keys()[item.armor_type]]):
 			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
+			print("base armor defense: ", get_base_armor_defense(), " item base defense: ", item.base_defense)
 			var new_armor_defense = get_base_armor_defense() - item.base_defense
 			var new_armor_resist = get_base_armor_resist() - item.base_resist
 			set_base_armor_defense(new_armor_defense)
@@ -281,9 +241,15 @@ func calculate_equipement_stats_bonus(equipement: Equipable, operation: String =
 	if is_instance_valid(equipement):
 		var sb = equipement.get_assigned_stats_bonus()
 		if sb != null and sb.size() > 0:
-			for s in sb:
-				set_base_stats_bonus(s, sb[s])
-		
+			if operation == "equip":
+				for s in sb:
+					__base_stats.add_stat_bonus(s, sb[s])
+					print("Stats to add: ", s, " ", sb[s])
+			elif operation == "unequip":
+				for s in sb:
+					print("Stats to remove: ", s, " ", sb[s])
+					__base_stats.remove_stat_bonus(s, sb[s])
+
 		if equipement is Weapon:
 			var new_weapon_power
 			if operation == "equip":
@@ -301,10 +267,15 @@ func calculate_equipement_stats_bonus(equipement: Equipable, operation: String =
 			if operation == "equip":
 				new_armor_defense = equipement.base_defense + get_base_armor_defense()
 				new_armor_resist = equipement.base_resist + get_base_armor_resist()
+				print("New armor defense: ", new_armor_defense)
+				print("New armor resist: ", new_armor_resist)
 			if operation == "unequip":
-				new_armor_defense = equipement.base_defense - get_base_armor_defense()
-				new_armor_resist = equipement.base_resist - get_base_armor_resist()
+				new_armor_defense = get_base_armor_defense() - equipement.base_defense
+				new_armor_resist = get_base_armor_resist() - equipement.base_resist
+				print("New armor defense: ", new_armor_defense)
+				print("New armor resist: ", new_armor_resist)
 
 			set_base_armor_defense(new_armor_defense)
 			set_base_armor_resist(new_armor_resist)
+			print("base stats: ", __base_stats.to_dict())
 			return

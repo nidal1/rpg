@@ -28,15 +28,8 @@ func _ready() -> void:
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
-	PlayerData.initialize(player_ref.character_class.duplicate())
-	var base_stats = PlayerData.get_base_stats()
-	player_ref.character_class.set_class_stats(base_stats)
-	
-	player_ref.max_health = base_stats.get_max_hp()
-	player_ref.current_health = base_stats.get_max_hp()
-
-	player_ref.max_mana = base_stats.get_max_mp()
-	player_ref.current_mana = base_stats.get_max_mp()
+	var base_stats = player_ref.character_class.get_class_stats()
+	PlayerData.initialize(base_stats)
 	EventBus.initialize_hero_stats_ui.emit(player_ref.character_class)
 
 ## Adds experience points to the player.
@@ -167,6 +160,7 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 
 func _on_item_unequipped(item: Equipable) -> void:
 	PlayerData.add_inventory_item(item)
+	PlayerData.calculate_equipement_stats_bonus(item, "unequip")
 	PlayerData.remove_equipable_item(item)
 	
 	var _items_to_add: Array[Item] = [item]

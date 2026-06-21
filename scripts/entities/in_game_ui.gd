@@ -103,12 +103,13 @@ func update_stats() -> void:
 	_set_stats_points_label_text("Stats points: %s" % PlayerData.get_stat_points_available())
 
 func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
-	_set_hp_max_value(stats.get_max_hp())
-	_set_mana_max_value(stats.get_max_mp())
+	var _stats: CharacterStats = stats.get_instance()
+	_set_hp_max_value(_stats.get_max_hp())
+	_set_mana_max_value(_stats.get_max_mp())
 	var current_hp = hp_label.text.split(" / ")[0].to_int()
 	var current_mana = mana_label.text.split(" / ")[0].to_int()
-	_set_hp_label_text("%s / %s" % [current_hp, stats.get_max_hp()])
-	_set_mana_label_text("%s / %s" % [current_mana, stats.get_max_mp()])
+	_set_hp_label_text("%s / %s" % [current_hp, _stats.get_max_hp()])
+	_set_mana_label_text("%s / %s" % [current_mana, _stats.get_max_mp()])
 
 ## Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
@@ -171,12 +172,15 @@ func _initialize_stats_tab() -> void:
 
 func _initialize_hero(cls: CharacterClass) -> void:
 	_set_hero_avatar_texture(cls.avatar_texture)
-	_set_hp_max_value(cls.get_class_stats().max_health)
-	_set_hp_bar_value(cls.get_class_stats().max_health)
-	_set_mana_max_value(cls.get_class_stats().max_mana)
-	_set_mana_bar_value(cls.get_class_stats().max_mana)
-	_set_hp_label_text("%s / %s" % [cls.get_class_stats().max_health, cls.get_class_stats().max_health])
-	_set_mana_label_text("%s / %s" % [cls.get_class_stats().max_mana, cls.get_class_stats().max_mana])
+	var _stats = cls.get_class_stats_instance()
+	var hp = _stats.get_max_hp()
+	var mana = _stats.get_max_mp()
+	_set_hp_max_value(hp)
+	_set_hp_bar_value(hp)
+	_set_mana_max_value(mana)
+	_set_mana_bar_value(mana)
+	_set_hp_label_text("%s / %s" % [hp, hp])
+	_set_mana_label_text("%s / %s" % [mana, mana])
 	_set_level_label_text("%s" % [PlayerData.get_player_level()])
 	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
 	_set_level_progress_bar_value(PlayerData.get_current_xp())

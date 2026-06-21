@@ -89,11 +89,11 @@ func _get_attack_damage() -> float:
 	# combine attack-specific damage with stat-based power
 	match character_class.player_type:
 		CharacterClass.PlayerType.WARRIOR:
-			return base_damage + PlayerData.get_melee_atk()
+			return base_damage + character_class.get_class_stats().get_melee_atk()
 		CharacterClass.PlayerType.ARCHER:
-			return base_damage + PlayerData.get_ranged_atk()
+			return base_damage + character_class.get_class_stats().get_ranged_atk()
 		CharacterClass.PlayerType.MAGE, CharacterClass.PlayerType.PRIEST:
-			return base_damage + PlayerData.get_magic_atk()
+			return base_damage + character_class.get_class_stats().get_magic_atk()
 		_: return base_damage
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
@@ -101,7 +101,11 @@ func _get_attack_damage() -> float:
 func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
-
+	character_class.base_stats = character_class.get_class_stats_instance()
+	max_health = character_class.get_class_stats().get_max_hp()
+	current_health = max_health
+	max_mana = character_class.get_class_stats().get_max_mp()
+	current_mana = max_mana
 	GameManager.register_player(self)
 
 ## Triggers the attack animation.
