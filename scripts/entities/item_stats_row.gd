@@ -8,13 +8,16 @@ class_name ItemStatsRow
 func set_stats_row_key(key: String) -> void:
 	item_stats_key_label.text = key
 
-func set_stats_row_value(value: String) -> void:
-	item_stats_value_label.text = value
+func set_stats_row_value(value: int) -> void:
+	item_stats_value_label.text = str(value)
 
-func set_stats_row_upgrade(upgrade: String) -> void:
-	item_stats_upgrade_label.text = upgrade
+func set_stats_row_upgrade(upgrade: int) -> void:
+	if upgrade > 0:
+		item_stats_upgrade_label.text = "+" + str(upgrade)
+	else:
+		item_stats_upgrade_label.text = ""
 
-func set_stats_row(key: String, value: String, upgrade: String) -> void:
+func set_stats_row(key: String, value: int, upgrade: int = 0) -> void:
 	set_stats_row_key(key)
 	set_stats_row_value(value)
 	set_stats_row_upgrade(upgrade)

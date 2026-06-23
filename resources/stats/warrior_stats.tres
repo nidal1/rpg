@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_1bdra")
-STR = 8
+STR = 100
 REC = 6
 INT = 1
 DEX = 4

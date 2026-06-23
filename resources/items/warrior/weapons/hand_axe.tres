@@ -5,12 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bpupyhqkjk8gi" path="res://assets/ui/UI Elements/UI Elements/Icons/weapons/fc1624.png" id="2_o1a8q"]
 [ext_resource type="Script" uid="uid://0mklvnq1d0gb" path="res://resources/items/weapon.gd" id="2_x7r1y"]
 [ext_resource type="Resource" uid="uid://dk1rrghb1iiml" path="res://resources/items/gems/diamond.tres" id="3_qpx1a"]
-[ext_resource type="Script" uid="uid://clqa147vich2f" path="res://resources/stats/character_stats.gd" id="6_qpx1a"]
-
-[sub_resource type="Resource" id="Resource_ksva7"]
-script = ExtResource("6_qpx1a")
-STR = 4
-metadata/_custom_type_script = "uid://clqa147vich2f"
 
 [resource]
 script = ExtResource("2_x7r1y")
@@ -18,7 +12,19 @@ weapon_type = 1
 player_type = 0
 gems_slots_count = 2
 gems = Array[ExtResource("1_mdogj")]([ExtResource("2_8fva3"), ExtResource("3_qpx1a")])
-stat_bonus = SubResource("Resource_ksva7")
+stat_bonus = {
+"DEX": 2,
+"INT": 0,
+"LUC": 0,
+"REC": 0,
+"STR": 5,
+"WIS": 0,
+"armor_defense": 0,
+"armor_resist": 0,
+"max_health": 0,
+"max_mana": 0,
+"weapon_power": 0
+}
 item_name = "Hand Axe"
 icon = ExtResource("2_o1a8q")
 metadata/_custom_type_script = "uid://0mklvnq1d0gb"
