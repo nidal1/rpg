@@ -10,10 +10,10 @@ enum PlayerType {WARRIOR, ARCHER, MAGE, PRIEST, ALL}
 @export var base_stats: CharacterStats
 
 func set_class_stats(stats: CharacterStats) -> void:
-	base_stats = stats.duplicate(true)
+	base_stats = stats
 
 func get_class_stats() -> CharacterStats:
-	return base_stats.duplicate(true)
+	return base_stats
 
 func get_class_stats_instance() -> CharacterStats:
-	return base_stats.get_instance().duplicate(true)
+	return base_stats.get_instance()

@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_bjeab")
 gem_type = 3
+INT = Array[float]([10.0])
 item_name = "Topaz"
 icon = ExtResource("1_2tpln")
 item_type = 3

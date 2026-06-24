@@ -10,7 +10,7 @@ var __atk_normal_color: Color = Color("#ffffff")
 
 func set_equipable_item(_equipable_item: Equipable) -> void:
 	super.set_equipable_item(_equipable_item)
-	_set_attack_label(str(int(_equipable_item.get_total_attack_power())))
+	_set_attack_label(str(int(_equipable_item.get_base_attack_power())))
 	_set_item_upgrade_level_label(str(_equipable_item.upgrade_level))
 
 

@@ -156,6 +156,7 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 			inventory_slot.clear_slot()
 			inventory_slot.set_item(old_item)
 
+		player_ref.character_class.set_class_stats(PlayerData.get_base_stats())
 		EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
 
 func _on_item_unequipped(item: Equipable) -> void:

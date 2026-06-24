@@ -14,6 +14,7 @@ position = Vector2(0, -11)
 shape = SubResource("CircleShape2D_bjvvg")
 
 [node name="Label" type="Label" parent="." unique_id=1619467209]
+visible = false
 offset_top = -120.0
 offset_right = 40.0
 offset_bottom = -97.0
@@ -26,7 +27,6 @@ theme_override_constants/shadow_outline_size = 1
 theme_override_font_sizes/font_size = 32
 text = "State"
 
-[node name="StateMachine" type="Node" parent="." unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
+[node name="StateMachine" type="Node" parent="." unique_id=1604220785]
 script = ExtResource("2_w5xvl")
-initial_state = NodePath("")
 metadata/_custom_type_script = "uid://dh03iyyvsv3r1"

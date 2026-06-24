@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_jabc8")
-atk_bonus = Array[float]([10.0, 20.0, 30.0])
+DEX = Array[float]([10.0])
 item_name = "Ruby"
 icon = ExtResource("1_4t4v2")
 item_type = 3

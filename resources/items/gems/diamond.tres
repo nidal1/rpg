@@ -6,11 +6,7 @@
 [resource]
 script = ExtResource("2_s026l")
 gem_type = 5
-atk_bonus = Array[float]([5.0, 10.0, 15.0])
-def_bonus = Array[float]([5.0, 10.0, 15.0])
-hp_bonus = Array[float]([5.0, 10.0, 15.0])
-mp_bonus = Array[float]([5.0, 10.0, 15.0])
-crit_bonus = Array[float]([5.0, 10.0, 15.0])
+REC = Array[float]([10.0])
 item_name = "Diamond"
 icon = ExtResource("1_ycvbh")
 item_type = 3

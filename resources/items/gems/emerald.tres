@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_pe6qp")
 gem_type = 2
-hp_bonus = Array[float]([10.0, 20.0, 30.0])
+LUC = Array[float]([10.0])
 item_name = "Emerald"
 icon = ExtResource("1_3gbdc")
 item_type = 3

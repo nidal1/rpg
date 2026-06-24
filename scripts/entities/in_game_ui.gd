@@ -172,7 +172,7 @@ func _initialize_stats_tab() -> void:
 
 func _initialize_hero(cls: CharacterClass) -> void:
 	_set_hero_avatar_texture(cls.avatar_texture)
-	var _stats = cls.get_class_stats_instance()
+	var _stats = cls.get_class_stats()
 	var hp = _stats.get_max_hp()
 	var mana = _stats.get_max_mp()
 	_set_hp_max_value(hp)

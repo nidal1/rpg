@@ -25,7 +25,7 @@ func set_equipable_item(_equipable_item: Equipable) -> void:
 	_set_item_image(equipable_item.icon)
 	_set_item_category_label(Item.ItemType.keys()[equipable_item.item_type])
 	_set_item_rarety_label(Item.Rarety.keys()[equipable_item.rarety])
-	_set_item_stats_rows(equipable_item.get_assigned_stats_bonus())
+	_set_item_stats_rows(equipable_item.get_effective_stats_breakdown())
 	# _set_tradablity(equipable_item.tradable)
 	_set_item_description(equipable_item.description)
 	_set_gem_slots(equipable_item.gems_slots_count)
@@ -51,18 +51,22 @@ func _set_item_rarety_label(_item_rarety: String) -> void:
 	iem_rarety_label.text = _item_rarety
 
 func _set_item_stats_rows(_item_stats: Dictionary) -> void:
-	if _item_stats:
+	if _item_stats.size() > 0:
 		for it in _item_stats:
 			var key = it
 			var value = _item_stats[it]
 			var item_stats_row = item_stats_row_scene.instantiate()
 			item_stats_container.add_child(item_stats_row)
-			item_stats_row.set_stats_row(key, value)
+			if value["base"] == 0 and value["gem"] > 0:
+				item_stats_row.set_stats_row(key, value["gem"])
+			else:
+				item_stats_row.set_stats_row(key, value["base"], value["gem"] if value.has("gem") else 0)
+			
+
 func _set_tradablity(_tradablity: bool) -> void:
 	if _tradablity:
 		tradablity_label.text = "Tradable"
-	else:
-		tradablity_label.text = "Untradable"
+	else: tradablity_label.text = "Untradable"
 
 func _set_item_description(_item_description: String) -> void:
 	item_description_label.text = _item_description

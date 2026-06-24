@@ -11,7 +11,6 @@ region = Rect2(576, 0, 64, 64)
 [resource]
 script = ExtResource("2_x53bx")
 armor_type = 1
-base_defense = 15.0
 player_type = 0
 gems_slots_count = 2
 stat_bonus = {

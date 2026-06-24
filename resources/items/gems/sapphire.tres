@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_jtogk")
 gem_type = 1
-def_bonus = Array[float]([10.0, 20.0, 30.0])
+STR = Array[float]([10.0])
 item_name = "Sapphire"
 icon = ExtResource("1_tnk6w")
 item_type = 3

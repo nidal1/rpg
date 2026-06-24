@@ -101,7 +101,7 @@ func _get_attack_damage() -> float:
 func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
-	character_class.base_stats = character_class.get_class_stats_instance()
+	character_class.base_stats = character_class.get_class_stats()
 	max_health = character_class.get_class_stats().get_max_hp()
 	current_health = max_health
 	max_mana = character_class.get_class_stats().get_max_mp()

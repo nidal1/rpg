@@ -215,67 +215,42 @@ func add_equipable_item(item: Equipable) -> void:
 
 ## Removes an equipable item from the player's equipment.
 func remove_equipable_item(item: Equipable) -> void:
-	var sb = item.get_assigned_stats_bonus()
-	if sb and sb.size() > 0:
-		for s in sb:
-			__base_stats.remove_stat_bonus(s, sb[s])
 	if item is Weapon:
 		if is_instance_valid(__equipable_items["WEAPON"]):
 			__equipable_items["WEAPON"] = null
-			var new_weapon_power = get_base_weapon_power() - item.base_attack_power
-			set_base_weapon_power(new_weapon_power)
 		return
 	if item is Armor:
 		if is_instance_valid(__equipable_items[Armor.ArmorType.keys()[item.armor_type]]):
 			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
-			print("base armor defense: ", get_base_armor_defense(), " item base defense: ", item.base_defense)
-			var new_armor_defense = get_base_armor_defense() - item.base_defense
-			var new_armor_resist = get_base_armor_resist() - item.base_resist
-			set_base_armor_defense(new_armor_defense)
-			set_base_armor_resist(new_armor_resist)
 		return
 
 ## Calculate equipement stats bonus 
 ## args { equipement: Equipable, operation: "equip" or "unequip"}
 func calculate_equipement_stats_bonus(equipement: Equipable, operation: String = "equip"):
 	if is_instance_valid(equipement):
-		var sb = equipement.get_assigned_stats_bonus()
-		if sb != null and sb.size() > 0:
+		var effective_stats_breakdown = equipement.get_effective_stats_breakdown()
+
+		for s in effective_stats_breakdown:
+			var base = effective_stats_breakdown[s]["base"]
+			var gem = effective_stats_breakdown[s]["gem"]
+			
 			if operation == "equip":
-				for s in sb:
-					__base_stats.add_stat_bonus(s, sb[s])
-					print("Stats to add: ", s, " ", sb[s])
+				__base_stats.add_stat_bonus(s, base + gem)
 			elif operation == "unequip":
-				for s in sb:
-					print("Stats to remove: ", s, " ", sb[s])
-					__base_stats.remove_stat_bonus(s, sb[s])
+				__base_stats.remove_stat_bonus(s, base + gem)
 
 		if equipement is Weapon:
-			var new_weapon_power
 			if operation == "equip":
-				new_weapon_power = equipement.base_attack_power + get_base_weapon_power()
+				__base_stats.add_stat_bonus("weapon_power", equipement.base_attack_power)
 			if operation == "unequip":
-				new_weapon_power = equipement.base_attack_power - get_base_weapon_power()
-
-			set_base_weapon_power(new_weapon_power)
+				__base_stats.remove_stat_bonus("weapon_power", equipement.base_attack_power)
 			return
 		
 		if equipement is Armor:
-			var new_armor_defense
-			var new_armor_resist
-			
 			if operation == "equip":
-				new_armor_defense = equipement.base_defense + get_base_armor_defense()
-				new_armor_resist = equipement.base_resist + get_base_armor_resist()
-				print("New armor defense: ", new_armor_defense)
-				print("New armor resist: ", new_armor_resist)
+				__base_stats.add_stat_bonus("armor_defense", equipement.base_defense)
+				__base_stats.add_stat_bonus("armor_resist", equipement.base_resist)
 			if operation == "unequip":
-				new_armor_defense = get_base_armor_defense() - equipement.base_defense
-				new_armor_resist = get_base_armor_resist() - equipement.base_resist
-				print("New armor defense: ", new_armor_defense)
-				print("New armor resist: ", new_armor_resist)
-
-			set_base_armor_defense(new_armor_defense)
-			set_base_armor_resist(new_armor_resist)
-			print("base stats: ", __base_stats.to_dict())
+				__base_stats.remove_stat_bonus("armor_defense", equipement.base_defense)
+				__base_stats.remove_stat_bonus("armor_resist", equipement.base_resist)
 			return
