@@ -15,7 +15,6 @@ func enter() -> void:
 func _on_spawned(enemy: Enemy, _spawn_position: Vector2) -> void:
 	if enemy != actor: return
 	enemy.spawn_position = _spawn_position
-	print("Enemy spawned at", enemy.global_position)
 
 func _on_enemy_died(enemy: Enemy) -> void:
 	if enemy != actor: return

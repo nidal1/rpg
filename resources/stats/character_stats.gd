@@ -11,7 +11,7 @@ class_name CharacterStats
 
 # ─── Bonus stats (set by equipment or gems) ───────────
 
-var __bonus_stats: Dictionary = {
+@export var __bonus_stats: Dictionary = {
 	"max_health": 0.0,
 	"max_mana": 0.0,
 	"STR": 0,

@@ -104,12 +104,14 @@ func update_stats() -> void:
 
 func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
 	var _stats: CharacterStats = stats.get_instance()
-	_set_hp_max_value(_stats.get_max_hp())
-	_set_mana_max_value(_stats.get_max_mp())
+	var hp = int(round(_stats.get_max_hp()))
+	var mana = int(round(_stats.get_max_mp()))
+	_set_hp_max_value(hp)
+	_set_mana_max_value(mana)
 	var current_hp = hp_label.text.split(" / ")[0].to_int()
 	var current_mana = mana_label.text.split(" / ")[0].to_int()
-	_set_hp_label_text("%s / %s" % [current_hp, _stats.get_max_hp()])
-	_set_mana_label_text("%s / %s" % [current_mana, _stats.get_max_mp()])
+	_set_hp_label_text("%s / %s" % [current_hp, hp])
+	_set_mana_label_text("%s / %s" % [current_mana, mana])
 
 ## Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
@@ -117,14 +119,14 @@ func on_hero_avatar_texture(texture: Texture2D) -> void:
 
 ## Called to update the HP bar visually.
 func on_hp_bar_value(value: float) -> void:
-	_set_hp_bar_value(value)
-	var text = "%s / %s" % [value, hp_bar.max_value]
+	_set_hp_bar_value(int(round(value)))
+	var text = "%s / %s" % [int(round(value)), int(round(hp_bar.max_value))]
 	_set_hp_label_text(text)
 
 ## Called to update the Mana bar visually.
 func on_mana_bar_value(value: float) -> void:
-	_set_mana_bar_value(value)
-	var text = "%s / %s" % [value, mana_bar.max_value]
+	_set_mana_bar_value(int(round(value)))
+	var text = "%s / %s" % [int(round(value)), int(round(mana_bar.max_value))]
 	_set_mana_label_text(text)
 
 # ─── Private UI Setters ──────────────────────────────────────────────────────
@@ -173,8 +175,8 @@ func _initialize_stats_tab() -> void:
 func _initialize_hero(cls: CharacterClass) -> void:
 	_set_hero_avatar_texture(cls.avatar_texture)
 	var _stats = cls.get_class_stats()
-	var hp = _stats.get_max_hp()
-	var mana = _stats.get_max_mp()
+	var hp = int(round(_stats.get_max_hp()))
+	var mana = int(round(_stats.get_max_mp()))
 	_set_hp_max_value(hp)
 	_set_hp_bar_value(hp)
 	_set_mana_max_value(mana)
