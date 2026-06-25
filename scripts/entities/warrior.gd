@@ -14,5 +14,4 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	var target_node = area.get_parent()
 	if area.name == "Hurtbox" and target_node.is_in_group("enemy"):
 		var damage: float = _get_attack_damage()
-		print(damage)
 		target_node.take_damage(damage)

@@ -56,7 +56,7 @@ func get_allocated_stats() -> Dictionary:
 
 ## Calculates maximum health points.
 func get_max_hp() -> float:
-	return 100.0 + (REC * 5.0) + get_bonus_max_hp()
+	return 100.0 + (get_bonus_rec() + REC) * 5.0 + get_bonus_max_hp()
 
 ## Calculates maximum mana points.
 func get_max_mp() -> float:
@@ -72,7 +72,6 @@ func get_resist() -> float:
 
 ## Calculates melee attack power.
 func get_melee_atk() -> float:
-	print("Melee atk: ", floor(get_total("STR") * 1.3) + floor(get_total("DEX") * 0.25) + get_total("weapon_power"))
 	return floor(get_total("STR") * 1.3) + floor(get_total("DEX") * 0.25) + get_total("weapon_power")
 
 ## Calculates ranged attack power.
