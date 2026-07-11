@@ -46,6 +46,11 @@ var __equipable_items: Dictionary = {
 	"PET": null
 }
 
+var __potions: Dictionary = {
+	"HEALTH": [],
+	"MANA": [],
+}
+
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
 func initialize(stats: CharacterStats) -> void:
@@ -254,3 +259,23 @@ func calculate_equipement_stats_bonus(equipement: Equipable, operation: String =
 				__base_stats.remove_stat_bonus("armor_defense", equipement.base_defense)
 				__base_stats.remove_stat_bonus("armor_resist", equipement.base_resist)
 			return
+
+# ─── Potions ───────────────────────────────────────────────────────────────
+func add_potion(potion: Potion) -> void:
+	var potion_effect = potion.get_potion_effect()
+	if potion_effect["potion_type"] == Potion.PotionType.HEALTH_POTION:
+		__potions["HEALTH"].append(potion)
+		return
+	if potion_effect["potion_type"] == Potion.PotionType.MANA_POTION:
+		__potions["MANA"].append(potion)
+		return
+
+func use_health_potion() -> void:
+	if __potions["HEALTH"] > 0:
+		__potions["HEALTH"] -= 1
+		EventBus.health_potions_changed.emit(__potions["HEALTH"])
+
+func use_mana_potion() -> void:
+	if __potions["MANA"] > 0:
+		__potions["MANA"] -= 1
+		EventBus.mana_potions_changed.emit(__potions["MANA"])

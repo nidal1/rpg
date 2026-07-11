@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Potion" format=3 uid="uid://cld7xqoxjvacq"]
+
+[ext_resource type="Texture2D" uid="uid://c2t14c3jqjhwf" path="res://assets/sprites/items/potions.png" id="1_2y1wo"]
+[ext_resource type="Script" uid="uid://dlmrvne4mge6u" path="res://resources/items/potion.gd" id="2_kmt25"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6txx0"]
+atlas = ExtResource("1_2y1wo")
+region = Rect2(512, 0, 64, 64)
+
+[resource]
+script = ExtResource("2_kmt25")
+item_name = "Small Health Potion"
+description = "Consomable potion restore 10% of player health"
+icon = SubResource("AtlasTexture_6txx0")
+metadata/_custom_type_script = "uid://dlmrvne4mge6u"

@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://b3y183bg8576m" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_5.png" id="10_p7bhm"]
 [ext_resource type="Script" uid="uid://byefa5snk07d4" path="res://scripts/entities/equipement_slot.gd" id="11_b7ceb"]
 [ext_resource type="Texture2D" uid="uid://bie6mta5n5i4b" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_8.png" id="11_x5m13"]
+[ext_resource type="PackedScene" uid="uid://c4c7qy28qw872" path="res://scenes/ui/potion_slot.tscn" id="25_mk8tb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wccuv"]
 bg_color = Color(0.029506557, 0.029506557, 0.029506557, 1)
@@ -592,6 +593,40 @@ theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 
 [node name="Popups" type="Node2D" parent="." unique_id=1004954947]
+
+[node name="PotionsContainer" type="Control" parent="." unique_id=276690427]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="PotionsContainer" unique_id=2092123190]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 73.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PotionsContainer/MarginContainer" unique_id=5584311]
+layout_mode = 2
+
+[node name="HealthPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=2076065514 instance=ExtResource("25_mk8tb")]
+layout_mode = 2
+
+[node name="ManaPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=1730970027 instance=ExtResource("25_mk8tb")]
+layout_mode = 2
+potion_type = 1
 
 [connection signal="pressed" from="Control/HeroPanelControl/PanelButton" to="." method="_on_panel_button_pressed"]
 [connection signal="pressed" from="Control/LootableItems/ToggleLootableItemsButton" to="." method="_on_toggle_lootable_items_button_pressed"]

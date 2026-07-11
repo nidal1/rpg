@@ -22,8 +22,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if not item:
 			return
-		if item is not Equipable:
-			context_menu.set_item_hidden(0, true)
+		if not (item is Equipable or item is Consumable) :
+			context_menu.set_item_disabled(0, true)
 		context_menu.popup()
 		# position = mouse position
 		context_menu.position = get_screen_position() + event.position

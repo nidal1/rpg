@@ -127,37 +127,46 @@ func _on_item_dropped_from_inventory(item: Item) -> void:
 	PlayerData.remove_inventory_item(item)
 
 func _on_equip_item(inventory_slot: InventorySlot) -> void:
-	var item = inventory_slot.get_item() as Equipable
-	if item.player_type == CharacterClass.PlayerType.ALL or item.player_type == player_ref.character_class.player_type:
-		var item_type
-		if item is Armor:
-			item_type = Armor.ArmorType.keys()[item.armor_type]
-		elif item is Weapon:
-			item_type = "WEAPON"
-		if not PlayerData.get_equipements()[item_type]:
-			PlayerData.add_equipable_item(item)
-			PlayerData.calculate_equipement_stats_bonus(item)
-			PlayerData.remove_inventory_item(item)
-			EventBus.item_equipped.emit(inventory_slot)
-		else:
-			# swap item
-			var old_item = PlayerData.get_equipements()[item_type]
-			PlayerData.remove_equipable_item(old_item)
-			PlayerData.calculate_equipement_stats_bonus(old_item, "unequip")
+	var item = inventory_slot.get_item()
+	if item is Equipable:
+		if item.player_type == CharacterClass.PlayerType.ALL or item.player_type == player_ref.character_class.player_type:
+			var item_type
+			if item is Armor:
+				item_type = Armor.ArmorType.keys()[item.armor_type]
+			elif item is Weapon:
+				item_type = "WEAPON"
+			if not PlayerData.get_equipements()[item_type]:
+				PlayerData.add_equipable_item(item)
+				PlayerData.calculate_equipement_stats_bonus(item)
+				PlayerData.remove_inventory_item(item)
+				EventBus.item_equipped.emit(inventory_slot)
+			else:
+				# swap item
+				var old_item = PlayerData.get_equipements()[item_type]
+				PlayerData.remove_equipable_item(old_item)
+				PlayerData.calculate_equipement_stats_bonus(old_item, "unequip")
 
-			PlayerData.add_equipable_item(item)
-			PlayerData.calculate_equipement_stats_bonus(item)
+				PlayerData.add_equipable_item(item)
+				PlayerData.calculate_equipement_stats_bonus(item)
 
-			PlayerData.add_inventory_item(old_item)
-			PlayerData.remove_inventory_item(item)
+				PlayerData.add_inventory_item(old_item)
+				PlayerData.remove_inventory_item(item)
 
-			EventBus.item_equipped.emit(inventory_slot)
+				EventBus.item_equipped.emit(inventory_slot)
 
-			inventory_slot.clear_slot()
-			inventory_slot.set_item(old_item)
+				inventory_slot.clear_slot()
+				inventory_slot.set_item(old_item)
 
-		player_ref.character_class.set_class_stats(PlayerData.get_base_stats())
-		EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
+			player_ref.character_class.set_class_stats(PlayerData.get_base_stats())
+			EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
+
+	if item is Potion:
+		PlayerData.add_potion(item)
+		PlayerData.remove_inventory_item(item)
+		EventBus.potions_added.emit(item)
+		var _items_to_remove: Array[Item] = [item]
+		EventBus.items_removed_from_inventory.emit(_items_to_remove)
+		
 
 func _on_item_unequipped(item: Equipable) -> void:
 	PlayerData.add_inventory_item(item)

@@ -65,6 +65,10 @@ var item_table_details_instance: EquipableTableDetails
 @onready var shield_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/ShieldSlot
 @onready var cloak_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/CloakSlot
 
+# Potions section
+@onready var health_potion_slot: PotionSlot = $PotionsContainer/MarginContainer/HBoxContainer/HealthPotionSlot
+@onready var mana_potion_slot: PotionSlot = $PotionsContainer/MarginContainer/HBoxContainer/ManaPotionSlot
+
 # Global Popups
 @onready var popups: Node2D = $Popups
 @export var armor_table_details_scene: PackedScene
@@ -75,17 +79,21 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hud.visible = false
 	lootable_items_table.visible = false
-	
+
+
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
 	EventBus.update_hero_stats_ui.connect(_on_update_hero_stats_ui)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
-	# EventBus.items_removed_from_inventory.connect(_on_items_removed_from_inventory)
+	EventBus.items_removed_from_inventory.connect(_on_items_removed_from_inventory)
 	EventBus.item_equipped.connect(_on_item_equipped)
 
 	EventBus.show_item_table_details.connect(_on_show_item_table_details)
 	EventBus.hide_item_table_details.connect(_on_hide_item_table_details)
+
+	EventBus.potions_added.connect(_on_potion_slot_potions_added)
+	EventBus.potions_removed.connect(_on_potion_slot_potions_removed)
 	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
@@ -141,6 +149,7 @@ func _set_level_progress_bar_value(value: int) -> void: level_progress_bar.value
 func _set_level_progress_bar_max_value(value: int) -> void: level_progress_bar.max_value = value
 func _set_level_label_text(text: String) -> void: level_label.text = text
 func _set_stats_points_label_text(text: String) -> void: stats_points_label.text = text
+
 
 # ─── Initialization Methods ──────────────────────────────────────────────────
 func _initialize_hero_stats(cls: CharacterClass) -> void:
@@ -285,6 +294,13 @@ func _on_panel_button_pressed() -> void:
 func _on_toggle_lootable_items_button_pressed() -> void:
 	__toggle_lootable_items_panel()
 
+func _on_items_removed_from_inventory(slots: Array[Item]) -> void:
+	for slot in slots:
+		for i in inventory_slots:
+			if i.item == slot:
+				i.clear_slot()
+				break
+
 func _on_items_added_to_inventory(slots: Array[Item]) -> void:
 	for slot in slots:
 		for i in inventory_slots:
@@ -336,26 +352,48 @@ func _on_item_equipped(inventory_slot: InventorySlot) -> void:
 func _on_show_item_table_details(item: Item) -> void:
 	if item_table_details_instance or item_table_details_visible:
 		return
-	if item is Weapon:
-		item_table_details_instance = weapon_table_details_scene.instantiate()
-	if item is Armor:
-		item_table_details_instance = armor_table_details_scene.instantiate()
-	popups.add_child(item_table_details_instance)
-	item_table_details_instance.set_equipable_item(item as Equipable)
-	var mouse_pos = get_global_mouse_position()
-	var item_table_details_size = item_table_details_instance.get_size()
-	item_table_details_instance.position = mouse_pos
-	if mouse_pos.x + item_table_details_size.x > get_viewport().size.x:
-		item_table_details_instance.position -= mouse_pos - Vector2(item_table_details_size.x, 0)
-	
-	if mouse_pos.y + item_table_details_size.y > get_viewport().size.y:
-		item_table_details_instance.position -= Vector2(0, mouse_pos.y + item_table_details_size.y - get_viewport().size.y)
+	if item is Equipable:
+		if item is Weapon:
+			item_table_details_instance = weapon_table_details_scene.instantiate()
+		if item is Armor:
+			item_table_details_instance = armor_table_details_scene.instantiate()
+		popups.add_child(item_table_details_instance)
+		item_table_details_instance.set_equipable_item(item as Equipable)
+		var mouse_pos = get_global_mouse_position()
+		var item_table_details_size = item_table_details_instance.get_size()
+		item_table_details_instance.position = mouse_pos
+		if mouse_pos.x + item_table_details_size.x > get_viewport().size.x:
+			item_table_details_instance.position -= mouse_pos - Vector2(item_table_details_size.x, 0)
+		
+		if mouse_pos.y + item_table_details_size.y > get_viewport().size.y:
+			item_table_details_instance.position -= Vector2(0, mouse_pos.y + item_table_details_size.y - get_viewport().size.y)
 		
 		
-	item_table_details_instance.show()
+		item_table_details_instance.show()
+
+func _on_potion_slot_potions_added(potion: Potion) -> void:
+	if potion:
+		if potion.potion_type == Potion.PotionType.HEALTH_POTION:
+			health_potion_slot.equip(potion)
+		if potion.potion_type == Potion.PotionType.MANA_POTION:
+			mana_potion_slot.equip(potion)
+
+func _on_potion_slot_potions_removed(potion: Potion) -> void:
+	if potion.potion_type == Potion.PotionType.HEALTH_POTION:
+		health_potion_slot.unequip()
+	if potion.potion_type == Potion.PotionType.MANA_POTION:
+		mana_potion_slot.unequip()
 
 func _on_hide_item_table_details() -> void:
 	if item_table_details_instance:
 		item_table_details_instance.hide()
 		item_table_details_instance.queue_free()
 		item_table_details_instance = null
+
+
+func _on_health_potion_texture_button_pressed() -> void:
+	print("health potion pressed")
+
+
+func _on_mana_potion_texture_button_pressed() -> void:
+	print("mana potion pressed")

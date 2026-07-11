@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Potion" format=3 uid="uid://bm4eqcnvtrmn8"]
+
+[ext_resource type="Texture2D" uid="uid://c2t14c3jqjhwf" path="res://assets/sprites/items/potions.png" id="1_dfid0"]
+[ext_resource type="Script" uid="uid://dlmrvne4mge6u" path="res://resources/items/potion.gd" id="2_lybwe"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohxso"]
+atlas = ExtResource("1_dfid0")
+region = Rect2(512, 128, 64, 64)
+
+[resource]
+script = ExtResource("2_lybwe")
+potion_type = 1
+item_name = "Small Mana Potion"
+description = "Consomable mana potion restore 10% of mana points"
+icon = SubResource("AtlasTexture_ohxso")
+metadata/_custom_type_script = "uid://dlmrvne4mge6u"

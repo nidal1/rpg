@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://c4c7qy28qw872"]
+
+[ext_resource type="Texture2D" uid="uid://bsdot04n550l3" path="res://assets/ui/UI Elements/UI Elements/Bars/CirculerBar_Base.png" id="1_4t0tn"]
+[ext_resource type="Script" uid="uid://di7guglwmrw53" path="res://scripts/entities/potion_slot.gd" id="1_pi57g"]
+[ext_resource type="Texture2D" uid="uid://r5n8eacogfn3" path="res://assets/ui/UI Elements/UI Elements/Bars/CircularBar_Fill.png" id="2_pi57g"]
+
+[node name="PotionSlot" type="Control" unique_id=2076065514]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_pi57g")
+
+[node name="PotionImage" type="TextureRect" parent="." unique_id=1697822241]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_4t0tn")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="HealthPotionTextureButton" type="TextureButton" parent="." unique_id=2133281192]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -13.625
+offset_top = -13.625
+offset_right = 13.625
+offset_bottom = 13.625
+grow_horizontal = 2
+grow_vertical = 2
+disabled = true
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="PotionsSizeLabel" type="Control" parent="." unique_id=1044295832]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="PotionsSizeLabel" unique_id=976318418]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_pi57g")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="HealthItemsLabel" type="Label" parent="PotionsSizeLabel" unique_id=484509181]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContextMenu" type="PopupMenu" parent="." unique_id=114526484]
