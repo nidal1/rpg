@@ -100,6 +100,7 @@ signal equip_item(inventory_slot: InventorySlot)
 @warning_ignore("UNUSED_SIGNAL")
 signal item_equipped(inventory_slot: InventorySlot)
 
+# TODO: merge item_unequipped and potions_unequipped
 ## Emitted when an item is unequipped.
 @warning_ignore("UNUSED_SIGNAL")
 signal item_unequipped(item: Equipable)

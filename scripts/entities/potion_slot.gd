@@ -27,7 +27,8 @@ func _gui_input(event: InputEvent) -> void:
 		# position = mouse position
 		var off = Vector2(20, -50) + event.position
 		context_menu.position = get_screen_position()  + off
-		context_menu.id_pressed.connect(_on_context_menu_index_pressed)
+		if not context_menu.id_pressed.is_connected(_on_context_menu_index_pressed):
+			context_menu.id_pressed.connect(_on_context_menu_index_pressed)
 
 func _on_context_menu_index_pressed(index: int) -> void:
 	if index == 0:
