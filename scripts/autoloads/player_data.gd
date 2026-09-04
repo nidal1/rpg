@@ -270,6 +270,16 @@ func add_potion(potion: Potion) -> void:
 		__potions["MANA"].append(potion)
 		return
 
+func remove_potion_from_list(potion: Potion) -> void:
+	var potion_effect = potion.get_potion_effect()
+	if potion_effect["potion_type"] == Potion.PotionType.HEALTH_POTION:
+		__potions["HEALTH"].erase(potion)
+		return
+	if potion_effect["potion_type"] == Potion.PotionType.MANA_POTION:
+		__potions["MANA"].erase(potion)
+		return
+
+
 func use_health_potion() -> void:
 	if __potions["HEALTH"] > 0:
 		__potions["HEALTH"] -= 1

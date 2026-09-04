@@ -111,8 +111,12 @@ signal switch_equipements()
 # ─── Potions Signals ───────────────────────────────────────────────────────
 ## Emitted when potions are added to the potions list.
 @warning_ignore("UNUSED_SIGNAL")
-signal potions_added(potion: Potion)
+signal potions_added_to_list(potion: Potion)
 
-## Emitted when potions are removed from the potions list.
+## Emitted when potions are unequipped.
 @warning_ignore("UNUSED_SIGNAL")
-signal potions_removed(potion: Potion)
+signal potions_unequipped(potion: Potion)
+
+## Emitted when potions are consumed.
+@warning_ignore("UNUSED_SIGNAL")
+signal potions_consumed(potion: Potion)

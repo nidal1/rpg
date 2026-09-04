@@ -23,6 +23,7 @@ func _ready() -> void:
 	EventBus.item_dropped_from_inventory.connect(_on_item_dropped_from_inventory)
 	EventBus.equip_item.connect(_on_equip_item)
 	EventBus.item_unequipped.connect(_on_item_unequipped)
+	EventBus.potions_unequipped.connect(_on_potion_unequipped)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
@@ -163,16 +164,24 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 	if item is Potion:
 		PlayerData.add_potion(item)
 		PlayerData.remove_inventory_item(item)
-		EventBus.potions_added.emit(item)
+		EventBus.potions_added_to_list.emit(item)
 		var _items_to_remove: Array[Item] = [item]
 		EventBus.items_removed_from_inventory.emit(_items_to_remove)
 		
 
 func _on_item_unequipped(item: Equipable) -> void:
-	PlayerData.add_inventory_item(item)
-	PlayerData.calculate_equipement_stats_bonus(item, "unequip")
-	PlayerData.remove_equipable_item(item)
-	
-	var _items_to_add: Array[Item] = [item]
+	if item is Equipable:
+		PlayerData.add_inventory_item(item)
+		PlayerData.calculate_equipement_stats_bonus(item, "unequip")
+		PlayerData.remove_equipable_item(item)
+		
+		var _items_to_add: Array[Item] = [item]
+		EventBus.items_added_to_inventory.emit(_items_to_add)
+		EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
+
+func _on_potion_unequipped(potion: Potion) -> void:
+	PlayerData.add_inventory_item(potion as Item)
+	PlayerData.remove_potion_from_list(potion)
+
+	var _items_to_add: Array[Item] = [potion]
 	EventBus.items_added_to_inventory.emit(_items_to_add)
-	EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())

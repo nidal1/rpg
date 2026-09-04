@@ -92,8 +92,7 @@ func _ready() -> void:
 	EventBus.show_item_table_details.connect(_on_show_item_table_details)
 	EventBus.hide_item_table_details.connect(_on_hide_item_table_details)
 
-	EventBus.potions_added.connect(_on_potion_slot_potions_added)
-	EventBus.potions_removed.connect(_on_potion_slot_potions_removed)
+	EventBus.potions_added_to_list.connect(_on_potion_slot_potions_added_to_list)
 	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
@@ -371,18 +370,14 @@ func _on_show_item_table_details(item: Item) -> void:
 		
 		item_table_details_instance.show()
 
-func _on_potion_slot_potions_added(potion: Potion) -> void:
+func _on_potion_slot_potions_added_to_list(potion: Potion) -> void:
 	if potion:
 		if potion.potion_type == Potion.PotionType.HEALTH_POTION:
 			health_potion_slot.equip(potion)
 		if potion.potion_type == Potion.PotionType.MANA_POTION:
 			mana_potion_slot.equip(potion)
 
-func _on_potion_slot_potions_removed(potion: Potion) -> void:
-	if potion.potion_type == Potion.PotionType.HEALTH_POTION:
-		health_potion_slot.unequip()
-	if potion.potion_type == Potion.PotionType.MANA_POTION:
-		mana_potion_slot.unequip()
+	
 
 func _on_hide_item_table_details() -> void:
 	if item_table_details_instance:
