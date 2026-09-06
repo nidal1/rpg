@@ -57,6 +57,8 @@ func initialize(stats: CharacterStats) -> void:
 	__base_stats = stats.get_instance()
 	__allocated_stats = stats.get_allocated_stats()
 	__temp_allocated_stats = __allocated_stats.duplicate()
+	EventBus.hero_stats_changed.emit(__base_stats)
+	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -70,6 +72,7 @@ func get_player_level() -> int:
 ## Sets the current experience points.
 func set_current_xp(new_xp: int) -> void:
 	__current_xp = new_xp
+	EventBus.hero_xp_changed.emit(__current_xp, __total_xp_to_next_level)
 
 ## Gets the current experience points.
 func get_current_xp() -> int:
@@ -78,6 +81,7 @@ func get_current_xp() -> int:
 ## Sets the total experience points needed for the next level.
 func set_total_xp_to_next_level(new_xp: int) -> void:
 	__total_xp_to_next_level = new_xp
+	EventBus.hero_xp_changed.emit(__current_xp, __total_xp_to_next_level)
 
 ## Gets the total experience points needed for the next level.
 func get_total_xp_to_next_level() -> int:
@@ -87,6 +91,7 @@ func get_total_xp_to_next_level() -> int:
 ## Sets the number of available stat points.
 func set_stat_points_available(new_points: int) -> void:
 	__stat_points_available = new_points
+	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
 ## Gets the number of available stat points.
 func get_stat_points_available() -> int:
@@ -115,6 +120,7 @@ func add_stat_point(_stat_name: String) -> bool:
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) + 1)
 	set_stat_points_available(get_stat_points_available() - 1)
+	EventBus.hero_stats_changed.emit(__base_stats)
 	return true
 
 ## Subtracts a stat point from the specified stat.
@@ -123,6 +129,7 @@ func sub_stat_point(_stat_name: String) -> bool:
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) - 1)
 	set_stat_points_available(get_stat_points_available() + 1)
+	EventBus.hero_stats_changed.emit(__base_stats)
 	return true
 
 ## Saves the currently allocated stats.
@@ -132,12 +139,16 @@ func save_stats() -> void:
 	
 	__temp_stat_points_available = __stat_points_available
 	__temp_allocated_stats = __allocated_stats.duplicate()
+	EventBus.hero_stats_changed.emit(__base_stats)
+	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
 ## Cancels the current stat allocation and reverts to the last saved state.
 func cancel_stats() -> void:
 	__stat_points_available = __temp_stat_points_available
 	__allocated_stats = __temp_allocated_stats.duplicate()
 	allocate_point_saved = false
+	EventBus.hero_stats_changed.emit(__base_stats)
+	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
 func get_base_stats() -> CharacterStats:
 	return __base_stats
@@ -249,6 +260,7 @@ func calculate_equipement_stats_bonus(equipement: Equipable, operation: String =
 				__base_stats.add_stat_bonus("weapon_power", equipement.base_attack_power)
 			if operation == "unequip":
 				__base_stats.remove_stat_bonus("weapon_power", equipement.base_attack_power)
+			EventBus.hero_stats_changed.emit(__base_stats)
 			return
 		
 		if equipement is Armor:
@@ -258,7 +270,10 @@ func calculate_equipement_stats_bonus(equipement: Equipable, operation: String =
 			if operation == "unequip":
 				__base_stats.remove_stat_bonus("armor_defense", equipement.base_defense)
 				__base_stats.remove_stat_bonus("armor_resist", equipement.base_resist)
+			EventBus.hero_stats_changed.emit(__base_stats)
 			return
+
+		EventBus.hero_stats_changed.emit(__base_stats)
 
 # ─── Potions ───────────────────────────────────────────────────────────────
 func add_potion(potion: Potion) -> void:

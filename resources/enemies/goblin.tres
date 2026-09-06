@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="1_ttibx"]
 [ext_resource type="Resource" uid="uid://bm4eqcnvtrmn8" path="res://resources/items/potions/sm_mana_potion.tres" id="2_3kmag"]
 [ext_resource type="Resource" uid="uid://cld7xqoxjvacq" path="res://resources/items/potions/sm_health_potion.tres" id="3_qxlb2"]
+[ext_resource type="Resource" uid="uid://d3doj1d5ei4y3" path="res://resources/items/warrior/weapons/hand_axe.tres" id="4_8263n"]
+[ext_resource type="Resource" uid="uid://qqkixnq2twto" path="res://resources/items/warrior/armors/iron_soldier_helm.tres" id="5_k3uoj"]
 
 [resource]
 script = ExtResource("1_ttibx")
@@ -12,5 +14,5 @@ enemy_name = "Goblin"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
 attack_damage = 5.0
-drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_3kmag"), ExtResource("3_qxlb2")])
+drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_3kmag"), ExtResource("3_qxlb2"), ExtResource("4_8263n"), ExtResource("5_k3uoj")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

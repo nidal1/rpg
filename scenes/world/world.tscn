@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://j2pv12plc4qe" path="res://assets/tilesets/Tilemap_color1.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://bqqhkgwtk31y3" path="res://scenes/entities/enemies/enemies_spawner.tscn" id="3_1fp7r"]
+[ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="3_v5dby"]
 [ext_resource type="PackedScene" uid="uid://c27gyy0t4r3ge" path="res://scenes/ui/in_game_ui.tscn" id="4_6m72w"]
 [ext_resource type="PackedScene" uid="uid://hovii1v0s7yp" path="res://scenes/entities/player/warrior.tscn" id="4_v5dby"]
 
@@ -82,6 +83,7 @@ tile_set = SubResource("TileSet_1fp7r")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(920, 352)
+enemies = Array[PackedScene]([ExtResource("3_v5dby"), ExtResource("3_v5dby"), ExtResource("3_v5dby")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 

@@ -137,10 +137,45 @@ func get_stats_bonus_value(stat: String) -> int:
 	return __bonus_stats[stat]
 
 func add_stat_bonus(stat: String, value: int) -> void:
-	__bonus_stats[stat] = max(0, __bonus_stats[stat] + value)
+	if __bonus_stats.has(stat):
+		__bonus_stats[stat] = max(0, __bonus_stats[stat] + value)
 
 func remove_stat_bonus(stat: String, value: int) -> void:
-	__bonus_stats[stat] = max(0, __bonus_stats[stat] - value)
+	if __bonus_stats.has(stat):
+		__bonus_stats[stat] = max(0, __bonus_stats[stat] - value)
+
+func add_stat_bonuses(bonuses: Dictionary) -> void:
+	for stat in bonuses:
+		add_stat_bonus(stat, int(bonuses[stat]))
+
+func remove_stat_bonuses(bonuses: Dictionary) -> void:
+	for stat in bonuses:
+		remove_stat_bonus(stat, int(bonuses[stat]))
+
+## Returns a dictionary of primary stats with totals (base + bonus).
+func get_primary_stats_breakdown() -> Dictionary:
+	return {
+		"STR": get_total("STR"),
+		"REC": get_total("REC"),
+		"INT": get_total("INT"),
+		"WIS": get_total("WIS"),
+		"DEX": get_total("DEX"),
+		"LUC": get_total("LUC")
+	}
+
+## Returns a dictionary of all derived secondary combat stats.
+func get_secondary_stats_breakdown() -> Dictionary:
+	return {
+		"max_hp": get_max_hp(),
+		"max_mp": get_max_mp(),
+		"def": get_def(),
+		"resist": get_resist(),
+		"melee_atk": get_melee_atk(),
+		"ranged_atk": get_ranged_atk(),
+		"magic_atk": get_magic_atk(),
+		"crit_chance": get_crit_chance(),
+		"crit_damage": get_crit_damage()
+	}
 
 
 ## Calculates bonus maximum health points.

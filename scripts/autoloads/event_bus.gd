@@ -34,6 +34,22 @@ signal xp_changed(current: int)
 signal level_up(new_level: int)
 
 # ─── Stats and Stats Allocation Signals ────────────────────────────────────────────────
+## Emitted when hero HP changes.
+@warning_ignore("UNUSED_SIGNAL")
+signal hero_hp_changed(current_hp: float, max_hp: float)
+## Emitted when hero MP changes.
+@warning_ignore("UNUSED_SIGNAL")
+signal hero_mp_changed(current_mp: float, max_mp: float)
+## Emitted when hero XP changes.
+@warning_ignore("UNUSED_SIGNAL")
+signal hero_xp_changed(current_xp: int, total_xp: int)
+## Emitted when hero stats change.
+@warning_ignore("UNUSED_SIGNAL")
+signal hero_stats_changed(stats: CharacterStats)
+## Emitted when available stat points change.
+@warning_ignore("UNUSED_SIGNAL")
+signal stat_points_available_changed(points: int)
+
 ## Emitted when a stat point is allocated.
 @warning_ignore("UNUSED_SIGNAL")
 signal stat_allocated(stat_name: String)

@@ -104,37 +104,75 @@ func _ready() -> void:
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Updates the entire stats UI by reading from PlayerData.
 func update_stats() -> void:
+	var available_points = PlayerData.get_stat_points_available()
+	var base_stats = PlayerData.get_base_stats()
 	for child in stats_container.get_children():
 		if child is StatContainer:
-			child.set_stat_point(PlayerData.get_allocated_stat(child.stat_name))
-	_set_stats_points_label_text("Stats points: %s" % PlayerData.get_stat_points_available())
+			var alloc = PlayerData.get_allocated_stat(child.stat_name)
+			var total = base_stats.get_total(child.stat_name) if base_stats else alloc
+			child.set_stat_point(alloc, total)
+			child.set_button_states(available_points > 0 and not PlayerData.allocate_point_saved, alloc > 0)
+	_set_stats_points_label_text("Stats points: %s" % available_points)
+
+# Tweens for smooth progress bar animations
+var hp_tween: Tween
+var mana_tween: Tween
+var xp_tween: Tween
 
 func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
-	var _stats: CharacterStats = stats.get_instance()
-	var hp = int(round(_stats.get_max_hp()))
-	var mana = int(round(_stats.get_max_mp()))
+	if not stats: return
+	var hp = int(round(stats.get_max_hp()))
+	var mana = int(round(stats.get_max_mp()))
 	_set_hp_max_value(hp)
 	_set_mana_max_value(mana)
-	var current_hp = hp_label.text.split(" / ")[0].to_int()
-	var current_mana = mana_label.text.split(" / ")[0].to_int()
-	_set_hp_label_text("%s / %s" % [current_hp, hp])
-	_set_mana_label_text("%s / %s" % [current_mana, mana])
+	var current_hp = hp_bar.value
+	var current_mana = mana_bar.value
+	_set_hp_label_text("%d / %d" % [int(round(current_hp)), hp])
+	_set_mana_label_text("%d / %d" % [int(round(current_mana)), mana])
 
 ## Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
 	_set_hero_avatar_texture(texture)
 
-## Called to update the HP bar visually.
+## Called to update the HP bar visually with smooth tweening.
 func on_hp_bar_value(value: float) -> void:
-	_set_hp_bar_value(int(round(value)))
-	var text = "%s / %s" % [int(round(value)), int(round(hp_bar.max_value))]
+	if hp_tween and hp_tween.is_running():
+		hp_tween.kill()
+	hp_tween = create_tween()
+	hp_tween.tween_property(hp_bar, "value", value, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var text = "%d / %d" % [int(round(value)), int(round(hp_bar.max_value))]
 	_set_hp_label_text(text)
 
-## Called to update the Mana bar visually.
+## Called to update the Mana bar visually with smooth tweening.
 func on_mana_bar_value(value: float) -> void:
-	_set_mana_bar_value(int(round(value)))
-	var text = "%s / %s" % [int(round(value)), int(round(mana_bar.max_value))]
+	if mana_tween and mana_tween.is_running():
+		mana_tween.kill()
+	mana_tween = create_tween()
+	mana_tween.tween_property(mana_bar, "value", value, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var text = "%d / %d" % [int(round(value)), int(round(mana_bar.max_value))]
 	_set_mana_label_text(text)
+
+func _on_hero_hp_changed(current_hp: float, max_hp: float) -> void:
+	_set_hp_max_value(max_hp)
+	on_hp_bar_value(current_hp)
+
+func _on_hero_mp_changed(current_mp: float, max_mp: float) -> void:
+	_set_mana_max_value(max_mp)
+	on_mana_bar_value(current_mp)
+
+func _on_hero_xp_changed(current_xp: int, total_xp: int) -> void:
+	_set_level_progress_bar_max_value(total_xp)
+	if xp_tween and xp_tween.is_running():
+		xp_tween.kill()
+	xp_tween = create_tween()
+	xp_tween.tween_property(level_progress_bar, "value", current_xp, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+func _on_hero_stats_changed(stats: CharacterStats) -> void:
+	_on_update_hero_stats_ui(stats)
+	update_stats()
+
+func _on_stat_points_available_changed(points: int) -> void:
+	_set_stats_points_label_text("Stats points: %s" % points)
 
 # ─── Private UI Setters ──────────────────────────────────────────────────────
 func _set_hp_max_value(value: float) -> void: hp_bar.max_value = value
@@ -158,6 +196,11 @@ func _initialize_hero_stats(cls: CharacterClass) -> void:
 	EventBus.update_hero_avatar_texture.connect(on_hero_avatar_texture)
 	EventBus.update_hp_bar_value.connect(on_hp_bar_value)
 	EventBus.update_mana_bar_value.connect(on_mana_bar_value)
+	EventBus.hero_hp_changed.connect(_on_hero_hp_changed)
+	EventBus.hero_mp_changed.connect(_on_hero_mp_changed)
+	EventBus.hero_xp_changed.connect(_on_hero_xp_changed)
+	EventBus.hero_stats_changed.connect(_on_hero_stats_changed)
+	EventBus.stat_points_available_changed.connect(_on_stat_points_available_changed)
 	EventBus.level_up.connect(_on_level_up)
 	EventBus.xp_changed.connect(_xp_changed)
 
