@@ -109,9 +109,10 @@ func update_stats() -> void:
 	for child in stats_container.get_children():
 		if child is StatContainer:
 			var alloc = PlayerData.get_allocated_stat(child.stat_name)
+			var temp_alloc = PlayerData.get_temp_allocated_stat(child.stat_name)
 			var total = base_stats.get_total(child.stat_name) if base_stats else alloc
 			child.set_stat_point(alloc, total)
-			child.set_button_states(available_points > 0 and not PlayerData.allocate_point_saved, alloc > 0)
+			child.set_button_states(available_points > 0, alloc > temp_alloc)
 	_set_stats_points_label_text("Stats points: %s" % available_points)
 
 # Tweens for smooth progress bar animations
@@ -129,6 +130,7 @@ func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
 	var current_mana = mana_bar.value
 	_set_hp_label_text("%d / %d" % [int(round(current_hp)), hp])
 	_set_mana_label_text("%d / %d" % [int(round(current_mana)), mana])
+	update_stats()
 
 ## Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
@@ -169,7 +171,6 @@ func _on_hero_xp_changed(current_xp: int, total_xp: int) -> void:
 
 func _on_hero_stats_changed(stats: CharacterStats) -> void:
 	_on_update_hero_stats_ui(stats)
-	update_stats()
 
 func _on_stat_points_available_changed(points: int) -> void:
 	_set_stats_points_label_text("Stats points: %s" % points)
@@ -219,9 +220,14 @@ func _initialize_stats_tab() -> void:
 		stats_container.add_child(stat_container_instance)
 		stat_container_instance.set_stat_name(stat_name)
 		var allocate_point = PlayerData.get_allocated_stat(stat_name)
-		stat_container_instance.set_stat_point(allocate_point)
+		var _temp_alloc = PlayerData.get_temp_allocated_stat(stat_name)
+		var base_stats = PlayerData.get_base_stats()
+		var total = base_stats.get_total(stat_name) if base_stats else allocate_point
+		stat_container_instance.set_stat_point(allocate_point, total)
 		stat_container_instance.add_stat_point_button.pressed.connect(func(): EventBus.stat_allocated.emit(stat_name))
 		stat_container_instance.sub_stat_point_button.pressed.connect(func(): EventBus.stat_deallocated.emit(stat_name))
+
+	update_stats()
 
 func _initialize_hero(cls: CharacterClass) -> void:
 	_set_hero_avatar_texture(cls.avatar_texture)

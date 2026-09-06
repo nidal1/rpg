@@ -105,6 +105,10 @@ func set_allocated_stat(stat_name: String, stat_value: int) -> void:
 func get_allocated_stat(stat_name: String) -> int:
 	return __allocated_stats[stat_name]
 
+## Gets the temp/saved allocated value for a specific stat.
+func get_temp_allocated_stat(stat_name: String) -> int:
+	return __temp_allocated_stats.get(stat_name, 0)
+
 ## Returns a copy of the allocated stats dictionary.
 func get_stat_alloc() -> Dictionary:
 	return __allocated_stats.duplicate()
@@ -113,21 +117,28 @@ func get_stat_alloc() -> Dictionary:
 func update_available_points() -> void:
 	set_stat_points_available(get_stat_points_available() + POINTS_STATS_PER_LEVEL)
 	__temp_stat_points_available = __stat_points_available
+	allocate_point_saved = false
 
 ## Adds a stat point to the specified stat.
 func add_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() <= 0 or allocate_point_saved or _stat_name not in STAT_NAMES_NO_FLT:
+	if get_stat_points_available() <= 0 or _stat_name not in STAT_NAMES_NO_FLT:
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) + 1)
+	if __base_stats:
+		__base_stats.from_dict_to_base_stats(__allocated_stats)
 	set_stat_points_available(get_stat_points_available() - 1)
 	EventBus.hero_stats_changed.emit(__base_stats)
 	return true
 
 ## Subtracts a stat point from the specified stat.
 func sub_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() >= __temp_stat_points_available or allocate_point_saved or _stat_name not in STAT_NAMES_NO_FLT:
+	if get_stat_points_available() >= __temp_stat_points_available or _stat_name not in STAT_NAMES_NO_FLT:
+		return false
+	if get_allocated_stat(_stat_name) <= get_temp_allocated_stat(_stat_name):
 		return false
 	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) - 1)
+	if __base_stats:
+		__base_stats.from_dict_to_base_stats(__allocated_stats)
 	set_stat_points_available(get_stat_points_available() + 1)
 	EventBus.hero_stats_changed.emit(__base_stats)
 	return true
@@ -139,6 +150,8 @@ func save_stats() -> void:
 	
 	__temp_stat_points_available = __stat_points_available
 	__temp_allocated_stats = __allocated_stats.duplicate()
+	if __base_stats:
+		__base_stats.from_dict_to_base_stats(__allocated_stats)
 	EventBus.hero_stats_changed.emit(__base_stats)
 	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
@@ -147,6 +160,8 @@ func cancel_stats() -> void:
 	__stat_points_available = __temp_stat_points_available
 	__allocated_stats = __temp_allocated_stats.duplicate()
 	allocate_point_saved = false
+	if __base_stats:
+		__base_stats.from_dict_to_base_stats(__allocated_stats)
 	EventBus.hero_stats_changed.emit(__base_stats)
 	EventBus.stat_points_available_changed.emit(__stat_points_available)
 
@@ -157,15 +172,9 @@ func get_base_stats() -> CharacterStats:
 # ─── Computed Stats ──────────────────────────────────────────────────────────
 ## Gets the total value of a stat including base and allocated points.
 func get_total(_stat_name: String) -> int:
-	var base_value: int = 0
-	match _stat_name:
-		"STR": base_value = __base_stats.STR
-		"REC": base_value = __base_stats.REC
-		"INT": base_value = __base_stats.INT
-		"WIS": base_value = __base_stats.WIS
-		"DEX": base_value = __base_stats.DEX
-		"LUC": base_value = __base_stats.LUC
-	return base_value + __allocated_stats.get(_stat_name, 0)
+	if __base_stats:
+		return __base_stats.get_total(_stat_name)
+	return __allocated_stats.get(_stat_name, 0)
 
 ## Converts allocated base stats to a dictionary format.
 func from_allocated_stats_to_dict() -> Dictionary:
