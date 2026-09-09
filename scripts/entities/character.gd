@@ -24,16 +24,6 @@ var current_state: DeprecatedState = DeprecatedState.IDLE
 ## Base movement speed.
 var speed: float = 0.0
 
-# TODO: move stats to Player class instead of Character class
-## Maximum mana points.
-var max_mana: float = 0.0
-## Maximum health points.
-var max_health: float = 0.0
-## Current health points.
-var current_health: float = 0.0
-## Current mana points.
-var current_mana: float = 0.0
-
 ## Reference to the character's animation tree.
 var animation_tree: AnimationTree = null
 ## Playback for the main state machine.
@@ -52,13 +42,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Update label periodically to reflect state changes
 	_update_label_state()
-
-# ─── Public Methods ──────────────────────────────────────────────────────────
-## Applies damage to the character.
-func take_damage(amount: float) -> void:
-	var reduced_damage = max(1.0, amount - _get_defense())
-	current_health -= reduced_damage
-	_on_damage_received()
 
 # ─── Virtual Methods ─────────────────────────────────────────────────────────
 ## Virtual method for movement logic.

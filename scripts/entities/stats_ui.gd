@@ -118,7 +118,6 @@ func update_stats_panel() -> void:
 			var alloc = StatsData.get_allocated_stat(child.stat_name)
 			var temp_alloc = StatsData.get_temp_allocated_stat(child.stat_name)
 			var total = StatsData.get_total(child.stat_name)
-			print("total: ", total)
 			child.set_stat_point(alloc, total)
 			child.set_button_states(available_points > 0, alloc > temp_alloc)
 	if stats_points_label:
@@ -128,7 +127,6 @@ func update_stats_panel() -> void:
 ## Updates both the Stats Panel tab and the Hero HUD.
 func update_all_stats_ui(stats_data: StatsData = null) -> void:
 	update_stats_panel()
-	print("here")
 	var stats: CharacterStats = stats_data.get_stats() if stats_data else (StatsData.get_stats() if StatsData else null)
 	if stats:
 		update_hero_hud(stats)

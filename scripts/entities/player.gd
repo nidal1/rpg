@@ -65,10 +65,20 @@ func _attack() -> void:
 func _die() -> void:
 	queue_free()
 
+# ─── Public Methods ──────────────────────────────────────────────────────────
+## Applies damage to the character.
+func take_damage(amount: float) -> void:
+	var reduced_damage = max(1.0, amount - _get_defense())
+	var current_hp = StatsData.get_stats().get_current_hp()
+	StatsData.get_stats().set_current_hp( current_hp - reduced_damage )
+	_on_damage_received()
+
 func _on_damage_received() -> void:
-	EventBus.hero_hp_changed.emit(current_health if current_health > 0.0 else 0.0, max_health)
+	var current_hp = StatsData.get_stats().get_current_hp()
+	var max_hp = StatsData.get_stats().get_max_hp()
+	EventBus.hero_hp_changed.emit(current_hp if current_hp > 0.0 else 0.0, max_hp)
 	_flash_hit()
-	if current_health <= 0:
+	if current_hp <= 0:
 		state_machine.transition_to("playerdeadstate")
 
 func _play_movement_animation() -> void:
@@ -102,10 +112,7 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 	character_class.base_stats = character_class.get_class_stats()
-	max_health = character_class.get_class_stats().get_max_hp()
-	current_health = max_health
-	max_mana = character_class.get_class_stats().get_max_mp()
-	current_mana = max_mana
+	
 	GameManager.register_player(self)
 
 ## Triggers the attack animation.

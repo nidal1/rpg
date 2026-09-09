@@ -8,9 +8,10 @@ class_name CharacterStats
 @export var DEX: int = 0
 @export var WIS: int = 0
 @export var LUC: int = 0
+@export var CURRENT_HEALTH: float = 0.0
+@export var CURRENT_MANA: float = 0.0
 
 # ─── Bonus stats (set by equipment or gems) ───────────
-
 @export var __bonus_stats: Dictionary = {
 	"max_health": 0.0,
 	"max_mana": 0.0,
@@ -31,6 +32,10 @@ func get_instance() -> CharacterStats:
 		return null
 	var instance: CharacterStats = duplicate()
 	return instance
+
+func update_current_health_and_mana():
+	CURRENT_HEALTH = get_max_hp()
+	CURRENT_MANA = get_max_mp()
 
 func get_base_stats():
 	return {
@@ -71,6 +76,20 @@ func get_max_hp() -> float:
 ## Calculates maximum mana points.
 func get_max_mp() -> float:
 	return 50.0 + (WIS * 5.0) + get_bonus_max_mp()
+
+func get_current_hp() -> float:
+	return CURRENT_HEALTH
+
+func get_current_mp() -> float:
+	return CURRENT_MANA
+
+func set_current_hp(current_hp: float):
+	if current_hp >= 0 and current_hp <= get_max_hp():
+		CURRENT_HEALTH = current_hp
+
+func set_current_mp(current_mp: float):
+	if current_mp >= 0 and current_mp <= get_max_mp():
+		CURRENT_MANA = current_mp
 
 ## Calculates physical defense.
 func get_def() -> float:

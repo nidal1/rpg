@@ -34,6 +34,8 @@ func initialize_from_character_stats(cs: CharacterStats) -> void:
 	__temp_allocated_stats = __allocated_stats.duplicate()
 	bonus_stats = __stats.get_stats_bonus_dict()
 
+	__stats.update_current_health_and_mana()
+
 func get_stats() -> CharacterStats:
 	return __stats
 

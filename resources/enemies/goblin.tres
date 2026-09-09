@@ -14,5 +14,5 @@ enemy_name = "Goblin"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
 attack_damage = 5.0
-drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_3kmag"), ExtResource("3_qxlb2"), ExtResource("4_8263n"), ExtResource("5_k3uoj")])
+drop_list = Array[ExtResource("1_eoums")]([ExtResource("2_3kmag"), ExtResource("3_qxlb2"), ExtResource("5_k3uoj"), ExtResource("4_8263n")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

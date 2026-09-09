@@ -30,6 +30,9 @@ var wander_cd_time: float = 5.0
 var is_wandering: bool = false
 var spawn_position: Vector2
 
+var max_health: float = 0.0
+var current_health: float = 0.0
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
 @onready var wander_cd: Timer = $WanderCD
@@ -46,6 +49,12 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
+## Applies damage to the character.
+func take_damage(amount: float) -> void:
+	var reduced_damage = max(1.0, amount - _get_defense())
+	current_health -= reduced_damage
+	_on_damage_received()
+
 ## Sets a new target for the enemy to chase.
 func set_target(new_target: CharacterBody2D) -> void:
 	target = new_target
@@ -81,6 +90,8 @@ func _attack() -> void:
 
 func _die() -> void:
 	queue_free()
+
+
 
 func _on_damage_received() -> void:
 	_set_hp_progress_bar_value(max(0.0, current_health))
