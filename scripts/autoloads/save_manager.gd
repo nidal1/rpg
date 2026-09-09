@@ -81,7 +81,7 @@ func load_game(filepath: String = DEFAULT_SAVE_PATH) -> Error:
 		base_stats.from_dict_to_base_stats(save_data["base_stats"])
 		
 	PlayerData.save_stats()
-	EventBus.hero_stats_changed.emit(base_stats)
+	EventBus.stats_updated.emit(StatsData)
 	EventBus.stat_points_available_changed.emit(PlayerData.get_stat_points_available())
 	print("SaveManager: Game successfully loaded from ", filepath)
 	game_loaded.emit()

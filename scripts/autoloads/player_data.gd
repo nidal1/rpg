@@ -11,26 +11,13 @@ const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 ## Number of stat points awarded per level up.
 const POINTS_STATS_PER_LEVEL = 5
 
-# ─── Public Variables ────────────────────────────────────────────────────────
-## Tracks whether stat allocation points have been saved.
-var allocate_point_saved: bool = false
+
 
 # ─── Private Variables ───────────────────────────────────────────────────────
 var __player_level: int = 1
 var __current_xp: int = 0
 var __total_xp_to_next_level: int = 75
-var __stat_points_available: int = 0
-var __temp_stat_points_available: int = 0
 var __base_stats: CharacterStats = null
-var __allocated_stats: Dictionary = {
-	"STR": 0,
-	"REC": 0,
-	"INT": 0,
-	"WIS": 0,
-	"DEX": 0,
-	"LUC": 0
-}
-var __temp_allocated_stats: Dictionary = __allocated_stats.duplicate()
 var __lootable_items: Array[Item] = []
 var __inventory_items: Array[Item] = []
 var __equipable_items: Dictionary = {
@@ -53,12 +40,12 @@ var __potions: Dictionary = {
 
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
-func initialize(stats: CharacterStats) -> void:
-	__base_stats = stats.get_instance()
-	__allocated_stats = stats.get_allocated_stats()
-	__temp_allocated_stats = __allocated_stats.duplicate()
-	EventBus.hero_stats_changed.emit(__base_stats)
-	EventBus.stat_points_available_changed.emit(__stat_points_available)
+# func initialize(stats: CharacterStats) -> void:
+# 	__base_stats = stats.get_instance()
+# 	if not stats_manager:
+# 		stats_manager = StatsManager.new()
+# 	stats_manager.initialize(__base_stats)
+# 	EventBus.stat_points_available_changed.emit(stats_manager.available_points)
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -86,124 +73,7 @@ func set_total_xp_to_next_level(new_xp: int) -> void:
 ## Gets the total experience points needed for the next level.
 func get_total_xp_to_next_level() -> int:
 	return __total_xp_to_next_level
-
-# ─── Stat Allocation ─────────────────────────────────────────────────────────
-## Sets the number of available stat points.
-func set_stat_points_available(new_points: int) -> void:
-	__stat_points_available = new_points
-	EventBus.stat_points_available_changed.emit(__stat_points_available)
-
-## Gets the number of available stat points.
-func get_stat_points_available() -> int:
-	return __stat_points_available
-
-## Sets the allocated value for a specific stat.
-func set_allocated_stat(stat_name: String, stat_value: int) -> void:
-	__allocated_stats[stat_name] = stat_value
-
-## Gets the allocated value for a specific stat.
-func get_allocated_stat(stat_name: String) -> int:
-	return __allocated_stats[stat_name]
-
-## Gets the temp/saved allocated value for a specific stat.
-func get_temp_allocated_stat(stat_name: String) -> int:
-	return __temp_allocated_stats.get(stat_name, 0)
-
-## Returns a copy of the allocated stats dictionary.
-func get_stat_alloc() -> Dictionary:
-	return __allocated_stats.duplicate()
-
-## Updates the available points after a level up.
-func update_available_points() -> void:
-	set_stat_points_available(get_stat_points_available() + POINTS_STATS_PER_LEVEL)
-	__temp_stat_points_available = __stat_points_available
-	allocate_point_saved = false
-
-## Adds a stat point to the specified stat.
-func add_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() <= 0 or _stat_name not in STAT_NAMES_NO_FLT:
-		return false
-	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) + 1)
-	if __base_stats:
-		__base_stats.from_dict_to_base_stats(__allocated_stats)
-	set_stat_points_available(get_stat_points_available() - 1)
-	EventBus.hero_stats_changed.emit(__base_stats)
-	return true
-
-## Subtracts a stat point from the specified stat.
-func sub_stat_point(_stat_name: String) -> bool:
-	if get_stat_points_available() >= __temp_stat_points_available or _stat_name not in STAT_NAMES_NO_FLT:
-		return false
-	if get_allocated_stat(_stat_name) <= get_temp_allocated_stat(_stat_name):
-		return false
-	set_allocated_stat(_stat_name, get_allocated_stat(_stat_name) - 1)
-	if __base_stats:
-		__base_stats.from_dict_to_base_stats(__allocated_stats)
-	set_stat_points_available(get_stat_points_available() + 1)
-	EventBus.hero_stats_changed.emit(__base_stats)
-	return true
-
-## Saves the currently allocated stats.
-func save_stats() -> void:
-	if __stat_points_available <= 0:
-		allocate_point_saved = true
 	
-	__temp_stat_points_available = __stat_points_available
-	__temp_allocated_stats = __allocated_stats.duplicate()
-	if __base_stats:
-		__base_stats.from_dict_to_base_stats(__allocated_stats)
-	EventBus.hero_stats_changed.emit(__base_stats)
-	EventBus.stat_points_available_changed.emit(__stat_points_available)
-
-## Cancels the current stat allocation and reverts to the last saved state.
-func cancel_stats() -> void:
-	__stat_points_available = __temp_stat_points_available
-	__allocated_stats = __temp_allocated_stats.duplicate()
-	allocate_point_saved = false
-	if __base_stats:
-		__base_stats.from_dict_to_base_stats(__allocated_stats)
-	EventBus.hero_stats_changed.emit(__base_stats)
-	EventBus.stat_points_available_changed.emit(__stat_points_available)
-
-func get_base_stats() -> CharacterStats:
-	return __base_stats
-
-	
-# ─── Computed Stats ──────────────────────────────────────────────────────────
-## Gets the total value of a stat including base and allocated points.
-func get_total(_stat_name: String) -> int:
-	if __base_stats:
-		return __base_stats.get_total(_stat_name)
-	return __allocated_stats.get(_stat_name, 0)
-
-## Converts allocated base stats to a dictionary format.
-func from_allocated_stats_to_dict() -> Dictionary:
-	return {
-		"STR": __base_stats.STR,
-		"REC": __base_stats.REC,
-		"INT": __base_stats.INT,
-		"WIS": __base_stats.WIS,
-		"DEX": __base_stats.DEX,
-		"LUC": __base_stats.LUC,
-	}
-
-func get_base_weapon_power() -> float:
-	return __base_stats.get_total("weapon_power")
-
-func get_base_armor_defense() -> float:
-	return __base_stats.get_total("armor_defense")
-
-func get_base_armor_resist() -> float:
-	return __base_stats.get_total("armor_resist")
-
-func set_base_weapon_power(power: float) -> void:
-	__base_stats.weapon_power = power
-
-func set_base_armor_defense(value: float) -> void:
-	__base_stats.armor_defense = value
-
-func set_base_armor_resist(resist: float) -> void:
-	__base_stats.armor_resist = resist
 
 # ─── Inventory & Items ───────────────────────────────────────────────────────
 ## Adds an item to the list of lootable items currently in range.
@@ -249,40 +119,6 @@ func remove_equipable_item(item: Equipable) -> void:
 			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
 		return
 
-## Calculate equipement stats bonus 
-## args { equipement: Equipable, operation: "equip" or "unequip"}
-func calculate_equipement_stats_bonus(equipement: Equipable, operation: String = "equip"):
-	if is_instance_valid(equipement):
-		var effective_stats_breakdown = equipement.get_effective_stats_breakdown()
-
-		for s in effective_stats_breakdown:
-			var base = effective_stats_breakdown[s]["base"]
-			var gem = effective_stats_breakdown[s]["gem"]
-			
-			if operation == "equip":
-				__base_stats.add_stat_bonus(s, base + gem)
-			elif operation == "unequip":
-				__base_stats.remove_stat_bonus(s, base + gem)
-
-		if equipement is Weapon:
-			if operation == "equip":
-				__base_stats.add_stat_bonus("weapon_power", equipement.base_attack_power)
-			if operation == "unequip":
-				__base_stats.remove_stat_bonus("weapon_power", equipement.base_attack_power)
-			EventBus.hero_stats_changed.emit(__base_stats)
-			return
-		
-		if equipement is Armor:
-			if operation == "equip":
-				__base_stats.add_stat_bonus("armor_defense", equipement.base_defense)
-				__base_stats.add_stat_bonus("armor_resist", equipement.base_resist)
-			if operation == "unequip":
-				__base_stats.remove_stat_bonus("armor_defense", equipement.base_defense)
-				__base_stats.remove_stat_bonus("armor_resist", equipement.base_resist)
-			EventBus.hero_stats_changed.emit(__base_stats)
-			return
-
-		EventBus.hero_stats_changed.emit(__base_stats)
 
 # ─── Potions ───────────────────────────────────────────────────────────────
 func add_potion(potion: Potion) -> void:

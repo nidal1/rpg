@@ -5,19 +5,12 @@ extends Node
 # ─── UI & HUD Signals ────────────────────────────────────────────────────────
 @warning_ignore("UNUSED_SIGNAL")
 ## Emitted to initialize the hero stats UI.
-signal initialize_hero_stats_ui(cls: CharacterClass)
-@warning_ignore("UNUSED_SIGNAL")
-## Emitted to update the hero stats UI.
-signal update_hero_stats_ui(stats: CharacterStats)
+signal initialize_hero_stats_ui()
 @warning_ignore("UNUSED_SIGNAL")
 ## Emitted when the hero's avatar texture is updated.
 signal update_hero_avatar_texture(texture: Texture2D)
 ## Emitted to update the HP bar UI value.
-@warning_ignore("UNUSED_SIGNAL")
-signal update_hp_bar_value(value: float)
-## Emitted to update the Mana bar UI value.
-@warning_ignore("UNUSED_SIGNAL")
-signal update_mana_bar_value(value: float)
+
 
 # ─── Game & Combat Signals ───────────────────────────────────────────────────
 ## Emitted when an enemy dies.
@@ -27,8 +20,7 @@ signal enemy_died(enemy: Enemy)
 @warning_ignore("UNUSED_SIGNAL")
 signal enemy_spawned(enemy: Enemy, spawn_position: Vector2)
 ## Emitted when the player's experience points change.
-@warning_ignore("UNUSED_SIGNAL")
-signal xp_changed(current: int)
+
 ## Emitted when the player levels up.
 @warning_ignore("UNUSED_SIGNAL")
 signal level_up(new_level: int)
@@ -43,9 +35,6 @@ signal hero_mp_changed(current_mp: float, max_mp: float)
 ## Emitted when hero XP changes.
 @warning_ignore("UNUSED_SIGNAL")
 signal hero_xp_changed(current_xp: int, total_xp: int)
-## Emitted when hero stats change.
-@warning_ignore("UNUSED_SIGNAL")
-signal hero_stats_changed(stats: CharacterStats)
 ## Emitted when available stat points change.
 @warning_ignore("UNUSED_SIGNAL")
 signal stat_points_available_changed(points: int)
@@ -58,10 +47,7 @@ signal stat_allocated(stat_name: String)
 signal stat_deallocated(stat_name: String)
 ## Emitted when stats are updated in the UI.
 @warning_ignore("UNUSED_SIGNAL")
-signal stats_updated()
-## Emitted when update stats
-@warning_ignore("UNUSED_SIGNAL")
-signal update_stats(stats: CharacterStats)
+signal stats_updated(stats_data: StatsData)
 ## Emitted to save the current stat points allocation.
 @warning_ignore("UNUSED_SIGNAL")
 signal save_stats_points()

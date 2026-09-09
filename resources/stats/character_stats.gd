@@ -32,6 +32,16 @@ func get_instance() -> CharacterStats:
 	var instance: CharacterStats = duplicate()
 	return instance
 
+func get_base_stats():
+	return {
+		"STR": get_base_stats_value("STR"),
+		"REC": get_base_stats_value("REC"),
+		"INT": get_base_stats_value("INT"),
+		"WIS": get_base_stats_value("WIS"),
+		"DEX": get_base_stats_value("DEX"),
+		"LUC": get_base_stats_value("LUC")
+	}
+
 func get_base_stats_value(key: String) -> int:
 	match key:
 		"STR": return STR

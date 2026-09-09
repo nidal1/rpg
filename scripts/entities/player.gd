@@ -66,7 +66,7 @@ func _die() -> void:
 	queue_free()
 
 func _on_damage_received() -> void:
-	EventBus.update_hp_bar_value.emit(current_health if current_health > 0.0 else 0.0)
+	EventBus.hero_hp_changed.emit(current_health if current_health > 0.0 else 0.0, max_health)
 	_flash_hit()
 	if current_health <= 0:
 		state_machine.transition_to("playerdeadstate")
@@ -150,7 +150,7 @@ func _flash_hit() -> void:
 	modulate = Color.WHITE
 
 func _get_defense() -> float:
-	return PlayerData.get_base_stats().get_def()
+	return StatsData.get_stats().get_def()
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_pressed() -> void:

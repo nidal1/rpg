@@ -9,14 +9,16 @@ var player_ref: Character = null
 var level_scaler: float = 1.2
 ## Range within which items drop from defeated enemies.
 var drop_range: float = 50.0
+## StatsManager instance for managing stats logic
+var stats_manager: StatsManager = StatsManager.new()
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
-	EventBus.stat_allocated.connect(allocate_point)
-	EventBus.stat_deallocated.connect(deallocate_point)
-	EventBus.save_stats_points.connect(save_stats_points)
-	EventBus.cancel_stats_points.connect(cancel_stats_points)
+	EventBus.stat_allocated.connect(stats_manager.add_stat_point)
+	EventBus.stat_deallocated.connect(stats_manager.sub_stat_point)
+	EventBus.save_stats_points.connect(stats_manager.save_stats)
+	EventBus.cancel_stats_points.connect(stats_manager.cancel_stats)
 	EventBus.lootable_item_added.connect(_on_lootable_item_added)
 	EventBus.lootable_item_removed.connect(_on_lootable_item_removed)
 	EventBus.selected_lootable_items_picked_up.connect(_on_selected_lootable_items_picked_up)
@@ -29,15 +31,15 @@ func _ready() -> void:
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
-	var base_stats = player_ref.character_class.get_class_stats()
-	PlayerData.initialize(base_stats)
-	EventBus.initialize_hero_stats_ui.emit(player_ref.character_class)
+	var character_stats = player_ref.character_class.get_class_stats()
+	stats_manager.initialize(character_stats)
+	EventBus.initialize_hero_stats_ui.emit()
 
 ## Adds experience points to the player.
 func add_xp(amount: int) -> void:
 	var current_xp = PlayerData.get_current_xp() + amount
 	PlayerData.set_current_xp(current_xp)
-	EventBus.xp_changed.emit(current_xp)
+
 	if current_xp >= PlayerData.get_total_xp_to_next_level():
 		level_up()
 
@@ -45,33 +47,13 @@ func add_xp(amount: int) -> void:
 func level_up() -> void:
 	var player_level = PlayerData.get_player_level() + 1
 	PlayerData.set_player_level(player_level)
-	PlayerData.update_available_points()
+	stats_manager.update_available_points_on_level_up()
 	scaling_level_up()
 	EventBus.level_up.emit()
 
 ## Scales the required XP for the next level up.
 func scaling_level_up() -> void:
 	PlayerData.set_total_xp_to_next_level(int(level_scaler * PlayerData.get_total_xp_to_next_level()))
-
-## Allocates a point to a specific stat.
-func allocate_point(stat_name: String) -> void:
-	if PlayerData.add_stat_point(stat_name):
-		EventBus.stats_updated.emit()
-
-## Deallocates a point from a specific stat.
-func deallocate_point(stat_name: String) -> void:
-	if PlayerData.sub_stat_point(stat_name):
-		EventBus.stats_updated.emit()
-
-## Saves the allocated stat points.
-func save_stats_points() -> void:
-	PlayerData.save_stats()
-	EventBus.stats_updated.emit()
-
-## Cancels the allocated stat points.
-func cancel_stats_points() -> void:
-	PlayerData.cancel_stats()
-	EventBus.stats_updated.emit()
 
 ## Randomizes a position near the specified position within the drop range.
 func randomize_drop_position(position: Vector2, _drop_range: float = drop_range) -> Vector2:
@@ -138,17 +120,17 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 				item_type = "WEAPON"
 			if not PlayerData.get_equipements()[item_type]:
 				PlayerData.add_equipable_item(item)
-				PlayerData.calculate_equipement_stats_bonus(item)
+				stats_manager.calculate_equipment_bonus(item)
 				PlayerData.remove_inventory_item(item)
 				EventBus.item_equipped.emit(inventory_slot)
 			else:
 				# swap item
 				var old_item = PlayerData.get_equipements()[item_type]
 				PlayerData.remove_equipable_item(old_item)
-				PlayerData.calculate_equipement_stats_bonus(old_item, "unequip")
+				stats_manager.calculate_equipment_bonus(old_item, "unequip")
 
 				PlayerData.add_equipable_item(item)
-				PlayerData.calculate_equipement_stats_bonus(item)
+				stats_manager.calculate_equipment_bonus(item)
 
 				PlayerData.add_inventory_item(old_item)
 				PlayerData.remove_inventory_item(item)
@@ -158,8 +140,8 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 				inventory_slot.clear_slot()
 				inventory_slot.set_item(old_item)
 
-			player_ref.character_class.set_class_stats(PlayerData.get_base_stats())
-			EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
+			player_ref.character_class.set_class_stats(StatsData.get_stats())
+			EventBus.stats_updated.emit(StatsData)
 
 	if item is Potion:
 		PlayerData.add_potion(item)
@@ -172,12 +154,13 @@ func _on_equip_item(inventory_slot: InventorySlot) -> void:
 func _on_item_unequipped(item: Equipable) -> void:
 	if item is Equipable:
 		PlayerData.add_inventory_item(item)
-		PlayerData.calculate_equipement_stats_bonus(item, "unequip")
+		stats_manager.calculate_equipment_bonus(item, "unequip")
 		PlayerData.remove_equipable_item(item)
 		
 		var _items_to_add: Array[Item] = [item]
 		EventBus.items_added_to_inventory.emit(_items_to_add)
-		EventBus.update_hero_stats_ui.emit(PlayerData.get_base_stats())
+		player_ref.character_class.set_class_stats(StatsData.get_stats())
+		EventBus.stats_updated.emit(StatsData)
 
 func _on_potion_unequipped(potion: Potion) -> void:
 	PlayerData.add_inventory_item(potion as Item)

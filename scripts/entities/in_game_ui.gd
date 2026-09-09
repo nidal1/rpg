@@ -82,7 +82,6 @@ func _ready() -> void:
 
 
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
-	EventBus.update_hero_stats_ui.connect(_on_update_hero_stats_ui)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
@@ -101,148 +100,22 @@ func _ready() -> void:
 	_initialize_lootable_items_panel()
 	_initialize_inventory_tab()
 
-# ─── Public Methods ──────────────────────────────────────────────────────────
-## Updates the entire stats UI by reading from PlayerData.
-func update_stats() -> void:
-	var available_points = PlayerData.get_stat_points_available()
-	var base_stats = PlayerData.get_base_stats()
-	for child in stats_container.get_children():
-		if child is StatContainer:
-			var alloc = PlayerData.get_allocated_stat(child.stat_name)
-			var temp_alloc = PlayerData.get_temp_allocated_stat(child.stat_name)
-			var total = base_stats.get_total(child.stat_name) if base_stats else alloc
-			child.set_stat_point(alloc, total)
-			child.set_button_states(available_points > 0, alloc > temp_alloc)
-	_set_stats_points_label_text("Stats points: %s" % available_points)
-
-# Tweens for smooth progress bar animations
-var hp_tween: Tween
-var mana_tween: Tween
-var xp_tween: Tween
-
-func _on_update_hero_stats_ui(stats: CharacterStats) -> void:
-	if not stats: return
-	var hp = int(round(stats.get_max_hp()))
-	var mana = int(round(stats.get_max_mp()))
-	_set_hp_max_value(hp)
-	_set_mana_max_value(mana)
-	var current_hp = hp_bar.value
-	var current_mana = mana_bar.value
-	_set_hp_label_text("%d / %d" % [int(round(current_hp)), hp])
-	_set_mana_label_text("%d / %d" % [int(round(current_mana)), mana])
-	update_stats()
-
-## Called to update the hero avatar texture.
-func on_hero_avatar_texture(texture: Texture2D) -> void:
-	_set_hero_avatar_texture(texture)
-
-## Called to update the HP bar visually with smooth tweening.
-func on_hp_bar_value(value: float) -> void:
-	if hp_tween and hp_tween.is_running():
-		hp_tween.kill()
-	hp_tween = create_tween()
-	hp_tween.tween_property(hp_bar, "value", value, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	var text = "%d / %d" % [int(round(value)), int(round(hp_bar.max_value))]
-	_set_hp_label_text(text)
-
-## Called to update the Mana bar visually with smooth tweening.
-func on_mana_bar_value(value: float) -> void:
-	if mana_tween and mana_tween.is_running():
-		mana_tween.kill()
-	mana_tween = create_tween()
-	mana_tween.tween_property(mana_bar, "value", value, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	var text = "%d / %d" % [int(round(value)), int(round(mana_bar.max_value))]
-	_set_mana_label_text(text)
-
-func _on_hero_hp_changed(current_hp: float, max_hp: float) -> void:
-	_set_hp_max_value(max_hp)
-	on_hp_bar_value(current_hp)
-
-func _on_hero_mp_changed(current_mp: float, max_mp: float) -> void:
-	_set_mana_max_value(max_mp)
-	on_mana_bar_value(current_mp)
-
-func _on_hero_xp_changed(current_xp: int, total_xp: int) -> void:
-	_set_level_progress_bar_max_value(total_xp)
-	if xp_tween and xp_tween.is_running():
-		xp_tween.kill()
-	xp_tween = create_tween()
-	xp_tween.tween_property(level_progress_bar, "value", current_xp, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-
-func _on_hero_stats_changed(stats: CharacterStats) -> void:
-	_on_update_hero_stats_ui(stats)
-
-func _on_stat_points_available_changed(points: int) -> void:
-	_set_stats_points_label_text("Stats points: %s" % points)
-
-# ─── Private UI Setters ──────────────────────────────────────────────────────
-func _set_hp_max_value(value: float) -> void: hp_bar.max_value = value
-func _set_mana_max_value(value: float) -> void: mana_bar.max_value = value
-func _set_hero_avatar_texture(texture: Texture2D) -> void: hero_avatar.texture = texture
-func _set_hp_bar_value(value: float) -> void: hp_bar.value = value
-func _set_hp_label_text(text: String) -> void: hp_label.text = text
-func _set_mana_bar_value(value: float) -> void: mana_bar.value = value
-func _set_mana_label_text(text: String) -> void: mana_label.text = text
-func _set_level_progress_bar_value(value: int) -> void: level_progress_bar.value = value
-func _set_level_progress_bar_max_value(value: int) -> void: level_progress_bar.max_value = value
-func _set_level_label_text(text: String) -> void: level_label.text = text
-func _set_stats_points_label_text(text: String) -> void: stats_points_label.text = text
+# StatsUI component
+var stats_ui: StatsUI = StatsUI.new()
 
 
 # ─── Initialization Methods ──────────────────────────────────────────────────
-func _initialize_hero_stats(cls: CharacterClass) -> void:
-	_initialize_stats_tab()
-	_initialize_hero(cls)
+func _initialize_hero_stats() -> void:
+	if not is_ancestor_of(stats_ui):
+		add_child(stats_ui)
+	stats_ui.setup_ui_references(
+		hero_avatar, hp_bar, hp_label, mana_bar, mana_label,
+		level_progress_bar, level_label, stats_container,
+		stats_points_label, save_stats_button, cancel_stats_button
+	)
 	
-	EventBus.update_hero_avatar_texture.connect(on_hero_avatar_texture)
-	EventBus.update_hp_bar_value.connect(on_hp_bar_value)
-	EventBus.update_mana_bar_value.connect(on_mana_bar_value)
-	EventBus.hero_hp_changed.connect(_on_hero_hp_changed)
-	EventBus.hero_mp_changed.connect(_on_hero_mp_changed)
-	EventBus.hero_xp_changed.connect(_on_hero_xp_changed)
-	EventBus.hero_stats_changed.connect(_on_hero_stats_changed)
-	EventBus.stat_points_available_changed.connect(_on_stat_points_available_changed)
-	EventBus.level_up.connect(_on_level_up)
-	EventBus.xp_changed.connect(_xp_changed)
-
-func _initialize_stats_tab() -> void:
-	EventBus.stats_updated.connect(update_stats)
-	save_stats_button.pressed.connect(EventBus.save_stats_points.emit)
-	cancel_stats_button.pressed.connect(EventBus.cancel_stats_points.emit)
-	stats_points_label.text = "Stats points: %s" % PlayerData.get_stat_points_available()
 	
-	for child in stats_container.get_children():
-		if child is StatContainer:
-			child.queue_free()
-
-	for stat_name in PlayerData.STAT_NAMES_NO_FLT:
-		var stat_container_instance: StatContainer = stat_container_scene.instantiate()
-		stats_container.add_child(stat_container_instance)
-		stat_container_instance.set_stat_name(stat_name)
-		var allocate_point = PlayerData.get_allocated_stat(stat_name)
-		var _temp_alloc = PlayerData.get_temp_allocated_stat(stat_name)
-		var base_stats = PlayerData.get_base_stats()
-		var total = base_stats.get_total(stat_name) if base_stats else allocate_point
-		stat_container_instance.set_stat_point(allocate_point, total)
-		stat_container_instance.add_stat_point_button.pressed.connect(func(): EventBus.stat_allocated.emit(stat_name))
-		stat_container_instance.sub_stat_point_button.pressed.connect(func(): EventBus.stat_deallocated.emit(stat_name))
-
-	update_stats()
-
-func _initialize_hero(cls: CharacterClass) -> void:
-	_set_hero_avatar_texture(cls.avatar_texture)
-	var _stats = cls.get_class_stats()
-	var hp = int(round(_stats.get_max_hp()))
-	var mana = int(round(_stats.get_max_mp()))
-	_set_hp_max_value(hp)
-	_set_hp_bar_value(hp)
-	_set_mana_max_value(mana)
-	_set_mana_bar_value(mana)
-	_set_hp_label_text("%s / %s" % [hp, hp])
-	_set_mana_label_text("%s / %s" % [mana, mana])
-	_set_level_label_text("%s" % [PlayerData.get_player_level()])
-	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
-	_set_level_progress_bar_value(PlayerData.get_current_xp())
+	
 
 func _initialize_lootable_items_panel() -> void:
 	for i in range(lootable_items_numbers):
@@ -327,13 +200,7 @@ func _on_lootable_item_slot_clicked(slot_index: int) -> void:
 		else:
 			selected_lootable_items.erase(lootable_item_slots[slot_index])
 
-func _on_level_up() -> void:
-	_set_level_label_text("%s" % [PlayerData.get_player_level()])
-	_set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
-	_set_stats_points_label_text("Stats points: %s" % PlayerData.get_stat_points_available())
 
-func _xp_changed(current_xp: int) -> void:
-	_set_level_progress_bar_value(current_xp)
 
 func _on_panel_button_pressed() -> void:
 	__toggle_panel_button()
