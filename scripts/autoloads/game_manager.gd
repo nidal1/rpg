@@ -50,6 +50,7 @@ func level_up() -> void:
 	PlayerData.set_player_level(player_level)
 	stats_manager.update_available_points_on_level_up()
 	scaling_level_up()
+	StatsData.get_stats().update_current_health_and_mana()
 	EventBus.level_up.emit()
 
 ## Scales the required XP for the next level up.
