@@ -1,7 +1,7 @@
 # CLAUDE.md — 2D Action RPG (Godot 4)
 
 ## Project Overview
-A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**. The codebase consists of 52 modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
+A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**. The codebase consists of 43 modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
 
 - **Viewport:** 1280×720, `canvas_items` stretch mode
 - **Rendering:** Mobile renderer, DirectX 12 (Windows), pixel art (nearest-filter textures)
@@ -119,7 +119,7 @@ Full 56-slot grid-based inventory in the **Inventory Tab** of the HUD panel.
 *   **Equip / Routing:** Right-clicking a potion in the inventory and selecting "Equip" triggers `GameManager._on_equip_item()`, which routes it to `PlayerData.add_potion(item)` and emits `EventBus.potions_added_to_list.emit(item)`.
 *   **HUD Slot (`PotionSlot`):** Displays current potion icon and count. Right-click opens `PopupMenu` with:
     *   **Unequip** — emits `EventBus.potions_unequipped(potion)` → returns item to inventory.
-    *   **Consume** — emits `EventBus.potions_consumed(potion)` → triggers potion effect.
+    *   **Consume** — emits `EventBus.potions_consumed(potion)` → triggers potion effect via `GameManager._on_potion_consumed()`, which calls `StatsData.get_stats().set_current_hp/mp()` then emits `EventBus.stats_updated`.
 
 ### Equipment System (`equipement_slot.gd`, `in_game_ui.gd`, `player_data.gd`)
 Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is an `EquipementSlot` (Panel) with a `placeholder_image`, an item `TextureRect`, and a right-click **Unequip** context menu.
@@ -142,12 +142,13 @@ Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is
 1. Right-click `InventorySlot` → select "Equip" → `EventBus.equip_item(inventory_slot)`.
 2. `GameManager._on_equip_item()`: validates `player_type` (`ALL` or matching class: `WARRIOR`, `ARCHER`, `MAGE`, `PRIEST`).
 3. Determines `item_type` key: `Armor.ArmorType.keys()[item.armor_type]` for armor, `"WEAPON"` for weapons.
-4. If slot empty: `PlayerData.add_equipable_item(item)` → calls `PlayerData.calculate_equipement_stats_bonus(item, "equip")` → `EventBus.item_equipped.emit(inventory_slot)`.
-5. If slot occupied (swap): `PlayerData.remove_equipable_item(old)` → `PlayerData.calculate_equipement_stats_bonus(old, "unequip")` → adds new item, updates stats, puts old item into inventory slot for UI swap.
-6. `InGameUI._on_item_equipped()` routes to the correct `EquipementSlot.set_item()` and clears the `InventorySlot`.
+4. If slot empty: `PlayerData.add_equipable_item(item)` → `stats_manager.calculate_equipment_bonus(item)` → `EventBus.item_equipped.emit(inventory_slot)`.
+5. If slot occupied (swap): removes old item bonus, adds new item, puts old item back into inventory slot.
+6. After any equip/unequip: `player_ref.character_class.set_class_stats(StatsData.get_stats())` and `EventBus.stats_updated.emit(StatsData)`.
+7. `InGameUI._on_item_equipped()` routes to the correct `EquipementSlot.set_item()` and clears the `InventorySlot`.
 
 **Stat Effect & Gem Bonuses:**
-`PlayerData.calculate_equipement_stats_bonus()` processes `item.get_effective_stats_breakdown()`, combining base item stat bonuses and socketed gem bonuses into `__base_stats.add_stat_bonus()` / `remove_stat_bonus()`. Base weapon power, armor defense, and armor resistance are updated accordingly.
+`StatsManager.calculate_equipment_bonus(equipement, operation)` processes `item.get_effective_stats_breakdown()`, combining base item stat bonuses and socketed gem bonuses into `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()`. Base weapon power, armor defense, and armor resistance are updated accordingly.
 
 ### Gem System (`gem.gd`, `gem_panel.gd`, `equipable.gd`)
 *   **Gems Socketing:** `Equipable` supports up to `gems_slots_count` socketed gems (`gems: Array[Gem]`).
@@ -188,40 +189,43 @@ Hovering an `InventorySlot` shows a floating popup with full item details:
 *   **Drop Cleanup:** Connects to `EventBus.selected_lootable_items_picked_up` → `remove_selected_drops()` queue-frees matching `DropItem` children from `DropZone`.
 *   **`get_drop_zone()` → Node:** Used by `GameManager.spawn_enemy_items()` and `drop_item()` to locate the correct parent for new drops.
 
-### Stat Allocation System (`player_data.gd`, `game_manager.gd`, `in_game_ui.gd`)
-*   **5 points per level-up** (`POINTS_STATS_PER_LEVEL = 5`).
+### Stat Allocation System
+The stat system is split across three layers — data (`StatsData`), logic (`StatsManager`), and presentation (`StatsUI`):
+
+*   **5 points per level-up** (`POINTS_PER_LEVEL = 5` in `StatsManager`, `POINTS_STATS_PER_LEVEL = 5` in `StatsData`).
 *   **Stat Lists:** `STAT_NAMES = ["HP", "MP", "STR", "REC", "INT", "WIS", "DEX", "LUC"]`, `STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]`.
-*   **Working copy (`__allocated_stats`):** Dict seeded from class base stats via `get_allocated_stats()` on init. Updated by `add_stat_point()` / `sub_stat_point()`.
-*   **Backup copy (`__temp_allocated_stats`):** Stores the last committed state.
-*   **`save_stats()`:** Copies working → backup. Sets `allocate_point_saved = true` if `__stat_points_available <= 0`.
-*   **`cancel_stats()`:** Reverts working from backup. Sets `allocate_point_saved = false`.
-*   **`allocate_point_saved`:** Blocks further point changes once all points are saved; reset on cancel or new level-up.
+*   **Signal flow:** UI buttons → `EventBus.stat_allocated/stat_deallocated` → `GameManager` (connected in `_ready()`) → `StatsManager.add_stat_point/sub_stat_point` → `StatsData` mutation → `EventBus.stats_updated(StatsData)` + `EventBus.stat_points_available_changed(points)` → `StatsUI` update.
+*   **Working copy (`__allocated_stats`):** Dict seeded from class base stats via `get_allocated_stats()` on init. Updated by `StatsData.add_stat_point()` / `sub_stat_point()`.
+*   **Backup copy (`__temp_allocated_stats`):** Stores the last committed state. Cannot go below temp values.
+*   **`save_stats()`:** Copies working → backup. Sets `__allocate_point_saved = true` if `__stat_points_available <= 0`.
+*   **`cancel_stats()`:** Reverts working from backup. Sets `__allocate_point_saved = false`.
 *   **XP:** Starts at 0, target is `75` XP for level 2. Each level-up scales target by `level_scaler = 1.2`.
 
 ---
 
 ## Global Autoloads (Singletons)
 
-Autoload order in `project.godot`: `EventBus` → `GameManager` → `SaveManager` → `PlayerData`.
+Autoload order in `project.godot`: `EventBus` → `GameManager` → `SaveManager` → `PlayerData` → `StatsData`.
+
+> **Note:** `StatsManager` is **NOT** an autoload. It is instantiated as `StatsManager.new()` inside `GameManager` and stored at `GameManager.stats_manager`.
 
 ### `EventBus` (`event_bus.gd`)
 Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 
 | Group | Signal | Payload |
 | :--- | :--- | :--- |
-| **UI/HUD** | `initialize_hero_stats_ui` | `cls: CharacterClass` |
-| | `update_hero_stats_ui` | `stats: CharacterStats` |
+| **UI/HUD Init** | `initialize_hero_stats_ui` | *(none)* |
 | | `update_hero_avatar_texture` | `texture: Texture2D` |
-| | `update_hp_bar_value` | `value: float` |
-| | `update_mana_bar_value` | `value: float` |
 | **Combat/Progression** | `enemy_died` | `enemy: Enemy` |
 | | `enemy_spawned` | `enemy: Enemy, spawn_position: Vector2` |
-| | `xp_changed` | `current: int` |
 | | `level_up` | `new_level: int` *(emitted without arg from GameManager)* |
+| **Stats Bars** | `hero_hp_changed` | `current_hp: float, max_hp: float` |
+| | `hero_mp_changed` | `current_mp: float, max_mp: float` |
+| | `hero_xp_changed` | `current_xp: int, total_xp: int` |
 | **Stats Allocation** | `stat_allocated` | `stat_name: String` |
 | | `stat_deallocated` | `stat_name: String` |
-| | `stats_updated` | *(none)* |
-| | `update_stats` | `stats: CharacterStats` |
+| | `stats_updated` | `stats_data: StatsData` |
+| | `stat_points_available_changed` | `points: int` |
 | | `save_stats_points` | *(none)* |
 | | `cancel_stats_points` | *(none)* |
 | **Loot** | `lootable_item_added` | `item: Item` |
@@ -242,37 +246,46 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 | | `potions_unequipped` | `potion: Potion` |
 | | `potions_consumed` | `potion: Potion` |
 
+### `StatsData` (`stats_data.gd`)
+**Pure data layer autoload.** Owns the live `CharacterStats` resource and all stat allocation state. No signal emissions — called by `StatsManager`.
+
+*   **`initialize_from_character_stats(cs: CharacterStats)`:** Duplicates the `CharacterStats` resource, seeds `__allocated_stats` and `__temp_allocated_stats`, copies bonus stats, and calls `__stats.update_current_health_and_mana()`.
+*   **`get_stats() → CharacterStats`:** Returns the live stats resource.
+*   **State tracking:** `__stat_points_available`, `__temp_stat_points_available`, `__allocate_point_saved`, `__allocated_stats`, `__temp_allocated_stats`.
+*   **`add_stat_point(stat_name)` / `sub_stat_point(stat_name)` → bool:** Mutate `__allocated_stats`, call `sync_allocated_to_base()`, update available points.
+*   **`save_stats()` / `cancel_stats()`:** Commit or revert allocation state.
+*   **`sync_allocated_to_base()`:** Calls `__stats.from_dict_to_base_stats(__allocated_stats)` to push allocations into the live `CharacterStats`.
+*   **Accessors:** `get_total(key)`, `get_allocated_stat(key)`, `get_temp_allocated_stat(key)`, `get_stat_points_available()`, `get_base_weapon_power()`, `get_base_armor_defense()`, `get_base_armor_resist()`, and their setters.
+*   **Constants:** `STAT_NAMES`, `STAT_NAMES_NO_FLT`, `POINTS_STATS_PER_LEVEL`.
+
 ### `PlayerData` (`player_data.gd`)
-Central data store. Manages levels, XP, stats allocation, equipment bonuses, inventory, lootable items, and potion lists (`HEALTH` & `MANA`).
+Central store for player **progress and inventory**. Stat allocation has been moved to `StatsData`/`StatsManager`.
 
-**`initialize(stats: CharacterStats)`:** Gets deep copy instance of class stats, seeds `__allocated_stats` and `__temp_allocated_stats`.
-
-**Stat formulas (evaluated on `CharacterStats` using `get_total(key)`):**
-| Method | Formula |
-| :--- | :--- |
-| `get_melee_atk()` | `floor(total("STR") × 1.3) + floor(total("DEX") × 0.25) + total("weapon_power")` |
-| `get_ranged_atk()` | `floor(total("STR") × 1.3) + floor(total("LUC") × 0.3) + floor(total("DEX") × 0.2) + total("weapon_power")` |
-| `get_magic_atk()` | `floor(total("INT") × 1.3) + floor(total("WIS") × 0.2) + total("weapon_power")` |
-| `get_max_hp()` | `100.0 + (REC + get_bonus_rec()) × 5.0 + get_bonus_max_hp()` |
-| `get_max_mp()` | `50.0 + (WIS × 5.0) + get_bonus_max_mp()` |
-| `get_def()` | `REC + get_bonus_armor_defense()` |
-| `get_resist()` | `WIS + get_bonus_armor_resist()` |
-| `get_crit_chance()` | `floor(total("LUC") × 0.2)` (percent) |
-| `get_crit_damage()` | `1.5 + floor(total("LUC") × 0.0075)` (multiplier) |
-
-**Equipment & Stat Bonus Management:**
-*   `calculate_equipement_stats_bonus(equipement, operation="equip")`: updates `__base_stats` bonuses for effective breakdown stats, weapon power, armor defense, and armor resistance.
-*   `__equipable_items` dictionary (10 keys): `HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `WEAPON`, `RING`, `AMULET`, `CLOAK`, `PET`.
+*   **Level & XP:** `get/set_player_level()`, `get/set_current_xp()` (emits `hero_xp_changed`), `get/set_total_xp_to_next_level()` (emits `hero_xp_changed`). Starts at level 1, 0 XP, 75 XP target.
+*   **Inventory:** `add/remove_lootable_item(item)`, `add/remove_inventory_item(item)`.
+*   **Equipment:** `get_equipements() → Dictionary`, `add/remove_equipable_item(item)`. The `__equipable_items` dictionary has 10 keys: `HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `WEAPON`, `RING`, `AMULET`, `CLOAK`, `PET`.
+*   **Potions:** `add_potion(potion)`, `remove_potion_from_list(potion)`. Internally stores `__potions = {"HEALTH": [], "MANA": []}`.
+*   **Constants** (kept for backward compat): `STAT_NAMES`, `STAT_NAMES_NO_FLT`, `POINTS_STATS_PER_LEVEL`.
 
 ### `GameManager` (`game_manager.gd`)
-Orchestrates top-level game flow. Key public variables: `player_ref: Character`, `level_scaler: float = 1.2`, `drop_range: float = 50.0`.
+Orchestrates top-level game flow. Key public variables: `player_ref: Character`, `level_scaler: float = 1.2`, `drop_range: float = 50.0`, `stats_manager: StatsManager`.
 
-*   **`register_player(player)`:** Sets `player_ref`, calls `PlayerData.initialize(player.character_class.get_class_stats())`, emits `EventBus.initialize_hero_stats_ui`.
-*   **`add_xp(amount)`:** Increments XP, emits `xp_changed`, calls `level_up()` if threshold met.
-*   **`level_up()`:** Increments `player_level`, calls `PlayerData.update_available_points()`, `scaling_level_up()`, emits `level_up`.
+*   **`register_player(player)`:** Sets `player_ref`, calls `stats_manager.initialize(player.character_class.get_class_stats())`, emits `EventBus.initialize_hero_stats_ui`.
+*   **`add_xp(amount)`:** Increments XP via `PlayerData.set_current_xp()` (which emits `hero_xp_changed`), calls `level_up()` if threshold met.
+*   **`level_up()`:** Increments `player_level`, calls `stats_manager.update_available_points_on_level_up()`, `scaling_level_up()`, `StatsData.get_stats().update_current_health_and_mana()`, emits `EventBus.level_up`.
 *   **`spawn_enemy_items(enemy)`:** Gets drop zone from `enemy.get_parent().get_drop_zone()`, calls `enemy._drop_item()`, adds drops at randomized positions.
 *   **`drop_item(item)`:** Loads `drop.tscn`, gets the first `enemies_spawner` group node's drop zone, places item near `player_ref.global_position` ± `drop_range`.
-*   **`randomize_drop_position(position, range)`:** Returns `position + Vector2(randf_range(-range, range), randf_range(-range, range))`.
+*   **`_ready()` signal connections:** `enemy_died`, `stat_allocated`→`stats_manager.add_stat_point`, `stat_deallocated`→`stats_manager.sub_stat_point`, `save_stats_points`→`stats_manager.save_stats`, `cancel_stats_points`→`stats_manager.cancel_stats`, plus all loot/inventory/equipment/potion signals.
+
+### `StatsManager` (`stats_manager.gd`)
+**Business logic layer.** Instantiated inside `GameManager` (`var stats_manager: StatsManager = StatsManager.new()`). Wraps `StatsData` mutations and emits the appropriate `EventBus` signals after each change.
+
+*   **`initialize(character_stats)`:** Delegates to `StatsData.initialize_from_character_stats()`, then emits `stats_updated` and `stat_points_available_changed`.
+*   **`add_stat_point(stat_name)` / `sub_stat_point(stat_name)`:** Delegates to `StatsData`, emits signals on success.
+*   **`save_stats()` / `cancel_stats()`:** Delegates to `StatsData`, always emits signals.
+*   **`update_available_points_on_level_up()`:** Adds `POINTS_PER_LEVEL` to available points, resets temp points and `allocate_point_saved`, emits signals.
+*   **`calculate_equipment_bonus(equipement, operation = "equip")`:** Processes `equipement.get_effective_stats_breakdown()` and calls `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()` for each stat. Handles `Weapon` (weapon_power) and `Armor` (armor_defense, armor_resist) separately.
+*   **`get_total(stat_name)` / `get_allocated_stat(stat_name)` / `get_temp_allocated_stat(stat_name)`:** Thin delegation wrappers to `StatsData`.
 
 ### `SaveManager` (`save_manager.gd`)
 Stub node. Reserved for save/load persistence logic. No active implementation.
@@ -312,12 +325,13 @@ res://
 │   │                              item_stats_row.tscn, gem_panel.tscn
 │   └── components/             → (reserved)
 ├── scripts/
-│   ├── autoloads/              → event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd
+│   ├── autoloads/              → event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd,
+│   │                             stats_data.gd, stats_manager.gd
 │   ├── entities/               → character.gd, player.gd, enemy.gd, warrior.gd, archer.gd, mage.gd,
 │   │   │                         goblin.gd, arrow.gd, water_bullet.gd, enemies_spawner.gd,
 │   │   │                         in_game_ui.gd, lootable_item_slot.gd, inventory_slot.gd,
 │   │   │                         equipement_slot.gd, potion_slot.gd, stat_container.gd,
-│   │   │                         equipable_table_details.gd, armor_table_details.gd,
+│   │   │                         stats_ui.gd, equipable_table_details.gd, armor_table_details.gd,
 │   │   │                         weapon_table_details.gd, gem_panel.gd, item_stats_row.gd,
 │   │   │                         item_stats_upgrade_label.gd
 │   │   └── state_machine/      → state.gd, state_machine.gd
@@ -421,29 +435,49 @@ func get_class_stats_instance() -> CharacterStats
 class_name CharacterStats
 extends Resource
 
+# Base stats (allocated points are written back here by StatsData.sync_allocated_to_base)
 @export var STR: int = 0
 @export var REC: int = 0
 @export var INT: int = 0
 @export var DEX: int = 0
 @export var WIS: int = 0
 @export var LUC: int = 0
+@export var CURRENT_HEALTH: float = 0.0   # ← NEW: tracks live HP
+@export var CURRENT_MANA: float = 0.0     # ← NEW: tracks live MP
 
 @export var __bonus_stats: Dictionary  # max_health, max_mana, STR, REC, INT, WIS, DEX, LUC, weapon_power, armor_defense, armor_resist
 
-func get_instance() -> CharacterStats
-func get_allocated_stats() -> Dictionary
-func get_max_hp() -> float
-func get_max_mp() -> float
-func get_def() -> float
-func get_resist() -> float
-func get_melee_atk() -> float
-func get_ranged_atk() -> float
-func get_magic_atk() -> float
-func get_crit_chance() -> float
-func get_crit_damage() -> float
+# Core lifecycle
+func get_instance() -> CharacterStats                  # duplicate()
+func update_current_health_and_mana() -> void          # resets CURRENT_HEALTH/MANA to max
+
+# Stat formulas (all computed on the resource itself)
+func get_max_hp() -> float      # 100 + (REC + bonus_REC) * 5 + bonus_max_health
+func get_max_mp() -> float      # 50 + (WIS * 5) + bonus_max_mana
+func get_current_hp() -> float
+func get_current_mp() -> float
+func set_current_hp(value: float) -> void   # clamped 0..get_max_hp()
+func set_current_mp(value: float) -> void   # clamped 0..get_max_mp()
+func get_def() -> float         # REC + bonus_armor_defense
+func get_resist() -> float      # WIS + bonus_armor_resist
+func get_melee_atk() -> float   # floor(total("STR")×1.3) + floor(total("DEX")×0.25) + total("weapon_power")
+func get_ranged_atk() -> float  # floor(total("STR")×1.3) + floor(total("LUC")×0.3) + floor(total("DEX")×0.2) + total("weapon_power")
+func get_magic_atk() -> float   # floor(total("INT")×1.3) + floor(total("WIS")×0.2) + total("weapon_power")
+func get_crit_chance() -> float # floor(total("LUC") × 0.2) — percent
+func get_crit_damage() -> float # 1.5 + floor(total("LUC") × 0.0075) — multiplier
+
+# Allocation helpers
+func get_allocated_stats() -> Dictionary         # {STR, REC, INT, WIS, DEX, LUC}
+func get_base_stats_value(key: String) -> int
+func from_dict_to_base_stats(stats: Dictionary) -> void  # ← NEW: writes dict into STR/REC/… fields
+func get_total(key: String) -> int               # base + bonus
+
+# Bonus management
 func add_stat_bonus(stat: String, value: int) -> void
 func remove_stat_bonus(stat: String, value: int) -> void
-func get_total(key: String) -> int
+func get_stats_bonus_dict() -> Dictionary
+func get_primary_stats_breakdown() -> Dictionary
+func get_secondary_stats_breakdown() -> Dictionary
 ```
 
 ### `AttackData` (`attack_data.gd`)
@@ -589,14 +623,14 @@ func get_rec_bonus() -> float
 
 ---
 
-## HUD / UI Architecture (`in_game_ui.gd`)
+## HUD / UI Architecture (`in_game_ui.gd`, `stats_ui.gd`)
 
 `InGameUI` has `process_mode = Node.PROCESS_MODE_ALWAYS` — UI stays active even when the game tree is paused.
 
 **Tabs in HUD Panel (`TabContainer`):**
 | Tab | Scene Node | Contents |
 | :--- | :--- | :--- |
-| **Stats** | `StatsPanel` | `StatContainer` rows (one per stat in `STAT_NAMES_NO_FLT`), points label, Save/Cancel buttons |
+| **Stats** | `StatsPanel` | `StatContainer` rows (one per stat in `STAT_NAMES_NO_FLT`), points label, Save/Cancel buttons — managed by `StatsUI` |
 | **Inventory** | `InventoryPanel` | 56 `InventorySlot` instances in a `GridContainer` |
 | **Equipements** | `EquipementsPanel` | 9 wired `EquipementSlot` nodes |
 
@@ -608,6 +642,25 @@ Contains `health_potion_slot` and `mana_potion_slot` (`PotionSlot` instances).
 **Lootable items panel** (`$Control/LootableItemsTable`): Separate overlay. Contains a `GridContainer` with 20 `LootableItemSlot` instances. Pick All, Pick Selected, Cancel buttons.
 
 **Popup tooltips:** Instantiated under `$Popups (Node2D)`. Only one tooltip active at a time (guarded by `item_table_details_instance` reference check).
+
+### `StatsUI` (`stats_ui.gd`, `class_name StatsUI`, extends `Control`)
+Dedicated UI controller for all stats-related display. Owned by `InGameUI`, which passes node references in via `setup_ui_references()`.
+
+**Responsibilities:**
+- Manages Hero HUD bars: `hp_bar`, `mana_bar`, `level_progress_bar`, `hp_label`, `mana_label`, `level_label`, `hero_avatar`.
+- Manages Stats Panel: `stats_container` (VBoxContainer), `stats_points_label`, `save_stats_button`, `cancel_stats_button`.
+- **Smooth tweening:** HP, MP, and XP bar updates animate with `Tween` (0.2s TRANS_SINE/EASE_OUT for HP/MP, 0.3s for XP).
+
+**Signal connections (wired in `setup_ui_references()`):**
+| Signal | Handler |
+| :--- | :--- |
+| `EventBus.stats_updated(stats_data)` | `update_stats(stats_data)` → updates panel + hero HUD |
+| `EventBus.hero_hp_changed(current, max)` | `_on_hero_hp_changed` → smooth HP bar + label |
+| `EventBus.hero_mp_changed(current, max)` | `_on_hero_mp_changed` → smooth MP bar + label |
+| `EventBus.hero_xp_changed(current, total)` | `_on_hero_xp_changed` → smooth XP bar |
+| `EventBus.stat_points_available_changed(n)` | `_on_stat_points_available_changed` → `update_stats_panel()` |
+| `EventBus.level_up` | `_on_level_up` → updates level label and XP bar max |
+| `EventBus.update_hero_avatar_texture` | `on_hero_avatar_texture` |
 
 ---
 
@@ -628,7 +681,7 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 | `_die()` | `Player.gd`, `Enemy.gd` | `queue_free()` |
 | `_on_damage_received()` | `Player.gd`, `Enemy.gd` | Hit flash, UI update, transition to DeadState |
 | `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
-| `_get_defense()` | `Player.gd`, `Enemy.gd` | `PlayerData.get_base_stats().get_def()` for player; `enemy_params.defense` for enemy |
+| `_get_defense()` | `Player.gd`, `Enemy.gd` | `StatsData.get_stats().get_def()` for player; `enemy_params.defense` for enemy |
 | `_play_movement_animation()` | `Player.gd`, `Goblin.gd` | Sets `parameters/run/blend_position` on the AnimationTree |
 | `_play_idle_animation()` | `Player.gd`, `Goblin.gd` | Sets `parameters/idle/blend_position` on the AnimationTree |
 | `_play_attack_animation()` | `Player.gd`, `Goblin.gd` | Sets attack blend position, travels to attack node |
@@ -648,6 +701,9 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 7.  **Equipment Validation:** Always validate `player_type` via `GameManager._on_equip_item()` (triggered by `EventBus.equip_item`). Never equip items directly from UI scripts.
 8.  **Equipment Keys:** `PlayerData.__equipable_items` uses string keys: `Armor.ArmorType.keys()[item.armor_type]` for armors, `"WEAPON"` for weapons. These must match exactly: `HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, `WEAPON`, `PET`.
 9.  **Rarity/Rarety Typo:** The codebase consistently spells `Rarity` as `Rarety` (both the enum name `Item.Rarety` and the property `item.rarety`). Match this spelling in all new code to avoid type mismatches.
-10. **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `PlayerData.initialize()` deep duplicates this instance (`stats.get_instance()`). Call `set_class_stats()` on the class resource to persist stat changes from equipment back to the class.
+10. **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `StatsData.initialize_from_character_stats()` duplicates this instance. After any equipment change, call `player_ref.character_class.set_class_stats(StatsData.get_stats())` to persist back to the class resource.
 11. **StateMachine awaits owner.ready:** State nodes access `actor` and `state_machine` via `@onready`. This works because `StateMachine._ready()` itself `await owner.ready` before entering any states. Do not reference `actor` in state `_init()` or before the state machine is ready.
 12. **Character debug Label:** `Character.gd` has an `@onready var label: Label = $Label` that updates each `_process` frame to display the current state name. This is a development aid — keep the `Label` node in all character scenes.
+13. **Stats Access Pattern:** Always read live stats through `StatsData.get_stats()` (returns the `CharacterStats` resource). Never hold a long-lived reference to the `CharacterStats` instance across frames — it could be replaced on re-initialization.
+14. **StatsManager is NOT an autoload:** `StatsManager` is a plain `Node` class instantiated at `GameManager.stats_manager`. Do not reference it as a global. Call `StatsManager` methods only from `GameManager` signal handlers or via `EventBus` signals.
+15. **HP/MP Signal Flow:** When player takes damage, emit `EventBus.hero_hp_changed(current_hp, max_hp)` — **not** `stats_updated`. `hero_hp_changed` triggers the smooth tween animation in `StatsUI`. `stats_updated` is for full stat panel refreshes (allocation, equipment changes, level up). Mixing them causes animation glitches.
