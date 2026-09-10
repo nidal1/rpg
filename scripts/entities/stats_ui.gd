@@ -135,14 +135,21 @@ func update_hero_hud(stats: CharacterStats = null) -> void:
 	if not stats and StatsData:
 		stats = StatsData.get_stats()
 	if not stats: return
-	var hp = int(round(stats.get_max_hp()))
-	var mana = int(round(stats.get_max_mp()))
-	if hp_bar: hp_bar.max_value = hp
-	if mana_bar: mana_bar.max_value = mana
-	var current_hp = hp_bar.value if hp_bar else 0.0
-	var current_mana = mana_bar.value if mana_bar else 0.0
-	if hp_label: hp_label.text = "%d / %d" % [int(round(current_hp)), hp]
-	if mana_label: mana_label.text = "%d / %d" % [int(round(current_mana)), mana]
+	var max_hp = int(round(stats.get_max_hp()))
+	var max_mana = int(round(stats.get_max_mp()))
+	
+	var current_hp = stats.get_current_hp()
+	var current_mana = stats.get_current_mp()
+
+	if hp_bar: 
+		hp_bar.max_value = max_hp
+		hp_bar.value = current_hp
+	if mana_bar: 
+		mana_bar.max_value = max_mana
+		mana_bar.value = current_mana
+
+	if hp_label: hp_label.text = "%d / %d" % [int(round(current_hp)), max_hp]
+	if mana_label: mana_label.text = "%d / %d" % [int(round(current_mana)), max_mana]
 
 func update_hp_bar_smooth(value: float) -> void:
 	if not hp_bar: return

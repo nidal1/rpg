@@ -29,19 +29,22 @@ func _gui_input(event: InputEvent) -> void:
 		context_menu.position = get_screen_position()  + off
 		if not context_menu.id_pressed.is_connected(_on_context_menu_index_pressed):
 			context_menu.id_pressed.connect(_on_context_menu_index_pressed)
+	elif  event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and potion != null:
+		consume()
 
 func _on_context_menu_index_pressed(index: int) -> void:
 	if index == 0:
-		EventBus.potions_unequipped.emit(self.potion)
+		
 		unequip()
 	if index == 1:
-		EventBus.potions_consumed.emit(self.potion)
+		
 		consume()
 
 func unequip() -> void:
 	if not potion:
 		return
 	
+	EventBus.potions_unequipped.emit(self.potion)
 	potion = null
 	health_potion_texture.texture = null
 	health_items_label.text = "0"
@@ -50,6 +53,7 @@ func consume():
 	if not potion:
 		return
 	
+	EventBus.potions_consumed.emit(self.potion)
 	potion = null
 	health_potion_texture.texture = null
 	health_items_label.text = "0"

@@ -26,6 +26,7 @@ func _ready() -> void:
 	EventBus.equip_item.connect(_on_equip_item)
 	EventBus.item_unequipped.connect(_on_item_unequipped)
 	EventBus.potions_unequipped.connect(_on_potion_unequipped)
+	EventBus.potions_consumed.connect(_on_potion_consumed)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
@@ -168,3 +169,15 @@ func _on_potion_unequipped(potion: Potion) -> void:
 
 	var _items_to_add: Array[Item] = [potion]
 	EventBus.items_added_to_inventory.emit(_items_to_add)
+
+func _on_potion_consumed(potion: Potion):
+	var potion_effect = potion.get_potion_effect()
+	var potion_type = potion_effect.get("potion_type")
+	var heal_percentage = float (potion_effect.get("heal_percentage"))
+
+	if potion_type == Potion.PotionType.HEALTH_POTION:
+		StatsData.get_stats().set_current_hp(StatsData.get_stats().get_current_hp() + heal_percentage)
+	elif potion_type == Potion.PotionType.MANA_POTION:
+		StatsData.get_stats().set_current_mp(StatsData.get_stats().get_current_mp() + heal_percentage)
+	
+	EventBus.stats_updated.emit(StatsData)
