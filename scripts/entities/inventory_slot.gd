@@ -50,7 +50,7 @@ func get_item() -> Item:
 	return item
 
 func _on_inventory_slot_button_pressed() -> void:
-	print("pressed")
+	_equip()
 
 func clear_slot() -> void:
 	item = null

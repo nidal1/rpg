@@ -5,7 +5,7 @@ class_name PotionSlot
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 
-var potion: Potion = null
+var potions: Array[Potion] = []
 var slot_number: int
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		if not potion:
+		if not potions.size():
 			return
 		context_menu.popup()
 		# position = mouse position
@@ -29,41 +29,45 @@ func _gui_input(event: InputEvent) -> void:
 		context_menu.position = get_screen_position()  + off
 		if not context_menu.id_pressed.is_connected(_on_context_menu_index_pressed):
 			context_menu.id_pressed.connect(_on_context_menu_index_pressed)
-	elif  event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and potion != null:
+	elif  event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and potions.size():
 		consume()
 
 func _on_context_menu_index_pressed(index: int) -> void:
 	if index == 0:
-		
 		unequip()
 	if index == 1:
-		
 		consume()
 
 func unequip() -> void:
-	if not potion:
+	if not potions.size():
 		return
+
+	var temp = potions.duplicate()
+	for p in temp:
+		EventBus.potions_unequipped.emit(p)
+		potions.erase(p)
 	
-	EventBus.potions_unequipped.emit(self.potion)
-	potion = null
 	health_potion_texture.texture = null
 	health_items_label.text = "0"
 
 func consume():
-	if not potion:
+	if not potions.size():
 		return
 	
-	EventBus.potions_consumed.emit(self.potion)
-	potion = null
-	health_potion_texture.texture = null
-	health_items_label.text = "0"
+	var removed = potions.pop_back()
+	EventBus.potions_consumed.emit(removed)
+	if potions.size() <= 0:
+		health_potion_texture.texture = null
+		health_items_label.text = "0"
+	else:
+		health_items_label.text = str(potions.size())
 
 func equip(new_potion: Potion) -> void:
 	if not new_potion:
 		return
-	potion = new_potion
+	potions.append(new_potion)
 	health_potion_texture.texture = new_potion.icon
-	health_items_label.text = "1"
+	health_items_label.text = str(potions.size())
 
 func get_potion_slot_type() -> Potion.PotionType:
 	return potion_type
