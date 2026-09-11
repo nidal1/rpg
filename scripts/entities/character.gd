@@ -1,6 +1,6 @@
 ## Character
-## Base class for all characters in the game, including the player and enemies.
-## Provides core movement, health, and state management functionality.
+## Base class for all characters in the game, including the player, enemies, and NPCs.
+## Provides core movement, entity identity, and state management functionality.
 extends CharacterBody2D
 class_name Character
 
@@ -13,6 +13,10 @@ const ANIM_RUN = "run"
 # ─── Enums (Deprecated) ──────────────────────────────────────────────────────
 # Deprecated: Enum state is being replaced by Node-based StateMachine
 enum DeprecatedState {IDLE, RUN, ATTACKING, PATROL, CHASE, FLEE, DEAD}
+
+# ─── Exported Variables ──────────────────────────────────────────────────────
+## Optional entity name identifier.
+@export var entity_name: String = ""
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 ## The current facing direction vector.
@@ -28,8 +32,6 @@ var speed: float = 0.0
 var animation_tree: AnimationTree = null
 ## Playback for the main state machine.
 var animation_playback: AnimationNodeStateMachinePlayback = null
-## Playback for basic attacks.
-var animation_BA_playback: AnimationNodeStateMachinePlayback = null
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var label: Label = $Label
@@ -48,22 +50,13 @@ func _process(_delta: float) -> void:
 func _move() -> void: pass
 ## Virtual method for idle logic.
 func _idle() -> void: pass
-## Virtual method for attack logic.
-func _attack() -> void: pass
-## Virtual method for death logic.
-func _die() -> void: pass
-## Virtual method called when damage is received.
-func _on_damage_received() -> void: pass
 ## Virtual method for playing movement animations.
 func _play_movement_animation() -> void: pass
 ## Virtual method for playing idle animations.
 func _play_idle_animation() -> void: pass
 ## Virtual method called when the state changes (Deprecated).
-func _on_state_changed(new_state: DeprecatedState) -> void: pass
-## Virtual method that returns the current attack damage.
-func _get_attack_damage() -> float: return 0.0
-## Virtual method that returns the current defense.
-func _get_defense() -> float: return 0.0
+func _on_state_changed(_new_state: DeprecatedState) -> void: pass
+
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Updates the debug label with the current state name.
 func _update_label_state() -> void:
@@ -78,3 +71,4 @@ func _set_state(new_state: DeprecatedState) -> void:
 	current_state = new_state
 	_update_label_state()
 	_on_state_changed(new_state)
+

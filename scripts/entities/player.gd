@@ -1,7 +1,7 @@
 ## Player
 ## Controls the player character, handling input, movement, combo attacks,
 ## and interactions with items and the environment.
-extends Character
+extends Combatant
 class_name Player
 
 # ─── Exported Variables ──────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ func _die() -> void:
 func take_damage(amount: float) -> void:
 	var reduced_damage = max(1.0, amount - _get_defense())
 	var current_hp = StatsData.get_stats().get_current_hp()
-	StatsData.get_stats().set_current_hp( current_hp - reduced_damage )
+	StatsData.get_stats().set_current_hp(current_hp - reduced_damage)
 	_on_damage_received()
 
 func _on_damage_received() -> void:

@@ -1,7 +1,7 @@
 # CLAUDE.md — 2D Action RPG (Godot 4)
 
 ## Project Overview
-A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**. The codebase consists of 43 modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
+A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**. The codebase consists of 57 modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
 
 - **Viewport:** 1280×720, `canvas_items` stretch mode
 - **Rendering:** Mobile renderer, DirectX 12 (Windows), pixel art (nearest-filter textures)
@@ -47,13 +47,15 @@ Character.tscn              → Base CollisionShape2D + Label (debug) + StateMac
 
 ### Script Hierarchy
 ```
-Character.gd (CharacterBody2D)  → Base entity: health/mana stats, virtual hooks, take_damage (defense reduction)
-  ├── Player.gd (Player)       → Input, combo management, movement, hit flashing, PickableDetection callbacks
-  │     ├── Warrior.gd         → Melee: loads warrior.tres in _ready(), handles Hitbox area_entered → take_damage
-  │     ├── Archer.gd          → Ranged: loads archer.tres in _ready(), targets enemies, spawns Arrow projectiles
-  │     └── Mage.gd            → Ranged: loads mage.tres in _ready(), targets enemies, spawns WaterBullet projectiles
-  └── Enemy.gd (Enemy)         → Base AI: NavigationAgent2D pathfinding, wander/chase movement, item dropping, HP bar UI
-        └── Goblin.gd          → Melee enemy: animation blending, Hitbox area_entered → take_damage
+Character.gd (CharacterBody2D)  → Base world entity: entity_name, speed, movement, state machine, label debug
+  ├── NPC.gd (NPC)             → Non-combat entity: interaction_area, npc_name, dialogue_text, _interact()
+  └── Combatant.gd (Combatant) → Base combat entity: animation_BA_playback, take_damage (defense reduction), hit flashing, combat virtual hooks
+        ├── Player.gd (Player) → Input, combo management, movement, PickableDetection callbacks
+        │     ├── Warrior.gd   → Melee: loads warrior.tres in _ready(), handles Hitbox area_entered → take_damage
+        │     ├── Archer.gd    → Ranged: loads archer.tres in _ready(), targets enemies, spawns Arrow projectiles
+        │     └── Mage.gd      → Ranged: loads mage.tres in _ready(), targets enemies, spawns WaterBullet projectiles
+        └── Enemy.gd (Enemy)   → Base AI: NavigationAgent2D pathfinding, wander/chase movement, item dropping, HP bar UI
+              └── Goblin.gd    → Melee enemy: animation blending, Hitbox area_entered → take_damage
 ```
 
 > **Class loading pattern:** Each concrete player class (`Warrior`, `Archer`, `Mage`) loads its own `.tres` resource with `load("res://resources/classes/<class>.tres")` inside its `_ready()` and calls `_load_classe(cls)`, which sets `max_health`, `max_mana`, `speed`, `combo_chain`, and registers with `GameManager`.
@@ -327,7 +329,7 @@ res://
 ├── scripts/
 │   ├── autoloads/              → event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd,
 │   │                             stats_data.gd, stats_manager.gd
-│   ├── entities/               → character.gd, player.gd, enemy.gd, warrior.gd, archer.gd, mage.gd,
+│   ├── entities/               → character.gd, combatant.gd, npc.gd, player.gd, enemy.gd, warrior.gd, archer.gd, mage.gd,
 │   │   │                         goblin.gd, arrow.gd, water_bullet.gd, enemies_spawner.gd,
 │   │   │                         in_game_ui.gd, lootable_item_slot.gd, inventory_slot.gd,
 │   │   │                         equipement_slot.gd, potion_slot.gd, stat_container.gd,
@@ -673,20 +675,21 @@ Section headers use the pattern: `# ─── Section Name ───...`.
 
 All entities use a **Virtual Functions Override Pattern** to keep state machine code decoupled from concrete class logic:
 
-| Function | Override Location | Purpose |
-| :--- | :--- | :--- |
-| `_move()` | `Player.gd`, `Enemy.gd` | Physics movement (`velocity = dir * speed`) + travel run animation |
-| `_idle()` | `Player.gd`, `Enemy.gd` | Zero velocity + travel idle animation |
-| `_attack()` | `Player.gd`, `Enemy.gd` | Start combo or trigger attack cooldown timer |
-| `_die()` | `Player.gd`, `Enemy.gd` | `queue_free()` |
-| `_on_damage_received()` | `Player.gd`, `Enemy.gd` | Hit flash, UI update, transition to DeadState |
-| `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
-| `_get_defense()` | `Player.gd`, `Enemy.gd` | `StatsData.get_stats().get_def()` for player; `enemy_params.defense` for enemy |
-| `_play_movement_animation()` | `Player.gd`, `Goblin.gd` | Sets `parameters/run/blend_position` on the AnimationTree |
-| `_play_idle_animation()` | `Player.gd`, `Goblin.gd` | Sets `parameters/idle/blend_position` on the AnimationTree |
-| `_play_attack_animation()` | `Player.gd`, `Goblin.gd` | Sets attack blend position, travels to attack node |
+| Function | Override Location | Base Class | Purpose |
+| :--- | :--- | :--- | :--- |
+| `_move()` | `Player.gd`, `Enemy.gd` | `Character.gd` | Physics movement (`velocity = dir * speed`) + travel run animation |
+| `_idle()` | `Player.gd`, `Enemy.gd` | `Character.gd` | Zero velocity + travel idle animation |
+| `_play_movement_animation()` | `Player.gd`, `Goblin.gd` | `Character.gd` | Sets `parameters/run/blend_position` on the AnimationTree |
+| `_play_idle_animation()` | `Player.gd`, `Goblin.gd` | `Character.gd` | Sets `parameters/idle/blend_position` on the AnimationTree |
+| `_attack()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Start combo or trigger attack cooldown timer |
+| `_die()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `queue_free()` |
+| `_on_damage_received()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Hit flash, UI update, transition to DeadState |
+| `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
+| `_get_defense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_stats().get_def()` for player; `enemy_params.defense` for enemy |
+| `_play_attack_animation()` | `Player.gd`, `Goblin.gd` | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
+| `_interact()` | Custom NPCs | `NPC.gd` | Virtual method for non-combat NPC interaction |
 
-`take_damage(amount)` in `Character.gd` applies defense reduction: `reduced = max(1.0, amount - _get_defense())`.
+`take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_defense())`.
 
 ---
 

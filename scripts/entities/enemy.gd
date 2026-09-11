@@ -1,6 +1,6 @@
 ## Enemy
 ## Base class for enemies, managing AI navigation, wandering, attacks, and drops.
-extends Character
+extends Combatant
 class_name Enemy
 
 # ─── Signals ─────────────────────────────────────────────────────────────────
@@ -85,12 +85,11 @@ func _attack() -> void:
 	_play_attack_animation()
 
 	await get_tree().create_timer(attack_cooldown).timeout
-	if not is_instance_valid(self ): return
+	if not is_instance_valid(self): return
 	can_attack = true
 
 func _die() -> void:
 	queue_free()
-
 
 
 func _on_damage_received() -> void:
@@ -158,13 +157,6 @@ func _patrol() -> void:
 ## Checks if the target is within attack range.
 func _target_reached() -> bool:
 	return target and global_position.distance_to(target.global_position) < attack_range
-
-## Flashes the enemy red to indicate damage taken.
-func _flash_hit() -> void:
-	modulate = Color.RED
-	await get_tree().create_timer(0.3).timeout
-	if not is_instance_valid(self ): return
-	modulate = Color.WHITE
 
 ## Returns the defense of the enemy.
 func _get_defense() -> float:
