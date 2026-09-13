@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d3ik1fgki2p8r"]
+
+[ext_resource type="PackedScene" uid="uid://de57v61nqoh5m" path="res://scenes/entities/player/character.tscn" id="1_ujkxw"]
+[ext_resource type="Script" uid="uid://b2of4uux0d44w" path="res://scripts/entities/npc.gd" id="2_0o1kd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0o1kd"]
+radius = 200.0
+
+[node name="Npc" unique_id=1846937653 instance=ExtResource("1_ujkxw")]
+script = ExtResource("2_0o1kd")
+npc_name = null
+dialogue_text = null
+entity_name = null
+
+[node name="InteractionZone" type="Area2D" parent="." index="3" unique_id=416176424]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone" index="0" unique_id=16876269]
+shape = SubResource("CircleShape2D_0o1kd")
+debug_color = Color(0, 1, 0.015686275, 0.41960785)

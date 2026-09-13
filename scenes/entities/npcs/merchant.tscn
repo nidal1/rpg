@@ -1,0 +1,155 @@
+[gd_scene format=3 uid="uid://bc2gn8rbdsuy5"]
+
+[ext_resource type="PackedScene" uid="uid://d3ik1fgki2p8r" path="res://scenes/entities/npcs/npc.tscn" id="1_lwg2g"]
+[ext_resource type="Texture2D" uid="uid://ct583cjit5nx1" path="res://assets/sprites/npcs/Pawn/Pawn_Idle.png" id="2_3nt24"]
+[ext_resource type="Script" uid="uid://c5nmvvetlu1af" path="res://scripts/entities/merchant.gd" id="2_70jdr"]
+[ext_resource type="Texture2D" uid="uid://cqw80r3wor4pp" path="res://assets/sprites/npcs/Pawn/Pawn_Run.png" id="3_3nt24"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70jdr"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjx0a"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cm0gh"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ytu6d"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ins47"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f46kf"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sv60c"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ww5f"]
+atlas = ExtResource("2_3nt24")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jom7"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f6e6"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6q22"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vfma"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pj0f4"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2t6l"]
+atlas = ExtResource("3_3nt24")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6jom7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70jdr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjx0a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cm0gh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ytu6d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ins47")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f46kf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sv60c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ww5f")
+}],
+"loop": true,
+"name": &"idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6jom7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3f6e6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u6q22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6vfma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pj0f4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2t6l")
+}],
+"loop": false,
+"name": &"run_left",
+"speed": 5.0
+}]
+
+[node name="Merchant" unique_id=1846937653 node_paths=PackedStringArray("waypoints") instance=ExtResource("1_lwg2g")]
+script = ExtResource("2_70jdr")
+waypoints = []
+npc_name = "Weapen Merchant"
+dialogue_text = []
+entity_name = ""
+
+[node name="InteractionZone" parent="." index="3" unique_id=416176424]
+collision_layer = 256
+collision_mask = 2
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="4" unique_id=1307032195]
+position = Vector2(0, -31)
+sprite_frames = SubResource("SpriteFrames_6jom7")
+animation = &"run_left"
+
+[node name="Camera2D" type="Camera2D" parent="." index="5" unique_id=125346137]
+limit_left = -611
+limit_top = -264
+limit_right = 669
+limit_bottom = 456
+
+[node name="WanderCD" type="Timer" parent="." index="6" unique_id=219830353]
+wait_time = 2.0
+one_shot = true
+
+[node name="InteractionLabel" type="Label" parent="." index="7" unique_id=760588524]
+visible = false
+offset_left = -72.0
+offset_top = -96.0
+offset_right = 68.0
+offset_bottom = -73.0
+text = "Press E to interact"
+
+[connection signal="body_entered" from="InteractionZone" to="." method="_on_interaction_zone_body_entered"]
+[connection signal="body_exited" from="InteractionZone" to="." method="_on_interaction_zone_body_exited"]
+[connection signal="timeout" from="WanderCD" to="." method="_on_wander_cd_timeout"]

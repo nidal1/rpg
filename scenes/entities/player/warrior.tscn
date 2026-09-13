@@ -749,7 +749,11 @@ parameters/basic_attack/BasicAttackStateMachine/attack2/blend_position = 0.0
 parameters/idle/blend_position = 0.9974874
 parameters/run/blend_position = 0.0
 
+[node name="Hurtbox" parent="." index="6" unique_id=1385952380]
+visible = false
+
 [node name="Hitbox" type="Area2D" parent="." index="7" unique_id=1045614664]
+visible = false
 position = Vector2(0, -28)
 scale = Vector2(6.1999993, 4.560001)
 collision_layer = 8
@@ -760,5 +764,8 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=210404852]
 shape = SubResource("CircleShape2D_gyb7e")
 debug_color = Color(0.99215686, 0.9843137, 0, 0.41960785)
+
+[node name="PickableDection" parent="." index="10" unique_id=678009553]
+visible = false
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
