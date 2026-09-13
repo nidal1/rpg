@@ -35,7 +35,7 @@ project/assembly_name="rpg"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/item_db_selector/plugin.cfg")
 
 [global_group]
 

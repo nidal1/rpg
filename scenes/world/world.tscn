@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c27gyy0t4r3ge" path="res://scenes/ui/in_game_ui.tscn" id="4_6m72w"]
 [ext_resource type="PackedScene" uid="uid://hovii1v0s7yp" path="res://scenes/entities/player/warrior.tscn" id="4_v5dby"]
 [ext_resource type="PackedScene" uid="uid://bc2gn8rbdsuy5" path="res://scenes/entities/npcs/merchant.tscn" id="6_t5ptc"]
+[ext_resource type="Script" uid="uid://dn1xddplwbu6n" path="res://addons/item_db_selector/example_item_user.gd" id="8_j2gmx"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1fp7r"]
 vertices = PackedVector2Array(32, 32, -32, 32, -32, -32, 32, -32)
@@ -225,3 +226,21 @@ gizmo_extents = 31.7
 [node name="point_c" type="Marker2D" parent="StorePosition" unique_id=1372929327]
 position = Vector2(-229, 0)
 gizmo_extents = 31.7
+
+[node name="Node2D" type="Node2D" parent="." unique_id=157640227 node_paths=PackedStringArray("texture_image")]
+position = Vector2(1359, 413)
+script = ExtResource("8_j2gmx")
+custom_db_item_objects = Array[Dictionary]([{
+"base_damage": 8.0,
+"grid_coordinate": {
+"column_x": 1.0,
+"row_y": 0.0
+},
+"id": "w_ir_02",
+"name": "Iron Cleaver",
+"required_level": 2.0,
+"type": "Sword"
+}])
+texture_image = NodePath("TextureRect")
+
+[node name="TextureRect" type="Sprite2D" parent="Node2D" unique_id=1462897427]
