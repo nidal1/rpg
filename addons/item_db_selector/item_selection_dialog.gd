@@ -236,8 +236,10 @@ func _create_item_card(item: Dictionary, atlas_tex: Texture2D) -> Control:
 	checkbox.toggled.connect(func(pressed: bool): _on_checkbox_toggled(item_id, pressed))
 	info_vbox.add_child(checkbox)
 	
+	var item_price: int = int(item.get("price", 0))
+
 	var meta_label = Label.new()
-	meta_label.text = "Type: " + item_type + " | Req. Lvl: " + str(req_level)
+	meta_label.text = "Type: " + item_type + " | Req. Lvl: " + str(req_level) + " | Price: " + str(item_price) + "g"
 	meta_label.add_theme_font_size_override("font_size", 11)
 	meta_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 	info_vbox.add_child(meta_label)

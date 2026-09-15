@@ -44,6 +44,7 @@ var _edit_col_x: SpinBox
 var _edit_row_y: SpinBox
 var _preview_rect: TextureRect
 var _preview_info_label: Label
+var _edit_price: SpinBox
 
 # Dialogs
 var _add_category_dialog: ConfirmationDialog
@@ -245,6 +246,14 @@ func _build_ui() -> void:
 	_edit_stat.max_value = 9999
 	_edit_stat.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_stat)
+
+	# Field: Price
+	fields_grid.add_child(_create_label("Price (Gold):"))
+	_edit_price = SpinBox.new()
+	_edit_price.min_value = 0
+	_edit_price.max_value = 999999
+	_edit_price.value_changed.connect(_on_field_value_changed)
+	fields_grid.add_child(_edit_price)
 	
 	# Field: Column X
 	fields_grid.add_child(_create_label("Grid Column X:"))
@@ -432,7 +441,8 @@ func _populate_edit_form(item_dict: Dictionary, db_key: String) -> void:
 	_edit_name.text = str(item_dict.get("name", ""))
 	_edit_type.text = str(item_dict.get("type", ""))
 	_edit_level.value = int(item_dict.get("required_level", 1))
-	
+	_edit_price.value = int(item_dict.get("price", 0))
+
 	if db_key == "weapons_database":
 		_stat_label.text = "Base Damage:"
 		_edit_stat.value = int(item_dict.get("base_damage", 0))
@@ -459,7 +469,8 @@ func _on_field_value_changed(_val = null) -> void:
 	selected_item_dict["name"] = _edit_name.text.strip_edges()
 	selected_item_dict["type"] = _edit_type.text.strip_edges()
 	selected_item_dict["required_level"] = int(_edit_level.value)
-	
+	selected_item_dict["price"] = int(_edit_price.value)
+
 	if selected_database_key == "weapons_database":
 		selected_item_dict["base_damage"] = int(_edit_stat.value)
 	else:
@@ -558,7 +569,8 @@ func _on_add_item_pressed() -> void:
 		"name": "New Item",
 		"type": "Weapon" if db_key == "weapons_database" else "Armor",
 		"grid_coordinate": {"column_x": 0, "row_y": 0},
-		"required_level": 1
+		"required_level": 1,
+		"price": 50
 	}
 	if db_key == "weapons_database":
 		new_item["base_damage"] = 10
