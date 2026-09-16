@@ -21,7 +21,8 @@ var _search_edit: LineEdit
 var _tab_container: TabContainer
 var _status_label: Label
 var _is_initialized: bool = false
-
+var _sort_option_button: OptionButton
+var _sort_mode: String = "default" # "default", "price_asc", "price_desc", "level_asc", "level_desc"
 
 func _init() -> void:
 	title = "Select Item IDs from Database"
@@ -97,6 +98,19 @@ func _build_ui() -> void:
 	btn_clear_all.text = "Clear All"
 	btn_clear_all.pressed.connect(_on_clear_all_pressed)
 	top_bar.add_child(btn_clear_all)
+
+	var sort_label = Label.new()
+	sort_label.text = "Sort:"
+	top_bar.add_child(sort_label)
+
+	_sort_option_button = OptionButton.new()
+	_sort_option_button.add_item("Default", 0)
+	_sort_option_button.add_item("Price: Low to High", 1)
+	_sort_option_button.add_item("Price: High to Low", 2)
+	_sort_option_button.add_item("Level: Low to High", 3)
+	_sort_option_button.add_item("Level: High to Low", 4)
+	_sort_option_button.item_selected.connect(_on_sort_option_selected)
+	top_bar.add_child(_sort_option_button)
 	
 	# Tab Container for Root Databases
 	_tab_container = TabContainer.new()
@@ -165,6 +179,10 @@ func _create_database_tab(tab_title: String, db_root: Dictionary, atlas_tex: Tex
 		if not items_list is Array:
 			continue
 		
+		# Nsskh l-list bach ma-n-beddloch l-original JSON array f-memory
+		var sorted_items = items_list.duplicate()
+		_sort_item_list(sorted_items)
+		
 		# Category Container
 		var cat_vbox = VBoxContainer.new()
 		cat_vbox.name = "Cat_" + str(category_name)
@@ -186,12 +204,11 @@ func _create_database_tab(tab_title: String, db_root: Dictionary, atlas_tex: Tex
 		grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		cat_vbox.add_child(grid)
 		
-		for item in items_list:
+		for item in sorted_items:
 			if not item is Dictionary or not item.has("id"):
 				continue
 			var item_card = _create_item_card(item, atlas_tex)
 			grid.add_child(item_card)
-
 
 func _create_item_card(item: Dictionary, atlas_tex: Texture2D) -> Control:
 	var item_id: String = str(item.get("id", ""))
@@ -249,6 +266,18 @@ func _create_item_card(item: Dictionary, atlas_tex: Texture2D) -> Control:
 	
 	return panel
 
+func _sort_item_list(items: Array) -> void:
+	match _sort_mode:
+		"price_asc":
+			items.sort_custom(func(a, b): return int(a.get("price", 0)) < int(b.get("price", 0)))
+		"price_desc":
+			items.sort_custom(func(a, b): return int(a.get("price", 0)) > int(b.get("price", 0)))
+		"level_asc":
+			items.sort_custom(func(a, b): return int(a.get("required_level", 1)) < int(b.get("required_level", 1)))
+		"level_desc":
+			items.sort_custom(func(a, b): return int(a.get("required_level", 1)) > int(b.get("required_level", 1)))
+		_:
+			pass # Default array order from JSON
 
 func _on_checkbox_toggled(item_id: String, pressed: bool) -> void:
 	if pressed:
@@ -306,3 +335,19 @@ func _on_confirmed() -> void:
 		if _item_data_map.has(id):
 			result.append(_item_data_map[id])
 	items_selected.emit(result)
+
+func _on_sort_option_selected(index: int) -> void:
+	match index:
+		0: _sort_mode = "default"
+		1: _sort_mode = "price_asc"
+		2: _sort_mode = "price_desc"
+		3: _sort_mode = "level_asc"
+		4: _sort_mode = "level_desc"
+	
+	# Save active tab index and re-build UI to apply sorting
+	var active_tab = _tab_container.current_tab if _tab_container != null else 0
+	_build_ui()
+	_update_checkbox_states()
+	_update_status_label()
+	if _tab_container != null and active_tab < _tab_container.get_tab_count():
+		_tab_container.current_tab = active_tab
