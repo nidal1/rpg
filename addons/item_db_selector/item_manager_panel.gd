@@ -6,6 +6,7 @@ extends Control
 const DB_PATH = "res://data/items_data.json"
 const WEAPONS_ATLAS_PATH = "res://assets/sprites/items/weapons.png"
 const ARMORS_ATLAS_PATH = "res://assets/sprites/items/armors.png"
+const POTIONS_ATLAS_PATH = "res://assets/sprites/items/potions.png"
 const CELL_SIZE = Vector2i(64, 64)
 
 # Data State
@@ -13,12 +14,13 @@ var current_db_data: Dictionary = {}
 var selected_tree_item: TreeItem = null
 var selected_item_dict: Dictionary = {}
 var selected_category_array: Array = []
-var selected_database_key: String = "" # "weapons_database" or "armors_database"
+var selected_database_key: String = "" # "weapons_database", "armors_database", or "potions_database"
 var selected_category_name: String = ""
 
 # Textures
 var _weapons_texture: Texture2D
 var _armors_texture: Texture2D
+var _potions_texture: Texture2D
 
 # UI References - Top Bar
 var _save_button: Button
@@ -37,6 +39,7 @@ var _no_selection_label: Label
 var _edit_id: LineEdit
 var _edit_name: LineEdit
 var _edit_type: LineEdit
+var _edit_player_type: LineEdit
 var _edit_level: SpinBox
 var _edit_stat: SpinBox
 var _stat_label: Label
@@ -68,6 +71,8 @@ func _load_textures() -> void:
 		_weapons_texture = load(WEAPONS_ATLAS_PATH)
 	if ResourceLoader.exists(ARMORS_ATLAS_PATH):
 		_armors_texture = load(ARMORS_ATLAS_PATH)
+	if ResourceLoader.exists(POTIONS_ATLAS_PATH):
+		_potions_texture = load(POTIONS_ATLAS_PATH)
 
 
 func _build_ui() -> void:
@@ -229,6 +234,13 @@ func _build_ui() -> void:
 	_edit_type = LineEdit.new()
 	_edit_type.text_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_type)
+
+	# Field: Player Class
+	fields_grid.add_child(_create_label("Player Class:"))
+	_edit_player_type = LineEdit.new()
+	_edit_player_type.placeholder_text = "Warrior, Archer, Mage, Priest, All"
+	_edit_player_type.text_changed.connect(_on_field_value_changed)
+	fields_grid.add_child(_edit_player_type)
 	
 	# Field: Required Level
 	fields_grid.add_child(_create_label("Required Level:"))
@@ -238,7 +250,7 @@ func _build_ui() -> void:
 	_edit_level.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_level)
 	
-	# Field: Stat (Damage / Defense)
+	# Field: Stat (Damage / Defense / Heal)
 	_stat_label = _create_label("Base Damage:")
 	fields_grid.add_child(_stat_label)
 	_edit_stat = SpinBox.new()
@@ -363,6 +375,9 @@ func _load_and_populate_db() -> void:
 	
 	if current_db_data.has("armors_database"):
 		_populate_db_branch(root_tree_item, "Armors Database", "armors_database")
+
+	if current_db_data.has("potions_database"):
+		_populate_db_branch(root_tree_item, "Potions Database", "potions_database")
 	
 	_show_status("Database loaded successfully.")
 
@@ -389,7 +404,7 @@ func _populate_db_branch(parent_item: TreeItem, display_name: String, db_key: St
 				continue
 			var item_node = _tree.create_item(cat_node)
 			var item_id = str(item.get("id", "unk"))
-			var item_name = str(item.get("name", "Unknown"))
+			var item_name = str(item.get("item_name", "Unknown"))
 			item_node.set_text(0, item_name + " [" + item_id + "]")
 			item_node.set_metadata(0, {
 				"type": "item",
@@ -438,8 +453,9 @@ func _populate_edit_form(item_dict: Dictionary, db_key: String) -> void:
 	_form_container.visible = true
 	
 	_edit_id.text = str(item_dict.get("id", ""))
-	_edit_name.text = str(item_dict.get("name", ""))
-	_edit_type.text = str(item_dict.get("type", ""))
+	_edit_name.text = str(item_dict.get("item_name", "Unknown"))
+	_edit_type.text = str(item_dict.get("item_type", "Unknown"))
+	_edit_player_type.text = str(item_dict.get("player_type", "All"))
 	_edit_level.value = int(item_dict.get("required_level", 1))
 	_edit_price.value = int(item_dict.get("price", 0))
 
@@ -447,10 +463,14 @@ func _populate_edit_form(item_dict: Dictionary, db_key: String) -> void:
 		_stat_label.text = "Base Damage:"
 		_edit_stat.value = int(item_dict.get("base_damage", 0))
 		_preview_info_label.text = "Atlas: weapons.png"
-	else:
+	elif db_key == "armors_database":
 		_stat_label.text = "Base Defense:"
 		_edit_stat.value = int(item_dict.get("base_defense", 0))
 		_preview_info_label.text = "Atlas: armors.png"
+	else:
+		_stat_label.text = "Heal %:"
+		_edit_stat.value = int(item_dict.get("heal_percentage", 0))
+		_preview_info_label.text = "Atlas: potions.png"
 	
 	var grid_coord = item_dict.get("grid_coordinate", {"column_x": 0, "row_y": 0})
 	_edit_col_x.value = int(grid_coord.get("column_x", 0))
@@ -465,16 +485,22 @@ func _on_field_value_changed(_val = null) -> void:
 		return
 	
 	# Sync values back to data dictionary
+	var new_name = _edit_name.text.strip_edges()
+	var new_type = _edit_type.text.strip_edges()
+	var new_player_type = _edit_player_type.text.strip_edges()
 	selected_item_dict["id"] = _edit_id.text.strip_edges()
-	selected_item_dict["name"] = _edit_name.text.strip_edges()
-	selected_item_dict["type"] = _edit_type.text.strip_edges()
+	selected_item_dict["item_name"] = new_name
+	selected_item_dict["item_type"] = new_type
+	selected_item_dict["player_type"] = new_player_type if not new_player_type.is_empty() else "All"
 	selected_item_dict["required_level"] = int(_edit_level.value)
 	selected_item_dict["price"] = int(_edit_price.value)
 
 	if selected_database_key == "weapons_database":
 		selected_item_dict["base_damage"] = int(_edit_stat.value)
-	else:
+	elif selected_database_key == "armors_database":
 		selected_item_dict["base_defense"] = int(_edit_stat.value)
+	else:
+		selected_item_dict["heal_percentage"] = int(_edit_stat.value)
 	
 	selected_item_dict["grid_coordinate"] = {
 		"column_x": int(_edit_col_x.value),
@@ -482,7 +508,8 @@ func _on_field_value_changed(_val = null) -> void:
 	}
 	
 	# Update Tree Item Text
-	selected_tree_item.set_text(0, selected_item_dict["name"] + " [" + selected_item_dict["id"] + "]")
+	var disp_name = str(selected_item_dict.get("item_name", "Unkown"))
+	selected_tree_item.set_text(0, disp_name + " [" + selected_item_dict["id"] + "]")
 	
 	# Live update preview
 	_update_preview_texture()
@@ -495,8 +522,10 @@ func _update_preview_texture() -> void:
 	var atlas_tex = AtlasTexture.new()
 	if selected_database_key == "weapons_database":
 		atlas_tex.atlas = _weapons_texture
-	else:
+	elif selected_database_key == "armors_database":
 		atlas_tex.atlas = _armors_texture
+	else:
+		atlas_tex.atlas = _potions_texture
 	
 	if atlas_tex.atlas != null:
 		atlas_tex.region = Rect2(col_x * CELL_SIZE.x, row_y * CELL_SIZE.y, CELL_SIZE.x, CELL_SIZE.y)
@@ -562,20 +591,24 @@ func _on_add_item_pressed() -> void:
 			return
 	
 	var items_array: Array = current_db_data[db_key][cat_key]
-	var new_id = ("w_" if db_key == "weapons_database" else "a_") + "new_" + str(items_array.size() + 1)
+	var prefix = "w_" if db_key == "weapons_database" else ("a_" if db_key == "armors_database" else "p_")
+	var new_id = prefix + "new_" + str(items_array.size() + 1)
 	
 	var new_item = {
 		"id": new_id,
-		"name": "New Item",
-		"type": "Weapon" if db_key == "weapons_database" else "Armor",
+		"item_name": "New Item",
+		"item_type": "Sword" if db_key == "weapons_database" else ("Chest" if db_key == "armors_database" else "Health Potion"),
+		"player_type": "All",
 		"grid_coordinate": {"column_x": 0, "row_y": 0},
 		"required_level": 1,
 		"price": 50
 	}
 	if db_key == "weapons_database":
 		new_item["base_damage"] = 10
-	else:
+	elif db_key == "armors_database":
 		new_item["base_defense"] = 5
+	else:
+		new_item["heal_percentage"] = 20
 	
 	items_array.append(new_item)
 	_load_and_populate_db()

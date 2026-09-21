@@ -2,11 +2,12 @@
 extends AcceptDialog
 
 ## Signal emitted when the user confirms their item selection.
-signal items_selected(selected_items: Array[Dictionary])
+signal items_selected(selected_items: Array[DataItem])
 
 const DB_PATH = "res://data/items_data.json"
 const WEAPONS_ATLAS_PATH = "res://assets/sprites/items/weapons.png"
 const ARMORS_ATLAS_PATH = "res://assets/sprites/items/armors.png"
+const POTIONS_ATLAS_PATH = "res://assets/sprites/items/potions.png"
 const CELL_SIZE = Vector2i(64, 64)
 
 var _selected_ids: Array[String] = []
@@ -16,6 +17,7 @@ var _item_data_map: Dictionary = {} # item_id (String) -> Dictionary
 
 var _weapons_texture: Texture2D
 var _armors_texture: Texture2D
+var _potions_texture: Texture2D
 
 var _search_edit: LineEdit
 var _tab_container: TabContainer
@@ -78,7 +80,7 @@ func _build_ui() -> void:
 	top_bar.add_child(search_label)
 	
 	_search_edit = LineEdit.new()
-	_search_edit.placeholder_text = "Filter by name, id, or type..."
+	_search_edit.placeholder_text = "Filter by name, id, type, or class..."
 	_search_edit.clear_button_enabled = true
 	_search_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_search_edit.text_changed.connect(_on_search_text_changed)
@@ -128,6 +130,10 @@ func _build_ui() -> void:
 	# Populate Armors Tab
 	if db.has("armors_database"):
 		_create_database_tab("Armors", db["armors_database"], _armors_texture)
+		
+	# Populate Potions Tab
+	if db.has("potions_database"):
+		_create_database_tab("Potions", db["potions_database"], _potions_texture)
 	
 	# Bottom Status Bar
 	var bottom_bar = HBoxContainer.new()
@@ -144,6 +150,8 @@ func _load_textures() -> void:
 		_weapons_texture = load(WEAPONS_ATLAS_PATH)
 	if ResourceLoader.exists(ARMORS_ATLAS_PATH):
 		_armors_texture = load(ARMORS_ATLAS_PATH)
+	if ResourceLoader.exists(POTIONS_ATLAS_PATH):
+		_potions_texture = load(POTIONS_ATLAS_PATH)
 
 
 func _load_database() -> Dictionary:
@@ -179,7 +187,7 @@ func _create_database_tab(tab_title: String, db_root: Dictionary, atlas_tex: Tex
 		if not items_list is Array:
 			continue
 		
-		# Nsskh l-list bach ma-n-beddloch l-original JSON array f-memory
+		# Duplicate list to avoid modifying original in-memory dictionary
 		var sorted_items = items_list.duplicate()
 		_sort_item_list(sorted_items)
 		
@@ -212,8 +220,9 @@ func _create_database_tab(tab_title: String, db_root: Dictionary, atlas_tex: Tex
 
 func _create_item_card(item: Dictionary, atlas_tex: Texture2D) -> Control:
 	var item_id: String = str(item.get("id", ""))
-	var item_name: String = str(item.get("name", "Unknown Item"))
-	var item_type: String = str(item.get("type", "Item"))
+	var item_name: String = str(item.get("item_name", "Unknown Item"))
+	var item_type: String = str(item.get("item_type", "Unknown Type"))
+	var player_type: String = str(item.get("player_type", "All"))
 	var req_level: int = int(item.get("required_level", 1))
 	var grid_coord: Dictionary = item.get("grid_coordinate", {"column_x": 0, "row_y": 0})
 	var col_x: int = int(grid_coord.get("column_x", 0))
@@ -254,9 +263,16 @@ func _create_item_card(item: Dictionary, atlas_tex: Texture2D) -> Control:
 	info_vbox.add_child(checkbox)
 	
 	var item_price: int = int(item.get("price", 0))
+	var stat_str: String = ""
+	if item.has("base_damage"):
+		stat_str = "Dmg: " + str(item["base_damage"])
+	elif item.has("base_defense"):
+		stat_str = "Def: " + str(item["base_defense"])
+	elif item.has("heal_percentage"):
+		stat_str = "Heal: " + str(item["heal_percentage"]) + "%"
 
 	var meta_label = Label.new()
-	meta_label.text = "Type: " + item_type + " | Req. Lvl: " + str(req_level) + " | Price: " + str(item_price) + "g"
+	meta_label.text = "Type: " + item_type + " | Class: " + player_type + " | " + stat_str + " | Lvl: " + str(req_level) + " | " + str(item_price) + "g"
 	meta_label.add_theme_font_size_override("font_size", 11)
 	meta_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 	info_vbox.add_child(meta_label)
@@ -299,11 +315,12 @@ func _on_search_text_changed(new_text: String) -> void:
 	for item_id in _item_containers:
 		var card: Control = _item_containers[item_id]
 		var item: Dictionary = _item_data_map.get(item_id, {})
-		var item_name: String = str(item.get("name", "")).to_lower()
-		var item_type: String = str(item.get("type", "")).to_lower()
+		var item_name: String = str(item.get("item_name", '')).to_lower()
+		var item_type: String = str(item.get("item_type", '')).to_lower()
+		var player_type: String = str(item.get("player_type", '')).to_lower()
 		var id_lower: String = item_id.to_lower()
 		
-		var matches = query.is_empty() or (query in item_name) or (query in id_lower) or (query in item_type)
+		var matches = query.is_empty() or (query in item_name) or (query in id_lower) or (query in item_type) or (query in player_type)
 		card.visible = matches
 
 
@@ -330,10 +347,61 @@ func _on_clear_all_pressed() -> void:
 
 
 func _on_confirmed() -> void:
-	var result: Array[Dictionary] = []
+	var result: Array[DataItem] = []
+	
 	for id in _selected_ids:
 		if _item_data_map.has(id):
-			result.append(_item_data_map[id])
+			var item_dict: Dictionary = _item_data_map[id]
+			
+			# Extract values with safe fallbacks
+			var item_id: String = str(item_dict.get("id", ""))
+			var item_name: String = str(item_dict.get("item_name", "Unknown"))
+			
+			# Convert string player_type to CharacterClass.PlayerType Enum
+			var raw_player_str: String = str(item_dict.get("player_type", "All")).to_upper()
+			var item_player_class: CharacterClass.PlayerType = CharacterClass.PlayerType.ALL
+			if CharacterClass.PlayerType.has(raw_player_str):
+				item_player_class = CharacterClass.PlayerType.get(raw_player_str)
+			
+			# Convert string item_type to Enum (e.g. "Two-Handed Sword" -> Equipable.EquipementType.TWO_HANDED_SWORD)
+			var raw_type_str: String = str(item_dict.get("item_type", "Sword"))
+			var type_str: String = raw_type_str.replace("-", "_").replace("/", "_").replace(" ", "_").to_upper()
+			
+			var item_type: Equipable.EquipementType = Equipable.EquipementType.SWORD
+			if Equipable.EquipementType.has(type_str):
+				item_type = Equipable.EquipementType.get(type_str)
+			elif type_str == "WEAPON":
+				item_type = Equipable.EquipementType.SWORD
+			elif type_str == "ARMOR":
+				item_type = Equipable.EquipementType.CHEST
+			else:
+				item_type = Equipable.EquipementType.get(type_str, Equipable.EquipementType.SWORD)
+			
+			# Extract Grid Coordinates
+			var grid_dict: Dictionary = item_dict.get("grid_coordinate", {})
+			var grid_coord := Vector2(
+				grid_dict.get("column_x", 0),
+				grid_dict.get("row_y", 0)
+			)
+			
+			var req_level: int = int(item_dict.get("required_level", 1))
+			var base_damage: int = int(item_dict.get("base_damage", item_dict.get("base_defense", 0)))
+			var price: int = int(item_dict.get("price", 0))
+			
+			# Create DataItem instance
+			var item_instance := DataItem.new(
+				item_id,
+				item_name,
+				item_player_class,
+				item_type,
+				grid_coord,
+				req_level,
+				base_damage,
+				price
+			)
+			
+			result.append(item_instance)
+			
 	items_selected.emit(result)
 
 func _on_sort_option_selected(index: int) -> void:

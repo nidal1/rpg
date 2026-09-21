@@ -1,1802 +1,2711 @@
 {
+  "sheet_metadata": {
+    "frame_width": 64,
+    "frame_height": 64,
+    "columns_per_row": 16,
+    "note": "Verified by pixel inspection on 2026-09-20. Frame is 64x64, NOT 60x60. Grid has 16 columns (col index 0-15) per row for weapons.png, armors.png and potions.png."
+  },
   "weapons_database": {
     "iron_tier": [
       {
         "id": "w_ir_01",
-        "name": "Iron Dagger",
-        "type": "Dagger",
+        "item_name": "Iron Dagger",
+        "item_type": "Dagger",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_damage": 5,
+        "price": 50,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 0
-        },
-        "required_level": 1,
-        "base_damage": 5,
-        "price": 50
+        }
       },
       {
         "id": "w_ir_02",
-        "name": "Iron Cleaver",
-        "type": "Sword",
+        "item_name": "Iron Chisel Knife",
+        "item_type": "Dagger",
+        "player_type": "Warrior",
+        "required_level": 2,
+        "base_damage": 7,
+        "price": 70,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 0
-        },
-        "required_level": 2,
-        "base_damage": 8,
-        "price": 85
+        }
       },
       {
         "id": "w_ir_03",
-        "name": "Iron Shortsword",
-        "type": "Sword",
+        "item_name": "Iron Stiletto",
+        "item_type": "Dagger",
+        "player_type": "Archer",
+        "required_level": 2,
+        "base_damage": 7,
+        "price": 75,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 0
-        },
-        "required_level": 3,
-        "base_damage": 10,
-        "price": 120
+        }
       },
       {
         "id": "w_ir_04",
-        "name": "Iron Gladius",
-        "type": "Sword",
+        "item_name": "Iron Shortsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 3,
+        "base_damage": 10,
+        "price": 120,
         "grid_coordinate": {
           "column_x": 3,
           "row_y": 0
-        },
-        "required_level": 4,
-        "base_damage": 12,
-        "price": 160
+        }
       },
       {
         "id": "w_ir_05",
-        "name": "Iron Broadsword",
-        "type": "Sword",
+        "item_name": "Iron Gladius",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 4,
+        "base_damage": 12,
+        "price": 160,
         "grid_coordinate": {
           "column_x": 4,
           "row_y": 0
-        },
-        "required_level": 5,
-        "base_damage": 15,
-        "price": 220
+        }
       },
       {
         "id": "w_ir_06",
-        "name": "Iron Bastard Sword",
-        "type": "Two-Handed Sword",
+        "item_name": "Iron Broadsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_damage": 15,
+        "price": 220,
         "grid_coordinate": {
           "column_x": 5,
           "row_y": 0
-        },
-        "required_level": 7,
-        "base_damage": 22,
-        "price": 350
+        }
       },
       {
         "id": "w_ir_07",
-        "name": "Iron Longsword",
-        "type": "Sword",
+        "item_name": "Iron Longsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 6,
+        "base_damage": 18,
+        "price": 280,
         "grid_coordinate": {
           "column_x": 6,
           "row_y": 0
-        },
-        "required_level": 6,
-        "base_damage": 18,
-        "price": 280
+        }
       },
       {
         "id": "w_ir_08",
-        "name": "Iron Greatsword",
-        "type": "Two-Handed Sword",
+        "item_name": "Iron Rapier",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 4,
+        "base_damage": 11,
+        "price": 170,
         "grid_coordinate": {
           "column_x": 7,
           "row_y": 0
-        },
-        "required_level": 8,
-        "base_damage": 26,
-        "price": 420
+        }
       },
       {
         "id": "w_ir_09",
-        "name": "Iron Claymore",
-        "type": "Two-Handed Sword",
+        "item_name": "Iron Falchion",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_damage": 14,
+        "price": 210,
         "grid_coordinate": {
           "column_x": 8,
           "row_y": 0
-        },
-        "required_level": 10,
-        "base_damage": 30,
-        "price": 550
+        }
       },
       {
         "id": "w_ir_10",
-        "name": "Iron Flamberge",
-        "type": "Two-Handed Sword",
+        "item_name": "Iron Cutlass",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 6,
+        "base_damage": 16,
+        "price": 260,
         "grid_coordinate": {
           "column_x": 9,
           "row_y": 0
-        },
-        "required_level": 11,
-        "base_damage": 32,
-        "price": 620
+        }
       },
       {
         "id": "w_ir_11",
-        "name": "Iron Falchion",
-        "type": "Sword",
+        "item_name": "Iron Scimitar",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 7,
+        "base_damage": 17,
+        "price": 310,
         "grid_coordinate": {
           "column_x": 10,
           "row_y": 0
-        },
-        "required_level": 5,
-        "base_damage": 14,
-        "price": 210
+        }
       },
       {
         "id": "w_ir_12",
-        "name": "Iron Cutlass",
-        "type": "Sword",
+        "item_name": "Iron Katana",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 9,
+        "base_damage": 24,
+        "price": 480,
         "grid_coordinate": {
           "column_x": 11,
           "row_y": 0
-        },
-        "required_level": 6,
-        "base_damage": 16,
-        "price": 260
+        }
       },
       {
         "id": "w_ir_13",
-        "name": "Iron Scimitar",
-        "type": "Sword",
+        "item_name": "Iron Estoc",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 6,
+        "base_damage": 14,
+        "price": 250,
         "grid_coordinate": {
           "column_x": 12,
           "row_y": 0
-        },
-        "required_level": 7,
-        "base_damage": 17,
-        "price": 310
+        }
       },
       {
         "id": "w_ir_14",
-        "name": "Iron Rapier",
-        "type": "Sword",
+        "item_name": "Iron Claymore",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_damage": 30,
+        "price": 550,
         "grid_coordinate": {
           "column_x": 13,
           "row_y": 0
-        },
-        "required_level": 4,
-        "base_damage": 11,
-        "price": 170
+        }
       },
       {
         "id": "w_ir_15",
-        "name": "Iron Estoc",
-        "type": "Sword",
+        "item_name": "Iron Bastard Sword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 7,
+        "base_damage": 22,
+        "price": 350,
         "grid_coordinate": {
           "column_x": 14,
           "row_y": 0
-        },
-        "required_level": 6,
-        "base_damage": 14,
-        "price": 250
+        }
       },
       {
         "id": "w_ir_16",
-        "name": "Iron Katana",
-        "type": "Sword",
+        "item_name": "Iron Greatsword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_damage": 26,
+        "price": 420,
         "grid_coordinate": {
           "column_x": 15,
           "row_y": 0
-        },
-        "required_level": 9,
-        "base_damage": 24,
-        "price": 480
-      },
-      {
-        "id": "w_ir_17",
-        "name": "Iron Nodachi",
-        "type": "Two-Handed Sword",
-        "grid_coordinate": {
-          "column_x": 16,
-          "row_y": 0
-        },
-        "required_level": 11,
-        "base_damage": 33,
-        "price": 650
+        }
       },
       {
         "id": "w_ir_18",
-        "name": "Iron Sickle",
-        "type": "Melee",
+        "item_name": "Iron Hand Axe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 3,
+        "base_damage": 10,
+        "price": 130,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 1
-        },
-        "required_level": 2,
-        "base_damage": 7,
-        "price": 75
+        }
       },
       {
         "id": "w_ir_19",
-        "name": "Iron Pickaxe",
-        "type": "Tool/Melee",
+        "item_name": "Iron Hatchet",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 2,
+        "base_damage": 8,
+        "price": 90,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 1
-        },
-        "required_level": 1,
-        "base_damage": 6,
-        "price": 60
+        }
       },
       {
         "id": "w_ir_20",
-        "name": "Iron Prospector Axe",
-        "type": "Tool/Melee",
+        "item_name": "Iron Woodcutter Axe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 4,
+        "base_damage": 13,
+        "price": 180,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 1
-        },
-        "required_level": 3,
-        "base_damage": 9,
-        "price": 110
+        }
       },
       {
         "id": "w_ir_21",
-        "name": "Iron Shovel",
-        "type": "Tool/Melee",
+        "item_name": "Iron Battleaxe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 6,
+        "base_damage": 19,
+        "price": 290,
         "grid_coordinate": {
           "column_x": 3,
           "row_y": 1
-        },
-        "required_level": 1,
-        "base_damage": 5,
-        "price": 45
+        }
       },
       {
         "id": "w_ir_22",
-        "name": "Iron Chisel Knife",
-        "type": "Dagger",
+        "item_name": "Iron Double Axe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_damage": 25,
+        "price": 400,
         "grid_coordinate": {
           "column_x": 4,
           "row_y": 1
-        },
-        "required_level": 2,
-        "base_damage": 6,
-        "price": 70
+        }
       },
       {
         "id": "w_ir_23",
-        "name": "Iron Woodcutter Axe",
-        "type": "Axe",
+        "item_name": "Iron Greataxe",
+        "item_type": "Two_Handed_Axe",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_damage": 32,
+        "price": 580,
         "grid_coordinate": {
           "column_x": 5,
           "row_y": 1
-        },
-        "required_level": 4,
-        "base_damage": 13,
-        "price": 180
+        }
       },
       {
         "id": "w_ir_24",
-        "name": "Iron Adze",
-        "type": "Tool/Axe",
+        "item_name": "Iron Pickaxe",
+        "item_type": "Tool_Melee",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_damage": 6,
+        "price": 60,
         "grid_coordinate": {
           "column_x": 6,
           "row_y": 1
-        },
-        "required_level": 5,
-        "base_damage": 14,
-        "price": 200
+        }
       },
       {
         "id": "w_ir_25",
-        "name": "Iron Hand Axe",
-        "type": "Axe",
+        "item_name": "Iron Shovel",
+        "item_type": "Tool_Melee",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_damage": 5,
+        "price": 45,
         "grid_coordinate": {
           "column_x": 7,
           "row_y": 1
-        },
-        "required_level": 3,
-        "base_damage": 10,
-        "price": 130
+        }
       },
       {
         "id": "w_ir_26",
-        "name": "Iron Hatchet",
-        "type": "Axe",
+        "item_name": "Iron Adze",
+        "item_type": "Tool_Axe",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_damage": 14,
+        "price": 200,
         "grid_coordinate": {
           "column_x": 8,
           "row_y": 1
-        },
-        "required_level": 2,
-        "base_damage": 8,
-        "price": 90
+        }
       },
       {
         "id": "w_ir_27",
-        "name": "Iron Battleaxe",
-        "type": "Axe",
+        "item_name": "Iron Club",
+        "item_type": "Mace",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_damage": 7,
+        "price": 55,
         "grid_coordinate": {
           "column_x": 9,
           "row_y": 1
-        },
-        "required_level": 6,
-        "base_damage": 19,
-        "price": 290
+        }
       },
       {
         "id": "w_ir_28",
-        "name": "Iron Double Axe",
-        "type": "Axe",
+        "item_name": "Iron Mace",
+        "item_type": "Mace",
+        "player_type": "Warrior",
+        "required_level": 4,
+        "base_damage": 13,
+        "price": 175,
         "grid_coordinate": {
           "column_x": 10,
           "row_y": 1
-        },
-        "required_level": 8,
-        "base_damage": 25,
-        "price": 400
+        }
       },
       {
         "id": "w_ir_29",
-        "name": "Iron Greataxe",
-        "type": "Two-Handed Axe",
+        "item_name": "Iron Flail",
+        "item_type": "Mace",
+        "player_type": "Warrior",
+        "required_level": 7,
+        "base_damage": 20,
+        "price": 320,
         "grid_coordinate": {
           "column_x": 11,
           "row_y": 1
-        },
-        "required_level": 10,
-        "base_damage": 32,
-        "price": 580
+        }
       },
       {
         "id": "w_ir_30",
-        "name": "Iron Club",
-        "type": "Mace",
+        "item_name": "Iron Morningstar",
+        "item_type": "Mace",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_damage": 23,
+        "price": 390,
         "grid_coordinate": {
           "column_x": 12,
           "row_y": 1
-        },
-        "required_level": 1,
-        "base_damage": 7,
-        "price": 55
+        }
       },
       {
         "id": "w_ir_31",
-        "name": "Iron Mace",
-        "type": "Mace",
+        "item_name": "Iron Warhammer",
+        "item_type": "Mace",
+        "player_type": "Priest",
+        "required_level": 9,
+        "base_damage": 27,
+        "price": 460,
         "grid_coordinate": {
           "column_x": 13,
           "row_y": 1
-        },
-        "required_level": 4,
-        "base_damage": 13,
-        "price": 175
+        }
       },
       {
         "id": "w_ir_32",
-        "name": "Iron Flail",
-        "type": "Mace",
+        "item_name": "Iron Maul",
+        "item_type": "Two_Handed_Mace",
+        "player_type": "Warrior",
+        "required_level": 11,
+        "base_damage": 35,
+        "price": 640,
         "grid_coordinate": {
           "column_x": 14,
           "row_y": 1
-        },
-        "required_level": 7,
-        "base_damage": 20,
-        "price": 320
+        }
       },
       {
         "id": "w_ir_33",
-        "name": "Iron Morningstar",
-        "type": "Mace",
+        "item_name": "Iron Sledgehammer",
+        "item_type": "Two_Handed_Mace",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_damage": 31,
+        "price": 560,
         "grid_coordinate": {
           "column_x": 15,
           "row_y": 1
-        },
-        "required_level": 8,
-        "base_damage": 23,
-        "price": 390
-      },
-      {
-        "id": "w_ir_34",
-        "name": "Iron Warhammer",
-        "type": "Mace",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 2
-        },
-        "required_level": 9,
-        "base_damage": 27,
-        "price": 460
+        }
       },
       {
         "id": "w_ir_35",
-        "name": "Iron Maul",
-        "type": "Two-Handed Mace",
+        "item_name": "Iron Recurve Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 3,
+        "base_damage": 9,
+        "price": 125,
         "grid_coordinate": {
-          "column_x": 1,
+          "column_x": 0,
           "row_y": 2
-        },
-        "required_level": 11,
-        "base_damage": 35,
-        "price": 640
+        }
       },
       {
         "id": "w_ir_36",
-        "name": "Iron Sledgehammer",
-        "type": "Two-Handed Mace",
+        "item_name": "Iron Hunting Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 5,
+        "base_damage": 14,
+        "price": 215,
         "grid_coordinate": {
-          "column_x": 2,
+          "column_x": 1,
           "row_y": 2
-        },
-        "required_level": 10,
-        "base_damage": 31,
-        "price": 560
+        }
       },
       {
         "id": "w_ir_37",
-        "name": "Iron Greatmaul",
-        "type": "Two-Handed Mace",
+        "item_name": "Iron Composite Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 8,
+        "base_damage": 21,
+        "price": 380,
         "grid_coordinate": {
-          "column_x": 3,
+          "column_x": 2,
           "row_y": 2
-        },
-        "required_level": 12,
-        "base_damage": 38,
-        "price": 720
+        }
       },
       {
         "id": "w_ir_38",
-        "name": "Iron Anvil Hammer",
-        "type": "Mace",
+        "item_name": "Iron Reflex Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 7,
+        "base_damage": 18,
+        "price": 330,
         "grid_coordinate": {
-          "column_x": 4,
+          "column_x": 3,
           "row_y": 2
-        },
-        "required_level": 5,
-        "base_damage": 15,
-        "price": 230
+        }
       },
       {
         "id": "w_ir_39",
-        "name": "Iron Recurve Bow",
-        "type": "Bow",
+        "item_name": "Iron Greatbow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 12,
+        "base_damage": 34,
+        "price": 700,
         "grid_coordinate": {
-          "column_x": 5,
+          "column_x": 4,
           "row_y": 2
-        },
-        "required_level": 3,
-        "base_damage": 9,
-        "price": 125
+        }
       },
       {
         "id": "w_ir_40",
-        "name": "Iron Hunting Bow",
-        "type": "Bow",
+        "item_name": "Iron Light Crossbow",
+        "item_type": "Crossbow",
+        "player_type": "Archer",
+        "required_level": 6,
+        "base_damage": 19,
+        "price": 295,
         "grid_coordinate": {
-          "column_x": 6,
+          "column_x": 5,
           "row_y": 2
-        },
-        "required_level": 5,
-        "base_damage": 14,
-        "price": 215
+        }
       },
       {
         "id": "w_ir_41",
-        "name": "Iron Composite Bow",
-        "type": "Bow",
+        "item_name": "Iron Heavy Crossbow",
+        "item_type": "Crossbow",
+        "player_type": "Archer",
+        "required_level": 10,
+        "base_damage": 29,
+        "price": 540,
         "grid_coordinate": {
-          "column_x": 7,
+          "column_x": 6,
           "row_y": 2
-        },
-        "required_level": 8,
-        "base_damage": 21,
-        "price": 380
+        }
       },
       {
         "id": "w_ir_42",
-        "name": "Iron Greatbow",
-        "type": "Bow",
+        "item_name": "Iron Repeater Crossbow",
+        "item_type": "Crossbow",
+        "player_type": "Archer",
+        "required_level": 13,
+        "base_damage": 36,
+        "price": 780,
         "grid_coordinate": {
-          "column_x": 8,
+          "column_x": 7,
           "row_y": 2
-        },
-        "required_level": 12,
-        "base_damage": 34,
-        "price": 700
+        }
       },
       {
         "id": "w_ir_43",
-        "name": "Iron Reflex Bow",
-        "type": "Bow",
+        "item_name": "Iron Dart",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 1,
+        "base_damage": 3,
+        "price": 25,
         "grid_coordinate": {
-          "column_x": 9,
+          "column_x": 8,
           "row_y": 2
-        },
-        "required_level": 7,
-        "base_damage": 18,
-        "price": 330
+        }
       },
       {
         "id": "w_ir_44",
-        "name": "Iron Light Crossbow",
-        "type": "Crossbow",
+        "item_name": "Iron Throwing Shard",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 1,
+        "base_damage": 4,
+        "price": 30,
         "grid_coordinate": {
-          "column_x": 10,
+          "column_x": 9,
           "row_y": 2
-        },
-        "required_level": 6,
-        "base_damage": 19,
-        "price": 295
+        }
       },
       {
         "id": "w_ir_45",
-        "name": "Iron Heavy Crossbow",
-        "type": "Crossbow",
+        "item_name": "Iron Shuriken",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 2,
+        "base_damage": 6,
+        "price": 65,
         "grid_coordinate": {
-          "column_x": 11,
+          "column_x": 10,
           "row_y": 2
-        },
-        "required_level": 10,
-        "base_damage": 29,
-        "price": 540
+        }
       },
       {
         "id": "w_ir_46",
-        "name": "Iron Repeater Crossbow",
-        "type": "Crossbow",
+        "item_name": "Iron Kunai",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 3,
+        "base_damage": 8,
+        "price": 105,
         "grid_coordinate": {
-          "column_x": 12,
+          "column_x": 11,
           "row_y": 2
-        },
-        "required_level": 13,
-        "base_damage": 36,
-        "price": 780
+        }
       },
       {
         "id": "w_ir_47",
-        "name": "Iron Throwing Shard",
-        "type": "Throwing",
+        "item_name": "Iron Throwing Axe",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 5,
+        "base_damage": 12,
+        "price": 190,
         "grid_coordinate": {
-          "column_x": 13,
+          "column_x": 12,
           "row_y": 2
-        },
-        "required_level": 1,
-        "base_damage": 4,
-        "price": 30
+        }
       },
       {
         "id": "w_ir_48",
-        "name": "Iron Shuriken",
-        "type": "Throwing",
+        "item_name": "Iron Javelin",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 4,
+        "base_damage": 10,
+        "price": 150,
         "grid_coordinate": {
-          "column_x": 14,
+          "column_x": 13,
           "row_y": 2
-        },
-        "required_level": 2,
-        "base_damage": 6,
-        "price": 65
+        }
       },
       {
         "id": "w_ir_49",
-        "name": "Iron Claw",
-        "type": "Melee",
+        "item_name": "Iron Chakram",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 6,
+        "base_damage": 15,
+        "price": 260,
         "grid_coordinate": {
-          "column_x": 15,
+          "column_x": 14,
           "row_y": 2
-        },
-        "required_level": 4,
-        "base_damage": 11,
-        "price": 165
+        }
       },
       {
         "id": "w_ir_50",
-        "name": "Iron Dart",
-        "type": "Throwing",
+        "item_name": "Iron Boomerang",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 4,
+        "base_damage": 11,
+        "price": 160,
         "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 3
-        },
-        "required_level": 1,
-        "base_damage": 3,
-        "price": 25
+          "column_x": 15,
+          "row_y": 2
+        }
       },
       {
         "id": "w_ir_51",
-        "name": "Iron Kunai",
-        "type": "Throwing",
+        "item_name": "Iron Spear",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_damage": 14,
+        "price": 210,
         "grid_coordinate": {
-          "column_x": 1,
+          "column_x": 0,
           "row_y": 3
-        },
-        "required_level": 3,
-        "base_damage": 8,
-        "price": 105
+        }
       },
       {
         "id": "w_ir_52",
-        "name": "Iron Throwing Axe",
-        "type": "Throwing",
+        "item_name": "Iron Pike",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 7,
+        "base_damage": 18,
+        "price": 310,
         "grid_coordinate": {
-          "column_x": 2,
+          "column_x": 1,
           "row_y": 3
-        },
-        "required_level": 5,
-        "base_damage": 12,
-        "price": 190
+        }
       },
       {
         "id": "w_ir_53",
-        "name": "Iron Javelin",
-        "type": "Throwing",
+        "item_name": "Iron Lance",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_damage": 22,
+        "price": 395,
         "grid_coordinate": {
-          "column_x": 3,
+          "column_x": 2,
           "row_y": 3
-        },
-        "required_level": 4,
-        "base_damage": 10,
-        "price": 150
+        }
       },
       {
         "id": "w_ir_54",
-        "name": "Iron Spear",
-        "type": "Polearm",
+        "item_name": "Iron Trident",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 9,
+        "base_damage": 25,
+        "price": 470,
         "grid_coordinate": {
-          "column_x": 4,
+          "column_x": 3,
           "row_y": 3
-        },
-        "required_level": 5,
-        "base_damage": 14,
-        "price": 210
+        }
       },
       {
         "id": "w_ir_55",
-        "name": "Iron Pike",
-        "type": "Polearm",
+        "item_name": "Iron Halberd",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_damage": 28,
+        "price": 540,
         "grid_coordinate": {
-          "column_x": 5,
+          "column_x": 4,
           "row_y": 3
-        },
-        "required_level": 7,
-        "base_damage": 18,
-        "price": 310
+        }
       },
       {
         "id": "w_ir_56",
-        "name": "Iron Lance",
-        "type": "Polearm",
+        "item_name": "Iron Glaive",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 11,
+        "base_damage": 31,
+        "price": 610,
         "grid_coordinate": {
-          "column_x": 6,
+          "column_x": 5,
           "row_y": 3
-        },
-        "required_level": 8,
-        "base_damage": 22,
-        "price": 395
+        }
       },
       {
         "id": "w_ir_57",
-        "name": "Iron Trident",
-        "type": "Polearm",
+        "item_name": "Iron Scythe",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 12,
+        "base_damage": 35,
+        "price": 710,
         "grid_coordinate": {
-          "column_x": 7,
+          "column_x": 6,
           "row_y": 3
-        },
-        "required_level": 9,
-        "base_damage": 25,
-        "price": 470
+        }
       },
       {
         "id": "w_ir_58",
-        "name": "Iron Halberd",
-        "type": "Polearm",
+        "item_name": "Iron Sickle",
+        "item_type": "Melee",
+        "player_type": "Warrior",
+        "required_level": 2,
+        "base_damage": 7,
+        "price": 75,
         "grid_coordinate": {
-          "column_x": 8,
+          "column_x": 7,
           "row_y": 3
-        },
-        "required_level": 10,
-        "base_damage": 28,
-        "price": 540
+        }
       },
       {
         "id": "w_ir_59",
-        "name": "Iron Glaive",
-        "type": "Polearm",
+        "item_name": "Iron Claw",
+        "item_type": "Melee",
+        "player_type": "Warrior",
+        "required_level": 4,
+        "base_damage": 11,
+        "price": 165,
         "grid_coordinate": {
-          "column_x": 9,
+          "column_x": 8,
           "row_y": 3
-        },
-        "required_level": 11,
-        "base_damage": 31,
-        "price": 610
+        }
       },
       {
         "id": "w_ir_60",
-        "name": "Iron Scythe",
-        "type": "Polearm",
+        "item_name": "Iron Quarterstaff",
+        "item_type": "Staff",
+        "player_type": "Mage",
+        "required_level": 2,
+        "base_damage": 7,
+        "price": 80,
         "grid_coordinate": {
-          "column_x": 10,
+          "column_x": 9,
           "row_y": 3
-        },
-        "required_level": 12,
-        "base_damage": 35,
-        "price": 710
+        }
       },
       {
         "id": "w_ir_61",
-        "name": "Iron Quarterstaff",
-        "type": "Staff",
+        "item_name": "Iron Bladed Staff",
+        "item_type": "Staff",
+        "player_type": "Mage",
+        "required_level": 6,
+        "base_damage": 16,
+        "price": 270,
         "grid_coordinate": {
-          "column_x": 11,
+          "column_x": 10,
           "row_y": 3
-        },
-        "required_level": 2,
-        "base_damage": 7,
-        "price": 80
+        }
       },
       {
         "id": "w_ir_62",
-        "name": "Iron Bladed Staff",
-        "type": "Staff",
+        "item_name": "Iron Wand",
+        "item_type": "Wand",
+        "player_type": "Mage",
+        "required_level": 3,
+        "base_damage": 8,
+        "price": 90,
         "grid_coordinate": {
-          "column_x": 12,
+          "column_x": 11,
           "row_y": 3
-        },
-        "required_level": 6,
-        "base_damage": 16,
-        "price": 270
+        }
       },
       {
         "id": "w_ir_63",
-        "name": "Iron Chakram",
-        "type": "Throwing",
+        "item_name": "Iron Star Shuriken",
+        "item_type": "Throwing",
+        "player_type": "Archer",
+        "required_level": 5,
+        "base_damage": 13,
+        "price": 205,
         "grid_coordinate": {
-          "column_x": 13,
+          "column_x": 12,
           "row_y": 3
-        },
-        "required_level": 6,
-        "base_damage": 15,
-        "price": 260
+        }
       },
       {
         "id": "w_ir_64",
-        "name": "Iron Boomerang",
-        "type": "Throwing",
+        "item_name": "Iron Nodachi",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 11,
+        "base_damage": 33,
+        "price": 650,
         "grid_coordinate": {
-          "column_x": 14,
+          "column_x": 13,
           "row_y": 3
-        },
-        "required_level": 4,
-        "base_damage": 11,
-        "price": 160
+        }
       },
       {
         "id": "w_ir_65",
-        "name": "Iron Star Shuriken",
-        "type": "Throwing",
+        "item_name": "Iron Prospector Axe",
+        "item_type": "Tool_Axe",
+        "player_type": "Warrior",
+        "required_level": 3,
+        "base_damage": 9,
+        "price": 110,
         "grid_coordinate": {
-          "column_x": 15,
+          "column_x": 14,
           "row_y": 3
-        },
-        "required_level": 5,
-        "base_damage": 13,
-        "price": 205
+        }
       }
     ],
     "gold_tier": [
       {
         "id": "w_gd_01",
-        "name": "Golden Dagger",
-        "type": "Dagger",
+        "item_name": "Golden Dagger",
+        "item_type": "Dagger",
+        "player_type": "Warrior",
+        "required_level": 15,
+        "base_damage": 24,
+        "price": 1200,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 5
-        },
-        "required_level": 15,
-        "base_damage": 24,
-        "price": 1200
+        }
       },
       {
         "id": "w_gd_02",
-        "name": "Golden Cleaver",
-        "type": "Sword",
+        "item_name": "Golden Shortsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 17,
+        "base_damage": 34,
+        "price": 1650,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 5
-        },
-        "required_level": 16,
-        "base_damage": 30,
-        "price": 1400
+        }
       },
       {
         "id": "w_gd_03",
-        "name": "Golden Shortsword",
-        "type": "Sword",
+        "item_name": "Golden Broadsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 20,
+        "base_damage": 45,
+        "price": 2400,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 5
-        },
-        "required_level": 17,
-        "base_damage": 34,
-        "price": 1650
+        }
       },
       {
         "id": "w_gd_04",
-        "name": "Golden Gladius",
-        "type": "Sword",
+        "item_name": "Golden Longsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 21,
+        "base_damage": 52,
+        "price": 2750,
         "grid_coordinate": {
           "column_x": 3,
           "row_y": 5
-        },
-        "required_level": 18,
-        "base_damage": 38,
-        "price": 1900
+        }
       },
       {
         "id": "w_gd_05",
-        "name": "Golden Broadsword",
-        "type": "Sword",
+        "item_name": "Golden Claymore",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 25,
+        "base_damage": 72,
+        "price": 4200,
         "grid_coordinate": {
           "column_x": 4,
           "row_y": 5
-        },
-        "required_level": 20,
-        "base_damage": 45,
-        "price": 2400
+        }
       },
       {
         "id": "w_gd_06",
-        "name": "Golden Bastard Sword",
-        "type": "Two-Handed Sword",
+        "item_name": "Golden Bastard Sword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 22,
+        "base_damage": 58,
+        "price": 3100,
         "grid_coordinate": {
           "column_x": 5,
           "row_y": 5
-        },
-        "required_level": 22,
-        "base_damage": 58,
-        "price": 3100
+        }
       },
       {
         "id": "w_gd_07",
-        "name": "Golden Longsword",
-        "type": "Sword",
+        "item_name": "Golden Greatsword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 24,
+        "base_damage": 66,
+        "price": 3800,
         "grid_coordinate": {
           "column_x": 6,
           "row_y": 5
-        },
-        "required_level": 21,
-        "base_damage": 52,
-        "price": 2750
+        }
       },
       {
         "id": "w_gd_08",
-        "name": "Golden Greatsword",
-        "type": "Two-Handed Sword",
+        "item_name": "Golden Flamberge",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 26,
+        "base_damage": 75,
+        "price": 4600,
         "grid_coordinate": {
           "column_x": 7,
           "row_y": 5
-        },
-        "required_level": 24,
-        "base_damage": 66,
-        "price": 3800
+        }
       },
       {
         "id": "w_gd_09",
-        "name": "Golden Claymore",
-        "type": "Two-Handed Sword",
+        "item_name": "Golden Katana",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 23,
+        "base_damage": 60,
+        "price": 3400,
         "grid_coordinate": {
           "column_x": 8,
           "row_y": 5
-        },
-        "required_level": 25,
-        "base_damage": 72,
-        "price": 4200
+        }
       },
       {
         "id": "w_gd_10",
-        "name": "Golden Flamberge",
-        "type": "Two-Handed Sword",
+        "item_name": "Golden Nodachi",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 26,
+        "base_damage": 78,
+        "price": 4800,
         "grid_coordinate": {
           "column_x": 9,
           "row_y": 5
-        },
-        "required_level": 26,
-        "base_damage": 75,
-        "price": 4600
+        }
       },
       {
         "id": "w_gd_11",
-        "name": "Golden Falchion",
-        "type": "Sword",
+        "item_name": "Golden Falchion",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 19,
+        "base_damage": 42,
+        "price": 2150,
         "grid_coordinate": {
           "column_x": 10,
           "row_y": 5
-        },
-        "required_level": 19,
-        "base_damage": 42,
-        "price": 2150
+        }
       },
       {
         "id": "w_gd_12",
-        "name": "Golden Cutlass",
-        "type": "Sword",
+        "item_name": "Golden Rapier",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 18,
+        "base_damage": 36,
+        "price": 1850,
         "grid_coordinate": {
           "column_x": 11,
           "row_y": 5
-        },
-        "required_level": 20,
-        "base_damage": 46,
-        "price": 2450
+        }
       },
       {
         "id": "w_gd_13",
-        "name": "Golden Scimitar",
-        "type": "Sword",
+        "item_name": "Golden Scimitar",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 21,
+        "base_damage": 49,
+        "price": 2700,
         "grid_coordinate": {
           "column_x": 12,
           "row_y": 5
-        },
-        "required_level": 21,
-        "base_damage": 49,
-        "price": 2700
+        }
       },
       {
         "id": "w_gd_14",
-        "name": "Golden Rapier",
-        "type": "Sword",
+        "item_name": "Golden Hand Axe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 16,
+        "base_damage": 28,
+        "price": 1500,
         "grid_coordinate": {
-          "column_x": 13,
-          "row_y": 5
-        },
-        "required_level": 18,
-        "base_damage": 36,
-        "price": 1850
+          "column_x": 0,
+          "row_y": 6
+        }
       },
       {
         "id": "w_gd_15",
-        "name": "Golden Estoc",
-        "type": "Sword",
+        "item_name": "Golden Battleaxe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
+        "required_level": 22,
+        "base_damage": 54,
+        "price": 3000,
         "grid_coordinate": {
-          "column_x": 14,
-          "row_y": 5
-        },
-        "required_level": 20,
-        "base_damage": 43,
-        "price": 2350
+          "column_x": 1,
+          "row_y": 6
+        }
       },
       {
         "id": "w_gd_16",
-        "name": "Golden Katana",
-        "type": "Sword",
+        "item_name": "Golden Greataxe",
+        "item_type": "Two_Handed_Axe",
+        "player_type": "Warrior",
+        "required_level": 25,
+        "base_damage": 80,
+        "price": 4500,
         "grid_coordinate": {
-          "column_x": 15,
-          "row_y": 5
-        },
-        "required_level": 23,
-        "base_damage": 60,
-        "price": 3400
+          "column_x": 2,
+          "row_y": 6
+        }
       },
       {
         "id": "w_gd_17",
-        "name": "Golden Nodachi",
-        "type": "Two-Handed Sword",
+        "item_name": "Golden Warhammer",
+        "item_type": "Mace",
+        "player_type": "Priest",
+        "required_level": 20,
+        "base_damage": 45,
+        "price": 2400,
         "grid_coordinate": {
-          "column_x": 16,
-          "row_y": 5
-        },
-        "required_level": 26,
-        "base_damage": 78,
-        "price": 4800
+          "column_x": 3,
+          "row_y": 6
+        }
       },
       {
         "id": "w_gd_18",
-        "name": "Golden Battleaxe",
-        "type": "Axe",
+        "item_name": "Golden Maul",
+        "item_type": "Two_Handed_Mace",
+        "player_type": "Warrior",
+        "required_level": 24,
+        "base_damage": 70,
+        "price": 4100,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_19",
+        "item_name": "Golden Recurve Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 16,
+        "base_damage": 28,
+        "price": 1500,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_20",
+        "item_name": "Golden Composite Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 22,
+        "base_damage": 55,
+        "price": 3100,
+        "grid_coordinate": {
+          "column_x": 6,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_21",
+        "item_name": "Golden Crossbow",
+        "item_type": "Crossbow",
+        "player_type": "Archer",
+        "required_level": 20,
+        "base_damage": 48,
+        "price": 2600,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_22",
+        "item_name": "Golden Spear",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 18,
+        "base_damage": 38,
+        "price": 1950,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_23",
+        "item_name": "Golden Halberd",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 24,
+        "base_damage": 65,
+        "price": 3700,
         "grid_coordinate": {
           "column_x": 9,
           "row_y": 6
-        },
-        "required_level": 22,
-        "base_damage": 54,
-        "price": 3000
+        }
+      },
+      {
+        "id": "w_gd_24",
+        "item_name": "Golden Staff",
+        "item_type": "Staff",
+        "player_type": "Mage",
+        "required_level": 18,
+        "base_damage": 40,
+        "price": 2000,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "w_gd_25",
+        "item_name": "Golden Wand",
+        "item_type": "Wand",
+        "player_type": "Mage",
+        "required_level": 16,
+        "base_damage": 30,
+        "price": 1600,
+        "grid_coordinate": {
+          "column_x": 11,
+          "row_y": 6
+        }
       }
     ],
     "azure_tier": [
       {
         "id": "w_az_01",
-        "name": "Azure Dagger",
-        "type": "Dagger",
+        "item_name": "Azure Dagger",
+        "item_type": "Dagger",
+        "player_type": "Warrior",
+        "required_level": 30,
+        "base_damage": 52,
+        "price": 6500,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 10
-        },
-        "required_level": 30,
-        "base_damage": 52,
-        "price": 6500
+        }
       },
       {
         "id": "w_az_02",
-        "name": "Azure Cleaver",
-        "type": "Sword",
+        "item_name": "Azure Shortsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 32,
+        "base_damage": 70,
+        "price": 7900,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 10
-        },
-        "required_level": 31,
-        "base_damage": 64,
-        "price": 7200
+        }
       },
       {
         "id": "w_az_03",
-        "name": "Azure Shortsword",
-        "type": "Sword",
+        "item_name": "Azure Broadsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_damage": 88,
+        "price": 9500,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 10
-        },
-        "required_level": 32,
-        "base_damage": 70,
-        "price": 7900
+        }
       },
       {
         "id": "w_az_04",
-        "name": "Azure Broadsword",
-        "type": "Sword",
+        "item_name": "Azure Longsword",
+        "item_type": "Sword",
+        "player_type": "Warrior",
+        "required_level": 33,
+        "base_damage": 76,
+        "price": 8500,
         "grid_coordinate": {
-          "column_x": 4,
+          "column_x": 3,
           "row_y": 10
-        },
-        "required_level": 35,
-        "base_damage": 88,
-        "price": 9500
+        }
       },
       {
         "id": "w_az_05",
-        "name": "Azure Greatsword",
-        "type": "Two-Handed Sword",
-        "grid_coordinate": {
-          "column_x": 7,
-          "row_y": 10
-        },
+        "item_name": "Azure Greatsword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
         "required_level": 38,
         "base_damage": 120,
-        "price": 12500
+        "price": 12500,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 10
+        }
       },
       {
         "id": "w_az_06",
-        "name": "Azure Battleaxe",
-        "type": "Axe",
-        "grid_coordinate": {
-          "column_x": 9,
-          "row_y": 11
-        },
+        "item_name": "Azure Battleaxe",
+        "item_type": "Axe",
+        "player_type": "Warrior",
         "required_level": 36,
         "base_damage": 105,
-        "price": 10500
+        "price": 10500,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 10
+        }
       },
       {
         "id": "w_az_07",
-        "name": "Azure Warhammer",
-        "type": "Mace",
+        "item_name": "Azure Greataxe",
+        "item_type": "Two_Handed_Axe",
+        "player_type": "Warrior",
+        "required_level": 40,
+        "base_damage": 135,
+        "price": 14000,
         "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 12
-        },
-        "required_level": 37,
-        "base_damage": 112,
-        "price": 11500
+          "column_x": 6,
+          "row_y": 10
+        }
       },
       {
         "id": "w_az_08",
-        "name": "Azure Longbow",
-        "type": "Bow",
+        "item_name": "Azure Warhammer",
+        "item_type": "Mace",
+        "player_type": "Priest",
+        "required_level": 37,
+        "base_damage": 112,
+        "price": 11500,
         "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 12
-        },
+          "column_x": 7,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_09",
+        "item_name": "Azure Longbow",
+        "item_type": "Bow",
+        "player_type": "Archer",
         "required_level": 34,
         "base_damage": 78,
-        "price": 8800
+        "price": 8800,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_10",
+        "item_name": "Azure Greatbow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 40,
+        "base_damage": 130,
+        "price": 14500,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_11",
+        "item_name": "Azure Crossbow",
+        "item_type": "Crossbow",
+        "player_type": "Archer",
+        "required_level": 36,
+        "base_damage": 108,
+        "price": 11000,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_12",
+        "item_name": "Azure Spear",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 34,
+        "base_damage": 84,
+        "price": 9200,
+        "grid_coordinate": {
+          "column_x": 11,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_13",
+        "item_name": "Azure Halberd",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 39,
+        "base_damage": 122,
+        "price": 13000,
+        "grid_coordinate": {
+          "column_x": 12,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "w_az_14",
+        "item_name": "Azure Crystal Staff",
+        "item_type": "Staff",
+        "player_type": "Mage",
+        "required_level": 35,
+        "base_damage": 95,
+        "price": 10000,
+        "grid_coordinate": null,
+        "status": "coordinate_unverified - sprite at old position (row 11) does not visually match this item (row 11 is actually a row of axes); real position for this item not yet located"
+      },
+      {
+        "id": "w_az_15",
+        "item_name": "Azure Wand",
+        "item_type": "Wand",
+        "player_type": "Mage",
+        "required_level": 32,
+        "base_damage": 72,
+        "price": 8200,
+        "grid_coordinate": null,
+        "status": "coordinate_unverified - sprite at old position (row 11) does not visually match this item (row 11 is actually a row of axes); real position for this item not yet located"
       }
     ],
-    "mythic_and_rare_tier": [
+    "mythic_tier": [
       {
         "id": "w_my_01",
-        "name": "Hellfire Greatsword",
-        "type": "Two-Handed Sword",
+        "item_name": "Hellfire Greatsword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 50,
+        "base_damage": 195,
+        "price": 35000,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 14
-        },
-        "required_level": 50,
-        "base_damage": 195,
-        "price": 35000
+        }
       },
       {
         "id": "w_my_02",
-        "name": "Void Crystal Blade",
-        "type": "Sword",
-        "grid_coordinate": {
-          "column_x": 3,
-          "row_y": 14
-        },
+        "item_name": "Void Crystal Blade",
+        "item_type": "Sword",
+        "player_type": "Warrior",
         "required_level": 48,
         "base_damage": 170,
-        "price": 30000
+        "price": 30000,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_03",
-        "name": "Abyssal Harpoon Spear",
-        "type": "Polearm",
-        "grid_coordinate": {
-          "column_x": 8,
-          "row_y": 14
-        },
+        "item_name": "Abyssal Harpoon Spear",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
         "required_level": 52,
         "base_damage": 210,
-        "price": 40000
+        "price": 40000,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_04",
-        "name": "Demonic Executioner Axe",
-        "type": "Two-Handed Axe",
-        "grid_coordinate": {
-          "column_x": 10,
-          "row_y": 14
-        },
+        "item_name": "Demonic Executioner Axe",
+        "item_type": "Two_Handed_Axe",
+        "player_type": "Warrior",
         "required_level": 55,
         "base_damage": 240,
-        "price": 50000
+        "price": 50000,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_05",
-        "name": "Emerald Venom Dagger",
-        "type": "Dagger",
-        "grid_coordinate": {
-          "column_x": 12,
-          "row_y": 14
-        },
+        "item_name": "Emerald Venom Dagger",
+        "item_type": "Dagger",
+        "player_type": "Warrior",
         "required_level": 45,
         "base_damage": 140,
-        "price": 25000
+        "price": 25000,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_06",
-        "name": "Archmage Cosmos Staff",
-        "type": "Staff",
-        "grid_coordinate": {
-          "column_x": 14,
-          "row_y": 14
-        },
+        "item_name": "Archmage Cosmos Staff",
+        "item_type": "Staff",
+        "player_type": "Mage",
         "required_level": 60,
         "base_damage": 280,
-        "price": 75000
+        "price": 75000,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_07",
-        "name": "Shadowstrike Scythe",
-        "type": "Polearm",
-        "grid_coordinate": {
-          "column_x": 23,
-          "row_y": 14
-        },
+        "item_name": "Shadowstrike Scythe",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
         "required_level": 58,
         "base_damage": 255,
-        "price": 62000
+        "price": 62000,
+        "grid_coordinate": {
+          "column_x": 6,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_08",
-        "name": "Cursed Skull Mace",
-        "type": "Mace",
-        "grid_coordinate": {
-          "column_x": 1,
-          "row_y": 15
-        },
+        "item_name": "Cursed Skull Mace",
+        "item_type": "Mace",
+        "player_type": "Priest",
         "required_level": 47,
         "base_damage": 165,
-        "price": 28000
+        "price": 28000,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_09",
-        "name": "Celestial Prism Wand",
-        "type": "Wand",
-        "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 15
-        },
+        "item_name": "Celestial Prism Wand",
+        "item_type": "Wand",
+        "player_type": "Mage",
         "required_level": 50,
         "base_damage": 185,
-        "price": 34000
+        "price": 34000,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_10",
-        "name": "Elven Windrunner Bow",
-        "type": "Bow",
-        "grid_coordinate": {
-          "column_x": 2,
-          "row_y": 16
-        },
+        "item_name": "Elven Windrunner Bow",
+        "item_type": "Bow",
+        "player_type": "Archer",
         "required_level": 54,
         "base_damage": 200,
-        "price": 45000
+        "price": 45000,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_11",
-        "name": "Vampiric Rapier",
-        "type": "Sword",
-        "grid_coordinate": {
-          "column_x": 16,
-          "row_y": 16
-        },
+        "item_name": "Vampiric Rapier",
+        "item_type": "Sword",
+        "player_type": "Warrior",
         "required_level": 51,
         "base_damage": 180,
-        "price": 37000
+        "price": 37000,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 14
+        }
       },
       {
         "id": "w_my_12",
-        "name": "Lich Bone Staff",
-        "type": "Staff",
-        "grid_coordinate": {
-          "column_x": 12,
-          "row_y": 18
-        },
+        "item_name": "Lich Bone Staff",
+        "item_type": "Staff",
+        "player_type": "Mage",
         "required_level": 56,
         "base_damage": 225,
-        "price": 55000
+        "price": 55000,
+        "grid_coordinate": {
+          "column_x": 11,
+          "row_y": 14
+        }
+      },
+      {
+        "id": "w_my_13",
+        "item_name": "Stormcaller Spear",
+        "item_type": "Polearm",
+        "player_type": "Warrior",
+        "required_level": 53,
+        "base_damage": 215,
+        "price": 42000,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 15
+        }
+      },
+      {
+        "id": "w_my_14",
+        "item_name": "Desolation Greatbow",
+        "item_type": "Bow",
+        "player_type": "Archer",
+        "required_level": 57,
+        "base_damage": 260,
+        "price": 65000,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 15
+        }
+      },
+      {
+        "id": "w_my_15",
+        "item_name": "Soulthief Dagger",
+        "item_type": "Dagger",
+        "player_type": "Archer",
+        "required_level": 49,
+        "base_damage": 175,
+        "price": 32000,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 15
+        }
+      },
+      {
+        "id": "w_my_16",
+        "item_name": "Dragonbone Greatsword",
+        "item_type": "Two_Handed_Sword",
+        "player_type": "Warrior",
+        "required_level": 60,
+        "base_damage": 300,
+        "price": 90000,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 15
+        }
       }
     ]
   },
   "armors_database": {
-    "shields_and_early_sets": [
+    "shields_and_accessories": [
       {
         "id": "a_sh_01",
-        "name": "Round Wooden Shield",
-        "type": "Shield",
+        "item_name": "Round Wooden Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_defense": 4,
+        "price": 40,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 1
-        },
-        "required_level": 1,
-        "base_defense": 4,
-        "price": 40
+        }
       },
       {
         "id": "a_sh_02",
-        "name": "Bronze Rimmed Shield",
-        "type": "Shield",
+        "item_name": "Bronze Rimmed Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_defense": 8,
+        "price": 180,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 1
-        },
-        "required_level": 5,
-        "base_defense": 8,
-        "price": 180
+        }
       },
       {
         "id": "a_sh_03",
-        "name": "Iron Kite Shield",
-        "type": "Shield",
+        "item_name": "Iron Kite Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_defense": 15,
+        "price": 500,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 1
-        },
-        "required_level": 10,
-        "base_defense": 15,
-        "price": 500
+        }
       },
       {
         "id": "a_sh_04",
-        "name": "Gilded Royal Shield",
-        "type": "Shield",
+        "item_name": "Gilded Royal Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 18,
+        "base_defense": 24,
+        "price": 1800,
         "grid_coordinate": {
           "column_x": 3,
           "row_y": 1
-        },
-        "required_level": 18,
-        "base_defense": 24,
-        "price": 1800
+        }
       },
       {
         "id": "a_sh_05",
-        "name": "Scarlet Crest Shield",
-        "type": "Shield",
+        "item_name": "Scarlet Crest Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 22,
+        "base_defense": 30,
+        "price": 2900,
         "grid_coordinate": {
           "column_x": 4,
           "row_y": 1
-        },
-        "required_level": 22,
-        "base_defense": 30,
-        "price": 2900
+        }
       },
       {
         "id": "a_sh_06",
-        "name": "Aegis of the Sun",
-        "type": "Shield",
+        "item_name": "Aegis of the Sun",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_defense": 55,
+        "price": 9800,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 1
+        }
+      },
+      {
+        "id": "a_sh_07",
+        "item_name": "Azure Guardian Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 40,
+        "base_defense": 75,
+        "price": 14000,
         "grid_coordinate": {
           "column_x": 6,
           "row_y": 1
-        },
-        "required_level": 35,
-        "base_defense": 55,
-        "price": 9800
+        }
       },
       {
+        "id": "a_sh_08",
+        "item_name": "Mythic Dragonscale Shield",
+        "item_type": "Shield",
+        "player_type": "Warrior",
+        "required_level": 55,
+        "base_defense": 110,
+        "price": 45000,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 1
+        }
+      },
+      {
+        "id": "a_rn_01",
+        "item_name": "Copper Ring",
+        "item_type": "Ring",
+        "player_type": "All",
+        "required_level": 1,
+        "base_defense": 0,
+        "price": 40,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_rn_02",
+        "item_name": "Silver Ring",
+        "item_type": "Ring",
+        "player_type": "All",
+        "required_level": 8,
+        "base_defense": 0,
+        "price": 300,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_rn_03",
+        "item_name": "Gold Ring",
+        "item_type": "Ring",
+        "player_type": "All",
+        "required_level": 18,
+        "base_defense": 0,
+        "price": 900,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_rn_04",
+        "item_name": "Gemstone Ring",
+        "item_type": "Ring",
+        "player_type": "All",
+        "required_level": 28,
+        "base_defense": 0,
+        "price": 2500,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_rn_05",
+        "item_name": "Arcane Ring",
+        "item_type": "Ring",
+        "player_type": "Mage",
+        "required_level": 38,
+        "base_defense": 0,
+        "price": 7000,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_nc_01",
+        "item_name": "Leather Necklace",
+        "item_type": "Necklace",
+        "player_type": "All",
+        "required_level": 1,
+        "base_defense": 0,
+        "price": 50,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_nc_02",
+        "item_name": "Silver Necklace",
+        "item_type": "Necklace",
+        "player_type": "All",
+        "required_level": 10,
+        "base_defense": 0,
+        "price": 400,
+        "grid_coordinate": {
+          "column_x": 6,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_nc_03",
+        "item_name": "Gold Amulet",
+        "item_type": "Necklace",
+        "player_type": "All",
+        "required_level": 22,
+        "base_defense": 0,
+        "price": 1500,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "a_nc_04",
+        "item_name": "Arcane Pendant",
+        "item_type": "Necklace",
+        "player_type": "Mage",
+        "required_level": 35,
+        "base_defense": 0,
+        "price": 5000,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 0
+        }
+      }
+    ],
+    "chest_armors": [
+      {
         "id": "a_ch_01",
-        "name": "Copper Breastplate",
-        "type": "Chest",
+        "item_name": "Copper Breastplate",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 3,
+        "base_defense": 12,
+        "price": 110,
         "grid_coordinate": {
           "column_x": 10,
           "row_y": 1
-        },
-        "required_level": 3,
-        "base_defense": 12,
-        "price": 110
+        }
       },
       {
         "id": "a_ch_02",
-        "name": "Iron Breastplate",
-        "type": "Chest",
+        "item_name": "Iron Breastplate",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_defense": 20,
+        "price": 390,
         "grid_coordinate": {
           "column_x": 11,
           "row_y": 1
-        },
-        "required_level": 8,
-        "base_defense": 20,
-        "price": 390
+        }
       },
       {
         "id": "a_ch_03",
-        "name": "Steel Breastplate",
-        "type": "Chest",
+        "item_name": "Steel Breastplate",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 15,
+        "base_defense": 32,
+        "price": 1250,
         "grid_coordinate": {
           "column_x": 12,
           "row_y": 1
-        },
-        "required_level": 15,
-        "base_defense": 32,
-        "price": 1250
-      }
-    ],
-    "heavy_plate_tier": [
+        }
+      },
       {
-        "id": "a_hv_01",
-        "name": "Vanguard Plated Armor",
-        "type": "Chest",
+        "id": "a_ch_04",
+        "item_name": "Vanguard Plated Armor",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 20,
+        "base_defense": 45,
+        "price": 2400,
         "grid_coordinate": {
           "column_x": 0,
           "row_y": 4
-        },
-        "required_level": 20,
-        "base_defense": 45,
-        "price": 2400
+        }
       },
       {
-        "id": "a_hv_02",
-        "name": "Steel Scale Mail",
-        "type": "Chest",
+        "id": "a_ch_05",
+        "item_name": "Steel Scale Mail",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 18,
+        "base_defense": 38,
+        "price": 1900,
         "grid_coordinate": {
           "column_x": 1,
           "row_y": 4
-        },
-        "required_level": 18,
-        "base_defense": 38,
-        "price": 1900
+        }
       },
       {
-        "id": "a_hv_03",
-        "name": "Heavy Iron Hauberk",
-        "type": "Chest",
+        "id": "a_ch_06",
+        "item_name": "Heavy Iron Hauberk",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 15,
+        "base_defense": 34,
+        "price": 1300,
         "grid_coordinate": {
           "column_x": 2,
           "row_y": 4
-        },
-        "required_level": 15,
-        "base_defense": 34,
-        "price": 1300
+        }
       },
       {
-        "id": "a_hv_04",
-        "name": "Royal Knight Plate",
-        "type": "Chest",
+        "id": "a_ch_07",
+        "item_name": "Royal Knight Plate",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 25,
+        "base_defense": 55,
+        "price": 3800,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 4
+        }
+      },
+      {
+        "id": "a_ch_08",
+        "item_name": "Azure Plate Armor",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_defense": 80,
+        "price": 9500,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 4
+        }
+      },
+      {
+        "id": "a_ch_09",
+        "item_name": "Titanium Juggernaut",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 45,
+        "base_defense": 120,
+        "price": 22000,
         "grid_coordinate": {
           "column_x": 5,
           "row_y": 4
-        },
-        "required_level": 25,
-        "base_defense": 58,
-        "price": 4200
+        }
       },
       {
-        "id": "a_hv_05",
-        "name": "Elite Cobalt Breastplate",
-        "type": "Chest",
+        "id": "a_ch_10",
+        "item_name": "Mythic Warlord Armor",
+        "item_type": "Chest",
+        "player_type": "Warrior",
+        "required_level": 55,
+        "base_defense": 175,
+        "price": 48000,
         "grid_coordinate": {
           "column_x": 6,
           "row_y": 4
-        },
-        "required_level": 30,
-        "base_defense": 72,
-        "price": 6800
-      },
-      {
-        "id": "a_hl_01",
-        "name": "Iron Soldier Helm",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 7
-        },
-        "required_level": 5,
-        "base_defense": 8,
-        "price": 160
-      },
-      {
-        "id": "a_hl_02",
-        "name": "Steel Guard Helm",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 1,
-          "row_y": 7
-        },
-        "required_level": 12,
-        "base_defense": 14,
-        "price": 680
-      },
-      {
-        "id": "a_hl_03",
-        "name": "Vanguard Greathelm",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 4,
-          "row_y": 7
-        },
-        "required_level": 20,
-        "base_defense": 22,
-        "price": 2200
-      },
-      {
-        "id": "a_hl_04",
-        "name": "Gilded Knight Helm",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 7
-        },
-        "required_level": 25,
-        "base_defense": 28,
-        "price": 3900
-      },
-      {
-        "id": "a_bt_01",
-        "name": "Iron Greaves",
-        "type": "Legs/Feet",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 9
-        },
-        "required_level": 5,
-        "base_defense": 6,
-        "price": 140
-      },
-      {
-        "id": "a_bt_02",
-        "name": "Steel Plated Sabatons",
-        "type": "Feet",
-        "grid_coordinate": {
-          "column_x": 4,
-          "row_y": 9
-        },
-        "required_level": 15,
-        "base_defense": 12,
-        "price": 1100
+        }
       }
     ],
-    "mage_and_rogue_cloth_tier": [
+    "helmets": [
       {
-        "id": "a_mg_01",
-        "name": "Apprentice Hood",
-        "type": "Head",
+        "id": "a_hd_01",
+        "item_name": "Leather Cap",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 1,
+        "base_defense": 3,
+        "price": 25,
         "grid_coordinate": {
           "column_x": 0,
-          "row_y": 10
-        },
-        "required_level": 1,
-        "base_defense": 2,
-        "price": 35
+          "row_y": 5
+        }
       },
       {
-        "id": "a_mg_02",
-        "name": "Sorcerer's Cowl",
-        "type": "Head",
+        "id": "a_hd_02",
+        "item_name": "Iron Helmet",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_defense": 10,
+        "price": 150,
         "grid_coordinate": {
           "column_x": 1,
-          "row_y": 10
-        },
-        "required_level": 10,
-        "base_defense": 6,
-        "price": 450
+          "row_y": 5
+        }
       },
       {
-        "id": "a_mg_03",
-        "name": "Archmage Hood",
-        "type": "Head",
+        "id": "a_hd_03",
+        "item_name": "Steel Helm",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 10,
+        "base_defense": 18,
+        "price": 450,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 5
+        }
+      },
+      {
+        "id": "a_hd_04",
+        "item_name": "Gold Helmet",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 18,
+        "base_defense": 28,
+        "price": 1400,
         "grid_coordinate": {
           "column_x": 3,
-          "row_y": 10
-        },
-        "required_level": 25,
-        "base_defense": 15,
-        "price": 3600
+          "row_y": 5
+        }
       },
       {
-        "id": "a_rb_01",
-        "name": "Novice Magician Robe",
-        "type": "Chest",
+        "id": "a_hd_05",
+        "item_name": "Iron Soldier Helm",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 12,
+        "base_defense": 22,
+        "price": 700,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 5
+        }
+      },
+      {
+        "id": "a_hd_06",
+        "item_name": "Royal Crusader Helm",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 25,
+        "base_defense": 42,
+        "price": 2800,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 5
+        }
+      },
+      {
+        "id": "a_hd_07",
+        "item_name": "Azure Warlord Helm",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_defense": 65,
+        "price": 8500,
+        "grid_coordinate": {
+          "column_x": 6,
+          "row_y": 5
+        }
+      },
+      {
+        "id": "a_hd_08",
+        "item_name": "Mythic Dragon Helm",
+        "item_type": "Head",
+        "player_type": "Warrior",
+        "required_level": 50,
+        "base_defense": 100,
+        "price": 30000,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 5
+        }
+      },
+      {
+        "id": "a_hd_09",
+        "item_name": "Archer Scout Hood",
+        "item_type": "Head",
+        "player_type": "Archer",
+        "required_level": 5,
+        "base_defense": 8,
+        "price": 120,
         "grid_coordinate": {
           "column_x": 0,
-          "row_y": 11
-        },
+          "row_y": 6
+        }
+      },
+      {
+        "id": "a_hd_10",
+        "item_name": "Ranger Hood",
+        "item_type": "Head",
+        "player_type": "Archer",
+        "required_level": 15,
+        "base_defense": 20,
+        "price": 700,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 6
+        }
+      },
+      {
+        "id": "a_hd_11",
+        "item_name": "Azure Ranger Cowl",
+        "item_type": "Head",
+        "player_type": "Archer",
+        "required_level": 32,
+        "base_defense": 50,
+        "price": 7500,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 6
+        }
+      }
+    ],
+    "boots": [
+      {
+        "id": "a_ft_01",
+        "item_name": "Leather Boots",
+        "item_type": "Feet",
+        "player_type": "All",
         "required_level": 1,
+        "base_defense": 2,
+        "price": 20,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_02",
+        "item_name": "Iron Greaves",
+        "item_type": "Feet",
+        "player_type": "Warrior",
+        "required_level": 5,
+        "base_defense": 8,
+        "price": 140,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_03",
+        "item_name": "Steel Greaves",
+        "item_type": "Feet",
+        "player_type": "Warrior",
+        "required_level": 12,
+        "base_defense": 15,
+        "price": 500,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_04",
+        "item_name": "Gold Greaves",
+        "item_type": "Feet",
+        "player_type": "Warrior",
+        "required_level": 20,
+        "base_defense": 24,
+        "price": 1600,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_05",
+        "item_name": "Azure Sabatons",
+        "item_type": "Feet",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_defense": 45,
+        "price": 8000,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_06",
+        "item_name": "Mythic Titan Boots",
+        "item_type": "Feet",
+        "player_type": "Warrior",
+        "required_level": 50,
+        "base_defense": 80,
+        "price": 28000,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 7
+        }
+      },
+      {
+        "id": "a_ft_07",
+        "item_name": "Ranger Boots",
+        "item_type": "Feet",
+        "player_type": "Archer",
+        "required_level": 8,
+        "base_defense": 10,
+        "price": 250,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 8
+        }
+      },
+      {
+        "id": "a_ft_08",
+        "item_name": "Swift Archer Boots",
+        "item_type": "Feet",
+        "player_type": "Archer",
+        "required_level": 20,
+        "base_defense": 20,
+        "price": 1500,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 8
+        }
+      },
+      {
+        "id": "a_ft_09",
+        "item_name": "Azure Scout Boots",
+        "item_type": "Feet",
+        "player_type": "Archer",
+        "required_level": 35,
+        "base_defense": 40,
+        "price": 7500,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 8
+        }
+      }
+    ],
+    "robes_and_mage_gear": [
+      {
+        "id": "a_rb_01",
+        "item_name": "Apprentice Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
+        "required_level": 3,
         "base_defense": 5,
-        "price": 45
+        "price": 80,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 9
+        }
       },
       {
         "id": "a_rb_02",
-        "name": "Enchanted Silk Vestments",
-        "type": "Chest",
+        "item_name": "Journeyman Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
+        "required_level": 8,
+        "base_defense": 10,
+        "price": 250,
         "grid_coordinate": {
-          "column_x": 3,
-          "row_y": 11
-        },
-        "required_level": 15,
-        "base_defense": 18,
-        "price": 1200
+          "column_x": 1,
+          "row_y": 9
+        }
       },
       {
         "id": "a_rb_03",
-        "name": "Pyromancer Cloak",
-        "type": "Chest",
+        "item_name": "Scholar Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
+        "required_level": 15,
+        "base_defense": 18,
+        "price": 750,
         "grid_coordinate": {
-          "column_x": 12,
-          "row_y": 11
-        },
+          "column_x": 2,
+          "row_y": 9
+        }
+      },
+      {
+        "id": "a_rb_04",
+        "item_name": "Arcane Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
         "required_level": 22,
         "base_defense": 28,
-        "price": 2800
+        "price": 1800,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 9
+        }
       },
       {
-        "id": "a_cp_01",
-        "name": "Traveler's Wide Hat",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 13
-        },
-        "required_level": 5,
-        "base_defense": 4,
-        "price": 150
-      },
-      {
-        "id": "a_cp_02",
-        "name": "Witch Hunter Hat",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 2,
-          "row_y": 13
-        },
-        "required_level": 14,
-        "base_defense": 9,
-        "price": 950
-      },
-      {
-        "id": "a_cp_03",
-        "name": "Sage Grand Hat",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 13
-        },
+        "id": "a_rb_05",
+        "item_name": "Sage Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
         "required_level": 30,
-        "base_defense": 20,
-        "price": 6200
-      }
-    ],
-    "dark_fantasy_and_exotic_tier": [
-      {
-        "id": "a_dk_01",
-        "name": "Gothic Heavy Chestplate",
-        "type": "Chest",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 16
-        },
-        "required_level": 40,
-        "base_defense": 95,
-        "price": 15000
-      },
-      {
-        "id": "a_dk_02",
-        "name": "Dread Knight Visor",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 3,
-          "row_y": 16
-        },
-        "required_level": 42,
-        "base_defense": 40,
-        "price": 17500
-      },
-      {
-        "id": "a_dk_03",
-        "name": "Abyssal Skull Helm",
-        "type": "Head",
-        "grid_coordinate": {
-          "column_x": 5,
-          "row_y": 16
-        },
-        "required_level": 45,
-        "base_defense": 46,
-        "price": 22000
-      },
-      {
-        "id": "a_dk_04",
-        "name": "Shadow Assassin Garb",
-        "type": "Chest",
-        "grid_coordinate": {
-          "column_x": 7,
-          "row_y": 16
-        },
-        "required_level": 38,
-        "base_defense": 50,
-        "price": 12800
-      },
-      {
-        "id": "a_ex_01",
-        "name": "High Priest Tunics",
-        "type": "Chest",
-        "grid_coordinate": {
-          "column_x": 3,
-          "row_y": 18
-        },
-        "required_level": 35,
         "base_defense": 42,
-        "price": 9500
-      },
-      {
-        "id": "a_ex_02",
-        "name": "Blood Ritual Vestments",
-        "type": "Chest",
-        "grid_coordinate": {
-          "column_x": 14,
-          "row_y": 18
-        },
-        "required_level": 48,
-        "base_defense": 65,
-        "price": 28000
-      }
-    ],
-    "crystals_shields_and_boots": [
-      {
-        "id": "a_cs_01",
-        "name": "Reinforced Steel Heater Shield",
-        "type": "Shield",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 20
-        },
-        "required_level": 20,
-        "base_defense": 32,
-        "price": 2200
-      },
-      {
-        "id": "a_cs_02",
-        "name": "Ruby Aegis",
-        "type": "Shield",
-        "grid_coordinate": {
-          "column_x": 3,
-          "row_y": 20
-        },
-        "required_level": 35,
-        "base_defense": 60,
-        "price": 9900
-      },
-      {
-        "id": "a_cs_03",
-        "name": "Azure Crystal Shield",
-        "type": "Shield",
-        "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 20
-        },
-        "required_level": 45,
-        "base_defense": 85,
-        "price": 24000
-      },
-      {
-        "id": "a_bt_ex1",
-        "name": "Heavy Cobalt Greaves",
-        "type": "Feet",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 22
-        },
-        "required_level": 30,
-        "base_defense": 22,
-        "price": 5800
-      },
-      {
-        "id": "a_bt_ex2",
-        "name": "Desert Vanguard Boots",
-        "type": "Feet",
-        "grid_coordinate": {
-          "column_x": 2,
-          "row_y": 22
-        },
-        "required_level": 25,
-        "base_defense": 16,
-        "price": 3400
-      },
-      {
-        "id": "a_bt_ex3",
-        "name": "Shadow-Step Boots",
-        "type": "Feet",
-        "grid_coordinate": {
-          "column_x": 6,
-          "row_y": 22
-        },
-        "required_level": 40,
-        "base_defense": 28,
-        "price": 14500
-      }
-    ],
-    "accessories_and_rings": [
-      {
-        "id": "ac_rg_01",
-        "name": "Silver Amethyst Ring",
-        "type": "Ring",
-        "grid_coordinate": {
-          "column_x": 0,
-          "row_y": 23
-        },
-        "required_level": 10,
-        "bonus_mana": 30,
-        "price": 600
-      },
-      {
-        "id": "ac_rg_02",
-        "name": "Gilded Topaz Loop",
-        "type": "Ring",
-        "grid_coordinate": {
-          "column_x": 2,
-          "row_y": 23
-        },
-        "required_level": 15,
-        "bonus_stamina": 15,
-        "price": 1250
-      },
-      {
-        "id": "ac_rg_03",
-        "name": "Ruby Signet Ring",
-        "type": "Ring",
+        "price": 4000,
         "grid_coordinate": {
           "column_x": 4,
-          "row_y": 23
-        },
-        "required_level": 25,
-        "bonus_attack": 12,
-        "price": 3800
+          "row_y": 9
+        }
       },
       {
-        "id": "ac_nk_01",
-        "name": "Jade Amulet of Health",
-        "type": "Necklace",
+        "id": "a_rb_06",
+        "item_name": "Mythic Archmage Robe",
+        "item_type": "Chest",
+        "player_type": "Mage",
+        "required_level": 50,
+        "base_defense": 80,
+        "price": 30000,
         "grid_coordinate": {
-          "column_x": 12,
-          "row_y": 23
-        },
+          "column_x": 5,
+          "row_y": 9
+        }
+      },
+      {
+        "id": "a_rb_07",
+        "item_name": "Apprentice Hood",
+        "item_type": "Head",
+        "player_type": "Mage",
+        "required_level": 3,
+        "base_defense": 3,
+        "price": 60,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "a_rb_08",
+        "item_name": "Scholar Hood",
+        "item_type": "Head",
+        "player_type": "Mage",
+        "required_level": 15,
+        "base_defense": 12,
+        "price": 600,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "a_rb_09",
+        "item_name": "Arcane Hood",
+        "item_type": "Head",
+        "player_type": "Mage",
+        "required_level": 25,
+        "base_defense": 22,
+        "price": 2000,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "a_rb_10",
+        "item_name": "Mythic Archmage Hat",
+        "item_type": "Head",
+        "player_type": "Mage",
+        "required_level": 50,
+        "base_defense": 55,
+        "price": 22000,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 10
+        }
+      },
+      {
+        "id": "a_rb_11",
+        "item_name": "Apprentice Slippers",
+        "item_type": "Feet",
+        "player_type": "Mage",
+        "required_level": 3,
+        "base_defense": 2,
+        "price": 50,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 11
+        }
+      },
+      {
+        "id": "a_rb_12",
+        "item_name": "Scholar Slippers",
+        "item_type": "Feet",
+        "player_type": "Mage",
+        "required_level": 15,
+        "base_defense": 10,
+        "price": 450,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 11
+        }
+      },
+      {
+        "id": "a_rb_13",
+        "item_name": "Arcane Boots",
+        "item_type": "Feet",
+        "player_type": "Mage",
+        "required_level": 28,
+        "base_defense": 20,
+        "price": 1800,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 11
+        }
+      },
+      {
+        "id": "a_rb_14",
+        "item_name": "Mythic Sage Boots",
+        "item_type": "Feet",
+        "player_type": "Mage",
+        "required_level": 50,
+        "base_defense": 50,
+        "price": 20000,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 11
+        }
+      },
+      {
+        "id": "a_lg_01",
+        "item_name": "Iron Greaves (Legs)",
+        "item_type": "Legs_Feet",
+        "player_type": "Warrior",
+        "required_level": 8,
+        "base_defense": 12,
+        "price": 350,
+        "grid_coordinate": {
+          "column_x": 0,
+          "row_y": 12
+        }
+      },
+      {
+        "id": "a_lg_02",
+        "item_name": "Steel Plate Legs",
+        "item_type": "Legs_Feet",
+        "player_type": "Warrior",
         "required_level": 18,
-        "bonus_health": 50,
-        "price": 2100
+        "base_defense": 26,
+        "price": 1600,
+        "grid_coordinate": {
+          "column_x": 1,
+          "row_y": 12
+        }
+      },
+      {
+        "id": "a_lg_03",
+        "item_name": "Azure Plate Legs",
+        "item_type": "Legs_Feet",
+        "player_type": "Warrior",
+        "required_level": 35,
+        "base_defense": 50,
+        "price": 8500,
+        "grid_coordinate": {
+          "column_x": 2,
+          "row_y": 12
+        }
+      },
+      {
+        "id": "a_lg_04",
+        "item_name": "Mythic Titan Legplates",
+        "item_type": "Legs_Feet",
+        "player_type": "Warrior",
+        "required_level": 50,
+        "base_defense": 90,
+        "price": 30000,
+        "grid_coordinate": {
+          "column_x": 3,
+          "row_y": 12
+        }
+      },
+      {
+        "id": "a_lg_05",
+        "item_name": "Mage Robe Legs",
+        "item_type": "Legs_Feet",
+        "player_type": "Mage",
+        "required_level": 10,
+        "base_defense": 8,
+        "price": 300,
+        "grid_coordinate": {
+          "column_x": 4,
+          "row_y": 12
+        }
+      },
+      {
+        "id": "a_lg_06",
+        "item_name": "Arcane Robe Legs",
+        "item_type": "Legs_Feet",
+        "player_type": "Mage",
+        "required_level": 25,
+        "base_defense": 18,
+        "price": 1500,
+        "grid_coordinate": {
+          "column_x": 5,
+          "row_y": 12
+        }
       }
     ]
-  }
+  },
+  "potions_database": {
+    "health_potions": [
+      {
+        "id": "p_hp_01",
+        "item_name": "Tiny Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 1,
+        "heal_percentage": 10,
+        "price": 10,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "p_hp_02",
+        "item_name": "Small Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 1,
+        "heal_percentage": 20,
+        "price": 25,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "p_hp_03",
+        "item_name": "Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 5,
+        "heal_percentage": 30,
+        "price": 50,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "p_hp_04",
+        "item_name": "Medium Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 10,
+        "heal_percentage": 45,
+        "price": 90,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 0
+        }
+      },
+      {
+        "id": "p_hp_05",
+        "item_name": "Large Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 20,
+        "heal_percentage": 60,
+        "price": 150,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 1
+        }
+      },
+      {
+        "id": "p_hp_06",
+        "item_name": "Great Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 30,
+        "heal_percentage": 75,
+        "price": 280,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 1
+        }
+      },
+      {
+        "id": "p_hp_07",
+        "item_name": "Superior Health Potion",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 40,
+        "heal_percentage": 90,
+        "price": 500,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 1
+        }
+      },
+      {
+        "id": "p_hp_08",
+        "item_name": "Mythic Health Elixir",
+        "item_type": "Potion",
+        "potion_type": "Health",
+        "player_type": "All",
+        "required_level": 50,
+        "heal_percentage": 100,
+        "price": 1000,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 1
+        }
+      }
+    ],
+    "mana_potions": [
+      {
+        "id": "p_mp_01",
+        "item_name": "Tiny Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 1,
+        "heal_percentage": 10,
+        "price": 15,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 2
+        }
+      },
+      {
+        "id": "p_mp_02",
+        "item_name": "Small Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 1,
+        "heal_percentage": 20,
+        "price": 30,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 2
+        }
+      },
+      {
+        "id": "p_mp_03",
+        "item_name": "Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 5,
+        "heal_percentage": 30,
+        "price": 60,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 2
+        }
+      },
+      {
+        "id": "p_mp_04",
+        "item_name": "Medium Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 10,
+        "heal_percentage": 45,
+        "price": 100,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 2
+        }
+      },
+      {
+        "id": "p_mp_05",
+        "item_name": "Large Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 20,
+        "heal_percentage": 60,
+        "price": 180,
+        "grid_coordinate": {
+          "column_x": 7,
+          "row_y": 3
+        }
+      },
+      {
+        "id": "p_mp_06",
+        "item_name": "Great Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 30,
+        "heal_percentage": 75,
+        "price": 320,
+        "grid_coordinate": {
+          "column_x": 8,
+          "row_y": 3
+        }
+      },
+      {
+        "id": "p_mp_07",
+        "item_name": "Superior Mana Potion",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 40,
+        "heal_percentage": 90,
+        "price": 600,
+        "grid_coordinate": {
+          "column_x": 9,
+          "row_y": 3
+        }
+      },
+      {
+        "id": "p_mp_08",
+        "item_name": "Mythic Mana Elixir",
+        "item_type": "Potion",
+        "potion_type": "Mana",
+        "player_type": "All",
+        "required_level": 50,
+        "heal_percentage": 100,
+        "price": 1200,
+        "grid_coordinate": {
+          "column_x": 10,
+          "row_y": 3
+        }
+      }
+    ]
+  },
+  "weapons_unmapped_sprites_found_in_sheet": [
+    {
+      "location": "row 4, columns 0-15 (16 sprites)",
+      "description": "Full row of silver/steel-colored blades (daggers & swords) — visually a distinct material tier between iron and gold, not present anywhere in weapons_database.",
+      "action_needed": "Not added — needs names, damage/price values, and a tier id (e.g. steel_tier) from you."
+    },
+    {
+      "location": "row 7, columns 0-15 (16 sprites)",
+      "description": "Full row of golden axes — extra content after gold_tier's documented rows 5-6.",
+      "action_needed": "Not added — needs names/stats."
+    },
+    {
+      "location": "row 8, columns 0-15 (16 sprites)",
+      "description": "Full row of golden thrown/hook weapons.",
+      "action_needed": "Not added — needs names/stats."
+    },
+    {
+      "location": "row 9, columns 0-15 (16 sprites)",
+      "description": "Full row of golden bows/polearms.",
+      "action_needed": "Not added — needs names/stats."
+    },
+    {
+      "location": "row 12, columns 0-15 (16 sprites)",
+      "description": "Full row of azure axes/hammers — extra content after azure_tier's documented rows 10-11.",
+      "action_needed": "Not added — needs names/stats."
+    },
+    {
+      "location": "row 13, columns 0-15 (16 sprites)",
+      "description": "Full row of azure bows/polearms.",
+      "action_needed": "Not added — needs names/stats."
+    },
+    {
+      "location": "row 3, column 15 (1 sprite)",
+      "description": "A star/cross-shaped weapon icon sitting right after Iron Prospector Axe (col 14) — one extra iron weapon not in iron_tier.",
+      "action_needed": "Not added — needs a name/stats."
+    }
+  ]
 }

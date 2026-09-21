@@ -3,7 +3,7 @@ class_name ExampleItemUser
 extends Node
 
 ## Exported array of item IDs configured via Item DB Selector inspector plugin
-@export var custom_db_item_objects: Array[Dictionary] = []
+@export var custom_db_item_objects: Array[DataItem] = []
 @export var texture_image: Sprite2D
 
 func _ready():
@@ -12,11 +12,9 @@ func _ready():
 		
 	# Mma محتاجch t-loady JSON marra khra f runtime! L-data kamla kayna hna:
 	for item in custom_db_item_objects:
-		print("ID: ", item.get("id"))
-		print("Name: ", item.get("name"))
-		print("Damage: ", item.get("base_damage", 0))
-		print("Grid Coord: ", item.get("grid_coordinate"))
-		texture_image.texture = get_item_texture(item)
+		print("Item Name: ", item.item_name)
+		print("Price: ", item.price)
+		print("Coords: ", item.grid_coordinate)
 		print("---------------------------------")
 
 
