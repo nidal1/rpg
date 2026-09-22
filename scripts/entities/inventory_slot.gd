@@ -33,7 +33,6 @@ func _on_context_menu_item_pressed(id: int) -> void:
 		0: _equip()
 		1: _use()
 		2: _drop()
-		
 
 func _equip() -> void:
 	var inventory_slot: InventorySlot = self

@@ -43,7 +43,8 @@ func _on_button_pressed() -> void:
 	if current_val is Array:
 		for item in current_val:
 			if item is DataItem:
-				selected_ids.append(item.id) # Extract String ID from DataItem
+				var item_id_val = item.item_id
+				selected_ids.append(item_id_val)
 			elif item is String:
 				selected_ids.append(item)
 	
@@ -55,7 +56,6 @@ func _on_button_pressed() -> void:
 func _on_items_selected(new_items: Array[DataItem]) -> void:
 	_updating = true
 	
-	# Create a strictly typed Array[DataItem] to avoid push_back engine errors
 	var typed_array: Array[DataItem] = []
 	for item in new_items:
 		typed_array.append(item)

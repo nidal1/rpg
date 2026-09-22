@@ -1,9 +1,10 @@
 @tool
 extends Control
 
-## Main Screen Tab Panel for managing res://data/items_data.json in Godot Editor.
+## Main Screen Tab Panel for managing res://data/data_items.json in Godot Editor.
 
-const DB_PATH = "res://data/items_data.json"
+const DB_PATH = "res://data/data_items.json"
+const ALT_DB_PATH = "res://data/items_data.json"
 const WEAPONS_ATLAS_PATH = "res://assets/sprites/items/weapons.png"
 const ARMORS_ATLAS_PATH = "res://assets/sprites/items/armors.png"
 const POTIONS_ATLAS_PATH = "res://assets/sprites/items/potions.png"
@@ -13,8 +14,7 @@ const CELL_SIZE = Vector2i(64, 64)
 var current_db_data: Dictionary = {}
 var selected_tree_item: TreeItem = null
 var selected_item_dict: Dictionary = {}
-var selected_category_array: Array = []
-var selected_database_key: String = "" # "weapons_database", "armors_database", or "potions_database"
+var selected_root_key: String = ""
 var selected_category_name: String = ""
 
 # Textures
@@ -48,6 +48,7 @@ var _edit_row_y: SpinBox
 var _preview_rect: TextureRect
 var _preview_info_label: Label
 var _edit_price: SpinBox
+var _edit_max_stack: SpinBox
 
 # Dialogs
 var _add_category_dialog: ConfirmationDialog
@@ -58,7 +59,6 @@ var _is_updating_form: bool = false
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
-		# Safety check: prevent execution outside editor if not intended
 		pass
 	
 	_load_textures()
@@ -76,13 +76,11 @@ func _load_textures() -> void:
 
 
 func _build_ui() -> void:
-	# Main layout: Top Bar + HSplitContainer
 	var main_vbox = VBoxContainer.new()
 	main_vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	main_vbox.add_theme_constant_override("separation", 10)
 	add_child(main_vbox)
 	
-	# Margin wrapper
 	var margin = MarginContainer.new()
 	margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	margin.add_theme_constant_override("margin_left", 12)
@@ -124,16 +122,15 @@ func _build_ui() -> void:
 	_status_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	top_bar.add_child(_status_label)
 	
-	# Main Split Container (Tree vs Form)
 	var split = HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	split.split_offset = 260
 	content_vbox.add_child(split)
 	
-	# ---------------- Left Panel: Tree & Action Buttons ----------------
+	# Left Panel
 	var left_vbox = VBoxContainer.new()
 	left_vbox.add_theme_constant_override("separation", 8)
-	left_vbox.custom_minimum_size = Vector2(500, 700)
+	left_vbox.custom_minimum_size = Vector2(400, 600)
 	split.add_child(left_vbox)
 	
 	var tree_header = Label.new()
@@ -147,7 +144,6 @@ func _build_ui() -> void:
 	_tree.item_selected.connect(_on_tree_item_selected)
 	left_vbox.add_child(_tree)
 	
-	# Bottom Left Action Buttons
 	var left_btn_bar = HBoxContainer.new()
 	left_btn_bar.add_theme_constant_override("separation", 6)
 	left_vbox.add_child(left_btn_bar)
@@ -170,7 +166,7 @@ func _build_ui() -> void:
 	_btn_delete_selected.pressed.connect(_on_delete_selected_pressed)
 	left_btn_bar.add_child(_btn_delete_selected)
 	
-	# ---------------- Right Panel: Edit Form & Live Preview ----------------
+	# Right Panel: Edit Form
 	var right_panel = PanelContainer.new()
 	right_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	split.add_child(right_panel)
@@ -209,7 +205,6 @@ func _build_ui() -> void:
 	form_split.add_theme_constant_override("separation", 24)
 	_form_container.add_child(form_split)
 	
-	# Form Fields Container
 	var fields_grid = GridContainer.new()
 	fields_grid.columns = 2
 	fields_grid.add_theme_constant_override("h_separation", 12)
@@ -217,32 +212,27 @@ func _build_ui() -> void:
 	fields_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	form_split.add_child(fields_grid)
 	
-	# Field: ID
 	fields_grid.add_child(_create_label("Item ID:"))
 	_edit_id = LineEdit.new()
 	_edit_id.text_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_id)
 	
-	# Field: Name
 	fields_grid.add_child(_create_label("Name:"))
 	_edit_name = LineEdit.new()
 	_edit_name.text_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_name)
 	
-	# Field: Type
-	fields_grid.add_child(_create_label("Type:"))
+	fields_grid.add_child(_create_label("Type/Eq Type:"))
 	_edit_type = LineEdit.new()
 	_edit_type.text_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_type)
 
-	# Field: Player Class
 	fields_grid.add_child(_create_label("Player Class:"))
 	_edit_player_type = LineEdit.new()
-	_edit_player_type.placeholder_text = "Warrior, Archer, Mage, Priest, All"
+	_edit_player_type.placeholder_text = "WARRIOR, ARCHER, MAGE, PRIEST, ALL"
 	_edit_player_type.text_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_player_type)
 	
-	# Field: Required Level
 	fields_grid.add_child(_create_label("Required Level:"))
 	_edit_level = SpinBox.new()
 	_edit_level.min_value = 1
@@ -250,7 +240,6 @@ func _build_ui() -> void:
 	_edit_level.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_level)
 	
-	# Field: Stat (Damage / Defense / Heal)
 	_stat_label = _create_label("Base Damage:")
 	fields_grid.add_child(_stat_label)
 	_edit_stat = SpinBox.new()
@@ -259,15 +248,20 @@ func _build_ui() -> void:
 	_edit_stat.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_stat)
 
-	# Field: Price
 	fields_grid.add_child(_create_label("Price (Gold):"))
 	_edit_price = SpinBox.new()
 	_edit_price.min_value = 0
 	_edit_price.max_value = 999999
 	_edit_price.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_price)
+
+	fields_grid.add_child(_create_label("Max Stack:"))
+	_edit_max_stack = SpinBox.new()
+	_edit_max_stack.min_value = 1
+	_edit_max_stack.max_value = 999
+	_edit_max_stack.value_changed.connect(_on_field_value_changed)
+	fields_grid.add_child(_edit_max_stack)
 	
-	# Field: Column X
 	fields_grid.add_child(_create_label("Grid Column X:"))
 	_edit_col_x = SpinBox.new()
 	_edit_col_x.min_value = 0
@@ -275,7 +269,6 @@ func _build_ui() -> void:
 	_edit_col_x.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_col_x)
 	
-	# Field: Row Y
 	fields_grid.add_child(_create_label("Grid Row Y:"))
 	_edit_row_y = SpinBox.new()
 	_edit_row_y.min_value = 0
@@ -283,7 +276,6 @@ func _build_ui() -> void:
 	_edit_row_y.value_changed.connect(_on_field_value_changed)
 	fields_grid.add_child(_edit_row_y)
 	
-	# Preview Panel (Right side of edit form)
 	var preview_vbox = VBoxContainer.new()
 	preview_vbox.alignment = BoxContainer.ALIGNMENT_BEGIN
 	preview_vbox.add_theme_constant_override("separation", 8)
@@ -309,7 +301,6 @@ func _build_ui() -> void:
 	_preview_info_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 	preview_vbox.add_child(_preview_info_label)
 	
-	# Create Add Category Dialog
 	_create_add_category_dialog()
 
 
@@ -330,28 +321,27 @@ func _create_add_category_dialog() -> void:
 	_add_category_dialog.add_child(dialog_vbox)
 	
 	var dlg_label = Label.new()
-	dlg_label.text = "Enter category key name (e.g. mythic_tier):"
+	dlg_label.text = "Enter category key name (e.g. weapons, armors, potions):"
 	dialog_vbox.add_child(dlg_label)
 	
 	_category_name_input = LineEdit.new()
-	_category_name_input.placeholder_text = "new_category_tier"
+	_category_name_input.placeholder_text = "weapons"
 	dialog_vbox.add_child(_category_name_input)
 	
 	_add_category_dialog.confirmed.connect(_on_add_category_dialog_confirmed)
 
-
-# ---------------- Database Loading & Tree Population ----------------
 
 func _load_and_populate_db() -> void:
 	current_db_data.clear()
 	_tree.clear()
 	_clear_form_selection()
 	
-	if not FileAccess.file_exists(DB_PATH):
-		_show_status("Error: Database file not found at " + DB_PATH, true)
+	var target_path = DB_PATH if FileAccess.file_exists(DB_PATH) else ALT_DB_PATH
+	if not FileAccess.file_exists(target_path):
+		_show_status("Error: Database file not found at " + target_path, true)
 		return
 	
-	var file = FileAccess.open(DB_PATH, FileAccess.READ)
+	var file = FileAccess.open(target_path, FileAccess.READ)
 	if not file:
 		_show_status("Error: Cannot open database file.", true)
 		return
@@ -365,57 +355,53 @@ func _load_and_populate_db() -> void:
 	
 	current_db_data = json.get_data()
 	
-	# Populate Tree Hierarchy
 	var root_tree_item = _tree.create_item()
 	root_tree_item.set_text(0, "Item Database")
 	root_tree_item.set_metadata(0, {"type": "root"})
 	
-	if current_db_data.has("weapons_database"):
-		_populate_db_branch(root_tree_item, "Weapons Database", "weapons_database")
-	
-	if current_db_data.has("armors_database"):
-		_populate_db_branch(root_tree_item, "Armors Database", "armors_database")
-
-	if current_db_data.has("potions_database"):
-		_populate_db_branch(root_tree_item, "Potions Database", "potions_database")
+	for root_key in current_db_data:
+		var root_val = current_db_data[root_key]
+		var root_node = _tree.create_item(root_tree_item)
+		root_node.set_text(0, root_key.capitalize())
+		root_node.set_metadata(0, {"type": "root_category", "root_key": root_key})
+		
+		if root_val is Dictionary:
+			for cat_key in root_val:
+				var items_list = root_val[cat_key]
+				if not items_list is Array:
+					continue
+				var cat_node = _tree.create_item(root_node)
+				cat_node.set_text(0, cat_key.capitalize().replace("_", " "))
+				cat_node.set_metadata(0, {"type": "category", "root_key": root_key, "cat_key": cat_key})
+				
+				for i in range(items_list.size()):
+					var item = items_list[i]
+					if not item is Dictionary:
+						continue
+					_add_item_to_tree(cat_node, item, root_key, cat_key, i)
+		elif root_val is Array:
+			for i in range(root_val.size()):
+				var item = root_val[i]
+				if not item is Dictionary:
+					continue
+				_add_item_to_tree(root_node, item, root_key, "", i)
 	
 	_show_status("Database loaded successfully.")
 
 
-func _populate_db_branch(parent_item: TreeItem, display_name: String, db_key: String) -> void:
-	var db_node = _tree.create_item(parent_item)
-	db_node.set_text(0, display_name)
-	db_node.set_metadata(0, {"type": "database", "db_key": db_key})
-	
-	var db_dict: Dictionary = current_db_data.get(db_key, {})
-	for cat_key in db_dict:
-		var items_list = db_dict[cat_key]
-		if not items_list is Array:
-			continue
-		
-		var cat_node = _tree.create_item(db_node)
-		var cat_formatted = cat_key.capitalize().replace("_", " ")
-		cat_node.set_text(0, cat_formatted)
-		cat_node.set_metadata(0, {"type": "category", "db_key": db_key, "cat_key": cat_key})
-		
-		for i in range(items_list.size()):
-			var item = items_list[i]
-			if not item is Dictionary:
-				continue
-			var item_node = _tree.create_item(cat_node)
-			var item_id = str(item.get("id", "unk"))
-			var item_name = str(item.get("item_name", "Unknown"))
-			item_node.set_text(0, item_name + " [" + item_id + "]")
-			item_node.set_metadata(0, {
-				"type": "item",
-				"db_key": db_key,
-				"cat_key": cat_key,
-				"item_index": i,
-				"item_dict": item
-			})
+func _add_item_to_tree(parent_node: TreeItem, item: Dictionary, root_key: String, cat_key: String, index: int) -> void:
+	var item_node = _tree.create_item(parent_node)
+	var item_id = str(item.get("item_id", item.get("id", "unk")))
+	var item_name = str(item.get("item_name", "Unknown"))
+	item_node.set_text(0, item_name + " [" + item_id + "]")
+	item_node.set_metadata(0, {
+		"type": "item",
+		"root_key": root_key,
+		"cat_key": cat_key,
+		"item_index": index,
+		"item_dict": item
+	})
 
-
-# ---------------- Tree Selection & Form Population ----------------
 
 func _on_tree_item_selected() -> void:
 	var item = _tree.get_selected()
@@ -431,10 +417,10 @@ func _on_tree_item_selected() -> void:
 	
 	var meta_type = meta.get("type", "")
 	if meta_type == "item":
-		selected_database_key = meta.get("db_key", "")
+		selected_root_key = meta.get("root_key", "")
 		selected_category_name = meta.get("cat_key", "")
 		selected_item_dict = meta.get("item_dict", {})
-		_populate_edit_form(selected_item_dict, selected_database_key)
+		_populate_edit_form(selected_item_dict, selected_root_key, selected_category_name)
 	else:
 		_clear_form_selection()
 
@@ -446,35 +432,45 @@ func _clear_form_selection() -> void:
 	_no_selection_label.visible = true
 
 
-func _populate_edit_form(item_dict: Dictionary, db_key: String) -> void:
+func _populate_edit_form(item_dict: Dictionary, root_key: String, cat_key: String) -> void:
 	_is_updating_form = true
 	
 	_no_selection_label.visible = false
 	_form_container.visible = true
 	
-	_edit_id.text = str(item_dict.get("id", ""))
+	_edit_id.text = str(item_dict.get("item_id", item_dict.get("id", "")))
 	_edit_name.text = str(item_dict.get("item_name", "Unknown"))
-	_edit_type.text = str(item_dict.get("item_type", "Unknown"))
-	_edit_player_type.text = str(item_dict.get("player_type", "All"))
+	_edit_type.text = str(item_dict.get("equipment_type", item_dict.get("item_type", "")))
+	_edit_player_type.text = str(item_dict.get("player_class", item_dict.get("player_type", "ALL")))
 	_edit_level.value = int(item_dict.get("required_level", 1))
 	_edit_price.value = int(item_dict.get("price", 0))
+	_edit_max_stack.value = int(item_dict.get("max_stack", 1))
 
-	if db_key == "weapons_database":
-		_stat_label.text = "Base Damage:"
-		_edit_stat.value = int(item_dict.get("base_damage", 0))
-		_preview_info_label.text = "Atlas: weapons.png"
-	elif db_key == "armors_database":
-		_stat_label.text = "Base Defense:"
-		_edit_stat.value = int(item_dict.get("base_defense", 0))
-		_preview_info_label.text = "Atlas: armors.png"
+	if root_key == "equipables" or cat_key in ["weapons", "armors"]:
+		if cat_key == "armors" or "armor" in str(item_dict.get("equipment_type", "")).to_lower():
+			_stat_label.text = "Base Defense:"
+			_edit_stat.value = int(item_dict.get("base_defense", item_dict.get("base_damage", 0)))
+			_preview_info_label.text = "Atlas: armors.png"
+		else:
+			_stat_label.text = "Base Damage:"
+			_edit_stat.value = int(item_dict.get("base_damage", 0))
+			_preview_info_label.text = "Atlas: weapons.png"
+	elif root_key == "consumables":
+		_stat_label.text = "Heal Amount:"
+		_edit_stat.value = int(item_dict.get("heal_amount", item_dict.get("heal_percentage", 50)))
+		_preview_info_label.text = "Atlas: potions.png"
 	else:
-		_stat_label.text = "Heal %:"
-		_edit_stat.value = int(item_dict.get("heal_percentage", 0))
+		_stat_label.text = "Value:"
+		_edit_stat.value = 0
 		_preview_info_label.text = "Atlas: potions.png"
 	
-	var grid_coord = item_dict.get("grid_coordinate", {"column_x": 0, "row_y": 0})
-	_edit_col_x.value = int(grid_coord.get("column_x", 0))
-	_edit_row_y.value = int(grid_coord.get("row_y", 0))
+	var gc = item_dict.get("grid_coordinate", [0, 0])
+	if gc is Array and gc.size() >= 2:
+		_edit_col_x.value = int(gc[0])
+		_edit_row_y.value = int(gc[1])
+	elif gc is Dictionary:
+		_edit_col_x.value = int(gc.get("column_x", 0))
+		_edit_row_y.value = int(gc.get("row_y", 0))
 	
 	_is_updating_form = false
 	_update_preview_texture()
@@ -484,34 +480,31 @@ func _on_field_value_changed(_val = null) -> void:
 	if _is_updating_form or selected_item_dict.is_empty() or selected_tree_item == null:
 		return
 	
-	# Sync values back to data dictionary
-	var new_name = _edit_name.text.strip_edges()
-	var new_type = _edit_type.text.strip_edges()
-	var new_player_type = _edit_player_type.text.strip_edges()
-	selected_item_dict["id"] = _edit_id.text.strip_edges()
-	selected_item_dict["item_name"] = new_name
-	selected_item_dict["item_type"] = new_type
-	selected_item_dict["player_type"] = new_player_type if not new_player_type.is_empty() else "All"
-	selected_item_dict["required_level"] = int(_edit_level.value)
+	var item_id_val = _edit_id.text.strip_edges()
+	selected_item_dict["item_id"] = item_id_val
+	selected_item_dict["id"] = item_id_val
+	selected_item_dict["item_name"] = _edit_name.text.strip_edges()
+	
+	if selected_root_key == "equipables" or selected_category_name in ["weapons", "armors"]:
+		selected_item_dict["equipment_type"] = _edit_type.text.strip_edges().to_upper()
+		selected_item_dict["player_class"] = _edit_player_type.text.strip_edges().to_upper()
+		selected_item_dict["required_level"] = int(_edit_level.value)
+		if selected_category_name == "armors":
+			selected_item_dict["base_defense"] = int(_edit_stat.value)
+		else:
+			selected_item_dict["base_damage"] = int(_edit_stat.value)
+	elif selected_root_key == "consumables":
+		selected_item_dict["heal_amount"] = int(_edit_stat.value)
+		selected_item_dict["potion_type"] = _edit_type.text.strip_edges().to_upper() if not _edit_type.text.is_empty() else "HEALTH"
+	
 	selected_item_dict["price"] = int(_edit_price.value)
-
-	if selected_database_key == "weapons_database":
-		selected_item_dict["base_damage"] = int(_edit_stat.value)
-	elif selected_database_key == "armors_database":
-		selected_item_dict["base_defense"] = int(_edit_stat.value)
-	else:
-		selected_item_dict["heal_percentage"] = int(_edit_stat.value)
+	selected_item_dict["max_stack"] = int(_edit_max_stack.value)
+	selected_item_dict["grid_coordinate"] = [int(_edit_col_x.value), int(_edit_row_y.value)]
+	selected_item_dict["cell_size"] = [64, 64]
 	
-	selected_item_dict["grid_coordinate"] = {
-		"column_x": int(_edit_col_x.value),
-		"row_y": int(_edit_row_y.value)
-	}
+	var disp_name = str(selected_item_dict.get("item_name", "Unknown"))
+	selected_tree_item.set_text(0, disp_name + " [" + item_id_val + "]")
 	
-	# Update Tree Item Text
-	var disp_name = str(selected_item_dict.get("item_name", "Unkown"))
-	selected_tree_item.set_text(0, disp_name + " [" + selected_item_dict["id"] + "]")
-	
-	# Live update preview
 	_update_preview_texture()
 
 
@@ -520,10 +513,11 @@ func _update_preview_texture() -> void:
 	var row_y = int(_edit_row_y.value)
 	
 	var atlas_tex = AtlasTexture.new()
-	if selected_database_key == "weapons_database":
-		atlas_tex.atlas = _weapons_texture
-	elif selected_database_key == "armors_database":
-		atlas_tex.atlas = _armors_texture
+	if selected_root_key == "equipables" or selected_category_name in ["weapons", "armors"]:
+		if selected_category_name == "armors":
+			atlas_tex.atlas = _armors_texture
+		else:
+			atlas_tex.atlas = _weapons_texture
 	else:
 		atlas_tex.atlas = _potions_texture
 	
@@ -534,17 +528,7 @@ func _update_preview_texture() -> void:
 		_preview_rect.texture = null
 
 
-# ---------------- Action Button Callbacks ----------------
-
 func _on_add_category_pressed() -> void:
-	var item = _tree.get_selected()
-	var target_db = "weapons_database"
-	if item != null:
-		var meta = item.get_metadata(0)
-		if meta is Dictionary and meta.has("db_key"):
-			target_db = meta["db_key"]
-	
-	selected_database_key = target_db
 	_category_name_input.text = ""
 	_add_category_dialog.popup_centered()
 
@@ -555,62 +539,59 @@ func _on_add_category_dialog_confirmed() -> void:
 		_show_status("Category name cannot be empty!", true)
 		return
 	
-	if not current_db_data.has(selected_database_key):
-		current_db_data[selected_database_key] = {}
+	if not current_db_data.has("equipables"):
+		current_db_data["equipables"] = {}
 	
-	var db_dict: Dictionary = current_db_data[selected_database_key]
-	if db_dict.has(cat_key):
+	var eq_dict: Dictionary = current_db_data["equipables"]
+	if eq_dict.has(cat_key):
 		_show_status("Category '" + cat_key + "' already exists!", true)
 		return
 	
-	db_dict[cat_key] = []
+	eq_dict[cat_key] = []
 	_load_and_populate_db()
-	_show_status("Added category '" + cat_key + "'")
+	_show_status("Added category '" + cat_key + "' under equipables")
 
 
 func _on_add_item_pressed() -> void:
 	var item = _tree.get_selected()
 	if item == null:
-		_show_status("Please select a category or database in the tree to add an item.", true)
+		_show_status("Please select a location in the tree to add an item.", true)
 		return
 	
 	var meta = item.get_metadata(0)
 	if not meta is Dictionary:
 		return
 	
-	var db_key = meta.get("db_key", "weapons_database")
-	var cat_key = meta.get("cat_key", "")
+	var root_key = meta.get("root_key", "equipables")
+	var cat_key = meta.get("cat_key", "weapons")
 	
-	if cat_key.is_empty():
-		# Find first category in db
-		var db_dict: Dictionary = current_db_data.get(db_key, {})
-		if db_dict.keys().size() > 0:
-			cat_key = db_dict.keys()[0]
-		else:
-			_show_status("Please create a category first!", true)
-			return
+	var target_list: Array = []
+	if current_db_data.has(root_key):
+		var root_val = current_db_data[root_key]
+		if root_val is Dictionary:
+			if not root_val.has(cat_key):
+				root_val[cat_key] = []
+			target_list = root_val[cat_key]
+		elif root_val is Array:
+			target_list = root_val
 	
-	var items_array: Array = current_db_data[db_key][cat_key]
-	var prefix = "w_" if db_key == "weapons_database" else ("a_" if db_key == "armors_database" else "p_")
-	var new_id = prefix + "new_" + str(items_array.size() + 1)
+	var prefix = "w_" if cat_key == "weapons" else ("a_" if cat_key == "armors" else "p_")
+	var new_id = prefix + "new_" + str(target_list.size() + 1)
 	
 	var new_item = {
-		"id": new_id,
+		"item_id": new_id,
 		"item_name": "New Item",
-		"item_type": "Sword" if db_key == "weapons_database" else ("Chest" if db_key == "armors_database" else "Health Potion"),
-		"player_type": "All",
-		"grid_coordinate": {"column_x": 0, "row_y": 0},
+		"price": 50,
+		"max_stack": 1,
+		"grid_coordinate": [0, 0],
+		"cell_size": [64, 64],
+		"equipment_type": "SWORD",
+		"player_class": "WARRIOR",
 		"required_level": 1,
-		"price": 50
+		"base_damage": 10
 	}
-	if db_key == "weapons_database":
-		new_item["base_damage"] = 10
-	elif db_key == "armors_database":
-		new_item["base_defense"] = 5
-	else:
-		new_item["heal_percentage"] = 20
 	
-	items_array.append(new_item)
+	target_list.append(new_item)
 	_load_and_populate_db()
 	_show_status("Added new item [" + new_id + "]")
 
@@ -625,18 +606,22 @@ func _on_delete_selected_pressed() -> void:
 		return
 	
 	var meta_type = meta.get("type", "")
-	var db_key = meta.get("db_key", "")
+	var root_key = meta.get("root_key", "")
 	var cat_key = meta.get("cat_key", "")
 	
 	if meta_type == "item":
 		var item_dict = meta.get("item_dict", {})
-		var items_array: Array = current_db_data[db_key][cat_key]
-		items_array.erase(item_dict)
+		if current_db_data.has(root_key):
+			var root_val = current_db_data[root_key]
+			if root_val is Dictionary and root_val.has(cat_key):
+				root_val[cat_key].erase(item_dict)
+			elif root_val is Array:
+				root_val.erase(item_dict)
 		_load_and_populate_db()
 		_show_status("Deleted item.")
 	elif meta_type == "category":
-		var db_dict: Dictionary = current_db_data[db_key]
-		db_dict.erase(cat_key)
+		if current_db_data.has(root_key) and current_db_data[root_key] is Dictionary:
+			current_db_data[root_key].erase(cat_key)
 		_load_and_populate_db()
 		_show_status("Deleted category '" + cat_key + "'")
 
@@ -646,14 +631,13 @@ func _on_save_button_pressed() -> void:
 		_show_status("Cannot save empty database!", true)
 		return
 	
-	var file = FileAccess.open(DB_PATH, FileAccess.WRITE)
-	if not file:
-		_show_status("Failed to open " + DB_PATH + " for writing.", true)
-		return
-	
 	var formatted_json = JSON.stringify(current_db_data, "\t")
-	file.store_string(formatted_json)
-	file.close()
+	
+	for path in [DB_PATH, ALT_DB_PATH]:
+		var file = FileAccess.open(path, FileAccess.WRITE)
+		if file:
+			file.store_string(formatted_json)
+			file.close()
 	
 	_show_status("Database successfully saved to " + DB_PATH + "!")
 

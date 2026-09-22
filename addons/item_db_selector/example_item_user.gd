@@ -1,34 +1,31 @@
 @tool
-class_name ExampleItemUser
 extends Node
 
-## Exported array of item IDs configured via Item DB Selector inspector plugin
-@export var custom_db_item_objects: Array[DataItem] = []
-@export var texture_image: Sprite2D
+## Example script demonstrating how to use the custom @export property for selecting DataItems from the database.
 
-func _ready():
+@export var custom_db_item_objects: Array[DataItem] = []
+
+
+func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 		
-	# Mma محتاجch t-loady JSON marra khra f runtime! L-data kamla kayna hna:
+	print("--- Loaded Items from Database Selector ---")
 	for item in custom_db_item_objects:
+		print("Item ID: ", item.item_id)
 		print("Item Name: ", item.item_name)
 		print("Price: ", item.price)
-		print("Coords: ", item.grid_coordinate)
+		print("Max Stack: ", item.max_stack)
+		print("Grid Coords: ", item.grid_coordinate)
+		
+		if item is EquipableItem:
+			var eq = item as EquipableItem
+			print("Type: Equipable | EqType: ", eq.equipment_type, " | Class: ", eq.player_class, " | ReqLvl: ", eq.required_level)
+			print("Damage: ", eq.base_damage, " | Defense: ", eq.base_defense)
+		elif item is ConsumableItem:
+			var cons = item as ConsumableItem
+			print("Type: Consumable | Heal: ", cons.heal_amount, " | PotionType: ", cons.potion_type)
+		elif item is QuestItem:
+			var q = item as QuestItem
+			print("Type: QuestItem | QuestID: ", q.quest_id, " | Description: ", q.description)
 		print("---------------------------------")
-
-
-func get_item_texture(item_data: Dictionary) -> AtlasTexture:
-	var tex_path = item_data.get("texture_path", "res://assets/sprites/items/weapons.png")
-	var grid_coord = item_data.get("grid_coordinate", {"column_x": 0, "row_y": 0})
-	var cell_size = Vector2(64, 64)
-	
-	var atlas_tex = AtlasTexture.new()
-	atlas_tex.atlas = load(tex_path)
-	atlas_tex.region = Rect2(
-		grid_coord["column_x"] * cell_size.x,
-		grid_coord["row_y"] * cell_size.y,
-		cell_size.x,
-		cell_size.y
-	)
-	return atlas_tex
