@@ -38,6 +38,8 @@ var __potions: Dictionary = {
 	"MANA": [],
 }
 
+var __available_gold: int = 1000
+
 # ─── Initialization ──────────────────────────────────────────────────────────
 ## Initializes the player data using the base stats from their class.
 # func initialize(stats: CharacterStats) -> void:
@@ -149,3 +151,9 @@ func use_mana_potion() -> void:
 	if __potions["MANA"] > 0:
 		__potions["MANA"] -= 1
 		EventBus.mana_potions_changed.emit(__potions["MANA"])
+
+func get_available_gold():
+	return __available_gold
+
+func set_available_gold(new_gold: int):
+	__available_gold = new_gold

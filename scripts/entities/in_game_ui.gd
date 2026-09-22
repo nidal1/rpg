@@ -18,6 +18,9 @@ var inventory_slots_number = 56
 var item_table_details_visible: bool = false
 var item_table_details_instance: EquipableTableDetails
 
+var item_card_details_visible: bool = false
+var item_card_details_instance: ItemCardDetails
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 # Hero stats section
 @onready var hero_avatar: TextureRect = %HeroAvatar
@@ -69,19 +72,28 @@ var item_table_details_instance: EquipableTableDetails
 @onready var health_potion_slot: PotionSlot = $PotionsContainer/MarginContainer/HBoxContainer/HealthPotionSlot
 @onready var mana_potion_slot: PotionSlot = $PotionsContainer/MarginContainer/HBoxContainer/ManaPotionSlot
 
+# Merchant shop section
+@onready var merchant_panel: Panel = $HUD/MerchantPanel
+@onready var merchant_container: GridContainer = $HUD/MerchantPanel/VBoxContainer/MarginContainer/ScrollContainer/MerchantContainer
+@onready var merchant_store_slot_scene: PackedScene = preload("res://scenes/ui/merchant_store_slot.tscn")
+
 # Global Popups
 @onready var popups: Node2D = $Popups
+@export var merchant_buy_item_modal_scene: PackedScene
 @export var armor_table_details_scene: PackedScene
 @export var weapon_table_details_scene: PackedScene
+@export var item_card_details_scene: PackedScene
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hud.visible = false
 	lootable_items_table.visible = false
-
+	merchant_panel.visible = false
 
 	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
+	EventBus.toggle_hud_visiblity.connect(_on_toggle_hud_visibility)
+	EventBus.toggle_merchant_store_panel_visibility.connect(_on_toggle_merchant_store_panel_visibility)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
 	EventBus.hide_lootable_item_hover_info.connect(_on_hide_lootable_item_hover_info)
 	EventBus.items_added_to_inventory.connect(_on_items_added_to_inventory)
@@ -132,6 +144,7 @@ func _initialize_inventory_tab() -> void:
 		inventory_slots.append(inventory_slot_instance)
 		inventory_container.add_child(inventory_slot_instance)
 
+
 # ─── Logic Methods ───────────────────────────────────────────────────────────
 func _pick_all_lootable_items() -> void:
 	var slots: Array[Item] = []
@@ -167,21 +180,83 @@ func __toggle_panel_button() -> void:
 		return
 	panel_button.texture_normal = openTexture
 
-func __toggle_hud_visibility() -> void:
-	hud.visible = !hud.visible
-	#get_tree().paused = hud.visible
+
 
 func __toggle_lootable_items_panel() -> void:
 	lootable_items_table.visible = !lootable_items_table.visible
 
+func __set_hero_active_tab(index: int):
+	tab_container.current_tab = index
+
+func __update_merchant_store_items(items: Array[DataItem]):
+	for child in merchant_container.get_children():
+		if is_instance_valid(child):
+			child.queue_free()
+	
+	for item in items:
+		var item_slot: MerchantStoreSlot = merchant_store_slot_scene.instantiate()
+		merchant_container.add_child(item_slot)
+		item_slot.set_item(item)
+		item_slot.mouse_enter.connect(_on_show_item_card_details)
+		item_slot.mouse_exit.connect(_on_hide_item_card_details)
+		item_slot.mouse_clicked.connect(_on_merchant_store_item_clicked)
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
+func _on_show_item_card_details(item: DataItem):
+	if item_card_details_visible or item_card_details_instance:
+		return
+		
+	item_card_details_instance = item_card_details_scene.instantiate()
+	item_card_details_instance.data_item = item
+	popups.add_child(item_card_details_instance)
+	var mouse_pos = get_global_mouse_position()
+	# var card_size = item_card_details_instance.get_size()
+	item_card_details_instance.position = mouse_pos
+	# if mouse_pos.x + card_size.x > get_viewport().size.x:
+	# 	item_card_details_instance.position -= mouse_pos - Vector2(card_size.x, 0)
+	
+	# if mouse_pos.y + card_size.y > get_viewport().size.y:
+	# 	item_card_details_instance.position -= Vector2(0, mouse_pos.y + card_size.y - get_viewport().size.y)
+	
+	item_card_details_instance.show()
+
+func _on_hide_item_card_details() -> void:
+	if item_card_details_instance:
+		item_card_details_instance.hide()
+		item_card_details_instance.queue_free()
+		item_card_details_instance = null
+
+func _on_merchant_store_item_clicked(data_item: DataItem):
+	var modal: MerchantBuyItemModal = merchant_buy_item_modal_scene.instantiate()
+	popups.add_child(modal)
+	var centerize = Vector2(get_viewport().size.x/2, get_viewport().size.y/2)
+	modal.position = centerize
+	modal.buy_button_clicked.connect(func (value: float): EventBus.buy_item.emit(value, data_item))
+
 func _on_display_lootable_item_hover_info(item: Item) -> void:
 	for i in lootable_item_slots:
 		if i.item == null:
 			i.set_item(item)
 			items_label.text = str(int(items_label.text) + 1)
 			return
+
+func _on_toggle_hud_visibility() -> void:
+	hud.visible = !hud.visible
+	#get_tree().paused = hud.visible
+
+func _on_toggle_merchant_store_panel_visibility(items:Array[DataItem]) -> void:
+	var _visible = merchant_panel.visible
+	if not _visible:
+		__set_hero_active_tab(1)
+		__update_merchant_store_items(items)
+		merchant_panel.visible = !_visible
+	else:
+		for child in merchant_container.get_children():
+			if is_instance_valid(child):
+				child.queue_free()
+		merchant_panel.visible = !_visible
+		
+
 
 func _on_hide_lootable_item_hover_info(item: Item) -> void:
 	for i in lootable_item_slots:
@@ -204,7 +279,7 @@ func _on_lootable_item_slot_clicked(slot_index: int) -> void:
 
 func _on_panel_button_pressed() -> void:
 	__toggle_panel_button()
-	__toggle_hud_visibility()
+	EventBus.toggle_hud_visiblity.emit()
 
 func _on_toggle_lootable_items_button_pressed() -> void:
 	__toggle_lootable_items_panel()

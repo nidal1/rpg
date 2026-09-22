@@ -16,6 +16,7 @@ var equipable_item: Equipable
 @onready var tradablity_label: Label = $VBoxContainer/MarginContainer/VBoxContainer/TradablityLabel
 @onready var item_description_label: Label = $VBoxContainer/MarginContainer/VBoxContainer/ItemDescriptionLabel
 @onready var gems_slots_container: HBoxContainer = $VBoxContainer/Panel3/MarginContainer/GemsSlotsContainer
+@onready var price_label: Label = $VBoxContainer/MarginContainer/VBoxContainer/PriceLabel
 
 func set_equipable_item(_equipable_item: Equipable) -> void:
 	equipable_item = _equipable_item
@@ -26,6 +27,7 @@ func set_equipable_item(_equipable_item: Equipable) -> void:
 	_set_item_category_label(Item.ItemType.keys()[equipable_item.item_type])
 	_set_item_rarety_label(Item.Rarety.keys()[equipable_item.rarety])
 	_set_item_stats_rows(equipable_item.get_effective_stats_breakdown())
+	_set_item_prince_label(equipable_item.price)
 	# _set_tradablity(equipable_item.tradable)
 	_set_item_description(equipable_item.description)
 	_set_gem_slots(equipable_item.gems_slots_count)
@@ -49,6 +51,9 @@ func _set_item_category_label(_item_category: String) -> void:
 
 func _set_item_rarety_label(_item_rarety: String) -> void:
 	iem_rarety_label.text = _item_rarety
+
+func _set_item_prince_label(_item_price: int) -> void:
+	iem_rarety_label.text = str(_item_price)
 
 func _set_item_stats_rows(_item_stats: Dictionary) -> void:
 	if _item_stats.size() > 0:

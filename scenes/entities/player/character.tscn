@@ -7,6 +7,7 @@
 radius = 11.0
 
 [node name="Character" type="CharacterBody2D" unique_id=1846937653 groups=["character"]]
+disable_mode = 2
 script = ExtResource("1_8akj5")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=806179761]

@@ -182,3 +182,12 @@ func _on_potion_consumed(potion: Potion):
 		StatsData.get_stats().set_current_mp(StatsData.get_stats().get_current_mp() + heal_percentage)
 	
 	EventBus.stats_updated.emit(StatsData)
+
+func _on_buy_item(_value: float, _data_item: DataItem):
+	var _item_price = _data_item.price
+	var _total_price = _item_price * int(_value)
+	var player_available_gold = PlayerData.get_available_gold()
+
+	if player_available_gold >= _total_price:
+		PlayerData.set_available_gold(player_available_gold - _total_price)
+		## TODO: add item to the inventory

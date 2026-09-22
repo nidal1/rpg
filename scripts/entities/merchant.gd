@@ -1,8 +1,8 @@
 extends NPC
 class_name Merchant
 
+@export var custom_db_item_objects: Array[DataItem] = []
 @export var waypoints: Array[Marker2D] = []
-
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite
 @onready var wander_cd: Timer = $WanderCD
 @onready var interaction_label: Label = $InteractionLabel
@@ -17,6 +17,18 @@ var __can_interact = false
 func _ready() -> void:
 	__initial_location = global_position
 	wander_cd.start()
+
+	if Engine.is_editor_hint():
+		return
+
+	for item in custom_db_item_objects:
+		print("Item Name: ", item.item_name)
+		print("Item Type: ", item.item_type)
+		print("Price: ", item.price)
+		print("Coords: ", item.grid_coordinate)
+		print("required_level: ", item.required_level)
+		print("base_damage: ", item.base_damage)
+		print("---------------------------------")
 
 func _physics_process(delta: float) -> void:
 	if __is_wandering :
@@ -36,7 +48,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_E and __can_interact:
 			_interact()
 
-
 func _move() -> void:
 	__is_runing = true
 	_play_movement_animation()
@@ -53,7 +64,6 @@ func _play_idle_animation() -> void:
 	animated_sprite.play("idle_left")
 	animated_sprite.flip_h = last_facing_dir
 
-
 func _play_movement_animation() -> void:
 	
 	if velocity.x > 0:
@@ -64,7 +74,9 @@ func _play_movement_animation() -> void:
 	animated_sprite.play("run_left")
 	animated_sprite.flip_h = last_facing_dir
 
-
+func _interact() -> void:
+	EventBus.toggle_hud_visiblity.emit()
+	EventBus.toggle_merchant_store_panel_visibility.emit(custom_db_item_objects)
 func _choose_random_point_position() -> Vector2:
 	if not waypoints.size():
 		return Vector2.ZERO

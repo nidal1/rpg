@@ -9,8 +9,15 @@ signal initialize_hero_stats_ui()
 @warning_ignore("UNUSED_SIGNAL")
 ## Emitted when the hero's avatar texture is updated.
 signal update_hero_avatar_texture(texture: Texture2D)
-## Emitted to update the HP bar UI value.
-
+## Emitted to toggle HUD visibility.
+@warning_ignore("UNUSED_SIGNAL")
+signal toggle_hud_visiblity()
+## Emitted to toggle merchant store visibility.
+@warning_ignore("UNUSED_SIGNAL")
+signal toggle_merchant_store_panel_visibility(items: Array[DataItem])
+## Emitted when buy button merchant store emited.
+@warning_ignore("UNUSED_SIGNAL")
+signal buy_item(value: float, data_item: DataItem)
 
 # ─── Game & Combat Signals ───────────────────────────────────────────────────
 ## Emitted when an enemy dies.

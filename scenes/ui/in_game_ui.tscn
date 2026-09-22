@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c4np5nctdtyk8" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_red.png" id="3_utqgd"]
 [ext_resource type="PackedScene" uid="uid://sn8ol5sspwg5" path="res://scenes/ui/equipement_slot.tscn" id="4_2mxn5"]
 [ext_resource type="PackedScene" uid="uid://cqcoh075il3l6" path="res://scenes/ui/item/weapon_table_details.tscn" id="4_b7ceb"]
+[ext_resource type="PackedScene" uid="uid://8cpb5gk0yapr" path="res://scenes/entities/items/merchant_buy_item_modal.tscn" id="4_hc3x3"]
 [ext_resource type="Texture2D" uid="uid://vfwxwn6nvu66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_1.png" id="4_i8k7l"]
 [ext_resource type="Texture2D" uid="uid://dvaougq23uh8d" path="res://assets/ui/UI Elements/UI Elements/Icons/Icon_09.png" id="4_s3j3l"]
 [ext_resource type="PackedScene" uid="uid://cdc0ww7ryyc54" path="res://scenes/ui/item/armor_table_details.tscn" id="4_splfo"]
@@ -16,7 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://ba0di8vxwt2q6" path="res://assets/ui/UI Elements/UI Elements/Bars/BigBar_Fill_blue.png" id="4_utqgd"]
 [ext_resource type="Texture2D" uid="uid://33sb8a878k66" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_2.png" id="5_sy304"]
 [ext_resource type="Texture2D" uid="uid://bvjae5rkkw5sd" path="res://assets/ui/UI Elements/UI Elements/Icons/fc6.png" id="5_wccuv"]
+[ext_resource type="PackedScene" uid="uid://t37fxc5pdjau" path="res://scenes/entities/items/item_card_details.tscn" id="6_j3b8l"]
 [ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="6_mexbj"]
+[ext_resource type="StyleBox" uid="uid://nq8ggso6cy50" path="res://scenes/ui/item/panel_style.tres" id="6_v6jg3"]
 [ext_resource type="Texture2D" uid="uid://cuslvps177wfi" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_4.png" id="7_p7bhm"]
 [ext_resource type="Texture2D" uid="uid://di1mdx6626ce5" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_6.png" id="9_mexbj"]
 [ext_resource type="Texture2D" uid="uid://ilool20evaxa" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_9.png" id="9_y68uj"]
@@ -40,8 +43,10 @@ mouse_filter = 2
 script = ExtResource("1_3nhwc")
 openTexture = ExtResource("3_s3j3l")
 closeTexture = ExtResource("4_s3j3l")
+merchant_buy_item_modal_scene = ExtResource("4_hc3x3")
 armor_table_details_scene = ExtResource("4_splfo")
 weapon_table_details_scene = ExtResource("4_b7ceb")
+item_card_details_scene = ExtResource("6_j3b8l")
 
 [node name="HUD" type="Panel" parent="." unique_id=146381664]
 layout_mode = 1
@@ -57,13 +62,13 @@ offset_left = 64.0
 offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
-current_tab = 1
+theme_override_styles/panel = ExtResource("6_v6jg3")
+current_tab = 0
 tab_0/title = "Stats"
 tab_1/title = "Inventory"
 tab_2/title = "Equipements"
 
 [node name="StatsPanel" type="Panel" parent="HUD/TabContainer" unique_id=651739754]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Stats"
@@ -105,7 +110,9 @@ layout_mode = 2
 text = "cancel"
 
 [node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
+visible = false
 layout_mode = 2
+theme_override_styles/panel = ExtResource("6_v6jg3")
 metadata/_tab_index = 1
 metadata/_tab_name = "Inventory"
 
@@ -284,6 +291,57 @@ layout_mode = 2
 placeholder_image = ExtResource("10_p7bhm")
 slot_key = "CLOAK"
 
+[node name="MerchantPanel" type="Panel" parent="HUD" unique_id=412892565]
+custom_minimum_size = Vector2(300, 425)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.0
+offset_top = -137.5
+offset_right = 222.0
+offset_bottom = 287.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("6_v6jg3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/MerchantPanel" unique_id=1708705384]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HUD/MerchantPanel/VBoxContainer" unique_id=1748571687]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Merchant Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MerchantPanel/VBoxContainer" unique_id=1505184859]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/MerchantPanel/VBoxContainer/MarginContainer" unique_id=718914921]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MerchantContainer" type="GridContainer" parent="HUD/MerchantPanel/VBoxContainer/MarginContainer/ScrollContainer" unique_id=841811450]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 5
+
 [node name="Control" type="Control" parent="." unique_id=1386049986]
 layout_mode = 1
 anchors_preset = 10
@@ -412,10 +470,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -448.0
-offset_top = 144.0
-offset_right = -120.0
-offset_bottom = 456.0
+offset_left = -400.0
+offset_top = 224.0
+offset_right = -72.0
+offset_bottom = 536.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wccuv")
 

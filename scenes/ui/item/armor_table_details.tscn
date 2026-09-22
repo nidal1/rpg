@@ -8,6 +8,10 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bngwc"]
 bg_color = Color(0.032967977, 0.032968, 0.03296794, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_gjo87"]
+font_size = 12
+font_color = Color(0.51982427, 0.2524608, 2.8878452e-07, 1)
+
 [node name="ArmorTableDetails" type="Panel" unique_id=1223132836]
 custom_minimum_size = Vector2(260, 350)
 offset_right = 260.0
@@ -117,6 +121,14 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Level: 70"
+
+[node name="PriceLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1940698408]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 12
+text = "Price: 45000"
+label_settings = SubResource("LabelSettings_gjo87")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1777150429]
 layout_mode = 2

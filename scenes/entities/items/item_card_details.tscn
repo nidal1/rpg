@@ -1,27 +1,23 @@
-[gd_scene format=3 uid="uid://cqcoh075il3l6"]
+[gd_scene format=3 uid="uid://t37fxc5pdjau"]
 
-[ext_resource type="Script" uid="uid://d3ecx4ic3w6yu" path="res://scripts/entities/weapon_table_details.gd" id="1_v4fyr"]
-[ext_resource type="PackedScene" uid="uid://j1ohhktdkpag" path="res://scenes/ui/item/item_stats_row.tscn" id="2_ubg88"]
-[ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="2_vmc4a"]
-[ext_resource type="PackedScene" uid="uid://dg7jvl8tr1wj" path="res://scenes/ui/item/gem_panel.tscn" id="3_1ajhk"]
+[ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="1_gu3nh"]
+[ext_resource type="Script" uid="uid://djbd2pr1od383" path="res://scripts/entities/item_card_details.gd" id="1_gvrd4"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bngwc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvrd4"]
 bg_color = Color(0.032967977, 0.032968, 0.03296794, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_1ajhk"]
 font_size = 12
 font_color = Color(0.51982427, 0.2524608, 2.8878452e-07, 1)
 
-[node name="WeaponTableDetails" type="Panel" unique_id=1040122434]
+[node name="ItemCardDetails" type="Panel" unique_id=1040122434]
 z_index = 1
 custom_minimum_size = Vector2(260, 350)
 offset_right = 260.0
 offset_bottom = 445.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bngwc")
-script = ExtResource("1_v4fyr")
-item_stats_row_scene = ExtResource("2_ubg88")
-gem_slot_scene = ExtResource("3_1ajhk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gvrd4")
+script = ExtResource("1_gvrd4")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1583049894]
 layout_mode = 1
@@ -80,7 +76,7 @@ grow_vertical = 2
 [node name="ItemImage" type="TextureRect" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=775525157]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
-texture = ExtResource("2_vmc4a")
+texture = ExtResource("1_gu3nh")
 expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel2/HBoxContainer" unique_id=1699731927]
@@ -95,7 +91,7 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 alignment = 1
 
-[node name="ItemCategoryLabel" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=179879207]
+[node name="ItemTypeLabel" type="Label" parent="VBoxContainer/Panel2/HBoxContainer/MarginContainer/VBoxContainer" unique_id=179879207]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Item category"
@@ -135,13 +131,13 @@ label_settings = SubResource("LabelSettings_1ajhk")
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" unique_id=1758970582]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=851813077]
+[node name="AttributeName" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=851813077]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_font_sizes/font_size = 12
 text = "ATK: "
 
-[node name="AttackLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1920229812]
+[node name="AttributeValue" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1920229812]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)

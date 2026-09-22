@@ -1,18 +1,7 @@
 [gd_scene format=3 uid="uid://crl0ohy8w8e71"]
 
+[ext_resource type="StyleBox" uid="uid://b83so8yhxhn0k" path="res://scenes/ui/item/slot_style.tres" id="1_r4ab7"]
 [ext_resource type="Script" uid="uid://c3djttp6p7cqh" path="res://scripts/entities/inventory_slot.gd" id="1_ru537"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ulc1b"]
-bg_color = Color(0.13174221, 0.13174239, 0.1317423, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_blend = true
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ru537"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -22,7 +11,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0.101960786)
 
 [node name="inventorySlot" type="Panel" unique_id=571981147]
 custom_minimum_size = Vector2(50, 50)
-theme_override_styles/panel = SubResource("StyleBoxFlat_ulc1b")
+theme_override_styles/panel = ExtResource("1_r4ab7")
 script = ExtResource("1_ru537")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1092220266]

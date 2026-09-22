@@ -1,11 +1,45 @@
 class_name Equipable
 extends Item
 
+enum EquipmentCategory {
+	WEAPON,
+	ARMOR,
+	ACCESSORY
+}
+
+enum EquipementType {
+	DAGGER,
+	SWORD,
+	TWO_HANDED_SWORD,
+	MELEE,
+	TOOL_MELEE,
+	AXE,
+	TOOL_AXE,
+	TWO_HANDED_AXE,
+	MACE,
+	TWO_HANDED_MACE,
+	BOW,
+	CROSSBOW,
+	THROWING,
+	POLEARM,
+	STAFF,
+	WAND,
+	SHIELD,
+	CHEST,
+	HEAD,
+	LEGS_FEET,
+	FEET,
+	RING,
+	NECKLACE
+}
+
 
 @export var player_type: CharacterClass.PlayerType = CharacterClass.PlayerType.ALL
+@export var equipement_type: EquipementType = EquipementType.DAGGER
 @export var upgrade_level: int = 0
 @export var tradable: bool = true
-@export var gems_slots_count: int
+@export var price: int = 0
+@export var gems_slots_count: int = 0
 @export var gems: Array[Gem] = [] # max 2-3 slots
 @export var level: int = 1
 @export var stat_bonus: Dictionary = {
