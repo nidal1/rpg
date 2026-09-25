@@ -1,6 +1,8 @@
 extends DataItem
 class_name ConsumableItem
 
+enum ConsumableType {POTION, POISON}
+
 @export var heal_amount: int = 0
 @export var potion_type: String = "HEALTH"
 

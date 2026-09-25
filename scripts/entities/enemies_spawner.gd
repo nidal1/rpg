@@ -39,12 +39,11 @@ func get_drop_zone() -> Node:
 ## Removes an enemy from the spawner's list and starts the respawn timer.
 func remove_enemy(enemy: Enemy) -> void:
 	enemies.erase(enemy)
-	# wait certain time and spawn new enemy
 	await get_tree().create_timer(respawn_cd).timeout
 	_spawn_enemy()
 
 ## Removes the physical representations of items that the player picked up.
-func remove_selected_drops(items: Array[Item]) -> void:
+func remove_selected_drops(items: Array[DataItem]) -> void:
 	for drop in drop_zone.get_children():
 		if drop.item in items:
 			drop.queue_free()

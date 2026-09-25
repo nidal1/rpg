@@ -125,9 +125,6 @@ func _initialize_hero_stats() -> void:
 		level_progress_bar, level_label, stats_container,
 		stats_points_label, save_stats_button, cancel_stats_button
 	)
-	
-	
-	
 
 func _initialize_lootable_items_panel() -> void:
 	for i in range(lootable_items_numbers):
@@ -147,7 +144,7 @@ func _initialize_inventory_tab() -> void:
 
 # ─── Logic Methods ───────────────────────────────────────────────────────────
 func _pick_all_lootable_items() -> void:
-	var slots: Array[Item] = []
+	var slots: Array[DataItem] = []
 	for i in lootable_item_slots:
 		if i.item != null:
 			slots.append(i.item)
@@ -157,7 +154,7 @@ func _pick_all_lootable_items() -> void:
 	EventBus.selected_lootable_items_picked_up.emit(slots)
 
 func _pick_selected_lootable_items() -> void:
-	var slots: Array[Item] = []
+	var slots: Array[DataItem] = []
 	var temp_slot = []
 	for slot in selected_lootable_items:
 		if slot.item != null:
@@ -179,7 +176,6 @@ func __toggle_panel_button() -> void:
 		panel_button.texture_normal = closeTexture
 		return
 	panel_button.texture_normal = openTexture
-
 
 
 func __toggle_lootable_items_panel() -> void:
@@ -210,14 +206,7 @@ func _on_show_item_card_details(item: DataItem):
 	item_card_details_instance.data_item = item
 	popups.add_child(item_card_details_instance)
 	var mouse_pos = get_global_mouse_position()
-	# var card_size = item_card_details_instance.get_size()
 	item_card_details_instance.position = mouse_pos
-	# if mouse_pos.x + card_size.x > get_viewport().size.x:
-	# 	item_card_details_instance.position -= mouse_pos - Vector2(card_size.x, 0)
-	
-	# if mouse_pos.y + card_size.y > get_viewport().size.y:
-	# 	item_card_details_instance.position -= Vector2(0, mouse_pos.y + card_size.y - get_viewport().size.y)
-	
 	item_card_details_instance.show()
 
 func _on_hide_item_card_details() -> void:
@@ -229,11 +218,11 @@ func _on_hide_item_card_details() -> void:
 func _on_merchant_store_item_clicked(data_item: DataItem):
 	var modal: MerchantBuyItemModal = merchant_buy_item_modal_scene.instantiate()
 	popups.add_child(modal)
-	var centerize = Vector2(get_viewport().size.x/2, get_viewport().size.y/2)
+	var centerize = Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)
 	modal.position = centerize
-	modal.buy_button_clicked.connect(func (value: float): EventBus.buy_item.emit(value, data_item))
+	modal.buy_button_clicked.connect(func(value: float): EventBus.buy_item.emit(value, data_item))
 
-func _on_display_lootable_item_hover_info(item: Item) -> void:
+func _on_display_lootable_item_hover_info(item: DataItem) -> void:
 	for i in lootable_item_slots:
 		if i.item == null:
 			i.set_item(item)
@@ -242,9 +231,8 @@ func _on_display_lootable_item_hover_info(item: Item) -> void:
 
 func _on_toggle_hud_visibility() -> void:
 	hud.visible = !hud.visible
-	#get_tree().paused = hud.visible
 
-func _on_toggle_merchant_store_panel_visibility(items:Array[DataItem]) -> void:
+func _on_toggle_merchant_store_panel_visibility(items: Array[DataItem]) -> void:
 	var _visible = merchant_panel.visible
 	if not _visible:
 		__set_hero_active_tab(1)
@@ -255,10 +243,8 @@ func _on_toggle_merchant_store_panel_visibility(items:Array[DataItem]) -> void:
 			if is_instance_valid(child):
 				child.queue_free()
 		merchant_panel.visible = !_visible
-		
 
-
-func _on_hide_lootable_item_hover_info(item: Item) -> void:
+func _on_hide_lootable_item_hover_info(item: DataItem) -> void:
 	for i in lootable_item_slots:
 		if i.item == item:
 			if i in selected_lootable_items:
@@ -275,8 +261,6 @@ func _on_lootable_item_slot_clicked(slot_index: int) -> void:
 		else:
 			selected_lootable_items.erase(lootable_item_slots[slot_index])
 
-
-
 func _on_panel_button_pressed() -> void:
 	__toggle_panel_button()
 	EventBus.toggle_hud_visiblity.emit()
@@ -284,91 +268,86 @@ func _on_panel_button_pressed() -> void:
 func _on_toggle_lootable_items_button_pressed() -> void:
 	__toggle_lootable_items_panel()
 
-func _on_items_removed_from_inventory(slots: Array[Item]) -> void:
+func _on_items_removed_from_inventory(slots: Array[DataItem]) -> void:
 	for slot in slots:
 		for i in inventory_slots:
 			if i.item == slot:
 				i.clear_slot()
 				break
 
-func _on_items_added_to_inventory(slots: Array[Item]) -> void:
+func _on_items_added_to_inventory(slots: Array[DataItem]) -> void:
 	for slot in slots:
 		for i in inventory_slots:
 			if i.item == null:
 				i.set_item(slot)
 				break
-
+## TODO: use enum instead of hard coded names
 func _on_item_equipped(inventory_slot: InventorySlot) -> void:
-	var item: Equipable = inventory_slot.get_item() as Equipable
+	var item: EquipableItem = inventory_slot.get_item() as EquipableItem
 	if item == null:
 		return
-	if item is Weapon:
+	
+	var eq_type = item.equipment_type.to_upper()
+	if "SWORD" in eq_type or "AXE" in eq_type or "MACE" in eq_type or "BOW" in eq_type or "CROSSBOW" in eq_type or "DAGGER" in eq_type or "WEAPON" in eq_type:
 		weapon_slot.set_item(item)
 		inventory_slot.clear_slot()
 		return
-	if item is Armor:
-		if item.armor_type == Armor.ArmorType.HELMET:
-			helmet_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		if item.armor_type == Armor.ArmorType.CHEST:
-			chest_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		if item.armor_type == Armor.ArmorType.BOOTS:
-			boots_s_lot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		# if item.armor_type == Armor.ArmorType.GLOVES:
-		# 	gloves_slot.set_item(item)
-		# 	return
-		if item.armor_type == Armor.ArmorType.RING:
-			ring_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		if item.armor_type == Armor.ArmorType.AMULET:
-			amulet_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		if item.armor_type == Armor.ArmorType.CLOAK:
-			cloak_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
-		if item.armor_type == Armor.ArmorType.SHIELD:
-			shield_slot.set_item(item)
-			inventory_slot.clear_slot()
-			return
+	if eq_type == "HELMET" or eq_type == "HEAD":
+		helmet_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "CHEST" or eq_type == "ARMOR":
+		chest_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "BOOTS" or eq_type == "FEET":
+		boots_s_lot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "RING":
+		ring_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "AMULET" or eq_type == "NECKLACE":
+		amulet_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "CLOAK":
+		cloak_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
+	if eq_type == "SHIELD":
+		shield_slot.set_item(item)
+		inventory_slot.clear_slot()
+		return
 
-func _on_show_item_table_details(item: Item) -> void:
+func _on_show_item_table_details(item: DataItem) -> void:
 	if item_table_details_instance or item_table_details_visible:
 		return
-	if item is Equipable:
-		if item is Weapon:
-			item_table_details_instance = weapon_table_details_scene.instantiate()
-		if item is Armor:
+	if item is EquipableItem:
+		var eq = item as EquipableItem
+		if eq.is_armor():
 			item_table_details_instance = armor_table_details_scene.instantiate()
+		else:
+			item_table_details_instance = weapon_table_details_scene.instantiate()
 		popups.add_child(item_table_details_instance)
-		item_table_details_instance.set_equipable_item(item as Equipable)
+		item_table_details_instance.set_equipable_item(eq)
 		var mouse_pos = get_global_mouse_position()
 		var item_table_details_size = item_table_details_instance.get_size()
 		item_table_details_instance.position = mouse_pos
 		if mouse_pos.x + item_table_details_size.x > get_viewport().size.x:
 			item_table_details_instance.position -= mouse_pos - Vector2(item_table_details_size.x, 0)
-		
 		if mouse_pos.y + item_table_details_size.y > get_viewport().size.y:
 			item_table_details_instance.position -= Vector2(0, mouse_pos.y + item_table_details_size.y - get_viewport().size.y)
-		
-		
 		item_table_details_instance.show()
 
-func _on_potion_slot_potions_added_to_list(potion: Potion) -> void:
+## TODO: use enum instead of hard coded names
+func _on_potion_slot_potions_added_to_list(potion: ConsumableItem) -> void:
 	if potion:
-		if potion.potion_type == Potion.PotionType.HEALTH_POTION:
+		if potion.potion_type.to_upper() == "HEALTH":
 			health_potion_slot.equip(potion)
-		if potion.potion_type == Potion.PotionType.MANA_POTION:
+		elif potion.potion_type.to_upper() == "MANA":
 			mana_potion_slot.equip(potion)
-
-	
 
 func _on_hide_item_table_details() -> void:
 	if item_table_details_instance:
@@ -376,10 +355,8 @@ func _on_hide_item_table_details() -> void:
 		item_table_details_instance.queue_free()
 		item_table_details_instance = null
 
-
 func _on_health_potion_texture_button_pressed() -> void:
 	print("health potion pressed")
-
 
 func _on_mana_potion_texture_button_pressed() -> void:
 	print("mana potion pressed")

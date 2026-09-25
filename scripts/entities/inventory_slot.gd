@@ -3,7 +3,7 @@ class_name InventorySlot
 
 
 var slot_index: int
-var item: Item
+var item: DataItem
 
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
@@ -22,10 +22,9 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if not item:
 			return
-		if not (item is Equipable or item is Consumable) :
+		if not (item is EquipableItem or item is ConsumableItem):
 			context_menu.set_item_disabled(0, true)
 		context_menu.popup()
-		# position = mouse position
 		context_menu.position = get_screen_position() + event.position
 
 func _on_context_menu_item_pressed(id: int) -> void:
@@ -45,7 +44,7 @@ func _drop() -> void:
 	EventBus.item_dropped_from_inventory.emit(item)
 	clear_slot()
 
-func get_item() -> Item:
+func get_item() -> DataItem:
 	return item
 
 func _on_inventory_slot_button_pressed() -> void:
@@ -55,9 +54,10 @@ func clear_slot() -> void:
 	item = null
 	inventory_slot_icon.texture = null
 
-func set_item(new_item: Item) -> void:
+func set_item(new_item: DataItem) -> void:
 	item = new_item
-	inventory_slot_icon.texture = item.icon
+	if item != null:
+		inventory_slot_icon.texture = item.get_item_texture()
 
 
 func _on_mouse_entered() -> void:

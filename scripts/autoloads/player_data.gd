@@ -12,14 +12,13 @@ const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 const POINTS_STATS_PER_LEVEL = 5
 
 
-
 # ─── Private Variables ───────────────────────────────────────────────────────
 var __player_level: int = 1
 var __current_xp: int = 0
 var __total_xp_to_next_level: int = 75
 var __base_stats: CharacterStats = null
-var __lootable_items: Array[Item] = []
-var __inventory_items: Array[Item] = []
+var __lootable_items: Array[DataItem] = []
+var __inventory_items: Array[DataItem] = []
 var __equipable_items: Dictionary = {
 	"HELMET": null,
 	"CHEST": null,
@@ -39,15 +38,6 @@ var __potions: Dictionary = {
 }
 
 var __available_gold: int = 1000
-
-# ─── Initialization ──────────────────────────────────────────────────────────
-## Initializes the player data using the base stats from their class.
-# func initialize(stats: CharacterStats) -> void:
-# 	__base_stats = stats.get_instance()
-# 	if not stats_manager:
-# 		stats_manager = StatsManager.new()
-# 	stats_manager.initialize(__base_stats)
-# 	EventBus.stat_points_available_changed.emit(stats_manager.available_points)
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -75,23 +65,22 @@ func set_total_xp_to_next_level(new_xp: int) -> void:
 ## Gets the total experience points needed for the next level.
 func get_total_xp_to_next_level() -> int:
 	return __total_xp_to_next_level
-	
 
 # ─── Inventory & Items ───────────────────────────────────────────────────────
 ## Adds an item to the list of lootable items currently in range.
-func add_lootable_item(item: Item) -> void:
+func add_lootable_item(item: DataItem) -> void:
 	__lootable_items.append(item)
 
 ## Removes an item from the list of lootable items.
-func remove_lootable_item(item: Item) -> void:
+func remove_lootable_item(item: DataItem) -> void:
 	__lootable_items.erase(item)
 
 ## Adds an item to the player's inventory.
-func add_inventory_item(item: Item) -> void:
+func add_inventory_item(item: DataItem) -> void:
 	__inventory_items.append(item)
 
 ## Removes an item from the player's inventory.
-func remove_inventory_item(item: Item) -> void:
+func remove_inventory_item(item: DataItem) -> void:
 	__inventory_items.erase(item)
 
 
@@ -99,58 +88,48 @@ func remove_inventory_item(item: Item) -> void:
 func get_equipements() -> Dictionary:
 	return __equipable_items
 
+## TODO: use enums instead of hard coded names
 ## Adds an equipable item to the player's equipment.
-func add_equipable_item(item: Equipable) -> void:
+func add_equipable_item(item: EquipableItem) -> void:
 	if is_instance_valid(item):
-		if item is Weapon:
+		var eq_type = item.equipment_type.to_upper()
+		if "SWORD" in eq_type or "AXE" in eq_type or "MACE" in eq_type or "BOW" in eq_type or "CROSSBOW" in eq_type or "DAGGER" in eq_type or "WEAPON" in eq_type:
 			__equipable_items["WEAPON"] = item
-			return
-		if item is Armor:
-			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = item
-			return
+		elif eq_type in __equipable_items:
+			__equipable_items[eq_type] = item
+		elif eq_type == "HEAD":
+			__equipable_items["HELMET"] = item
+		elif eq_type == "ARMOR":
+			__equipable_items["CHEST"] = item
+		elif eq_type == "FEET":
+			__equipable_items["BOOTS"] = item
 
-
+## TODO: use enums instead of hard coded names
 ## Removes an equipable item from the player's equipment.
-func remove_equipable_item(item: Equipable) -> void:
-	if item is Weapon:
-		if is_instance_valid(__equipable_items["WEAPON"]):
+func remove_equipable_item(item: EquipableItem) -> void:
+	if is_instance_valid(item):
+		var eq_type = item.equipment_type.to_upper()
+		if "SWORD" in eq_type or "AXE" in eq_type or "MACE" in eq_type or "BOW" in eq_type or "CROSSBOW" in eq_type or "DAGGER" in eq_type or "WEAPON" in eq_type:
 			__equipable_items["WEAPON"] = null
-		return
-	if item is Armor:
-		if is_instance_valid(__equipable_items[Armor.ArmorType.keys()[item.armor_type]]):
-			__equipable_items[Armor.ArmorType.keys()[item.armor_type]] = null
-		return
-
+		elif eq_type in __equipable_items:
+			__equipable_items[eq_type] = null
+		elif eq_type == "HEAD":
+			__equipable_items["HELMET"] = null
+		elif eq_type == "ARMOR":
+			__equipable_items["CHEST"] = null
+		elif eq_type == "FEET":
+			__equipable_items["BOOTS"] = null
 
 # ─── Potions ───────────────────────────────────────────────────────────────
-func add_potion(potion: Potion) -> void:
-	var potion_effect = potion.get_potion_effect()
-	if potion_effect["potion_type"] == Potion.PotionType.HEALTH_POTION:
-		__potions["HEALTH"].append(potion)
-		return
-	if potion_effect["potion_type"] == Potion.PotionType.MANA_POTION:
-		__potions["MANA"].append(potion)
-		return
+func add_potion(potion: ConsumableItem) -> void:
+	var p_type = potion.potion_type.to_upper()
+	if p_type in __potions:
+		__potions[p_type].append(potion)
 
-func remove_potion_from_list(potion: Potion) -> void:
-	var potion_effect = potion.get_potion_effect()
-	if potion_effect["potion_type"] == Potion.PotionType.HEALTH_POTION:
-		__potions["HEALTH"].erase(potion)
-		return
-	if potion_effect["potion_type"] == Potion.PotionType.MANA_POTION:
-		__potions["MANA"].erase(potion)
-		return
-
-
-func use_health_potion() -> void:
-	if __potions["HEALTH"] > 0:
-		__potions["HEALTH"] -= 1
-		EventBus.health_potions_changed.emit(__potions["HEALTH"])
-
-func use_mana_potion() -> void:
-	if __potions["MANA"] > 0:
-		__potions["MANA"] -= 1
-		EventBus.mana_potions_changed.emit(__potions["MANA"])
+func remove_potion_from_list(potion: ConsumableItem) -> void:
+	var p_type = potion.potion_type.to_upper()
+	if p_type in __potions:
+		__potions[p_type].erase(potion)
 
 func get_available_gold():
 	return __available_gold

@@ -10,12 +10,12 @@ enum ArmorType {HELMET, CHEST, BOOTS, GLOVES, SHIELD, RING, AMULET, CLOAK}
 
 func get_total_defense() -> float:
 	var total = base_defense
-	for gem in gems:
-		total += gem.get_def_bonus()
+	#for gem in gems:
+		#total += gem.get_def_bonus()
 	return total
 
 func get_total_resistance() -> float:
 	var total = base_resist
-	for gem in gems:
-		total += gem.get_resist_bonus()
+	#for gem in gems:
+		#total += gem.get_resist_bonus()
 	return total

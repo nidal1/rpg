@@ -26,7 +26,6 @@ signal enemy_died(enemy: Enemy)
 ## Emitted when an enemy spawns at a specific position.
 @warning_ignore("UNUSED_SIGNAL")
 signal enemy_spawned(enemy: Enemy, spawn_position: Vector2)
-## Emitted when the player's experience points change.
 
 ## Emitted when the player levels up.
 @warning_ignore("UNUSED_SIGNAL")
@@ -65,36 +64,36 @@ signal cancel_stats_points()
 # ─── Item & Loot Signals ─────────────────────────────────────────────────────
 ## Emitted when a lootable item comes into range and is added to the available list.
 @warning_ignore("UNUSED_SIGNAL")
-signal lootable_item_added(item: Item)
+signal lootable_item_added(item: DataItem)
 ## Emitted when a lootable item goes out of range and is removed from the available list.
 @warning_ignore("UNUSED_SIGNAL")
-signal lootable_item_removed(item: Item)
+signal lootable_item_removed(item: DataItem)
 ## Emitted to display hover info for a specific lootable item.
 @warning_ignore("UNUSED_SIGNAL")
-signal display_lootable_item_hover_info(item: Item)
+signal display_lootable_item_hover_info(item: DataItem)
 ## Emitted to hide hover info for a specific lootable item.
 @warning_ignore("UNUSED_SIGNAL")
-signal hide_lootable_item_hover_info(item: Item)
+signal hide_lootable_item_hover_info(item: DataItem)
 ## Emitted when selected lootable items are actually picked up into the inventory.
 @warning_ignore("UNUSED_SIGNAL")
-signal selected_lootable_items_picked_up(slots: Array[Item])
+signal selected_lootable_items_picked_up(slots: Array[DataItem])
 
 # ─── Inventory Signals ───────────────────────────────────────────────────────
 ## Emitted when an item is added to the inventory.
 @warning_ignore("UNUSED_SIGNAL")
-signal items_added_to_inventory(slots: Array[Item])
+signal items_added_to_inventory(slots: Array[DataItem])
 
 ## Emitted when an item is removed from the inventory.
 @warning_ignore("UNUSED_SIGNAL")
-signal items_removed_from_inventory(slots: Array[Item])
+signal items_removed_from_inventory(slots: Array[DataItem])
 
 ## Emitted when an item is dropped from an inventory slot.
 @warning_ignore("UNUSED_SIGNAL")
-signal item_dropped_from_inventory(slot: Item)
+signal item_dropped_from_inventory(slot: DataItem)
 
 ## Emitted when try to show item table details.
 @warning_ignore("UNUSED_SIGNAL")
-signal show_item_table_details(item: Item)
+signal show_item_table_details(item: DataItem)
 
 ## Emitted when try to hide item table details.
 @warning_ignore("UNUSED_SIGNAL")
@@ -109,10 +108,9 @@ signal equip_item(inventory_slot: InventorySlot)
 @warning_ignore("UNUSED_SIGNAL")
 signal item_equipped(inventory_slot: InventorySlot)
 
-# TODO: merge item_unequipped and potions_unequipped
 ## Emitted when an item is unequipped.
 @warning_ignore("UNUSED_SIGNAL")
-signal item_unequipped(item: Equipable)
+signal item_unequipped(item: EquipableItem)
 
 ## Emitted when try to switch equipements.
 @warning_ignore("UNUSED_SIGNAL")
@@ -121,12 +119,12 @@ signal switch_equipements()
 # ─── Potions Signals ───────────────────────────────────────────────────────
 ## Emitted when potions are added to the potions list.
 @warning_ignore("UNUSED_SIGNAL")
-signal potions_added_to_list(potion: Potion)
+signal potions_added_to_list(potion: ConsumableItem)
 
 ## Emitted when potions are unequipped.
 @warning_ignore("UNUSED_SIGNAL")
-signal potions_unequipped(potion: Potion)
+signal potions_unequipped(potion: ConsumableItem)
 
 ## Emitted when potions are consumed.
 @warning_ignore("UNUSED_SIGNAL")
-signal potions_consumed(potion: Potion)
+signal potions_consumed(potion: ConsumableItem)

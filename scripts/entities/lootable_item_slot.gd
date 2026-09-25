@@ -20,7 +20,7 @@ const slot_pressed_stat_border_color: Color = Color("#797979")
 ## The index of this slot in the UI container.
 var slot_index: int
 ## The item resource currently displayed in this slot.
-var item: Item = null
+var item: DataItem = null
 ## The visual style override for the panel border.
 var style_box: StyleBoxFlat = StyleBoxFlat.new()
 ## The current interaction state of this slot.
@@ -51,11 +51,11 @@ func _ready() -> void:
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Sets the item to be displayed in this slot.
-func set_item(item_resource: Item) -> void:
+func set_item(item_resource: DataItem) -> void:
 	if not item_resource:
 		return
 	item = item_resource
-	lootable_item_image.texture = item.icon
+	lootable_item_image.texture = item.get_item_texture()
 
 ## Clears the slot, removing its item and resetting its state.
 func clear_slot() -> void:

@@ -1,11 +1,17 @@
 extends Control
 class_name PotionSlot
 
-@export var potion_type: Potion.PotionType = Potion.PotionType.HEALTH_POTION
+## TODO: Move this enum to ConsumableItem class
+enum PotionSlotType {
+	HEALTH_POTION,
+	MANA_POTION
+}
+
+@export var potion_type: PotionSlotType = PotionSlotType.HEALTH_POTION
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 
-var potions: Array[Potion] = []
+var potions: Array[ConsumableItem] = []
 var slot_number: int
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
@@ -24,12 +30,11 @@ func _gui_input(event: InputEvent) -> void:
 		if not potions.size():
 			return
 		context_menu.popup()
-		# position = mouse position
 		var off = Vector2(20, -50) + event.position
-		context_menu.position = get_screen_position()  + off
+		context_menu.position = get_screen_position() + off
 		if not context_menu.id_pressed.is_connected(_on_context_menu_index_pressed):
 			context_menu.id_pressed.connect(_on_context_menu_index_pressed)
-	elif  event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and potions.size():
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and potions.size():
 		consume()
 
 func _on_context_menu_index_pressed(index: int) -> void:
@@ -62,12 +67,12 @@ func consume():
 	else:
 		health_items_label.text = str(potions.size())
 
-func equip(new_potion: Potion) -> void:
+func equip(new_potion: ConsumableItem) -> void:
 	if not new_potion:
 		return
 	potions.append(new_potion)
-	health_potion_texture.texture = new_potion.icon
+	health_potion_texture.texture = new_potion.get_item_texture()
 	health_items_label.text = str(potions.size())
 
-func get_potion_slot_type() -> Potion.PotionType:
+func get_potion_slot_type() -> PotionSlotType:
 	return potion_type

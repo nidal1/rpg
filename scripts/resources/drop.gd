@@ -8,7 +8,7 @@ class_name DropItem
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 ## The item resource associated with this physical drop.
-var item: Item
+var item: DataItem
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var drop_item_image: Sprite2D = $DropItemImage
@@ -17,17 +17,21 @@ var item: Item
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	if item and drop_item_image:
-		drop_item_image.texture = item.icon
+		var tex = item.get_item_texture()
+		if tex != null:
+			drop_item_image.texture = tex
 
 	drop_cd.wait_time = despawn_time
 	drop_cd.start()
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Assigns a new item resource to this drop and updates its visual representation.
-func assign_drop_item_image(new_item: Item) -> void:
+func assign_drop_item_image(new_item: DataItem) -> void:
 	item = new_item
-	if is_inside_tree() and drop_item_image:
-		drop_item_image.texture = item.icon
+	if is_inside_tree() and drop_item_image and item:
+		var tex = item.get_item_texture()
+		if tex != null:
+			drop_item_image.texture = tex
 
 
 func _on_drop_cd_timeout() -> void:

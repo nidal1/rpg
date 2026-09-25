@@ -9,7 +9,7 @@ class_name EquipementSlot
 @onready var placeholder_equipement_image: TextureRect = $CenterContainer/PlaceholderEquipementImage
 @onready var equipement_image: TextureRect = $CenterContainer/EquipementImage
 
-var item: Equipable = null
+var item: EquipableItem = null
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -25,10 +25,9 @@ func _gui_input(event: InputEvent) -> void:
 		if not item:
 			return
 		context_menu.popup()
-		# position = mouse position
 		context_menu.position = get_screen_position() + event.position
 
-func set_item(new_item: Equipable) -> void:
+func set_item(new_item: EquipableItem) -> void:
 	item = new_item
 	update_texture()
 
@@ -41,7 +40,7 @@ func update_texture() -> void:
 		equipement_image.texture = null
 		placeholder_equipement_image.visible = true
 	else:
-		equipement_image.texture = item.icon
+		equipement_image.texture = item.get_item_texture()
 		placeholder_equipement_image.visible = false
 
 func _on_context_menu_item_pressed(id: int) -> void:

@@ -455,7 +455,7 @@ func _on_confirmed() -> void:
 				)
 
 			result.append(item_instance)
-			
+	
 	items_selected.emit(result)
 
 

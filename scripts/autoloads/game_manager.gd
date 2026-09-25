@@ -27,6 +27,7 @@ func _ready() -> void:
 	EventBus.item_unequipped.connect(_on_item_unequipped)
 	EventBus.potions_unequipped.connect(_on_potion_unequipped)
 	EventBus.potions_consumed.connect(_on_potion_consumed)
+	EventBus.buy_item.connect(_on_buy_item)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
@@ -74,16 +75,16 @@ func spawn_enemy_items(enemy: Enemy) -> void:
 			drop_zone.call_deferred("add_child", drop)
 			drop.set_deferred("global_position", random_position)
 
-func drop_item(item: Item) -> void:
+func drop_item(item: DataItem) -> void:
 	var drop_scene = load("res://scenes/entities/items/drop.tscn").instantiate()
-	# TODO: later look at the nearest enemies spawner's drop zone and set the item there
-	# later maybe it will be a special pool for dropped items
-	var drop_zone = get_tree().get_first_node_in_group("enemies_spawner").get_drop_zone()
-	if drop_zone:
-		var random_position = randomize_drop_position(player_ref.global_position)
-		drop_scene.item = item
-		drop_zone.add_child(drop_scene)
-		drop_scene.global_position = random_position
+	var drop_zone_nodes = get_tree().get_nodes_in_group("enemies_spawner")
+	if drop_zone_nodes.size() > 0:
+		var drop_zone = drop_zone_nodes[0].get_drop_zone()
+		if drop_zone:
+			var random_position = randomize_drop_position(player_ref.global_position)
+			drop_scene.item = item
+			drop_zone.add_child(drop_scene)
+			drop_scene.global_position = random_position
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
@@ -92,94 +93,96 @@ func _on_enemy_died(enemy: Enemy) -> void:
 		add_xp(xp_reward)
 	spawn_enemy_items(enemy)
 
-func _on_lootable_item_added(item: Item) -> void:
+func _on_lootable_item_added(item: DataItem) -> void:
 	PlayerData.add_lootable_item(item)
 	EventBus.display_lootable_item_hover_info.emit(item)
 
-func _on_lootable_item_removed(item: Item) -> void:
+func _on_lootable_item_removed(item: DataItem) -> void:
 	PlayerData.remove_lootable_item(item)
 	EventBus.hide_lootable_item_hover_info.emit(item)
 
-func _on_selected_lootable_items_picked_up(slots: Array[Item]) -> void:
+func _on_selected_lootable_items_picked_up(slots: Array[DataItem]) -> void:
 	for slot in slots:
 		if slot != null:
 			PlayerData.add_inventory_item(slot)
 	
 	EventBus.items_added_to_inventory.emit(slots)
 
-func _on_item_dropped_from_inventory(item: Item) -> void:
+func _on_item_dropped_from_inventory(item: DataItem) -> void:
 	drop_item(item)
 	PlayerData.remove_inventory_item(item)
 
 func _on_equip_item(inventory_slot: InventorySlot) -> void:
 	var item = inventory_slot.get_item()
-	if item is Equipable:
-		if item.player_type == CharacterClass.PlayerType.ALL or item.player_type == player_ref.character_class.player_type:
-			var item_type
-			if item is Armor:
-				item_type = Armor.ArmorType.keys()[item.armor_type]
-			elif item is Weapon:
-				item_type = "WEAPON"
-			if not PlayerData.get_equipements()[item_type]:
-				PlayerData.add_equipable_item(item)
-				stats_manager.calculate_equipment_bonus(item)
-				PlayerData.remove_inventory_item(item)
+	if item is EquipableItem:
+		var eq = item as EquipableItem
+		## TODO: popup system message
+		if eq.required_level > PlayerData.get_player_level(): return
+
+		var eq_player_class = eq.player_class
+		var player_class = player_ref.character_class.PlayerType.keys()[player_ref.character_class.player_type]
+		if eq_player_class == "" or eq_player_class.to_upper() == "ALL" or (player_ref and player_ref.character_class and eq_player_class.to_upper() in player_class):
+			var item_type = eq.equipment_type.to_upper()
+			if not PlayerData.get_equipements().get(item_type):
+				PlayerData.add_equipable_item(eq)
+				stats_manager.calculate_equipment_bonus(eq)
+				PlayerData.remove_inventory_item(eq)
 				EventBus.item_equipped.emit(inventory_slot)
 			else:
-				# swap item
-				var old_item = PlayerData.get_equipements()[item_type]
+				var old_item = PlayerData.get_equipements().get(item_type)
 				PlayerData.remove_equipable_item(old_item)
 				stats_manager.calculate_equipment_bonus(old_item, "unequip")
 
-				PlayerData.add_equipable_item(item)
-				stats_manager.calculate_equipment_bonus(item)
+				PlayerData.add_equipable_item(eq)
+				stats_manager.calculate_equipment_bonus(eq)
 
 				PlayerData.add_inventory_item(old_item)
-				PlayerData.remove_inventory_item(item)
+				PlayerData.remove_inventory_item(eq)
 
 				EventBus.item_equipped.emit(inventory_slot)
-
 				inventory_slot.clear_slot()
 				inventory_slot.set_item(old_item)
 
-			player_ref.character_class.set_class_stats(StatsData.get_stats())
+			if player_ref and player_ref.character_class:
+				player_ref.character_class.set_class_stats(StatsData.get_stats())
 			EventBus.stats_updated.emit(StatsData)
 
-	if item is Potion:
-		PlayerData.add_potion(item)
-		PlayerData.remove_inventory_item(item)
-		EventBus.potions_added_to_list.emit(item)
-		var _items_to_remove: Array[Item] = [item]
+	elif item is ConsumableItem:
+		var potion = item as ConsumableItem
+		PlayerData.add_potion(potion)
+		PlayerData.remove_inventory_item(potion)
+		EventBus.potions_added_to_list.emit(potion)
+		var _items_to_remove: Array[DataItem] = [potion]
 		EventBus.items_removed_from_inventory.emit(_items_to_remove)
-		
 
-func _on_item_unequipped(item: Equipable) -> void:
-	if item is Equipable:
+func _on_item_unequipped(item: EquipableItem) -> void:
+	if item is EquipableItem:
 		PlayerData.add_inventory_item(item)
 		stats_manager.calculate_equipment_bonus(item, "unequip")
 		PlayerData.remove_equipable_item(item)
 		
-		var _items_to_add: Array[Item] = [item]
+		var _items_to_add: Array[DataItem] = [item]
 		EventBus.items_added_to_inventory.emit(_items_to_add)
-		player_ref.character_class.set_class_stats(StatsData.get_stats())
+		if player_ref and player_ref.character_class:
+			player_ref.character_class.set_class_stats(StatsData.get_stats())
 		EventBus.stats_updated.emit(StatsData)
 
-func _on_potion_unequipped(potion: Potion) -> void:
-	PlayerData.add_inventory_item(potion as Item)
+func _on_potion_unequipped(potion: ConsumableItem) -> void:
+	PlayerData.add_inventory_item(potion)
 	PlayerData.remove_potion_from_list(potion)
 
-	var _items_to_add: Array[Item] = [potion]
+	var _items_to_add: Array[DataItem] = [potion]
 	EventBus.items_added_to_inventory.emit(_items_to_add)
 
-func _on_potion_consumed(potion: Potion):
-	var potion_effect = potion.get_potion_effect()
-	var potion_type = potion_effect.get("potion_type")
-	var heal_percentage = float (potion_effect.get("heal_percentage"))
+## TODO: use enums instead of hard coded names
+func _on_potion_consumed(potion: ConsumableItem):
+	var heal_amount = float(potion.heal_amount)
+	var p_type = potion.potion_type.to_upper()
 
-	if potion_type == Potion.PotionType.HEALTH_POTION:
-		StatsData.get_stats().set_current_hp(StatsData.get_stats().get_current_hp() + heal_percentage)
-	elif potion_type == Potion.PotionType.MANA_POTION:
-		StatsData.get_stats().set_current_mp(StatsData.get_stats().get_current_mp() + heal_percentage)
+	if p_type == "HEALTH":
+		StatsData.get_stats().set_current_hp(StatsData.get_stats().get_current_hp() + heal_amount)
+	elif p_type == "MANA":
+		StatsData.get_stats().set_current_mp(StatsData.get_stats().get_current_mp() + heal_amount)
 	
 	EventBus.stats_updated.emit(StatsData)
 
@@ -190,4 +193,6 @@ func _on_buy_item(_value: float, _data_item: DataItem):
 
 	if player_available_gold >= _total_price:
 		PlayerData.set_available_gold(player_available_gold - _total_price)
-		## TODO: add item to the inventory
+		PlayerData.add_inventory_item(_data_item)
+		var _items_to_add: Array[DataItem] = [_data_item]
+		EventBus.items_added_to_inventory.emit(_items_to_add)

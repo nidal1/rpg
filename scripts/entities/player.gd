@@ -175,11 +175,11 @@ func _on_combo_attack_cd_timeout() -> void:
 func _on_pickable_dection_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pickable"):
 		if area is DropItem:
-			var item: Item = area.item
+			var item: DataItem = area.item
 			EventBus.lootable_item_added.emit(item)
 
 func _on_pickable_dection_area_exited(area: Area2D) -> void:
 	if area.is_in_group("pickable"):
 		if area is DropItem:
-			var item: Item = area.item
+			var item: DataItem = area.item
 			EventBus.lootable_item_removed.emit(item)

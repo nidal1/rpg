@@ -1,3 +1,5 @@
+## DEPRECATED: Use DataItem instead.
+## Legacy base item resource class kept for backwards compatibility.
 class_name Item
 extends Resource
 

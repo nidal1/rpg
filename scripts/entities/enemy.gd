@@ -177,10 +177,9 @@ func _stop_wandering() -> void:
 ## Instantiates and returns the items dropped by the enemy.
 func _drop_item() -> Array[DropItem]:
 	var drops: Array[DropItem] = []
-	for item in enemy_params.drop_list:
+	for item in enemy_params.custom_db_item_objects:
 		var drop_item: DropItem = drop_item_scene.instantiate()
 		drop_item.item = item
-		drop_item.assign_drop_item_image(item)
 		drops.append(drop_item)
 	return drops
 

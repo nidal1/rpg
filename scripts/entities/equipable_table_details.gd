@@ -1,7 +1,7 @@
 extends Panel
 class_name EquipableTableDetails
 
-var equipable_item: Equipable
+var equipable_item: EquipableItem
 
 @export var item_stats_row_scene: PackedScene
 @export var gem_slot_scene: PackedScene
@@ -18,72 +18,33 @@ var equipable_item: Equipable
 @onready var gems_slots_container: HBoxContainer = $VBoxContainer/Panel3/MarginContainer/GemsSlotsContainer
 @onready var price_label: Label = $VBoxContainer/MarginContainer/VBoxContainer/PriceLabel
 
-func set_equipable_item(_equipable_item: Equipable) -> void:
+func set_equipable_item(_equipable_item: EquipableItem) -> void:
 	equipable_item = _equipable_item
+	if equipable_item == null:
+		return
 	_set_item_name(equipable_item.item_name)
-	_set_player_class(CharacterClass.PlayerType.keys()[equipable_item.player_type])
-	_set_item_level_label(str(equipable_item.level))
-	_set_item_image(equipable_item.icon)
-	_set_item_category_label(Item.ItemType.keys()[equipable_item.item_type])
-	_set_item_rarety_label(Item.Rarety.keys()[equipable_item.rarety])
-	_set_item_stats_rows(equipable_item.get_effective_stats_breakdown())
+	_set_player_class(equipable_item.player_class)
+	_set_item_level_label(str(equipable_item.required_level))
+	_set_item_image(equipable_item.get_item_texture())
+	_set_item_category_label(equipable_item.equipment_type)
 	_set_item_prince_label(equipable_item.price)
-	# _set_tradablity(equipable_item.tradable)
-	_set_item_description(equipable_item.description)
-	_set_gem_slots(equipable_item.gems_slots_count)
-	_set_gems_in_slots(equipable_item.gems)
 
 func _set_item_name(_item_name: String) -> void:
-	item_name_label.text = _item_name
+	if item_name_label: item_name_label.text = _item_name
 
 func _set_player_class(_player_class: String) -> void:
-	player_class_label.text = _player_class
+	if player_class_label: player_class_label.text = _player_class
 
 func _set_item_level_label(_item_level: String) -> void:
-	item_level_label.text = "Level: " + _item_level
+	if item_level_label: item_level_label.text = "Level: " + _item_level
 
 func _set_item_image(_item_image: Texture2D) -> void:
-	if _item_image != null:
+	if item_image != null and _item_image != null:
 		item_image.texture = _item_image
 
 func _set_item_category_label(_item_category: String) -> void:
-	item_category_label.text = _item_category
-
-func _set_item_rarety_label(_item_rarety: String) -> void:
-	iem_rarety_label.text = _item_rarety
+	if item_category_label: item_category_label.text = _item_category
 
 func _set_item_prince_label(_item_price: int) -> void:
-	iem_rarety_label.text = str(_item_price)
-
-func _set_item_stats_rows(_item_stats: Dictionary) -> void:
-	if _item_stats.size() > 0:
-		for it in _item_stats:
-			var key = it
-			var value = _item_stats[it]
-			var item_stats_row = item_stats_row_scene.instantiate()
-			item_stats_container.add_child(item_stats_row)
-			if value["base"] == 0 and value["gem"] > 0:
-				item_stats_row.set_stats_row(key, value["gem"])
-			else:
-				item_stats_row.set_stats_row(key, value["base"], value["gem"] if value.has("gem") else 0)
-			
-
-func _set_tradablity(_tradablity: bool) -> void:
-	if _tradablity:
-		tradablity_label.text = "Tradable"
-	else: tradablity_label.text = "Untradable"
-
-func _set_item_description(_item_description: String) -> void:
-	item_description_label.text = _item_description
-
-func _set_gem_slots(_gem_slots_count: int) -> void:
-	for i in range(_gem_slots_count):
-		var gem_slot_instance = gem_slot_scene.instantiate()
-		gems_slots_container.add_child(gem_slot_instance)
-
-func _set_gems_in_slots(_gems: Array[Gem]) -> void:
-	if _gems.size() == 0:
-		return
-	var slots = gems_slots_container.get_children()
-	for i in range(_gems.size()):
-		slots[i].set_gem_image(_gems[i].icon)
+	if iem_rarety_label: iem_rarety_label.text = str(_item_price)
+	if price_label: price_label.text = str(_item_price)

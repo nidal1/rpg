@@ -11,4 +11,4 @@ class_name EnemyParams
 @export var defense: float = 0.0
 @export var resistance: float = 0.0
 @export var xp_reward: int = 25
-@export var drop_list: Array[Item] = []
+@export var custom_db_item_objects: Array[DataItem] = []
