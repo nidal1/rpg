@@ -101,59 +101,59 @@ The state machine separates entity states into decoupled, modular nodes under a 
 
 ### Lootable Items (Loot & Pickup)
 *   **Naming Convention:** All dropped and picked items follow the `Lootable Item` convention in UI and logic.
-*   **`DropItem` (`drop.gd`, `Area2D`):** Physical world representation of a dropped item. Fields: `item: Item`, `despawn_time: float = 30.0`. Starts a `DropCD` timer on `_ready()` and `queue_free()`s on timeout. Belongs to the `pickable` group.
+*   **`DropItem` (`drop.gd`, `Area2D`):** Physical world representation of a dropped item. Fields: `item: DataItem`, `despawn_time: float = 30.0`. Retrieves icon texture via `item.get_item_texture()`. Starts a `DropCD` timer on `_ready()` and `queue_free()`s on timeout. Belongs to the `pickable` group.
 *   **Player Detection:** Player's `PickableDetection` (Area2D) detects overlapping `DropItem` nodes. On enter: `EventBus.lootable_item_added.emit(item)`. On exit: `EventBus.lootable_item_removed.emit(item)`.
 *   **UI Integration:** `InGameUI` catches signals, populates `LootableItemSlot` panels in a `GridContainer` (up to 20 slots). Players can multi-select slots to pick up, triggering `EventBus.selected_lootable_items_picked_up`.
-*   **`LootableItemSlot` state:** Has three visual states (`normal`, `hover`, `pressed`) implemented via `StyleBoxFlat` border-color overrides.
+*   **`LootableItemSlot` state:** Displays texture via `item.get_item_texture()`. Has three visual states (`normal`, `hover`, `pressed`) implemented via `StyleBoxFlat` border-color overrides.
 
 ### Inventory System (`inventory_slot.gd`, `in_game_ui.gd`)
 Full 56-slot grid-based inventory in the **Inventory Tab** of the HUD panel.
-*   **`InventorySlot` (Panel):** Holds one `Item`. Displays icon via `TextureRect`. Right-click opens `PopupMenu` with:
-    *   **Equip** — enabled if item is `Equipable` or `Consumable`. Emits `EventBus.equip_item(inventory_slot)`.
+*   **`InventorySlot` (Panel):** Holds one `DataItem`. Displays texture via `item.get_item_texture()`. Right-click opens `PopupMenu` with:
+    *   **Equip** — enabled if item is `EquipableItem` or `ConsumableItem`. Emits `EventBus.equip_item(inventory_slot)`.
     *   **Use** — stub (prints "use item").
     *   **Drop** — emits `EventBus.item_dropped_from_inventory(item)`, clears slot.
 *   **Hover tooltip:** `mouse_entered` emits `EventBus.show_item_table_details(item)`. `mouse_exited` emits `EventBus.hide_item_table_details()`.
 *   **Item Drop-back Flow:** `GameManager._on_item_dropped_from_inventory()` → `drop_item(item)` → gets first `enemies_spawner` group node's drop zone → places `drop.tscn` at randomized offset (`drop_range = 50.0`) near player.
 
-### Potions & Consumables System (`consumable.gd`, `potion.gd`, `potion_slot.gd`, `player_data.gd`)
-*   **Item Hierarchy:** `Item` → `Consumable` → `Potion`.
-*   **Types:** `Potion.PotionType` (`HEALTH_POTION`, `MANA_POTION`).
-*   **Equip / Routing:** Right-clicking a potion in the inventory and selecting "Equip" triggers `GameManager._on_equip_item()`, which routes it to `PlayerData.add_potion(item)` and emits `EventBus.potions_added_to_list.emit(item)`.
-*   **HUD Slot (`PotionSlot`):** Displays current potion icon and count. Right-click opens `PopupMenu` with:
+### Potions & Consumables System (`consumable_item.gd`, `potion_slot.gd`, `player_data.gd`)
+*   **Item Hierarchy:** `DataItem` → `ConsumableItem` (Legacy `Item` → `Consumable` → `Potion` deprecated).
+*   **Types & Enums:** `ConsumableItem.ConsumableType` (`POTION`, `POISON`) and `PotionSlot.PotionSlotType` (`HEALTH_POTION`, `MANA_POTION`).
+*   **Equip / Routing:** Right-clicking a consumable in the inventory and selecting "Equip" triggers `GameManager._on_equip_item()`, which routes it to `PlayerData.add_potion(potion)` and emits `EventBus.potions_added_to_list.emit(potion)`.
+*   **HUD Slot (`PotionSlot`):** Displays current potion texture (`item.get_item_texture()`) and count (`potions: Array[ConsumableItem]`). Right-click opens `PopupMenu` with:
     *   **Unequip** — emits `EventBus.potions_unequipped(potion)` → returns item to inventory.
-    *   **Consume** — emits `EventBus.potions_consumed(potion)` → triggers potion effect via `GameManager._on_potion_consumed()`, which calls `StatsData.get_stats().set_current_hp/mp()` then emits `EventBus.stats_updated`.
+    *   **Consume** — emits `EventBus.potions_consumed(potion)` → triggers potion effect via `GameManager._on_potion_consumed()` (heals HP/MP by `heal_amount` according to `potion_type`), then emits `EventBus.stats_updated`.
 
 ### Equipment System (`equipement_slot.gd`, `in_game_ui.gd`, `player_data.gd`)
-Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is an `EquipementSlot` (Panel) with a `placeholder_image`, an item `TextureRect`, and a right-click **Unequip** context menu.
+Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is an `EquipementSlot` (Panel) with a `placeholder_image`, an item `TextureRect` (using `EquipableItem.get_item_texture()`), and a right-click **Unequip** context menu.
 
 **Equipment Slots (keyed by `slot_key` string and `PlayerData.__equipable_items` dictionary key):**
 | Slot Key | Type | UI Node (in `InGameUI`) |
 | :--- | :--- | :--- |
-| `HELMET` | `Armor.ArmorType.HELMET` | `helmet_slot` |
-| `CHEST` | `Armor.ArmorType.CHEST` | `chest_slot` |
-| `BOOTS` | `Armor.ArmorType.BOOTS` | `boots_s_lot` *(note: typo in node name)* |
-| `SHIELD` | `Armor.ArmorType.SHIELD` | `shield_slot` |
-| `RING` | `Armor.ArmorType.RING` | `ring_slot` |
-| `AMULET` | `Armor.ArmorType.AMULET` | `amulet_slot` |
-| `CLOAK` | `Armor.ArmorType.CLOAK` | `cloak_slot` |
-| `WEAPON` | `Weapon` | `weapon_slot` |
+| `HELMET` | `EquipableItem.ArmorType.HEAD` / `HELMET` | `helmet_slot` |
+| `CHEST` | `EquipableItem.ArmorType.CHEST` / `ARMOR` | `chest_slot` |
+| `BOOTS` | `EquipableItem.ArmorType.FEET` / `BOOTS` | `boots_s_lot` *(note: typo in node name)* |
+| `SHIELD` | `EquipableItem.ArmorType.SHIELD` | `shield_slot` |
+| `RING` | `EquipableItem.ArmorType.RING` | `ring_slot` |
+| `AMULET` | `EquipableItem.ArmorType.NECKLACE` / `AMULET` | `amulet_slot` |
+| `CLOAK` | `EquipableItem.ArmorType.CLOAK` | `cloak_slot` |
+| `WEAPON` | `EquipableItem.WeaponType` (SWORD, AXE, DAGGER, etc.) | `weapon_slot` |
 | `GLOVES` | *(reserved — no UI slot wired)* | — |
 | `PET` | *(reserved)* | `pet_slot` |
 
 **Equip Flow:**
 1. Right-click `InventorySlot` → select "Equip" → `EventBus.equip_item(inventory_slot)`.
-2. `GameManager._on_equip_item()`: validates `player_type` (`ALL` or matching class: `WARRIOR`, `ARCHER`, `MAGE`, `PRIEST`).
-3. Determines `item_type` key: `Armor.ArmorType.keys()[item.armor_type]` for armor, `"WEAPON"` for weapons.
+2. `GameManager._on_equip_item()`: validates level requirement (`required_level`) and `player_class` ("ALL" or matching player class).
+3. Determines equipment category key: `equipment_type.to_upper()`.
 4. If slot empty: `PlayerData.add_equipable_item(item)` → `stats_manager.calculate_equipment_bonus(item)` → `EventBus.item_equipped.emit(inventory_slot)`.
 5. If slot occupied (swap): removes old item bonus, adds new item, puts old item back into inventory slot.
 6. After any equip/unequip: `player_ref.character_class.set_class_stats(StatsData.get_stats())` and `EventBus.stats_updated.emit(StatsData)`.
 7. `InGameUI._on_item_equipped()` routes to the correct `EquipementSlot.set_item()` and clears the `InventorySlot`.
 
 **Stat Effect & Gem Bonuses:**
-`StatsManager.calculate_equipment_bonus(equipement, operation)` processes `item.get_effective_stats_breakdown()`, combining base item stat bonuses and socketed gem bonuses into `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()`. Base weapon power, armor defense, and armor resistance are updated accordingly.
+`StatsManager.calculate_equipment_bonus(equipement, operation)` evaluates `equipement.base_damage` for weapon power bonus and `equipement.base_defense` for armor defense bonus in `StatsData.get_stats()`. Socketed gems and stat bonuses are managed via `EquipableItem` methods.
 
-### Gem System (`gem.gd`, `gem_panel.gd`, `equipable.gd`)
-*   **Gems Socketing:** `Equipable` supports up to `gems_slots_count` socketed gems (`gems: Array[Gem]`).
+### Gem System (`gem.gd`, `gem_panel.gd`, `equipable_item.gd`)
+*   **Gems Socketing:** `EquipableItem` supports up to `gems_slots_count` socketed gems (`gems: Array[Gem]`).
 *   **Gem Types & Stat Mappings:**
     *   `RUBY` → `DEX`
     *   `SAPPHIRE` → `STR`
@@ -166,12 +166,12 @@ Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is
 ### Item Tooltip / Table Details (`equipable_table_details.gd`, `armor_table_details.gd`, `weapon_table_details.gd`, `item_stats_row.gd`)
 Hovering an `InventorySlot` shows a floating popup with full item details:
 *   `EventBus.show_item_table_details(item)` → `InGameUI._on_show_item_table_details()`:
-    *   Instantiates `weapon_table_details_scene` (if `Weapon`) or `armor_table_details_scene` (if `Armor`).
-    *   Adds to `$Popups` node. Calls `set_equipable_item(item)`. Positions near mouse, with viewport-edge clamping.
+    *   Instantiates `armor_table_details_scene` (if `item.is_armor()`) or `weapon_table_details_scene`.
+    *   Adds to `$Popups` node. Calls `set_equipable_item(item as EquipableItem)`. Positions near mouse, with viewport-edge clamping.
 *   `EventBus.hide_item_table_details()` → frees the instance.
-*   **`EquipableTableDetails` (base):** Shows name, class restriction, level, icon, category, rarity, description, gem slots (`GemPanel` instances), and stat rows (`ItemStatsRow`).
-*   **`WeaponTableDetails`:** Extends base; adds attack power label (orange `#ff5b00` if `upgrade_level > 0`).
-*   **`ArmorTableDetails`:** Extends base; adds defense and resistance labels (orange `#ff5b00` if respective upgrade > 0).
+*   **`EquipableTableDetails` (base):** Shows name, class restriction, level (`required_level`), texture (`get_item_texture()`), category (`equipment_type`), price, and details.
+*   **`WeaponTableDetails`:** Extends base; displays base attack power label (`base_damage`).
+*   **`ArmorTableDetails`:** Extends base; displays base defense label (`base_defense`).
 
 ### Projectiles (`arrow.gd`, `water_bullet.gd`)
 *   Both extend `Area2D`. Fields: `speed = 1000.0`, `max_distance = 600.0`, `direction`, `velocity`, `distance_traveled`.
@@ -188,7 +188,7 @@ Hovering an `InventorySlot` shows a floating popup with full item details:
 *   **`%DropZone` (Node2D):** Child node used as parent for all `DropItem` instances spawned by enemies under this spawner.
 *   **Spawning:** On `_ready()`, spawns one enemy instance per entry in `enemies` array. `_spawn_enemy()` picks a random enemy scene, instantiates it, adds as child, and emits `EventBus.enemy_spawned`.
 *   **Respawn:** `remove_enemy(enemy)` starts a `respawn_cd` timer then calls `_spawn_enemy()`.
-*   **Drop Cleanup:** Connects to `EventBus.selected_lootable_items_picked_up` → `remove_selected_drops()` queue-frees matching `DropItem` children from `DropZone`.
+*   **Drop Cleanup:** Connects to `EventBus.selected_lootable_items_picked_up` → `remove_selected_drops(items: Array[DataItem])` queue-frees matching `DropItem` children from `DropZone`.
 *   **`get_drop_zone()` → Node:** Used by `GameManager.spawn_enemy_items()` and `drop_item()` to locate the correct parent for new drops.
 
 ### Stat Allocation System
@@ -230,23 +230,24 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 | | `stat_points_available_changed` | `points: int` |
 | | `save_stats_points` | *(none)* |
 | | `cancel_stats_points` | *(none)* |
-| **Loot** | `lootable_item_added` | `item: Item` |
-| | `lootable_item_removed` | `item: Item` |
-| | `display_lootable_item_hover_info` | `item: Item` |
-| | `hide_lootable_item_hover_info` | `item: Item` |
-| | `selected_lootable_items_picked_up` | `slots: Array[Item]` |
-| **Inventory** | `items_added_to_inventory` | `slots: Array[Item]` |
-| | `items_removed_from_inventory` | `slots: Array[Item]` |
-| | `item_dropped_from_inventory` | `slot: Item` |
-| **Item Details** | `show_item_table_details` | `item: Item` |
+| **Loot** | `lootable_item_added` | `item: DataItem` |
+| | `lootable_item_removed` | `item: DataItem` |
+| | `display_lootable_item_hover_info` | `item: DataItem` |
+| | `hide_lootable_item_hover_info` | `item: DataItem` |
+| | `selected_lootable_items_picked_up` | `slots: Array[DataItem]` |
+| **Inventory** | `items_added_to_inventory` | `slots: Array[DataItem]` |
+| | `items_removed_from_inventory` | `slots: Array[DataItem]` |
+| | `item_dropped_from_inventory` | `slot: DataItem` |
+| **Item Details** | `show_item_table_details` | `item: DataItem` |
 | | `hide_item_table_details` | *(none)* |
 | **Equipment** | `equip_item` | `inventory_slot: InventorySlot` |
 | | `item_equipped` | `inventory_slot: InventorySlot` |
-| | `item_unequipped` | `item: Equipable` |
+| | `item_unequipped` | `item: EquipableItem` |
 | | `switch_equipements` | *(none — reserved)* |
-| **Potions** | `potions_added_to_list` | `potion: Potion` |
-| | `potions_unequipped` | `potion: Potion` |
-| | `potions_consumed` | `potion: Potion` |
+| **Potions** | `potions_added_to_list` | `potion: ConsumableItem` |
+| | `potions_unequipped` | `potion: ConsumableItem` |
+| | `potions_consumed` | `potion: ConsumableItem` |
+| **Merchant** | `buy_item` | `value: float, data_item: DataItem` |
 
 ### `StatsData` (`stats_data.gd`)
 **Pure data layer autoload.** Owns the live `CharacterStats` resource and all stat allocation state. No signal emissions — called by `StatsManager`.
@@ -264,9 +265,9 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 Central store for player **progress and inventory**. Stat allocation has been moved to `StatsData`/`StatsManager`.
 
 *   **Level & XP:** `get/set_player_level()`, `get/set_current_xp()` (emits `hero_xp_changed`), `get/set_total_xp_to_next_level()` (emits `hero_xp_changed`). Starts at level 1, 0 XP, 75 XP target.
-*   **Inventory:** `add/remove_lootable_item(item)`, `add/remove_inventory_item(item)`.
-*   **Equipment:** `get_equipements() → Dictionary`, `add/remove_equipable_item(item)`. The `__equipable_items` dictionary has 10 keys: `HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `WEAPON`, `RING`, `AMULET`, `CLOAK`, `PET`.
-*   **Potions:** `add_potion(potion)`, `remove_potion_from_list(potion)`. Internally stores `__potions = {"HEALTH": [], "MANA": []}`.
+*   **Inventory:** `add/remove_lootable_item(item: DataItem)`, `add/remove_inventory_item(item: DataItem)`.
+*   **Equipment:** `get_equipements() → Dictionary`, `add/remove_equipable_item(item: EquipableItem)`. Keyed by uppercase equipment category string (`WEAPON`, `HELMET`, `CHEST`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, etc.).
+*   **Potions:** `add_potion(potion: ConsumableItem)`, `remove_potion_from_list(potion: ConsumableItem)`. Internally stores `__potions = {"HEALTH": [], "MANA": []}`.
 *   **Constants** (kept for backward compat): `STAT_NAMES`, `STAT_NAMES_NO_FLT`, `POINTS_STATS_PER_LEVEL`.
 
 ### `GameManager` (`game_manager.gd`)
@@ -276,8 +277,8 @@ Orchestrates top-level game flow. Key public variables: `player_ref: Character`,
 *   **`add_xp(amount)`:** Increments XP via `PlayerData.set_current_xp()` (which emits `hero_xp_changed`), calls `level_up()` if threshold met.
 *   **`level_up()`:** Increments `player_level`, calls `stats_manager.update_available_points_on_level_up()`, `scaling_level_up()`, `StatsData.get_stats().update_current_health_and_mana()`, emits `EventBus.level_up`.
 *   **`spawn_enemy_items(enemy)`:** Gets drop zone from `enemy.get_parent().get_drop_zone()`, calls `enemy._drop_item()`, adds drops at randomized positions.
-*   **`drop_item(item)`:** Loads `drop.tscn`, gets the first `enemies_spawner` group node's drop zone, places item near `player_ref.global_position` ± `drop_range`.
-*   **`_ready()` signal connections:** `enemy_died`, `stat_allocated`→`stats_manager.add_stat_point`, `stat_deallocated`→`stats_manager.sub_stat_point`, `save_stats_points`→`stats_manager.save_stats`, `cancel_stats_points`→`stats_manager.cancel_stats`, plus all loot/inventory/equipment/potion signals.
+*   **`drop_item(item: DataItem)`:** Loads `drop.tscn`, gets the first `enemies_spawner` group node's drop zone, places item near `player_ref.global_position` ± `drop_range`.
+*   **`_ready()` signal connections:** `enemy_died`, `stat_allocated`→`stats_manager.add_stat_point`, `stat_deallocated`→`stats_manager.sub_stat_point`, `save_stats_points`→`stats_manager.save_stats`, `cancel_stats_points`→`stats_manager.cancel_stats`, `buy_item`→`_on_buy_item`, plus all loot/inventory/equipment/potion signals.
 
 ### `StatsManager` (`stats_manager.gd`)
 **Business logic layer.** Instantiated inside `GameManager` (`var stats_manager: StatsManager = StatsManager.new()`). Wraps `StatsData` mutations and emits the appropriate `EventBus` signals after each change.
@@ -286,8 +287,9 @@ Orchestrates top-level game flow. Key public variables: `player_ref: Character`,
 *   **`add_stat_point(stat_name)` / `sub_stat_point(stat_name)`:** Delegates to `StatsData`, emits signals on success.
 *   **`save_stats()` / `cancel_stats()`:** Delegates to `StatsData`, always emits signals.
 *   **`update_available_points_on_level_up()`:** Adds `POINTS_PER_LEVEL` to available points, resets temp points and `allocate_point_saved`, emits signals.
-*   **`calculate_equipment_bonus(equipement, operation = "equip")`:** Processes `equipement.get_effective_stats_breakdown()` and calls `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()` for each stat. Handles `Weapon` (weapon_power) and `Armor` (armor_defense, armor_resist) separately.
+*   **`calculate_equipment_bonus(equipement: EquipableItem, operation = "equip")`:** Evaluates `equipement.base_damage` for weapon power and `equipement.base_defense` for armor defense in `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()`.
 *   **`get_total(stat_name)` / `get_allocated_stat(stat_name)` / `get_temp_allocated_stat(stat_name)`:** Thin delegation wrappers to `StatsData`.
+
 
 ### `SaveManager` (`save_manager.gd`)
 Stub node. Reserved for save/load persistence logic. No active implementation.
@@ -507,96 +509,68 @@ extends Resource
 @export var defense: float = 0.0
 @export var resistance: float = 0.0
 @export var xp_reward: int = 25
-@export var drop_list: Array[Item] = []
+@export var custom_db_item_objects: Array[DataItem] = []
 ```
 
 ### Item System (`resources/items/`)
 Inheritance chain:
 ```
-Item  →  Equipable  →  Weapon
-                    →  Armor
-      →  Consumable →  Potion
-      →  Gem
+DataItem  →  EquipableItem
+          →  ConsumableItem
+          →  Gem (extends Item / DataItem)
+
+Legacy (DEPRECATED): Item, Equipable, Weapon, Armor, Consumable, Potion
 ```
 
-#### `Item` (base — `item.gd`)
+#### `DataItem` (base — `data_item.gd`)
 ```gdscript
-class_name Item
+class_name DataItem
 extends Resource
 
-enum ItemType { EQUIPABLE, CONSUMABLE, QUEST, ENCHANTMENT }
-enum Rarety   { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY }   # ← "Rarety" (typo in codebase)
-
+@export var item_id: String = ""
 @export var item_name: String = ""
-@export var description: String = ""
-@export var icon: Texture2D
-@export var item_type: ItemType
-@export var rarety: Rarety = Rarety.COMMON                  # ← "rarety" (typo in codebase)
+@export var price: int = 0
+@export var grid_coordinate: Vector2 = Vector2.ZERO
+
+func get_item_texture() -> AtlasTexture
 ```
 
-#### `Equipable` (`equipable.gd`)
+#### `EquipableItem` (`equipable_item.gd`)
 ```gdscript
-class_name Equipable
-extends Item
+class_name EquipableItem
+extends DataItem
 
-@export var player_type: CharacterClass.PlayerType = CharacterClass.PlayerType.ALL
+enum EquipmentCategory { WEAPON, ARMOR, ACCESSORY }
+enum ArmorType { SHIELD, CHEST, HEAD, LEGS_FEET, FEET, RING, NECKLACE }
+enum WeaponType { DAGGER, SWORD, TWO_HANDED_SWORD, MELEE, TOOL_MELEE, AXE, TOOL_AXE, TWO_HANDED_AXE, MACE, TWO_HANDED_MACE, BOW, CROSSBOW, THROWING, POLEARM, STAFF, WAND }
+
+@export var equipment_type: String = ""
+@export var player_class: String = "ALL"
+@export var required_level: int = 1
+@export var base_damage: int = 0
+@export var base_defense: int = 0
 @export var upgrade_level: int = 0
 @export var tradable: bool = true
-@export var gems_slots_count: int        # number of available gem slots
-@export var gems: Array[Gem] = []        # currently socketed gems (max gems_slots_count)
-@export var level: int = 1               # required player level to equip
-@export var stat_bonus: Dictionary       # base stat bonus values
+@export var gems_slots_count: int = 0
+@export var gems: Array[Gem] = []
+@export var stat_bonus: Dictionary
 
+func is_armor() -> bool
+func get_item_texture() -> AtlasTexture
 func get_gems() -> Array[Gem]
 func get_effective_stats_breakdown() -> Dictionary
 func get_gems_stats_bonus() -> Dictionary
 ```
 
-#### `Weapon` (`weapon.gd`)
+#### `ConsumableItem` (`consumable_item.gd`)
 ```gdscript
-class_name Weapon
-extends Equipable
-
-enum WeaponType { SWORD, AXE, BOW, STAFF, DAGGER }
-
-@export var weapon_type: WeaponType
-@export var base_attack_power: float = 10.0
-
-func get_base_attack_power() -> float   # base_attack_power rounded to 1 decimal digit
-```
-
-#### `Armor` (`armor.gd`)
-```gdscript
-class_name Armor
-extends Equipable
-
-enum ArmorType { HELMET, CHEST, BOOTS, GLOVES, SHIELD, RING, AMULET, CLOAK }
-
-@export var armor_type: ArmorType
-@export var base_defense: float = 5.0
-@export var base_resist: float = 0.0
-@export var upgrade_resistance_level: int = 0
-
-func get_total_defense() -> float        # base_defense + sum(gem.get_def_bonus())
-func get_total_resistance() -> float     # base_resist + sum(gem.get_resist_bonus())
-```
-
-#### `Consumable` & `Potion` (`consumable.gd`, `potion.gd`)
-```gdscript
-class_name Consumable
-extends Item
+class_name ConsumableItem
+extends DataItem
 
 enum ConsumableType { POTION, POISON }
-@export var consumable_type: ConsumableType = ConsumableType.POTION
 
-class_name Potion
-extends Consumable
-
-enum PotionType { HEALTH_POTION, MANA_POTION }
-@export var potion_type: PotionType = PotionType.HEALTH_POTION
-@export var heal_percentage: int = 10
-
-func get_potion_effect() -> Dictionary
+@export var heal_amount: int = 0
+@export var potion_type: String = "HEALTH"
 ```
 
 #### `Gem` (`gem.gd`)
