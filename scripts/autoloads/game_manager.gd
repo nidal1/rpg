@@ -188,11 +188,16 @@ func _on_potion_consumed(potion: ConsumableItem):
 
 func _on_buy_item(_value: float, _data_item: DataItem):
 	var _item_price = _data_item.price
+	print("item_price: ",_item_price)
 	var _total_price = _item_price * int(_value)
+	print(" total_price: ", _total_price)
 	var player_available_gold = PlayerData.get_available_gold()
-
+	print("player_available_gold: ", player_available_gold)
 	if player_available_gold >= _total_price:
-		PlayerData.set_available_gold(player_available_gold - _total_price)
+		var remaning = player_available_gold - _total_price
+		print("remaning: ", remaning)
+		PlayerData.set_available_gold(remaning)
 		PlayerData.add_inventory_item(_data_item)
 		var _items_to_add: Array[DataItem] = [_data_item]
 		EventBus.items_added_to_inventory.emit(_items_to_add)
+		EventBus.udpate_available_gold.emit(remaning)

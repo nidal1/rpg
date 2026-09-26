@@ -18,6 +18,9 @@ signal toggle_merchant_store_panel_visibility(items: Array[DataItem])
 ## Emitted when buy button merchant store emited.
 @warning_ignore("UNUSED_SIGNAL")
 signal buy_item(value: float, data_item: DataItem)
+## Emitted when updating available gold.
+@warning_ignore("UNUSED_SIGNAL")
+signal udpate_available_gold(value: int)
 
 # ─── Game & Combat Signals ───────────────────────────────────────────────────
 ## Emitted when an enemy dies.

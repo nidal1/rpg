@@ -63,12 +63,13 @@ offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
 theme_override_styles/panel = ExtResource("6_v6jg3")
-current_tab = 0
+current_tab = 1
 tab_0/title = "Stats"
 tab_1/title = "Inventory"
 tab_2/title = "Equipements"
 
 [node name="StatsPanel" type="Panel" parent="HUD/TabContainer" unique_id=651739754]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Stats"
@@ -110,7 +111,6 @@ layout_mode = 2
 text = "cancel"
 
 [node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("6_v6jg3")
 metadata/_tab_index = 1
@@ -128,14 +128,27 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer" unique_id=599233294]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer" unique_id=14443548]
 layout_mode = 2
 
-[node name="InventoryContainer" type="GridContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/ScrollContainer" unique_id=1767503483]
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=599233294]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InventoryContainer" type="GridContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1767503483]
 layout_mode = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=831329803]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+alignment = 2
+
+[node name="AvailableGoldLabel" type="Label" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=246052039]
+layout_mode = 2
+text = "Available Gold: 1000"
 
 [node name="EquipementsPanel" type="Panel" parent="HUD/TabContainer" unique_id=1387920178]
 visible = false

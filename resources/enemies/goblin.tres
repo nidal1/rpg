@@ -3,28 +3,26 @@
 [ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_3kmag"]
 [ext_resource type="Texture2D" uid="uid://dvr7dqk0dx8vc" path="res://assets/sprites/enemies/Goblin/Goblin.png" id="1_8t8dg"]
 [ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="1_ttibx"]
-[ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="2_qxlb2"]
-[ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="3_8263n"]
+[ext_resource type="Script" uid="uid://cb7byq6j3gtg5" path="res://resources/items/consumable_item.gd" id="2_eoums"]
 
 [sub_resource type="Resource" id="Resource_3kmag"]
-script = ExtResource("3_8263n")
-equipment_type = "SWORD"
-player_class = "WARRIOR"
-required_level = 3
-base_damage = 10
-item_id = "w_ir_04"
-item_name = "Iron Shortsword"
-price = 120
-grid_coordinate = Vector2(3, 0)
+script = ExtResource("2_eoums")
+heal_amount = 20
+item_id = "p_hp_02"
+item_name = "Small Health Potion"
+price = 25
+max_stack = 20
+grid_coordinate = Vector2(8, 0)
 
 [sub_resource type="Resource" id="Resource_qxlb2"]
-script = ExtResource("3_8263n")
-equipment_type = "DAGGER"
-player_class = "WARRIOR"
-base_damage = 5
-item_id = "w_ir_01"
-item_name = "Iron Dagger"
-price = 50
+script = ExtResource("2_eoums")
+heal_amount = 20
+potion_type = "MANA"
+item_id = "p_mp_02"
+item_name = "Small Mana Potion"
+price = 30
+max_stack = 20
+grid_coordinate = Vector2(8, 2)
 
 [resource]
 script = ExtResource("1_ttibx")

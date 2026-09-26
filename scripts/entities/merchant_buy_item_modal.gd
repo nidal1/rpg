@@ -3,7 +3,7 @@ class_name MerchantBuyItemModal
 
 signal buy_button_clicked(value: float)
 
-var value: float = 0
+var value: float = 1
 
 func get_value():
 	return value

@@ -13,7 +13,7 @@ var lootable_items_numbers = 20
 var selected_lootable_items: Array[LootableItemSlot] = []
 
 var inventory_slots: Array[InventorySlot] = []
-var inventory_slots_number = 56
+var inventory_slots_number = 48
 
 var item_table_details_visible: bool = false
 var item_table_details_instance: EquipableTableDetails
@@ -55,7 +55,8 @@ var item_card_details_instance: ItemCardDetails
 
 # Inventory items section
 @onready var inventory_slot_scene: PackedScene = preload("res://scenes/ui/inventory_slot.tscn")
-@onready var inventory_container: GridContainer = $HUD/TabContainer/InventoryPanel/MarginContainer/ScrollContainer/InventoryContainer
+@onready var inventory_container: GridContainer = $HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer/InventoryContainer
+@onready var available_gold_label: Label = $HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer/AvailableGoldLabel
 
 # Equipement section
 @onready var helmet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/HelmetSlot
@@ -104,7 +105,7 @@ func _ready() -> void:
 	EventBus.hide_item_table_details.connect(_on_hide_item_table_details)
 
 	EventBus.potions_added_to_list.connect(_on_potion_slot_potions_added_to_list)
-	
+	EventBus.udpate_available_gold.connect(_on_udpate_available_gold)
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
@@ -360,3 +361,6 @@ func _on_health_potion_texture_button_pressed() -> void:
 
 func _on_mana_potion_texture_button_pressed() -> void:
 	print("mana potion pressed")
+
+func _on_udpate_available_gold(_value: int):
+	available_gold_label.text = str("Available Gold: ",_value)
