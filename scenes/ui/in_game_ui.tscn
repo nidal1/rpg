@@ -19,18 +19,36 @@
 [ext_resource type="Texture2D" uid="uid://bvjae5rkkw5sd" path="res://assets/ui/UI Elements/UI Elements/Icons/fc6.png" id="5_wccuv"]
 [ext_resource type="PackedScene" uid="uid://t37fxc5pdjau" path="res://scenes/entities/items/item_card_details.tscn" id="6_j3b8l"]
 [ext_resource type="Texture2D" uid="uid://cmjjhadk8f3jg" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_3.png" id="6_mexbj"]
-[ext_resource type="StyleBox" uid="uid://nq8ggso6cy50" path="res://scenes/ui/item/panel_style.tres" id="6_v6jg3"]
 [ext_resource type="Texture2D" uid="uid://cuslvps177wfi" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_4.png" id="7_p7bhm"]
 [ext_resource type="Texture2D" uid="uid://di1mdx6626ce5" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_6.png" id="9_mexbj"]
+[ext_resource type="PackedScene" uid="uid://gwik5u50mlc4" path="res://scenes/ui/paper_1.tscn" id="9_oo1a1"]
 [ext_resource type="Texture2D" uid="uid://ilool20evaxa" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_9.png" id="9_y68uj"]
 [ext_resource type="Texture2D" uid="uid://0lud3t4ji2du" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_7.png" id="10_2mxn5"]
 [ext_resource type="Texture2D" uid="uid://b3y183bg8576m" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_5.png" id="10_p7bhm"]
 [ext_resource type="Script" uid="uid://byefa5snk07d4" path="res://scripts/entities/equipement_slot.gd" id="11_b7ceb"]
 [ext_resource type="Texture2D" uid="uid://bie6mta5n5i4b" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_8.png" id="11_x5m13"]
+[ext_resource type="Texture2D" uid="uid://b4sq84taajpdf" path="res://assets/ui/UI Elements/UI Banners from the store page/papers/SpecialPaper.png" id="24_025po"]
 [ext_resource type="PackedScene" uid="uid://c4c7qy28qw872" path="res://scenes/ui/potion_slot.tscn" id="25_mk8tb"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wccuv"]
-bg_color = Color(0.029506557, 0.029506557, 0.029506557, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oo1a1"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cxdun"]
+texture_margin_left = 64.0
+texture_margin_right = 64.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1fyp7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kvb6y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m3i8w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_07d5x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pdjph"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_025po"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cxdun"]
 
 [node name="InGameUI" type="Control" unique_id=995481230]
 layout_mode = 3
@@ -56,29 +74,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="HUD" unique_id=1739939539]
+[node name="TabsPanel" type="Control" parent="HUD" unique_id=265289012]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control" parent="HUD/TabsPanel" unique_id=707186123 instance=ExtResource("9_oo1a1")]
+layout_mode = 1
+offset_left = 68.0
+offset_top = 168.0
+offset_right = 508.0
+offset_bottom = 633.0
+
+[node name="TabContainer" type="TabContainer" parent="HUD/TabsPanel" unique_id=1739939539]
 layout_mode = 0
 offset_left = 64.0
 offset_top = 192.0
 offset_right = 544.0
 offset_bottom = 648.0
-theme_override_styles/panel = ExtResource("6_v6jg3")
-current_tab = 1
+theme_override_constants/side_margin = 45
+theme_override_constants/tab_separation = 13
+theme_override_constants/icon_separation = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_oo1a1")
+theme_override_styles/tabbar_background = SubResource("StyleBoxTexture_cxdun")
+theme_override_styles/tab_unselected = SubResource("StyleBoxEmpty_1fyp7")
+theme_override_styles/tab_selected = SubResource("StyleBoxEmpty_kvb6y")
+current_tab = 0
 tab_0/title = "Stats"
 tab_1/title = "Inventory"
 tab_2/title = "Equipements"
 
-[node name="StatsPanel" type="Panel" parent="HUD/TabContainer" unique_id=651739754]
-visible = false
+[node name="StatsPanel" type="Panel" parent="HUD/TabsPanel/TabContainer" unique_id=651739754]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_m3i8w")
 metadata/_tab_index = 0
 metadata/_tab_name = "Stats"
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/TabContainer/StatsPanel" unique_id=1544061521]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/TabsPanel/TabContainer/StatsPanel" unique_id=1544061521]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 33.0
+offset_right = -12.0
+offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 15
@@ -86,41 +125,50 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabContainer/StatsPanel/MarginContainer" unique_id=347954799]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer" unique_id=347954799]
 layout_mode = 2
 
-[node name="StatsContainer" type="VBoxContainer" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer" unique_id=1027990030]
+[node name="StatsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer" unique_id=1027990030]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="StatsPointsLabel" type="Label" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer" unique_id=266749164]
+[node name="StatsPointsLabel" type="Label" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer" unique_id=266749164]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.27314225, 0.27314225, 0.27314222, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
 text = "Stats points: 0"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer" unique_id=1429179678]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer" unique_id=1429179678]
 layout_mode = 2
 theme_override_constants/separation = 4
 alignment = 2
 
-[node name="SaveStatsButton" type="Button" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1364666441]
+[node name="SaveStatsButton" type="Button" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1364666441]
 layout_mode = 2
 text = "save"
 
-[node name="CancelStatsButton" type="Button" parent="HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1296302179]
+[node name="CancelStatsButton" type="Button" parent="HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1296302179]
 layout_mode = 2
 text = "cancel"
 
-[node name="InventoryPanel" type="Panel" parent="HUD/TabContainer" unique_id=1015041114]
+[node name="InventoryPanel" type="Panel" parent="HUD/TabsPanel/TabContainer" unique_id=1015041114]
+visible = false
 layout_mode = 2
-theme_override_styles/panel = ExtResource("6_v6jg3")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_07d5x")
 metadata/_tab_index = 1
 metadata/_tab_name = "Inventory"
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/TabContainer/InventoryPanel" unique_id=494295017]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/TabsPanel/TabContainer/InventoryPanel" unique_id=494295017]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = 25.0
+offset_right = -12.0
+offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 15
@@ -128,39 +176,47 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer" unique_id=14443548]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer" unique_id=14443548]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=599233294]
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=599233294]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InventoryContainer" type="GridContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1767503483]
+[node name="InventoryContainer" type="GridContainer" parent="HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1767503483]
 layout_mode = 2
 theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
-columns = 8
+columns = 7
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=831329803]
-custom_minimum_size = Vector2(0, 50)
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer" unique_id=831329803]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 alignment = 2
 
-[node name="AvailableGoldLabel" type="Label" parent="HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=246052039]
+[node name="AvailableGoldLabel" type="Label" parent="HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=246052039]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.27314225, 0.27314225, 0.27314222, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
 text = "Available Gold: 1000"
 
-[node name="EquipementsPanel" type="Panel" parent="HUD/TabContainer" unique_id=1387920178]
+[node name="EquipementsPanel" type="Panel" parent="HUD/TabsPanel/TabContainer" unique_id=1387920178]
 visible = false
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pdjph")
 metadata/_tab_index = 2
 metadata/_tab_name = "Equipements"
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/TabContainer/EquipementsPanel" unique_id=274030432]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel" unique_id=274030432]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 15.0
+offset_right = -1.0
+offset_bottom = -55.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 15
@@ -168,64 +224,64 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer" unique_id=1299132125]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer" unique_id=1299132125]
 layout_mode = 2
 
-[node name="EquipementLeftContainerSlots" type="VBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1246977906]
+[node name="EquipementLeftContainerSlots" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1246977906]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="HelmetSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=2113032951 instance=ExtResource("4_2mxn5")]
+[node name="HelmetSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=2113032951 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("4_i8k7l")
 slot_key = "HELMET"
 
-[node name="ChestSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=1644574225 instance=ExtResource("4_2mxn5")]
+[node name="ChestSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=1644574225 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("5_sy304")
 slot_key = "CHEST"
 
-[node name="WeaponSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=618093414 instance=ExtResource("4_2mxn5")]
+[node name="WeaponSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=618093414 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("6_mexbj")
 slot_key = "WEAPON"
 
-[node name="BootsSLot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=1450529610 instance=ExtResource("4_2mxn5")]
+[node name="BootsSLot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots" unique_id=1450529610 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("7_p7bhm")
 slot_key = "BOOTS"
 
-[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=712566337]
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=712566337]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HeroEquipementImage" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/CenterContainer" unique_id=1362067185]
+[node name="HeroEquipementImage" type="TextureRect" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/CenterContainer" unique_id=1362067185]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 texture = ExtResource("4_ulc1b")
 expand_mode = 3
 stretch_mode = 4
 
-[node name="EquipementRightContainerSlots" type="VBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1496058745]
+[node name="EquipementRightContainerSlots" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer" unique_id=1496058745]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="PetSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=2019675956 instance=ExtResource("4_2mxn5")]
+[node name="PetSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=2019675956 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("9_y68uj")
 slot_key = "PET"
 
-[node name="Panel" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=630027172]
+[node name="Panel" type="Panel" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=630027172]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel" unique_id=678764799]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel" unique_id=678764799]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -234,7 +290,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="AmuletSlot" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer" unique_id=1285149445]
+[node name="AmuletSlot" type="Panel" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer" unique_id=1285149445]
 custom_minimum_size = Vector2(40, 80)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -243,7 +299,7 @@ script = ExtResource("11_b7ceb")
 placeholder_image = ExtResource("10_2mxn5")
 slot_key = "AMULET"
 
-[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot" unique_id=1063449013]
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot" unique_id=1063449013]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -251,20 +307,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlaceholderEquipementImage" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot/CenterContainer" unique_id=924975805]
+[node name="PlaceholderEquipementImage" type="TextureRect" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot/CenterContainer" unique_id=924975805]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("4_i8k7l")
 expand_mode = 1
 
-[node name="EquipementImage" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot/CenterContainer" unique_id=137511537]
+[node name="EquipementImage" type="TextureRect" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot/CenterContainer" unique_id=137511537]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 expand_mode = 1
 
-[node name="ContextMenu" type="PopupMenu" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot" unique_id=1497035597]
+[node name="ContextMenu" type="PopupMenu" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot" unique_id=1497035597]
 
-[node name="RingSlot" type="Panel" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer" unique_id=1044102782]
+[node name="RingSlot" type="Panel" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer" unique_id=1044102782]
 custom_minimum_size = Vector2(40, 80)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -273,7 +329,7 @@ script = ExtResource("11_b7ceb")
 placeholder_image = ExtResource("11_x5m13")
 slot_key = "RING"
 
-[node name="CenterContainer" type="CenterContainer" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot" unique_id=1412081937]
+[node name="CenterContainer" type="CenterContainer" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot" unique_id=1412081937]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -281,25 +337,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlaceholderEquipementImage" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot/CenterContainer" unique_id=1150231885]
+[node name="PlaceholderEquipementImage" type="TextureRect" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot/CenterContainer" unique_id=1150231885]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 texture = ExtResource("4_i8k7l")
 expand_mode = 1
 
-[node name="EquipementImage" type="TextureRect" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot/CenterContainer" unique_id=1617026085]
+[node name="EquipementImage" type="TextureRect" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot/CenterContainer" unique_id=1617026085]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 expand_mode = 1
 
-[node name="ContextMenu" type="PopupMenu" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot" unique_id=801720037]
+[node name="ContextMenu" type="PopupMenu" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot" unique_id=801720037]
 
-[node name="ShieldSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=1606505808 instance=ExtResource("4_2mxn5")]
+[node name="ShieldSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=1606505808 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("9_mexbj")
 slot_key = "SHIELD"
 
-[node name="CloakSlot" parent="HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=815313141 instance=ExtResource("4_2mxn5")]
+[node name="CloakSlot" parent="HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots" unique_id=815313141 instance=ExtResource("4_2mxn5")]
 layout_mode = 2
 placeholder_image = ExtResource("10_p7bhm")
 slot_key = "CLOAK"
@@ -318,18 +374,35 @@ offset_right = 222.0
 offset_bottom = 287.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("6_v6jg3")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_025po")
+
+[node name="Control" parent="HUD/MerchantPanel" unique_id=1220756513 instance=ExtResource("9_oo1a1")]
+custom_minimum_size = Vector2(200.8, 456)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 164.0
+offset_top = -270.0
+offset_right = 476.0
+offset_bottom = 238.35797
+scale = Vector2(-1, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/MerchantPanel" unique_id=1708705384]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -43.5
+offset_right = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="HUD/MerchantPanel/VBoxContainer" unique_id=1748571687]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 text = "Merchant Shop"
 horizontal_alignment = 1
@@ -478,7 +551,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LootableItemsTable" type="Panel" parent="Control" unique_id=1587979812]
-visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -488,13 +560,23 @@ offset_top = 224.0
 offset_right = -72.0
 offset_bottom = 536.0
 grow_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_wccuv")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cxdun")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/LootableItemsTable" unique_id=1726162190]
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/LootableItemsTable" unique_id=1607776510]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("24_025po")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/LootableItemsTable" unique_id=1726162190]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.048780486
+anchor_right = 0.97865856
+anchor_bottom = 0.97115386
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 5
@@ -521,7 +603,7 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/separation = 6
-alignment = 2
+alignment = 1
 
 [node name="PickAllDroppedItemsButton" type="Button" parent="Control/LootableItemsTable/MarginContainer/VBoxContainer/HBoxContainer" unique_id=16752257]
 layout_mode = 2

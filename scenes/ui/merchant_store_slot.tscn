@@ -1,17 +1,21 @@
 [gd_scene format=3 uid="uid://bkreo8a05im8s"]
 
-[ext_resource type="StyleBox" uid="uid://b83so8yhxhn0k" path="res://scenes/ui/item/slot_style.tres" id="1_0g1og"]
+[ext_resource type="Texture2D" uid="uid://bvqum0nhjegu7" path="res://assets/ui/UI Elements/UI Banners from the store page/Banner/Slots.png" id="1_ie68h"]
 [ext_resource type="Script" uid="uid://dy83w0ofyomxp" path="res://scripts/entities/merchant_store_slot.gd" id="2_ie68h"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wbnqj"]
+texture = ExtResource("1_ie68h")
+region_rect = Rect2(128, 128, 64, 64)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ie68h"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wbnqj"]
-bg_color = Color(0.6, 0.6, 0.6, 0.101960786)
+bg_color = Color(0.34901962, 0.34901962, 0.34901962, 0.5019608)
 
 [node name="Merchant_store_slot" type="Panel" unique_id=1924314923]
 custom_minimum_size = Vector2(50, 50)
-theme_override_styles/panel = ExtResource("1_0g1og")
+theme_override_styles/panel = SubResource("StyleBoxTexture_wbnqj")
 script = ExtResource("2_ie68h")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=884206776]

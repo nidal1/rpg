@@ -32,21 +32,21 @@ var current_slot_state: LootableItemSlotState = LootableItemSlotState.normal
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
-	style_box.border_color = slot_normal_stat_border_color
-	style_box.border_width_left = 1
-	style_box.border_width_right = 1
-	style_box.border_width_top = 1
-	style_box.border_width_bottom = 1
-	style_box.corner_radius_top_left = 3
-	style_box.corner_radius_top_right = 3
-	style_box.corner_radius_bottom_left = 3
-	style_box.corner_radius_bottom_right = 3
-	style_box.bg_color = Color("#191919")
-	style_box.draw_center = true
-	add_theme_stylebox_override("panel", style_box)
+	# style_box.border_color = slot_normal_stat_border_color
+	# style_box.border_width_left = 1
+	# style_box.border_width_right = 1
+	# style_box.border_width_top = 1
+	# style_box.border_width_bottom = 1
+	# style_box.corner_radius_top_left = 3
+	# style_box.corner_radius_top_right = 3
+	# style_box.corner_radius_bottom_left = 3
+	# style_box.corner_radius_bottom_right = 3
+	# style_box.bg_color = Color("#191919")
+	# style_box.draw_center = true
+	# add_theme_stylebox_override("panel", style_box)
 
-	lootable_item_button.mouse_entered.connect(func(): _on_lootable_item_button_mouse_entered())
-	lootable_item_button.mouse_exited.connect(func(): _on_lootable_item_button_mouse_exited())
+	# lootable_item_button.mouse_entered.connect(func(): _on_lootable_item_button_mouse_entered())
+	# lootable_item_button.mouse_exited.connect(func(): _on_lootable_item_button_mouse_exited())
 	lootable_item_button.pressed.connect(func(): _on_lootable_item_button_mouse_pressed())
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
@@ -61,9 +61,6 @@ func set_item(item_resource: DataItem) -> void:
 func clear_slot() -> void:
 	lootable_item_image.texture = null
 	item = null
-	current_slot_state = LootableItemSlotState.normal
-	style_box.border_color = slot_normal_stat_border_color
-	add_theme_stylebox_override("panel", style_box)
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_lootable_item_button_mouse_entered() -> void:

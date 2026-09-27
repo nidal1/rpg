@@ -13,7 +13,7 @@ var lootable_items_numbers = 20
 var selected_lootable_items: Array[LootableItemSlot] = []
 
 var inventory_slots: Array[InventorySlot] = []
-var inventory_slots_number = 48
+var inventory_slots_number = 35
 
 var item_table_details_visible: bool = false
 var item_table_details_instance: EquipableTableDetails
@@ -33,16 +33,16 @@ var item_card_details_instance: ItemCardDetails
 
 # Hero panel section
 @onready var hud: Panel = $HUD
-@onready var tab_container: TabContainer = $HUD/TabContainer
+@onready var tab_container: TabContainer = $HUD/TabsPanel/TabContainer
 @onready var panel_button: TextureButton = $Control/HeroPanelControl/PanelButton
 
 # Hero Stats Tab
-@onready var stats_panel: Panel = $HUD/TabContainer/StatsPanel
+@onready var stats_panel: Panel = $HUD/TabsPanel/TabContainer/StatsPanel
 @onready var stat_container_scene: PackedScene = preload("res://scenes/ui/stat_container.tscn")
-@onready var stats_container: VBoxContainer = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer
-@onready var stats_points_label: Label = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer/StatsPointsLabel
-@onready var save_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/SaveStatsButton
-@onready var cancel_stats_button: Button = $HUD/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelStatsButton
+@onready var stats_container: VBoxContainer = $HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer
+@onready var stats_points_label: Label = $HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/StatsContainer/StatsPointsLabel
+@onready var save_stats_button: Button = $HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/SaveStatsButton
+@onready var cancel_stats_button: Button = $HUD/TabsPanel/TabContainer/StatsPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelStatsButton
 
 # Lootable items section
 @onready var lootable_item_slot_scene: PackedScene = preload("res://scenes/ui/lootable_item_slot.tscn")
@@ -55,19 +55,19 @@ var item_card_details_instance: ItemCardDetails
 
 # Inventory items section
 @onready var inventory_slot_scene: PackedScene = preload("res://scenes/ui/inventory_slot.tscn")
-@onready var inventory_container: GridContainer = $HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer/InventoryContainer
-@onready var available_gold_label: Label = $HUD/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer/AvailableGoldLabel
+@onready var inventory_container: GridContainer = $HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/ScrollContainer/InventoryContainer
+@onready var available_gold_label: Label = $HUD/TabsPanel/TabContainer/InventoryPanel/MarginContainer/VBoxContainer/HBoxContainer/AvailableGoldLabel
 
 # Equipement section
-@onready var helmet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/HelmetSlot
-@onready var chest_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/ChestSlot
-@onready var weapon_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/WeaponSlot
-@onready var boots_s_lot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/BootsSLot
-@onready var pet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/PetSlot
-@onready var amulet_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot
-@onready var ring_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot
-@onready var shield_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/ShieldSlot
-@onready var cloak_slot: EquipementSlot = $HUD/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/CloakSlot
+@onready var helmet_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/HelmetSlot
+@onready var chest_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/ChestSlot
+@onready var weapon_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/WeaponSlot
+@onready var boots_s_lot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementLeftContainerSlots/BootsSLot
+@onready var pet_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/PetSlot
+@onready var amulet_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/AmuletSlot
+@onready var ring_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/Panel/HBoxContainer/RingSlot
+@onready var shield_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/ShieldSlot
+@onready var cloak_slot: EquipementSlot = $HUD/TabsPanel/TabContainer/EquipementsPanel/MarginContainer/HBoxContainer/EquipementRightContainerSlots/CloakSlot
 
 # Potions section
 @onready var health_potion_slot: PotionSlot = $PotionsContainer/MarginContainer/HBoxContainer/HealthPotionSlot

@@ -221,8 +221,6 @@ tile_map_data = PackedByteArray("AAALAAAACAADAAAAAAALAAEACAADAAEAAAALAAIACAADAAI
 tile_set = SubResource("TileSet_1yooq")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
-process_mode = 4
-visible = false
 position = Vector2(920, 352)
 enemies = Array[PackedScene]([ExtResource("3_v5dby"), ExtResource("3_v5dby"), ExtResource("3_v5dby")])
 

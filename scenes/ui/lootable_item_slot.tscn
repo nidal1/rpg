@@ -1,9 +1,15 @@
 [gd_scene format=3 uid="uid://23puqyvgn0v1"]
 
 [ext_resource type="Script" uid="uid://djvlximmto6ys" path="res://scripts/entities/lootable_item_slot.gd" id="1_3oxfd"]
+[ext_resource type="Texture2D" uid="uid://bvqum0nhjegu7" path="res://assets/ui/UI Elements/UI Banners from the store page/Banner/Slots.png" id="1_5s8pn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y0401"]
+texture = ExtResource("1_5s8pn")
+region_rect = Rect2(128, 128, 64, 64)
 
 [node name="LootableItemSlot" type="Panel" unique_id=28589270]
 custom_minimum_size = Vector2(50, 50)
+theme_override_styles/panel = SubResource("StyleBoxTexture_y0401")
 script = ExtResource("1_3oxfd")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=810724154]
