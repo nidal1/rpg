@@ -728,14 +728,22 @@ graph_offset = Vector2(-223.73738, 66.94727)
 [sub_resource type="CircleShape2D" id="CircleShape2D_gyb7e"]
 
 [node name="Warrior" unique_id=1846937653 groups=["warrior"] instance=ExtResource("1_dkafm")]
+z_as_relative = false
+y_sort_enabled = true
+collision_mask = 1
 script = ExtResource("2_7lrd5")
 character_class = ExtResource("3_plp3v")
 
+[node name="CollisionShape" parent="." index="0" unique_id=806179761]
+z_as_relative = false
+position = Vector2(0, 0)
+
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="3" unique_id=2109842110]
-position = Vector2(0, -38)
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_plp3v")
-animation = &"attack2_right"
-frame = 3
+animation = &"attack1_right"
+offset = Vector2(0, -33)
+flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4" unique_id=1589137320]
 libraries/ = SubResource("AnimationLibrary_kln5d")

@@ -9,14 +9,17 @@ script = ExtResource("1_ywitd")
 [node name="StatNameLabel" type="Label" parent="." unique_id=233959580]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.27314225, 0.27314225, 0.27314222, 1)
 text = "STR: "
 
 [node name="StatPointLabel" type="Label" parent="." unique_id=679858401]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.27314225, 0.27314225, 0.27314222, 1)
 text = "2 "
 
 [node name="Label" type="Label" parent="." unique_id=632334964]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.27314225, 0.27314225, 0.27314222, 1)
 text = " points"
 
 [node name="AddStatPointButton" type="Button" parent="." unique_id=1197734909]
