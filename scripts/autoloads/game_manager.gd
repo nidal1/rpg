@@ -35,7 +35,6 @@ func register_player(player: Character) -> void:
 	player_ref = player
 	var character_stats = player_ref.character_class.get_class_stats()
 	stats_manager.initialize(character_stats)
-	EventBus.initialize_hero_stats_ui.emit()
 
 ## Adds experience points to the player.
 func add_xp(amount: int) -> void:

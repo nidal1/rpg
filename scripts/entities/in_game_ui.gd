@@ -91,8 +91,7 @@ func _ready() -> void:
 	hud.visible = false
 	lootable_items_table.visible = false
 	merchant_panel.visible = false
-
-	EventBus.initialize_hero_stats_ui.connect(_initialize_hero_stats)
+	
 	EventBus.toggle_hud_visiblity.connect(_on_toggle_hud_visibility)
 	EventBus.toggle_merchant_store_panel_visibility.connect(_on_toggle_merchant_store_panel_visibility)
 	EventBus.display_lootable_item_hover_info.connect(_on_display_lootable_item_hover_info)
@@ -110,6 +109,7 @@ func _ready() -> void:
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
 	
+	_initialize_hero_stats()
 	_initialize_lootable_items_panel()
 	_initialize_inventory_tab()
 

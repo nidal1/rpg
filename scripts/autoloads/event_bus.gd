@@ -4,9 +4,6 @@
 extends Node
 # ─── UI & HUD Signals ────────────────────────────────────────────────────────
 @warning_ignore("UNUSED_SIGNAL")
-## Emitted to initialize the hero stats UI.
-signal initialize_hero_stats_ui()
-@warning_ignore("UNUSED_SIGNAL")
 ## Emitted when the hero's avatar texture is updated.
 signal update_hero_avatar_texture(texture: Texture2D)
 ## Emitted to toggle HUD visibility.
