@@ -47,6 +47,7 @@ goblin=""
 enemies_spawner=""
 archer=""
 pickable=""
+BoneScrappy=""
 
 [input]
 

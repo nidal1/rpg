@@ -44,6 +44,10 @@ var current_health: float = 0.0
 func _ready() -> void:
 	super._ready()
 	wander_cd.wait_time = wander_cd_time
+	
+	animation_tree = $AnimationTree
+	animation_playback = animation_tree["parameters/playback"]
+	animation_tree.set_active(true)
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
@@ -101,9 +105,14 @@ func _on_damage_received() -> void:
 func _get_attack_damage() -> float:
 	return attack_damage
 
-# ─── Private Methods ─────────────────────────────────────────────────────────
-## Virtual method to play the attack animation.
-func _play_attack_animation() -> void: pass
+func _play_movement_animation() -> void:
+	animation_tree.set("parameters/run/blend_position", last_facing_dir)
+
+func _play_idle_animation() -> void:
+	animation_tree.set("parameters/idle/blend_position", last_facing_dir)
+
+func _play_attack_animation() -> void:
+	animation_tree.set("parameters/basic_attack/BlendSpace1D/blend_position", last_facing_dir)
 
 ## Loads the enemy's stats and parameters.
 func _load_params(params: EnemyParams) -> void:
@@ -159,8 +168,7 @@ func _target_reached() -> bool:
 	return target and global_position.distance_to(target.global_position) < attack_range
 
 ## Returns the defense of the enemy.
-func _get_defense() -> float:
-	return enemy_params.defense
+func _get_defense() -> float: return enemy_params.defense
 
 ## Wanders to a specific position.
 func _wander(_to_position: Vector2) -> void:
@@ -184,6 +192,12 @@ func _drop_item() -> Array[DropItem]:
 	return drops
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	print("attackL ", enemy_params.enemy_name)
+	var target_node = area.get_parent()
+	if target_node.is_in_group("player"):
+		target_node.take_damage(_get_attack_damage())
+
 func _on_detection_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		target = body

@@ -26,9 +26,10 @@ grid_coordinate = Vector2(8, 2)
 
 [resource]
 script = ExtResource("1_ttibx")
-enemy_name = "Goblin"
+enemy_name = "Goblin Spearhead"
 enemy_avatar = ExtResource("1_8t8dg")
 max_health = 200.0
 attack_damage = 5.0
+attack_range = 126.0
 custom_db_item_objects = Array[ExtResource("1_3kmag")]([SubResource("Resource_3kmag"), SubResource("Resource_qxlb2")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

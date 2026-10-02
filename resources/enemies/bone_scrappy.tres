@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://cw4ppatmuudij"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_45x82"]
+[ext_resource type="Script" uid="uid://cb7byq6j3gtg5" path="res://resources/items/consumable_item.gd" id="2_nvcgg"]
+[ext_resource type="Texture2D" uid="uid://dhbp5jixbe5q7" path="res://assets/sprites/enemies/Skull/Skull.png" id="3_45x82"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="4_ukeov"]
+
+[sub_resource type="Resource" id="Resource_3kmag"]
+script = ExtResource("2_nvcgg")
+heal_amount = 20
+item_id = "p_hp_02"
+item_name = "Small Health Potion"
+price = 25
+max_stack = 20
+grid_coordinate = Vector2(8, 0)
+
+[sub_resource type="Resource" id="Resource_qxlb2"]
+script = ExtResource("2_nvcgg")
+heal_amount = 20
+potion_type = "MANA"
+item_id = "p_mp_02"
+item_name = "Small Mana Potion"
+price = 30
+max_stack = 20
+grid_coordinate = Vector2(8, 2)
+
+[resource]
+script = ExtResource("4_ukeov")
+enemy_name = "Bone Scrappy"
+enemy_avatar = ExtResource("3_45x82")
+max_health = 200.0
+attack_damage = 5.0
+attack_range = 75.0
+attack_cooldown = 1.1
+custom_db_item_objects = Array[ExtResource("1_45x82")]([SubResource("Resource_3kmag"), SubResource("Resource_qxlb2")])
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

@@ -70,7 +70,7 @@ func _die() -> void:
 func take_damage(amount: float) -> void:
 	var reduced_damage = max(1.0, amount - _get_defense())
 	var current_hp = StatsData.get_stats().get_current_hp()
-	StatsData.get_stats().set_current_hp(current_hp - reduced_damage)
+	StatsData.get_stats().set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()
 
 func _on_damage_received() -> void:
@@ -112,7 +112,7 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 	character_class.base_stats = character_class.get_class_stats()
-	
+	print(character_class.base_stats)
 	GameManager.register_player(self)
 
 ## Triggers the attack animation.

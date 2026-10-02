@@ -2,19 +2,19 @@
 
 [ext_resource type="Texture2D" uid="uid://j2pv12plc4qe" path="res://assets/tilesets/Tilemap_color1.png" id="1_dphjl"]
 [ext_resource type="Texture2D" uid="uid://c62c4r37d3ood" path="res://assets/tilesets/Water Background color.png" id="1_gb53w"]
+[ext_resource type="PackedScene" uid="uid://bumm72tsei1p3" path="res://scenes/entities/player/mage.tscn" id="1_mxkvs"]
 [ext_resource type="Texture2D" uid="uid://bxbq75gn8o0bl" path="res://assets/tilesets/Water Foam.png" id="2_srmg5"]
 [ext_resource type="PackedScene" uid="uid://bqqhkgwtk31y3" path="res://scenes/entities/enemies/enemies_spawner.tscn" id="3_1fp7r"]
 [ext_resource type="Texture2D" uid="uid://dlj7yc1t47vvf" path="res://assets/tilesets/Tilemap_color2.png" id="3_5qq27"]
-[ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="3_v5dby"]
 [ext_resource type="PackedScene" uid="uid://c27gyy0t4r3ge" path="res://scenes/ui/in_game_ui.tscn" id="4_6m72w"]
 [ext_resource type="Texture2D" uid="uid://bt5df4e633ruu" path="res://assets/tilesets/world_boundries.png" id="4_dlabj"]
 [ext_resource type="Texture2D" uid="uid://ucxp45n78vn7" path="res://assets/tilesets/Shadow.png" id="4_umvgx"]
-[ext_resource type="PackedScene" uid="uid://hovii1v0s7yp" path="res://scenes/entities/player/warrior.tscn" id="4_v5dby"]
 [ext_resource type="TileSet" uid="uid://dovpjuix7w223" path="res://scenes/entities/tilesets/environement_prps.tres" id="5_mxkvs"]
 [ext_resource type="PackedScene" uid="uid://bc2gn8rbdsuy5" path="res://scenes/entities/npcs/merchant.tscn" id="6_t5ptc"]
 [ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="8_j2gmx"]
 [ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="9_1yooq"]
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
+[ext_resource type="PackedScene" uid="uid://djn23j8bcj1bc" path="res://scenes/entities/enemies/bone_scrappy.tscn" id="10_mxkvs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -822,8 +822,8 @@ grid_coordinate = Vector2(3, 0)
 z_as_relative = false
 y_sort_enabled = true
 
-[node name="Warrior" parent="." unique_id=1846937653 instance=ExtResource("4_v5dby")]
-position = Vector2(2480, 1449)
+[node name="Mage" parent="." unique_id=1846937653 instance=ExtResource("1_mxkvs")]
+position = Vector2(2221, 1190)
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=173780313]
 z_as_relative = false
@@ -870,13 +870,10 @@ tile_map_data = PackedByteArray("AACeABUAAAAAAAAAAACdABUAAAAAAAAAAACcABUAAAAAAAA
 tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
-process_mode = 4
-visible = false
-position = Vector2(825, 553)
-enemies = Array[PackedScene]([ExtResource("3_v5dby"), ExtResource("3_v5dby"), ExtResource("3_v5dby")])
+position = Vector2(2501, 1586)
+enemies = Array[PackedScene]([ExtResource("10_mxkvs")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
-visible = false
 
 [node name="InGameUI" parent="CanvasLayer" unique_id=995481230 instance=ExtResource("4_6m72w")]
 
