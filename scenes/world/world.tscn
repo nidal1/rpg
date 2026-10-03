@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://j2pv12plc4qe" path="res://assets/tilesets/Tilemap_color1.png" id="1_dphjl"]
 [ext_resource type="Texture2D" uid="uid://c62c4r37d3ood" path="res://assets/tilesets/Water Background color.png" id="1_gb53w"]
-[ext_resource type="PackedScene" uid="uid://bumm72tsei1p3" path="res://scenes/entities/player/mage.tscn" id="1_mxkvs"]
+[ext_resource type="PackedScene" uid="uid://c524lbbm14abm" path="res://scenes/entities/player/player_instancier.tscn" id="1_mxkvs"]
 [ext_resource type="Texture2D" uid="uid://bxbq75gn8o0bl" path="res://assets/tilesets/Water Foam.png" id="2_srmg5"]
 [ext_resource type="PackedScene" uid="uid://bqqhkgwtk31y3" path="res://scenes/entities/enemies/enemies_spawner.tscn" id="3_1fp7r"]
 [ext_resource type="Texture2D" uid="uid://dlj7yc1t47vvf" path="res://assets/tilesets/Tilemap_color2.png" id="3_5qq27"]
@@ -822,8 +822,10 @@ grid_coordinate = Vector2(3, 0)
 z_as_relative = false
 y_sort_enabled = true
 
-[node name="Mage" parent="." unique_id=1846937653 instance=ExtResource("1_mxkvs")]
-position = Vector2(2221, 1190)
+[node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
+position = Vector2(2351, 1179)
+selected_player = 1
+instance_position = Vector2(2351, 1179)
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=173780313]
 z_as_relative = false

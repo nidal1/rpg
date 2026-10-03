@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c524lbbm14abm"]
+
+[ext_resource type="Script" uid="uid://cug46hitddq56" path="res://scripts/entities/player_instancier.gd" id="1_u4vul"]
+[ext_resource type="PackedScene" uid="uid://hovii1v0s7yp" path="res://scenes/entities/player/warrior.tscn" id="2_076ya"]
+[ext_resource type="PackedScene" uid="uid://b6og01if5qj0d" path="res://scenes/entities/player/archer.tscn" id="3_lw3fi"]
+[ext_resource type="PackedScene" uid="uid://bumm72tsei1p3" path="res://scenes/entities/player/mage.tscn" id="4_7pbky"]
+
+[node name="PlayerInstancier" type="Node2D" unique_id=1605576321]
+script = ExtResource("1_u4vul")
+selected_player = 2
+warrior_scene = ExtResource("2_076ya")
+archer_scene = ExtResource("3_lw3fi")
+mage_scene = ExtResource("4_7pbky")
+
+[node name="PlayerCamera" type="Camera2D" parent="." unique_id=1684371786]
+position_smoothing_enabled = true
