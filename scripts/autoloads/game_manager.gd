@@ -55,7 +55,9 @@ func level_up() -> void:
 
 ## Scales the required XP for the next level up.
 func scaling_level_up() -> void:
-	PlayerData.set_total_xp_to_next_level(int(level_scaler * PlayerData.get_total_xp_to_next_level()))
+	var next_level: int = PlayerData.get_player_level()
+	var new_required_xp: int = ProgressionManager.get_required_xp_for_level(next_level, level_scaler)
+	PlayerData.set_total_xp_to_next_level(new_required_xp)
 
 ## Randomizes a position near the specified position within the drop range.
 func randomize_drop_position(position: Vector2, _drop_range: float = drop_range) -> Vector2:
@@ -87,7 +89,10 @@ func drop_item(item: DataItem) -> void:
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
-	var xp_reward = enemy.enemy_params.xp_reward
+	var enemy_lvl: int = enemy.enemy_level if "enemy_level" in enemy else 1
+	var enemy_rank = enemy.enemy_rank if "enemy_rank" in enemy else ProgressionManager.EnemyRank.NORMAL
+	var xp_reward: int = ProgressionManager.get_enemy_xp_yield(enemy_lvl, enemy_rank, PlayerData.get_player_level())
+	
 	if xp_reward > 0:
 		add_xp(xp_reward)
 	spawn_enemy_items(enemy)

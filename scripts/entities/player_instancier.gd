@@ -17,6 +17,8 @@ class_name PlayerInstancier
 @export var mage_scene: PackedScene
 
 var player_instance: Player = null
+var old_camera_position: Vector2 = Vector2.ZERO
+var is_camera_in_player_position: bool = false
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "instance_position":
@@ -30,8 +32,6 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	
-
 	match selected_player:
 		CharacterClass.PlayerType.WARRIOR:
 			if warrior_scene: player_instance = warrior_scene.instantiate()
@@ -42,12 +42,13 @@ func _ready() -> void:
 
 	if player_instance:
 		var target_pos: Vector2 = global_position if use_default_position else instance_position
-		player_instance.position = target_pos
 		
 		add_child(player_instance)
 		player_instance.global_position = target_pos
+		is_camera_in_player_position = player_instance.global_position.is_equal_approx(old_camera_position)
 		player_instance.force_update_transform()
 
 func _physics_process(delta: float) -> void:
-	if player_instance:
+	if player_instance and not is_camera_in_player_position:
 		player_camera.global_position = player_instance.global_position
+		old_camera_position = player_camera.global_position

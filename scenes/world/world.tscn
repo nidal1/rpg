@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="9_1yooq"]
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
 [ext_resource type="PackedScene" uid="uid://djn23j8bcj1bc" path="res://scenes/entities/enemies/bone_scrappy.tscn" id="10_mxkvs"]
+[ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="11_71ii3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1699,7 +1700,6 @@ y_sort_enabled = true
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
 position = Vector2(2351, 1179)
-selected_player = 0
 instance_position = Vector2(2351, 1179)
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=173780313]
@@ -1756,7 +1756,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-enemies = Array[PackedScene]([ExtResource("10_mxkvs")])
+enemies = Array[PackedScene]([ExtResource("11_71ii3"), ExtResource("10_mxkvs")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 

@@ -25,13 +25,18 @@ var attack_cooldown: float
 var attack_range: float
 var attack_damage: float
 var enemy_name: String = ""
-
+var enemy_level: int = 1
+var enemy_rank: ProgressionManager.EnemyRank = ProgressionManager.EnemyRank.NORMAL
+var base_attack_anim_duration: float = 1.0
+var base_recovery_delay: float = 1.0
 var wander_cd_time: float = 5.0
 var is_wandering: bool = false
 var spawn_position: Vector2
 
 var max_health: float = 0.0
 var current_health: float = 0.0
+
+var current_timescale: float = 0.5
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
@@ -47,7 +52,9 @@ func _ready() -> void:
 	
 	animation_tree = $AnimationTree
 	animation_playback = animation_tree["parameters/playback"]
+	animation_BA_attack_speed_parameter_path = "parameters/basic_attack/attack_speed/scale"
 	animation_tree.set_active(true)
+
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
@@ -121,9 +128,14 @@ func _load_params(params: EnemyParams) -> void:
 	speed = params.speed
 	attack_damage = params.attack_damage
 	attack_range = params.attack_range
-	attack_cooldown = params.attack_cooldown
-	name = params.enemy_name
+	base_recovery_delay = params.base_recovery_delay
 
+	enemy_name = params.enemy_name
+	enemy_level = params.enemy_level
+	enemy_rank = params.enemy_rank
+	base_attack_anim_duration = params.base_attack_anim_duration
+
+	_apply_progression_scaling()
 	_initialize_enemy_stats(max_health, params.enemy_avatar)
 
 ## Initializes the enemy's UI stats.
@@ -191,9 +203,20 @@ func _drop_item() -> Array[DropItem]:
 		drops.append(drop_item)
 	return drops
 
+func _apply_progression_scaling() -> void:
+	# Calculate scaled damage
+	attack_damage = ProgressionManager.get_enemy_damage(enemy_level, enemy_rank, enemy_params.attack_damage if enemy_params else 10.0)
+	
+	# Calculate scaled attack speed (capped at 1.0)
+	current_timescale = ProgressionManager.get_enemy_attack_speed(enemy_level)
+	# Update attack cooldown dynamically based on total attack cycle formula
+	attack_cooldown = ProgressionManager.get_total_attack_cycle(base_attack_anim_duration, current_timescale, base_recovery_delay)
+	
+	# Update AnimationTree TimeScale parameter node
+	ProgressionManager.update_animation_timescale(animation_tree, current_timescale, animation_BA_attack_speed_parameter_path)
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	print("attackL ", enemy_params.enemy_name)
 	var target_node = area.get_parent()
 	if target_node.is_in_group("player"):
 		target_node.take_damage(_get_attack_damage())

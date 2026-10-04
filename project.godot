@@ -22,6 +22,7 @@ GameManager="*uid://cat3lf71wnt4v"
 SaveManager="*uid://cvsdpcrym128a"
 PlayerData="*uid://exb82x6c6fyk"
 StatsData="*uid://bnoy6hfmrkv7f"
+ProgressionManager="*uid://drrbgbd86shga"
 
 [display]
 
