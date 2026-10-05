@@ -8,11 +8,11 @@
 [ext_resource type="Script" uid="uid://dlmyx3rwudqws" path="res://scripts/entities/state_machine/states/player/player_dead_state.gd" id="6_5sj0x"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1hmtu"]
-radius = 17.0
-height = 36.0
+radius = 19.0
+height = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8akj5"]
-radius = 60.0
+radius = 90.0
 
 [node name="Player" unique_id=1846937653 groups=["player"] instance=ExtResource("1_1hmtu")]
 collision_layer = 2
@@ -58,6 +58,7 @@ script = ExtResource("5_1murt")
 script = ExtResource("6_5sj0x")
 
 [node name="PickableDection" type="Area2D" parent="." index="6" unique_id=678009553]
+position = Vector2(0, -31)
 collision_layer = 0
 collision_mask = 128
 input_pickable = false

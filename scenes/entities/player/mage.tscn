@@ -543,16 +543,16 @@ bullet_scene = ExtResource("3_diwrq")
 attack_range = 500.0
 character_class = ExtResource("4_diwrq")
 
-[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="6" unique_id=1016072717]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")
 animation = &"attack1_right"
 flip_h = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="7" unique_id=1048694170]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1048694170]
 libraries/ = SubResource("AnimationLibrary_jbr1l")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="8" unique_id=929997336]
+[node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=929997336]
 active = false
 tree_root = SubResource("AnimationNodeStateMachine_yipsv")
 anim_player = NodePath("../AnimationPlayer")

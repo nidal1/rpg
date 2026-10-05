@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="8_j2gmx"]
 [ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="9_1yooq"]
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
-[ext_resource type="PackedScene" uid="uid://bs82h6c1hdc7t" path="res://scenes/entities/enemies/pot_helm_brawler.tscn" id="11_m114p"]
+[ext_resource type="PackedScene" uid="uid://bh1evcwlda2mc" path="res://scenes/entities/enemies/landfin.tscn" id="11_m114p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1699,6 +1699,7 @@ y_sort_enabled = true
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
 position = Vector2(2351, 1179)
+selected_player = 1
 instance_position = Vector2(2351, 1179)
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=173780313]

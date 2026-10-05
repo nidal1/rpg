@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ytrrhtjwhgjd"]
+
+[ext_resource type="Texture2D" uid="uid://d01ci4x3xw6ii" path="res://assets/sprites/enemies/Hammerhead/harpoon.png" id="1_7vlf5"]
+[ext_resource type="Script" uid="uid://o8c6hsphsxbs" path="res://scripts/entities/arrow.gd" id="1_cpy82"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7vlf5"]
+size = Vector2(82, 15)
+
+[node name="Harpoon" type="Area2D" unique_id=1922198341]
+collision_layer = 16
+collision_mask = 32
+input_pickable = false
+monitorable = false
+script = ExtResource("1_cpy82")
+max_distance = 320.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=843301592]
+texture = ExtResource("1_7vlf5")
+offset = Vector2(40, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1379412436]
+position = Vector2(41, -2.5)
+shape = SubResource("RectangleShape2D_7vlf5")
+debug_color = Color(0.6503027, 0.5201089, 1.92523e-07, 0.41960785)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

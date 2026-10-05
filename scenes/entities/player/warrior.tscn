@@ -734,7 +734,6 @@ radius = 66.0
 
 [node name="Warrior" unique_id=1846937653 groups=["warrior"] instance=ExtResource("1_dkafm")]
 z_as_relative = false
-collision_mask = 1
 script = ExtResource("2_7lrd5")
 character_class = ExtResource("3_plp3v")
 

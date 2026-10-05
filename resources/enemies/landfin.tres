@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://cqs724ji1ynqe"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_mbp1x"]
+[ext_resource type="Texture2D" uid="uid://duhi78gkycgsh" path="res://assets/sprites/enemies/Shark/Shark.png" id="2_yosui"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_bxw53"]
+
+[resource]
+script = ExtResource("3_bxw53")
+enemy_name = "Landfin"
+enemy_avatar = ExtResource("2_yosui")
+max_health = 110.0
+speed = 75.0
+attack_damage = 11.0
+attack_range = 320.0
+base_recovery_delay = 1.1
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"
