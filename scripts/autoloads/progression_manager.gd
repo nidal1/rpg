@@ -18,7 +18,7 @@ const DEFAULT_BASE_DAMAGE: float = 10.0
 const DAMAGE_LINEAR_SCALE: float = 2.5
 const DAMAGE_CURVE_COEFF: float = 0.8
 
-const MIN_ATTACK_TIMESCALE: float = 0.5
+const MIN_ATTACK_TIMESCALE: float = 0.3
 const MAX_ATTACK_TIMESCALE: float = 1.0
 const MAX_SPEED_SCALING_LEVEL: int = 40
 

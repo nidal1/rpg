@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://dn7s3aoebsdiy"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_wwgbj"]
+[ext_resource type="Texture2D" uid="uid://8d38p0se8x03" path="res://assets/sprites/enemies/Hammerhead/Hammerhead.png" id="2_x4rno"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_43864"]
+
+[resource]
+script = ExtResource("3_43864")
+enemy_name = "Pot-Helm Brawler"
+enemy_avatar = ExtResource("2_x4rno")
+max_health = 160.0
+speed = 45.0
+attack_damage = 14.0
+base_recovery_delay = 1.5
+base_attack_anim_duration = 0.2
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

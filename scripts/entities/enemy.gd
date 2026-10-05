@@ -113,13 +113,13 @@ func _get_attack_damage() -> float:
 	return attack_damage
 
 func _play_movement_animation() -> void:
-	animation_tree.set("parameters/run/blend_position", last_facing_dir)
+	$AnimatedSprite.scale.x = last_facing_dir
 
 func _play_idle_animation() -> void:
-	animation_tree.set("parameters/idle/blend_position", last_facing_dir)
+	$AnimatedSprite.scale.x = last_facing_dir
 
 func _play_attack_animation() -> void:
-	animation_tree.set("parameters/basic_attack/BlendSpace1D/blend_position", last_facing_dir)
+	$AnimatedSprite.scale.x = last_facing_dir
 
 ## Loads the enemy's stats and parameters.
 func _load_params(params: EnemyParams) -> void:
@@ -159,7 +159,6 @@ func _move_to_position(_target_position: Vector2) -> void:
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
 	if global_position.distance_to(nav_agent.target_position) < 1:
-		print("Target reached")
 		return
 	_move()
 
@@ -209,6 +208,7 @@ func _apply_progression_scaling() -> void:
 	
 	# Calculate scaled attack speed (capped at 1.0)
 	current_timescale = ProgressionManager.get_enemy_attack_speed(enemy_level)
+	
 	# Update attack cooldown dynamically based on total attack cycle formula
 	attack_cooldown = ProgressionManager.get_total_attack_cycle(base_attack_anim_duration, current_timescale, base_recovery_delay)
 	
