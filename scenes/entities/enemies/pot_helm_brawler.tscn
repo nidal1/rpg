@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_lrnas"]
 [ext_resource type="Resource" uid="uid://dn7s3aoebsdiy" path="res://resources/enemies/pot_helm_brawler.tres" id="2_uw3cu"]
+[ext_resource type="SpriteFrames" uid="uid://dmr0m70fdfvyh" path="res://resources/enemies/pot_helm_brawler_sprite_frames.tres" id="3_n0yjq"]
 
 [sub_resource type="Animation" id="Animation_7jq01"]
 resource_name = "attack"
@@ -116,6 +117,10 @@ enemy_params = ExtResource("2_uw3cu")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="0" unique_id=1817828319]
 libraries/ = SubResource("AnimationLibrary_mvha0")
+
+[node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
+sprite_frames = ExtResource("3_n0yjq")
+animation = &"attack"
 
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)

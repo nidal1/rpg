@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://cvuxpslnc0vnh"]
+
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="1_dv0wp"]
+[ext_resource type="PackedScene" uid="uid://bs82h6c1hdc7t" path="res://scenes/entities/enemies/pot_helm_brawler.tscn" id="1_lcd0m"]
+
+[resource]
+script = ExtResource("1_dv0wp")
+enemy_type = 1
+scene = ExtResource("1_lcd0m")
+quantity = 3

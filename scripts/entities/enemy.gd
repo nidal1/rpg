@@ -3,6 +3,13 @@
 extends Combatant
 class_name Enemy
 
+enum EnemiesNames {
+	BONE_SCREPPY,
+	POT_HELM_BRAWLER,
+	LANDFIN,
+	GOBLIN_SPEARHEAD
+}
+
 # ─── Signals ─────────────────────────────────────────────────────────────────
 ## Emitted when the enemy spawns.
 signal on_spawned(spawn_position: Vector2)

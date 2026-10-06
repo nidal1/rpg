@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://boceti3x87ahm"]
+
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="1_5vdrc"]
+[ext_resource type="PackedScene" uid="uid://bh1evcwlda2mc" path="res://scenes/entities/enemies/landfin.tscn" id="1_cd3ya"]
+
+[resource]
+script = ExtResource("1_5vdrc")
+enemy_type = 2
+scene = ExtResource("1_cd3ya")
+quantity = 0

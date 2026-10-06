@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://xm8m8sej17sx"]
+
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="1_hpaey"]
+[ext_resource type="PackedScene" uid="uid://l3moteyljj7e" path="res://scenes/entities/enemies/goblin.tscn" id="1_wrqkn"]
+
+[resource]
+script = ExtResource("1_hpaey")
+enemy_type = 3
+scene = ExtResource("1_wrqkn")
+quantity = 2

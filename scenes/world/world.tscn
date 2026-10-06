@@ -15,7 +15,11 @@
 [ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="8_j2gmx"]
 [ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="9_1yooq"]
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
-[ext_resource type="PackedScene" uid="uid://djn23j8bcj1bc" path="res://scenes/entities/enemies/bone_scrappy.tscn" id="11_m114p"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="11_tytul"]
+[ext_resource type="Resource" uid="uid://qo44dhxf14vu" path="res://resources/enemies/bone_scrappy_spawn_config.tres" id="12_t634p"]
+[ext_resource type="Resource" uid="uid://xm8m8sej17sx" path="res://resources/enemies/goblin_spearhead_spawn_config.tres" id="13_6hctx"]
+[ext_resource type="Resource" uid="uid://cvuxpslnc0vnh" path="res://resources/enemies/pot_helm_brawler_spawn_config.tres" id="14_ues17"]
+[ext_resource type="Resource" uid="uid://boceti3x87ahm" path="res://resources/enemies/landfin_spawn_config.tres" id="15_xq18t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1756,7 +1760,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-enemies = Array[PackedScene]([ExtResource("11_m114p")])
+spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 
