@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://bcej3amoq658x"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_r1c6r"]
+[ext_resource type="Texture2D" uid="uid://dijp06ov2ntuk" path="res://assets/sprites/enemies/Lizard/Lizard_Avatar.png" id="2_epoa6"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_wne24"]
+
+[resource]
+script = ExtResource("3_wne24")
+enemy_avatar = ExtResource("2_epoa6")
+max_health = 130.0
+speed = 55.0
+attack_damage = 13.0
+base_recovery_delay = 1.3
+base_attack_anim_duration = 0.3
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

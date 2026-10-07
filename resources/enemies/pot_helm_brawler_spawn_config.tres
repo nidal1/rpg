@@ -7,4 +7,4 @@
 script = ExtResource("1_dv0wp")
 enemy_type = 1
 scene = ExtResource("1_lcd0m")
-quantity = 3
+enabled = false

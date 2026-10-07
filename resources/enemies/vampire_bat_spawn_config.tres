@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://bgxu7cl8mpd4k"]
+
+[ext_resource type="PackedScene" uid="uid://bgxgjwxg8sbxa" path="res://scenes/entities/enemies/vampire_bat.tscn" id="1_fnlmy"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_af02x"]
+
+[resource]
+script = ExtResource("2_af02x")
+enemy_type = 12
+scene = ExtResource("1_fnlmy")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

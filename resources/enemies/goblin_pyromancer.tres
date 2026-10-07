@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://p7y0tcemv8q"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_vcf80"]
+[ext_resource type="Texture2D" uid="uid://bef1cruq0vl3r" path="res://assets/sprites/enemies/Torch Goblin/Torch Goblin_Avatar.png" id="2_71f1e"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_vwsod"]
+
+[resource]
+script = ExtResource("3_vwsod")
+enemy_name = "Goblin Pyromancer"
+enemy_avatar = ExtResource("2_71f1e")
+max_health = 85.0
+speed = 80.0
+attack_damage = 11.5
+attack_range = 68.0
+base_recovery_delay = 0.9
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

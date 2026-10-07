@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://fchf2geh212y"]
+
+[ext_resource type="PackedScene" uid="uid://4t6866as0op6" path="res://scenes/entities/enemies/dungeon_spider.tscn" id="1_jgncq"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_pflr3"]
+
+[resource]
+script = ExtResource("2_pflr3")
+enemy_type = 6
+scene = ExtResource("1_jgncq")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

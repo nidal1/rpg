@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://uufbjuc1pxhc"]
+
+[ext_resource type="PackedScene" uid="uid://73m146tchdti" path="res://scenes/entities/enemies/shadow_bandit.tscn" id="1_fnrld"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_1707c"]
+
+[resource]
+script = ExtResource("2_1707c")
+enemy_type = 11
+scene = ExtResource("1_fnrld")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

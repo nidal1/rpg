@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://jkx8lov432sn"]
+
+[ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_8s8d3"]
+[ext_resource type="Resource" uid="uid://ymykv0wlxy23" path="res://resources/enemies/sand_snake.tres" id="2_cvc2u"]
+[ext_resource type="SpriteFrames" uid="uid://dimwpqep58hde" path="res://resources/enemies/sand_snake_sprite_frames.tres" id="3_v3svt"]
+
+[sub_resource type="Animation" id="Animation_cvc2u"]
+resource_name = "attack"
+length = 0.20000334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_v3svt"]
+resource_name = "idle"
+length = 0.26667002
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_falu1"]
+resource_name = "run"
+length = 0.26667002
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v3svt"]
+_data = {
+&"attack": SubResource("Animation_cvc2u"),
+&"idle": SubResource("Animation_v3svt"),
+&"run": SubResource("Animation_falu1")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8s8d3"]
+radius = 74.0
+
+[node name="SandSnake" unique_id=1846937653 instance=ExtResource("1_8s8d3")]
+enemy_params = ExtResource("2_cvc2u")
+
+[node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
+position = Vector2(0, -23)
+sprite_frames = ExtResource("3_v3svt")
+animation = &"run"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=604791286]
+libraries/ = SubResource("AnimationLibrary_v3svt")
+
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
+position = Vector2(0, -16)
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(0, -25)
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+rotation = 1.5707964
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = SubResource("CircleShape2D_8s8d3")
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -106.0
+offset_top = -106.0
+offset_right = 106.0
+offset_bottom = -66.0

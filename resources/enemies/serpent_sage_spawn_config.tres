@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://bvtiqc4xq3bbm"]
+
+[ext_resource type="PackedScene" uid="uid://tbsupdsq7o8x" path="res://scenes/entities/enemies/serpent_sage.tscn" id="1_nbv38"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_t14xw"]
+
+[resource]
+script = ExtResource("2_t14xw")
+scene = ExtResource("1_nbv38")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

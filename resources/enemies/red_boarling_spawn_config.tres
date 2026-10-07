@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://di8jisqb5bhrm"]
+
+[ext_resource type="PackedScene" uid="uid://dmceulxuf8rhj" path="res://scenes/entities/enemies/red_boarling.tscn" id="1_jxjq8"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_pwvun"]
+
+[resource]
+script = ExtResource("2_pwvun")
+enemy_type = 14
+scene = ExtResource("1_jxjq8")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

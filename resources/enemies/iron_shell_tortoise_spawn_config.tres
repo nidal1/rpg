@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://bhelwdsw7imq4"]
+
+[ext_resource type="PackedScene" uid="uid://ba433s3t4hyfk" path="res://scenes/entities/enemies/iron_shell_tortoise.tscn" id="1_yljee"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_fw72s"]
+
+[resource]
+script = ExtResource("2_fw72s")
+enemy_type = 8
+scene = ExtResource("1_yljee")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

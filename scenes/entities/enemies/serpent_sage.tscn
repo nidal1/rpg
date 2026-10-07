@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://tbsupdsq7o8x"]
+
+[ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_sel7q"]
+[ext_resource type="Resource" uid="uid://bcej3amoq658x" path="res://resources/enemies/serpent_sage.tres" id="2_1fxcy"]
+[ext_resource type="SpriteFrames" uid="uid://ddsb46p5dhsms" path="res://resources/enemies/serpent_sage_sprite_frames.tres" id="3_qjiks"]
+
+[sub_resource type="Animation" id="Animation_aq4qo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_jo6ol"]
+resource_name = "attack"
+length = 0.30000335
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_3r0l6"]
+resource_name = "idle"
+length = 0.23333667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_8arnk"]
+resource_name = "run"
+length = 0.20000334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bfrcg"]
+_data = {
+&"RESET": SubResource("Animation_aq4qo"),
+&"attack": SubResource("Animation_jo6ol"),
+&"idle": SubResource("Animation_3r0l6"),
+&"run": SubResource("Animation_8arnk")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ib74t"]
+radius = 70.0
+
+[node name="SerpentSage" unique_id=1846937653 instance=ExtResource("1_sel7q")]
+enemy_params = ExtResource("2_1fxcy")
+
+[node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
+position = Vector2(0, -46)
+sprite_frames = ExtResource("3_qjiks")
+animation = &"run"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=730769275]
+libraries/ = SubResource("AnimationLibrary_bfrcg")
+
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
+position = Vector2(0, -29)
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(0, -50)
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+position = Vector2(0, -33)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = SubResource("CircleShape2D_ib74t")
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -105.0
+offset_top = -144.0
+offset_right = 107.0
+offset_bottom = -104.0

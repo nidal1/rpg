@@ -17,13 +17,17 @@
 [ext_resource type="Texture2D" uid="uid://blnpc7bekbunn" path="res://assets/ui/UI Elements/UI Elements/Bars/SmallBar_Fill.png" id="13_0kssi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ofdk"]
-radius = 139.0036
+radius = 170.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6ofdk"]
-radius = 26.0
-height = 64.0
+radius = 42.0
+height = 84.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0kssi"]
+radius = 142.00352
 
 [node name="Enemy" unique_id=1846937653 groups=["enemy"] instance=ExtResource("1_4rsfo")]
+y_sort_enabled = true
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_gflvi")
@@ -32,7 +36,7 @@ enemy_params = null
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=484183233]
 position = Vector2(0, -37)
 sprite_frames = ExtResource("3_0kssi")
-animation = &"run"
+animation = &"attack"
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="1" unique_id=637872991]
 active = false
@@ -64,7 +68,19 @@ monitoring = false
 shape = SubResource("CapsuleShape2D_6ofdk")
 debug_color = Color(1, 0, 0, 0.41960785)
 
-[node name="StateMachine" parent="." index="7" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
+[node name="Hitbox" type="Area2D" parent="." index="6" unique_id=1192984412]
+position = Vector2(0, -30)
+collision_layer = 16
+collision_mask = 32
+input_pickable = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = SubResource("CircleShape2D_0kssi")
+debug_color = Color(0.99215686, 0.9843137, 0, 0.41960785)
+
+[node name="StateMachine" parent="." index="8" unique_id=1604220785 node_paths=PackedStringArray("initial_state")]
 initial_state = NodePath("EnemySpawnedState")
 
 [node name="EnemySpawnedState" type="Node" parent="StateMachine" index="0" unique_id=1748518735]
@@ -91,9 +107,9 @@ script = ExtResource("9_ljcf0")
 [node name="EnemyWanderState" type="Node" parent="StateMachine" index="7" unique_id=359657435]
 script = ExtResource("10_8tbu6")
 
-[node name="WanderCD" type="Timer" parent="." index="8" unique_id=668098841]
+[node name="WanderCD" type="Timer" parent="." index="9" unique_id=668098841]
 
-[node name="EnemyStats" type="HBoxContainer" parent="." index="9" unique_id=2145423036]
+[node name="EnemyStats" type="HBoxContainer" parent="." index="10" unique_id=2145423036]
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -116,4 +132,5 @@ text = "100 / 100"
 
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="WanderCD" to="." method="_on_wander_cd_timeout"]

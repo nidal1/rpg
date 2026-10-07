@@ -109,9 +109,6 @@ _data = {
 &"run": SubResource("Animation_l20mf")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_iwvar"]
-radius = 100.005
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_76p2t"]
 radius = 20.0
 height = 60.0
@@ -128,21 +125,11 @@ sprite_frames = ExtResource("3_46nbl")
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)
 
-[node name="Hitbox" type="Area2D" parent="." index="5" unique_id=2034468616]
-position = Vector2(0, -30)
-collision_layer = 16
-collision_mask = 32
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=1611046173]
-shape = SubResource("CircleShape2D_iwvar")
-debug_color = Color(0.99215686, 0.9843137, 0, 0.41960785)
-
-[node name="DetectionZone" parent="." index="6" unique_id=1785946638]
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 visible = false
 scale = Vector2(20, 20)
 
-[node name="Hurtbox" parent="." index="7" unique_id=1770202733]
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -30)
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
@@ -158,5 +145,3 @@ offset_left = -104.0
 offset_top = -113.0
 offset_right = 108.0
 offset_bottom = -73.0
-
-[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

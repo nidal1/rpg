@@ -109,9 +109,6 @@ _data = {
 &"run": SubResource("Animation_ogs8a")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_e2rhu"]
-radius = 88.0
-
 [node name="PotHelmBrawler" unique_id=1846937653 instance=ExtResource("1_lrnas")]
 enemy_params = ExtResource("2_uw3cu")
 
@@ -120,26 +117,14 @@ libraries/ = SubResource("AnimationLibrary_mvha0")
 
 [node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
 sprite_frames = ExtResource("3_n0yjq")
-animation = &"attack"
 
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)
 
-[node name="Hitbox" type="Area2D" parent="." index="5" unique_id=1411248274]
-position = Vector2(0, -22)
-collision_layer = 16
-collision_mask = 32
-input_pickable = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=1802868667]
-shape = SubResource("CircleShape2D_e2rhu")
-debug_color = Color(0.99215686, 0.9843137, 0, 0.41960785)
-
-[node name="DetectionZone" parent="." index="6" unique_id=1785946638]
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 position = Vector2(0, -27)
 
-[node name="Hurtbox" parent="." index="7" unique_id=1770202733]
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -32)
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
@@ -147,5 +132,3 @@ offset_left = -106.0
 offset_top = -126.0
 offset_right = 106.0
 offset_bottom = -86.0
-
-[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

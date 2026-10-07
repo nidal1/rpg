@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://bgxgjwxg8sbxa"]
+
+[ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_npxor"]
+[ext_resource type="Resource" uid="uid://yjd2ov57v108" path="res://resources/enemies/vampire_bat.tres" id="2_j4bdy"]
+[ext_resource type="SpriteFrames" uid="uid://dsnaj5habg7oj" path="res://resources/enemies/vampire_bat_sprite_frames.tres" id="3_npxor"]
+
+[sub_resource type="Animation" id="Animation_u6dkq"]
+resource_name = "attack"
+length = 0.23333667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_f7bfa"]
+resource_name = "idle"
+length = 0.20000334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_qqnom"]
+resource_name = "run"
+length = 0.13333668
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8h72y"]
+_data = {
+&"attack": SubResource("Animation_u6dkq"),
+&"idle": SubResource("Animation_f7bfa"),
+&"run": SubResource("Animation_qqnom")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2u0vn"]
+radius = 21.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n1cyd"]
+radius = 46.0
+
+[node name="VampireBat" unique_id=1846937653 instance=ExtResource("1_npxor")]
+enemy_params = ExtResource("2_j4bdy")
+
+[node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
+sprite_frames = ExtResource("3_npxor")
+animation = &"run"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=21916385]
+libraries/ = SubResource("AnimationLibrary_8h72y")
+
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
+position = Vector2(0, -41)
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(0, -41)
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = SubResource("CircleShape2D_2u0vn")
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+position = Vector2(0, -41)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = SubResource("CircleShape2D_n1cyd")
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -104.0
+offset_top = -128.0
+offset_right = 108.0
+offset_bottom = -88.0

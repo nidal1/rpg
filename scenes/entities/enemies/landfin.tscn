@@ -127,7 +127,6 @@ libraries/ = SubResource("AnimationLibrary_cujyg")
 
 [node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
 sprite_frames = ExtResource("5_tvrdo")
-animation = &"attack"
 
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)
@@ -135,12 +134,15 @@ position = Vector2(0, 0)
 [node name="CollisionShape2D" parent="DetectionZone" parent_id_path=PackedInt32Array(1785946638) index="0" unique_id=676842654]
 shape = SubResource("CircleShape2D_it8c4")
 
+[node name="CollisionShape2D" parent="Hitbox" parent_id_path=PackedInt32Array(1192984412) index="0" unique_id=474266529]
+disabled = true
+
 [node name="ArrowSpawningPosition" type="Node2D" parent="." index="9" unique_id=702020379]
 position = Vector2(14, -48)
 
 [node name="ArrowsContainer" type="Node2D" parent="." index="10" unique_id=478136141]
 
-[node name="EnemyStats" parent="." index="12" unique_id=2145423036]
+[node name="EnemyStats" parent="." index="13" unique_id=2145423036]
 offset_left = -106.0
 offset_top = -98.0
 offset_right = 106.0

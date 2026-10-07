@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://blt2oii6olgdq"]
+
+[ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_r6cri"]
+[ext_resource type="Resource" uid="uid://du5yjnlvuyw4h" path="res://resources/enemies/dire_bear.tres" id="2_ljqrv"]
+[ext_resource type="SpriteFrames" uid="uid://bkouiyerh47n1" path="res://resources/enemies/dire_bear_sprite_frames.tres" id="3_7dp36"]
+
+[sub_resource type="Animation" id="Animation_7dp36"]
+resource_name = "attack"
+length = 0.30000335
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_anhr7"]
+resource_name = "idle"
+length = 0.26667002
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_7fpdd"]
+resource_name = "run"
+length = 0.16667001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8kywp"]
+_data = {
+&"attack": SubResource("Animation_7dp36"),
+&"idle": SubResource("Animation_anhr7"),
+&"run": SubResource("Animation_7fpdd")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3onax"]
+radius = 90.0
+
+[node name="DireBear" unique_id=1846937653 instance=ExtResource("1_r6cri")]
+enemy_params = ExtResource("2_ljqrv")
+entity_name = "Dire Bear"
+
+[node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
+position = Vector2(0, -41)
+sprite_frames = ExtResource("3_7dp36")
+animation = &"run"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1036716069]
+libraries/ = SubResource("AnimationLibrary_8kywp")
+
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
+position = Vector2(0, -30)
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(-5, -41)
+
+[node name="CollisionShape2D" parent="Hitbox" parent_id_path=PackedInt32Array(1192984412) index="0" unique_id=474266529]
+shape = SubResource("CircleShape2D_3onax")
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -106.0
+offset_top = -168.0
+offset_right = 106.0
+offset_bottom = -128.0

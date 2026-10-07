@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://1ff4driap6ax"]
+
+[ext_resource type="PackedScene" uid="uid://c2vdvqedwvroy" path="res://scenes/entities/enemies/goblin_pyromancer.tscn" id="1_qapvn"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="1_xiq1v"]
+
+[resource]
+script = ExtResource("1_xiq1v")
+enemy_type = 4
+scene = ExtResource("1_qapvn")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

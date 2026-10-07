@@ -171,9 +171,6 @@ states/run/position = Vector2(606.8, 102.144005)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_n8e8d"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_7mg8d"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_qa14q"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_5qf66"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_4kwvh")]
 graph_offset = Vector2(-64.941574, 90.59566)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ysk7l"]
-radius = 75.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ysk7l"]
 radius = 12.0
 height = 62.0
@@ -187,7 +184,6 @@ libraries/ = SubResource("AnimationLibrary_5w2on")
 
 [node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
 sprite_frames = ExtResource("3_w8i0b")
-animation = &"attack"
 
 [node name="AnimationTree" parent="." index="2" unique_id=637872991]
 tree_root = SubResource("AnimationNodeStateMachine_io3hq")
@@ -195,20 +191,10 @@ tree_root = SubResource("AnimationNodeStateMachine_io3hq")
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)
 
-[node name="Hitbox" type="Area2D" parent="." index="5" unique_id=2101026835]
-position = Vector2(0, -32)
-collision_layer = 16
-collision_mask = 32
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=463855376]
-shape = SubResource("CircleShape2D_ysk7l")
-debug_color = Color(0.99215686, 0.9843137, 0, 0.41960785)
-
-[node name="DetectionZone" parent="." index="6" unique_id=1785946638]
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 scale = Vector2(20, 20)
 
-[node name="Hurtbox" parent="." index="7" unique_id=1770202733]
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -27)
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
@@ -226,5 +212,3 @@ offset_left = -104.0
 offset_top = -113.0
 offset_right = 108.0
 offset_bottom = -73.0
-
-[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

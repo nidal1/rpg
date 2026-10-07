@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://bas17pyf6jxwr"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_fauxp"]
+[ext_resource type="Texture2D" uid="uid://timsa7ns3qw8" path="res://assets/sprites/enemies/Bumblebee/Bumblebee_Avatar.png" id="2_taxxp"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_1gjhu"]
+
+[resource]
+script = ExtResource("3_1gjhu")
+enemy_name = "Angry Hornet"
+enemy_avatar = ExtResource("2_taxxp")
+max_health = 50.0
+speed = 120.0
+attack_damage = 9.0
+attack_range = 22.0
+base_recovery_delay = 0.5
+base_attack_anim_duration = 0.367
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

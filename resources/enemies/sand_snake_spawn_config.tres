@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://cmt75xwuqbaix"]
+
+[ext_resource type="PackedScene" uid="uid://jkx8lov432sn" path="res://scenes/entities/enemies/sand_snake.tscn" id="1_exdm1"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_lorpj"]
+
+[resource]
+script = ExtResource("2_lorpj")
+enemy_type = 10
+scene = ExtResource("1_exdm1")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://d1w21fn7ff67p"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_lrjbn"]
+[ext_resource type="Texture2D" uid="uid://doge6y617aocn" path="res://assets/sprites/enemies/Turtle/Turtle.png" id="2_yhfw4"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_5wvhd"]
+
+[resource]
+script = ExtResource("3_5wvhd")
+enemy_name = "Iron-Shell Tortoise"
+enemy_avatar = ExtResource("2_yhfw4")
+max_health = 220.0
+speed = 30.0
+attack_damage = 16.0
+attack_range = 60.0
+base_recovery_delay = 2.2
+base_attack_anim_duration = 0.333
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://cucbqwy8rv5cl"]
+
+[ext_resource type="PackedScene" uid="uid://blt2oii6olgdq" path="res://scenes/entities/enemies/dire_bear.tscn" id="1_n5iat"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_60rn1"]
+
+[resource]
+script = ExtResource("2_60rn1")
+enemy_type = 9
+scene = ExtResource("1_n5iat")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

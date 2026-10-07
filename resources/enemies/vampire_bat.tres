@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://yjd2ov57v108"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_vi868"]
+[ext_resource type="Texture2D" uid="uid://devbuyvds20q7" path="res://assets/sprites/enemies/Giant Bat/Giant Bat_Avatar.png" id="2_h3g5d"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_fn2y1"]
+
+[resource]
+script = ExtResource("3_fn2y1")
+enemy_name = "Vampire Bat"
+enemy_avatar = ExtResource("2_h3g5d")
+max_health = 55.0
+speed = 110.0
+attack_damage = 7.0
+attack_range = 23.0
+base_recovery_delay = 0.6
+base_attack_anim_duration = 0.233
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://b3lm0jju0ip5v"]
+
+[ext_resource type="PackedScene" uid="uid://d0um6u8u61sxl" path="res://scenes/entities/enemies/stone_hammer_minotaur.tscn" id="1_i0cji"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_eq1w4"]
+
+[resource]
+script = ExtResource("2_eq1w4")
+enemy_type = 5
+scene = ExtResource("1_i0cji")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

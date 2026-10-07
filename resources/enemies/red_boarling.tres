@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://brorlhxj67h7o"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_e0w7r"]
+[ext_resource type="Texture2D" uid="uid://draob8ebdfpx4" path="res://assets/sprites/enemies/Imp/Imp_Avatar.png" id="2_jb5wf"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_x7b4f"]
+
+[resource]
+script = ExtResource("3_x7b4f")
+enemy_name = "Red Boarling"
+enemy_avatar = ExtResource("2_jb5wf")
+max_health = 120.0
+speed = 75.0
+attack_damage = 12.0
+attack_range = 32.0
+base_recovery_delay = 1.3
+base_attack_anim_duration = 0.4
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

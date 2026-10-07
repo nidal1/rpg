@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://b3wcga4u5c2os"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_kfl7x"]
+[ext_resource type="Texture2D" uid="uid://b1wywyds1tfwv" path="res://assets/sprites/enemies/Thief/Thief_Avatar.png" id="2_1e2au"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_mcuig"]
+
+[resource]
+script = ExtResource("3_mcuig")
+enemy_name = "Shadow Bandit"
+enemy_avatar = ExtResource("2_1e2au")
+max_health = 85.0
+speed = 95.0
+attack_damage = 13.0
+attack_range = 60.0
+base_recovery_delay = 0.75
+base_attack_anim_duration = 0.2
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

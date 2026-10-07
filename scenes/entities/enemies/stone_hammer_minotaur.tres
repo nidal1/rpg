@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://daufwk6mpa86g"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_kqhvq"]
+[ext_resource type="Texture2D" uid="uid://bipn0fx7s0bq0" path="res://assets/sprites/enemies/Minotaur/Minotaur.png" id="2_qhjrd"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_3or3b"]
+
+[resource]
+script = ExtResource("3_3or3b")
+enemy_name = "Stone-Hammer Minotaur"
+enemy_avatar = ExtResource("2_qhjrd")
+max_health = 450.0
+speed = 40.0
+attack_damage = 25.0
+attack_range = 110.0
+base_recovery_delay = 2.8
+base_attack_anim_duration = 0.4
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

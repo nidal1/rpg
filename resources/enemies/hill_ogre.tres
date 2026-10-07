@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://yw3egvwdbi8h"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_nxj0s"]
+[ext_resource type="Texture2D" uid="uid://bkmjphdd356g2" path="res://assets/sprites/enemies/Troll/Troll.png" id="2_ekcp8"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_xbmd8"]
+
+[resource]
+script = ExtResource("3_xbmd8")
+enemy_name = "Hill Ogre (Boss)"
+enemy_rank = 2
+enemy_avatar = ExtResource("2_ekcp8")
+max_health = 800.0
+speed = 35.0
+attack_damage = 50.0
+attack_range = 80.0
+base_recovery_delay = 2.5
+base_attack_anim_duration = 0.2
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"
