@@ -61,8 +61,9 @@ var current_timescale: float = 0.5
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
 @onready var wander_cd: Timer = $WanderCD
 @onready var enemy_avatar: TextureRect = $EnemyStats/EnemyAvatar
-@onready var enemy_hp_progress_bar: TextureProgressBar = $EnemyStats/EnemyHPProgressBar
-@onready var enemy_hp_points: Label = $EnemyStats/EnemyHPPoints
+@onready var enemy_hp_progress_bar: TextureProgressBar = $EnemyStats/VBoxContainer/HBoxContainer/EnemyHPProgressBar
+@onready var enemy_hp_points: Label = $EnemyStats/VBoxContainer/HBoxContainer/EnemyHPPoints
+@onready var enemy_name_label: Label = $EnemyStats/VBoxContainer/EnemyNameLabel
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -162,6 +163,7 @@ func _initialize_enemy_stats(_max_health: float, _avatar_texture: Texture2D) -> 
 	_set_hp_progress_bar_max_value(_max_health)
 	_set_hp_progress_bar_value(_max_health)
 	enemy_avatar.texture = _avatar_texture
+	enemy_name_label.text = enemy_name
 
 ## Sets the HP progress bar value.
 func _set_hp_progress_bar_value(value: float) -> void:
