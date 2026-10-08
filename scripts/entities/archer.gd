@@ -1,33 +1,23 @@
 ## Archer
-## A ranged player class that shoots arrows at enemies.
+## A ranged player class extending Player, using ArcherUnit composition for shooting arrows.
 extends Player
 class_name Archer
 
 # ─── Signals ─────────────────────────────────────────────────────────────────
-## Internal signal used by the animation editor to spawn an arrow.
 signal _animation_editor_arrow_attack()
 
-# ─── Constants ───────────────────────────────────────────────────────────────
-## Offset position for spawning arrows relative to the archer.
-const ARROW_POSITION_OFFSET: Vector2 = Vector2(26.0, -51.0)
-## Width of the arrow sprite for range calculations.
-const ARROW_SPRITE_WIDTH: float = 48.0 / 2.2
-
 # ─── Exported Variables ──────────────────────────────────────────────────────
-## The scene to instantiate for the arrow projectile.
 @export var arrow_scene: PackedScene
-## The maximum attack range of the archer.
 @export var attack_range: float = 300.0
 
 # ─── Public Variables ────────────────────────────────────────────────────────
-## The current targeted enemy.
 var target: CharacterBody2D = null
-## List of enemies currently within detection range.
 var enemies_in_range: Array[CharacterBody2D] = []
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var arrow_spawning_position: Node2D = %ArrowSpawningPosition
 @onready var arrows_container: Node2D = %ArrowsContainer
+@onready var archer_unit: ArcherUnit = $ArcherUnit if has_node("ArcherUnit") else _get_or_create_archer_unit()
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -37,23 +27,14 @@ func _ready() -> void:
 	_load_classe(cls)
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
-## Spawns an arrow projectile.
-func _spawn_arrow() -> Arrow:
-	var arrow: Arrow = arrow_scene.instantiate()
-	arrow.set_as_top_level(true) # Detach the arrow's transform from the archer
-	arrow_spawning_position.position = Vector2(ARROW_POSITION_OFFSET.x * last_facing_dir, ARROW_POSITION_OFFSET.y)
-	arrows_container.add_child(arrow)
-	arrow.global_position = arrow_spawning_position.global_position
-	arrow.arrow_hit.connect(_on_arrow_hit)
-	arrow.set_max_distance(attack_range - ARROW_POSITION_OFFSET.x - ARROW_SPRITE_WIDTH)
-	return arrow
+func _get_or_create_archer_unit() -> ArcherUnit:
+	var unit = ArcherUnit.new()
+	unit.name = "ArcherUnit"
+	unit.arrow_scene = arrow_scene
+	unit.attack_range = attack_range
+	add_child(unit)
+	return unit
 
-## Moves the spawned arrow in the given direction.
-func _move_arrow(arrow: Arrow, _direction: Vector2) -> void:
-	arrow.direction = _direction
-	arrow.velocity = arrow.direction * arrow.speed
-
-## Updates the current target based on enemies in range.
 func _update_target() -> void:
 	target = null
 	for enemy in enemies_in_range:
@@ -62,31 +43,14 @@ func _update_target() -> void:
 			break
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
-## Called by the animation editor to emit the arrow attack signal.
 func _on_animation_editor_arrow_attack() -> void:
 	_animation_editor_arrow_attack.emit()
 
-## Handles the actual spawning and shooting of the arrow.
 func _on_initialized_arrow_attack() -> void:
-	var dir = Vector2(last_facing_dir, 0)
-	if target and is_instance_valid(target):
-		var target_pos = target.global_position
-		if target.has_node("Hurtbox"):
-			target_pos = target.get_node("Hurtbox").global_position
-			
-		dir = arrow_spawning_position.global_position.direction_to(target_pos)
-		
-		if sign(dir.x) != 0:
-			last_facing_dir = sign(dir.x)
-			
-	var arrow = _spawn_arrow()
-	arrow.rotation = dir.angle()
-	_move_arrow(arrow, dir)
-
-func _on_arrow_hit(area: Area2D) -> void:
-	var target_node = area.get_parent()
-	if target_node.is_in_group("enemy"):
-		target_node.take_damage(_get_attack_damage())
+	if archer_unit:
+		archer_unit.arrow_scene = arrow_scene
+		archer_unit.attack_range = attack_range
+		archer_unit.shoot_arrow(self, arrow_spawning_position, arrows_container, target, "enemy")
 
 func _on_detection_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
