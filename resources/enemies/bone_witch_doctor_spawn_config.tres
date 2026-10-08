@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://vpumjkuhowvd"]
+
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="1_6e6nc"]
+[ext_resource type="PackedScene" uid="uid://bm43pv1ktq4x4" path="res://scenes/entities/enemies/bone_witch_doctor.tscn" id="1_e7pit"]
+
+[resource]
+script = ExtResource("1_6e6nc")
+enemy_type = 16
+scene = ExtResource("1_e7pit")
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

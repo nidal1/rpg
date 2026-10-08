@@ -1,5 +1,5 @@
 extends Area2D
-class_name WaterBullet
+class_name EnemyWaterBullet
 
 signal bullet_hit(area: Area2D)
 

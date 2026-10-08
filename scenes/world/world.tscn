@@ -31,7 +31,8 @@
 [ext_resource type="Resource" uid="uid://bgxu7cl8mpd4k" path="res://resources/enemies/vampire_bat_spawn_config.tres" id="24_wnndm"]
 [ext_resource type="Resource" uid="uid://ba3mirtc4k2j6" path="res://resources/enemies/angry_hornet_spawn_config.tres" id="25_jyr8v"]
 [ext_resource type="Resource" uid="uid://di8jisqb5bhrm" path="res://resources/enemies/red_boarling_spawn_config.tres" id="26_5o5dd"]
-[ext_resource type="PackedScene" uid="uid://dkaxbl75jn0mi" path="res://scenes/entities/enemies/hill_ogre.tscn" id="27_d0ajt"]
+[ext_resource type="Resource" uid="uid://bqfc2hw6feniq" path="res://resources/enemies/hill_ogre_spawn_config.tres" id="27_5o5dd"]
+[ext_resource type="Resource" uid="uid://vpumjkuhowvd" path="res://resources/enemies/bone_witch_doctor_spawn_config.tres" id="28_d0ajt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1687,12 +1688,6 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_umvgx")
 
-[sub_resource type="Resource" id="Resource_fymcc"]
-script = ExtResource("11_tytul")
-enemy_type = 15
-scene = ExtResource("27_d0ajt")
-metadata/_custom_type_script = "uid://b76bp07tl5gay"
-
 [sub_resource type="Resource" id="Resource_gb53w"]
 script = ExtResource("9_1yooq")
 equipment_type = "DAGGER"
@@ -1778,7 +1773,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), SubResource("Resource_fymcc")])
+spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://cuvyqpm2wif3p"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_e27u6"]
+[ext_resource type="Texture2D" uid="uid://ch8eqrj7lqydx" path="res://assets/sprites/enemies/Shaman/Shaman.png" id="2_piult"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_80xn6"]
+
+[resource]
+script = ExtResource("3_80xn6")
+enemy_name = "Bone Witch Doctor"
+enemy_avatar = ExtResource("2_piult")
+max_health = 75.0
+speed = 50.0
+attack_damage = 12.0
+attack_range = 230.0
+base_recovery_delay = 1.4
+base_attack_anim_duration = 0.333
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

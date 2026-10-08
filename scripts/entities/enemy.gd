@@ -19,7 +19,8 @@ enum EnemiesNames {
 	VAMPIRE_BAT,
 	ANGRY_HORNET,
 	RED_BOARLING,
-	HILL_OGRE
+	HILL_OGRE,
+	BONE_WITCH_DOCTOR
 }
 
 # ─── Signals ─────────────────────────────────────────────────────────────────
