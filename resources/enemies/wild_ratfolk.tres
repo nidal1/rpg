@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://mncvs0vhvu1s"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_qwud5"]
+[ext_resource type="Texture2D" uid="uid://4l06mj3yqc20" path="res://assets/sprites/enemies/Gnoll/Gnoll.png" id="2_epjbv"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_jgqv4"]
+
+[resource]
+script = ExtResource("3_jgqv4")
+enemy_name = "Wild Ratfolk"
+enemy_avatar = ExtResource("2_epjbv")
+max_health = 65.0
+speed = 90.0
+attack_damage = 7.0
+attack_range = 140.0
+base_recovery_delay = 0.7
+base_attack_anim_duration = 0.267
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

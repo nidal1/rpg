@@ -21,7 +21,8 @@ enum EnemiesNames {
 	RED_BOARLING,
 	HILL_OGRE,
 	BONE_WITCH_DOCTOR,
-	ROUND_BUFFER
+	ROUND_BUFFER,
+	WILD_RATFOLK
 }
 
 # ─── Signals ─────────────────────────────────────────────────────────────────

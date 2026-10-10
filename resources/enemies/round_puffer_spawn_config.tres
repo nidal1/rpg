@@ -7,4 +7,5 @@
 script = ExtResource("2_0xgd5")
 enemy_type = 17
 scene = ExtResource("1_u0b01")
+enabled = false
 metadata/_custom_type_script = "uid://b76bp07tl5gay"

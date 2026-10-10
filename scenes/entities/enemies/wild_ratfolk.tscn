@@ -1,0 +1,155 @@
+[gd_scene format=3 uid="uid://rielcgyu67wu"]
+
+[ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_7sae8"]
+[ext_resource type="Script" uid="uid://4qp6bapoqjmo" path="res://scripts/entities/enemy_archer.gd" id="2_flc2o"]
+[ext_resource type="PackedScene" uid="uid://ckv83b827a2cw" path="res://scenes/entities/enemies/wild_ratfolk_bone.tscn" id="3_5vfma"]
+[ext_resource type="Resource" uid="uid://mncvs0vhvu1s" path="res://resources/enemies/wild_ratfolk.tres" id="4_olm8k"]
+[ext_resource type="SpriteFrames" uid="uid://dtr6lk0g2mu5g" path="res://resources/enemies/wild_ratfolk_sprite_frames.tres" id="5_5vfma"]
+[ext_resource type="Shape2D" uid="uid://oc4usjutkiwj" path="res://resources/enemies/collisions/wild_ratfolk_detection_zone_col.tres" id="5_flc2o"]
+[ext_resource type="Shape2D" uid="uid://q7o4mai20pkt" path="res://resources/enemies/collisions/wild_ratfolk_hurtbox_col.tres" id="6_5vfma"]
+
+[sub_resource type="Animation" id="Animation_olm8k"]
+resource_name = "attack"
+length = 0.26667002
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.16754),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_animation_editor_arrow_attack"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_flc2o"]
+resource_name = "idle"
+length = 0.20000334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_5vfma"]
+resource_name = "run"
+length = 0.26667002
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666667, 0.10000001, 0.13333334, 0.16666667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tt12k"]
+_data = {
+&"attack": SubResource("Animation_olm8k"),
+&"idle": SubResource("Animation_flc2o"),
+&"run": SubResource("Animation_5vfma")
+}
+
+[node name="WildRatfolk" unique_id=1846937653 instance=ExtResource("1_7sae8")]
+script = ExtResource("2_flc2o")
+arrow_scene = ExtResource("3_5vfma")
+enemy_params = ExtResource("4_olm8k")
+
+[node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
+position = Vector2(0, -34)
+sprite_frames = ExtResource("5_5vfma")
+frame = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1132865115]
+libraries/ = SubResource("AnimationLibrary_tt12k")
+
+[node name="DetectionZone" parent="." index="5" unique_id=1785946638]
+position = Vector2(0, -31)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("5_flc2o")
+
+[node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(1770202733) index="0" unique_id=605273056]
+shape = ExtResource("6_5vfma")
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+visible = false
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+disabled = true
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -73.0
+offset_top = -128.0
+offset_right = 75.0
+offset_bottom = -78.0
+
+[node name="ArrowSpawningPosition" type="Node2D" parent="." index="12" unique_id=191105633]
+position = Vector2(14, -78)
+
+[node name="ArrowsContainer" type="Node2D" parent="." index="13" unique_id=1281126883]

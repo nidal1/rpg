@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://ckv83b827a2cw"]
+
+[ext_resource type="Texture2D" uid="uid://cphuyfvx7s771" path="res://assets/sprites/enemies/Gnoll/Gnoll_Bone.png" id="1_dp7tt"]
+[ext_resource type="Script" uid="uid://dgfenvceo6smu" path="res://scripts/entities/wild_ratfolk_bone.gd" id="1_iqk4c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqk4c"]
+atlas = ExtResource("1_dp7tt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8k36"]
+atlas = ExtResource("1_dp7tt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ely15"]
+atlas = ExtResource("1_dp7tt")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8n2ro"]
+atlas = ExtResource("1_dp7tt")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_141pa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqk4c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8k36")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ely15")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8n2ro")
+}],
+"loop": true,
+"name": &"bone_spinning",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tyjpi"]
+radius = 26.076809
+
+[node name="WildRatfolkBone" type="Area2D" unique_id=589514844]
+collision_layer = 16
+collision_mask = 32
+script = ExtResource("1_iqk4c")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1805704030]
+sprite_frames = SubResource("SpriteFrames_141pa")
+animation = &"bone_spinning"
+frame = 3
+frame_progress = 0.17814195
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1145634591]
+shape = SubResource("CircleShape2D_tyjpi")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
