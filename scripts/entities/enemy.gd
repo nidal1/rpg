@@ -20,7 +20,8 @@ enum EnemiesNames {
 	ANGRY_HORNET,
 	RED_BOARLING,
 	HILL_OGRE,
-	BONE_WITCH_DOCTOR
+	BONE_WITCH_DOCTOR,
+	ROUND_BUFFER
 }
 
 # ─── Signals ─────────────────────────────────────────────────────────────────

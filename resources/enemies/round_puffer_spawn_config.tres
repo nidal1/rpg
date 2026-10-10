@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://dded3xvyyu5qf"]
+
+[ext_resource type="PackedScene" uid="uid://qnqosjfv82ie" path="res://scenes/entities/enemies/round_puffer.tscn" id="1_u0b01"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_0xgd5"]
+
+[resource]
+script = ExtResource("2_0xgd5")
+enemy_type = 17
+scene = ExtResource("1_u0b01")
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

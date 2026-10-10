@@ -33,6 +33,7 @@
 [ext_resource type="Resource" uid="uid://di8jisqb5bhrm" path="res://resources/enemies/red_boarling_spawn_config.tres" id="26_5o5dd"]
 [ext_resource type="Resource" uid="uid://bqfc2hw6feniq" path="res://resources/enemies/hill_ogre_spawn_config.tres" id="27_5o5dd"]
 [ext_resource type="Resource" uid="uid://vpumjkuhowvd" path="res://resources/enemies/bone_witch_doctor_spawn_config.tres" id="28_d0ajt"]
+[ext_resource type="Resource" uid="uid://dded3xvyyu5qf" path="res://resources/enemies/round_puffer_spawn_config.tres" id="29_fymcc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1773,7 +1774,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt")])
+spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt"), ExtResource("29_fymcc")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://bp840jbh2pga0"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_qhocc"]
+[ext_resource type="Texture2D" uid="uid://vkmpvylpj207" path="res://assets/sprites/enemies/Bomb Fish/Bomb Fish_Avatar.png" id="2_uenna"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_vj555"]
+
+[resource]
+script = ExtResource("3_vj555")
+enemy_name = "Round Puffer"
+enemy_avatar = ExtResource("2_uenna")
+max_health = 80.0
+speed = 40.0
+attack_damage = 8.0
+attack_range = 300.0
+base_recovery_delay = 1.8
+base_attack_anim_duration = 0.233
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"
