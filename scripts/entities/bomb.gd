@@ -20,6 +20,12 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if exploded: return
+
+	if velocity.x <= 0:
+		animated_sprite.flip_h = true
+	else:
+		animated_sprite.flip_h = false
+	
 	var movement: Vector2 = velocity * delta
 	position += movement
 	distance_traveled += movement.length()

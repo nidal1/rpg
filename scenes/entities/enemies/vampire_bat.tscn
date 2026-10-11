@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_npxor"]
 [ext_resource type="Resource" uid="uid://yjd2ov57v108" path="res://resources/enemies/vampire_bat.tres" id="2_j4bdy"]
 [ext_resource type="SpriteFrames" uid="uid://dsnaj5habg7oj" path="res://resources/enemies/vampire_bat_sprite_frames.tres" id="3_npxor"]
+[ext_resource type="Shape2D" uid="uid://dh76mqfec77hm" path="res://resources/enemies/collisions/vampire_bat_detection_zone_col.tres" id="4_u6dkq"]
+[ext_resource type="Shape2D" uid="uid://c3rfebfhq16q7" path="res://resources/enemies/collisions/vampire_bat_hurtbox_col.tres" id="5_f7bfa"]
+[ext_resource type="Shape2D" uid="uid://7ixhaq3pmsa7" path="res://resources/enemies/collisions/vampire_bat_hitbox_col.tres" id="6_qqnom"]
 
 [sub_resource type="Animation" id="Animation_u6dkq"]
 resource_name = "attack"
@@ -38,7 +41,7 @@ tracks/2/path = NodePath("Hitbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.16666667),
+"times": PackedFloat32Array(0, 0.16666667, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
@@ -109,18 +112,12 @@ _data = {
 &"run": SubResource("Animation_qqnom")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2u0vn"]
-radius = 21.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_n1cyd"]
-radius = 46.0
-
 [node name="VampireBat" unique_id=1846937653 instance=ExtResource("1_npxor")]
 enemy_params = ExtResource("2_j4bdy")
 
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
 sprite_frames = ExtResource("3_npxor")
-animation = &"run"
+frame = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=21916385]
 libraries/ = SubResource("AnimationLibrary_8h72y")
@@ -128,20 +125,25 @@ libraries/ = SubResource("AnimationLibrary_8h72y")
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 position = Vector2(0, -41)
 
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_u6dkq")
+
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+y_sort_enabled = true
 position = Vector2(0, -41)
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
-shape = SubResource("CircleShape2D_2u0vn")
+shape = ExtResource("5_f7bfa")
 
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
 position = Vector2(0, -41)
+monitoring = true
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
-shape = SubResource("CircleShape2D_n1cyd")
+shape = ExtResource("6_qqnom")
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -104.0
-offset_top = -128.0
-offset_right = 108.0
-offset_bottom = -88.0
+offset_left = -74.0
+offset_top = -141.0
+offset_right = 74.0
+offset_bottom = -91.0

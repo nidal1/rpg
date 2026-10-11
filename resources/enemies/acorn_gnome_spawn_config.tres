@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://cykb8droqd2e5"]
+
+[ext_resource type="PackedScene" uid="uid://q3fogk4p8lye" path="res://scenes/entities/enemies/acorn_gnome.tscn" id="1_kiw82"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_tihd4"]
+
+[resource]
+script = ExtResource("2_tihd4")
+enemy_type = 19
+scene = ExtResource("1_kiw82")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

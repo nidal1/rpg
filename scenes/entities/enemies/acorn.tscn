@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bp7mf7xmdadt4"]
+
+[ext_resource type="Script" uid="uid://3nndhrg1skyg" path="res://scripts/entities/acorn.gd" id="1_g3fea"]
+[ext_resource type="Texture2D" uid="uid://b0kp1onu477ts" path="res://assets/sprites/enemies/Slingshot Gnome/Acorn_Projectile.png" id="1_osi6n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3fea"]
+atlas = ExtResource("1_osi6n")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kp0ev"]
+atlas = ExtResource("1_osi6n")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3lxx"]
+atlas = ExtResource("1_osi6n")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5811g"]
+atlas = ExtResource("1_osi6n")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y0veu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3fea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kp0ev")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3lxx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5811g")
+}],
+"loop": true,
+"name": &"acorn_spinning",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_osi6n"]
+radius = 8.0
+
+[node name="Acorn" type="Area2D" unique_id=525492137]
+collision_layer = 16
+collision_mask = 32
+input_pickable = false
+monitorable = false
+script = ExtResource("1_g3fea")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="." unique_id=1158998549]
+position = Vector2(-1, 1)
+sprite_frames = SubResource("SpriteFrames_y0veu")
+animation = &"acorn_spinning"
+frame = 2
+frame_progress = 0.8152073
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1449109451]
+shape = SubResource("CircleShape2D_osi6n")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

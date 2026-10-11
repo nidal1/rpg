@@ -22,7 +22,10 @@ enum EnemiesNames {
 	HILL_OGRE,
 	BONE_WITCH_DOCTOR,
 	ROUND_BUFFER,
-	WILD_RATFOLK
+	WILD_RATFOLK,
+	ACORN_GNOME,
+	PANDA_MONK,
+	CLUTTER_CLAMP
 }
 
 # ─── Signals ─────────────────────────────────────────────────────────────────

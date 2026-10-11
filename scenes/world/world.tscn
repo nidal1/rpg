@@ -34,7 +34,10 @@
 [ext_resource type="Resource" uid="uid://bqfc2hw6feniq" path="res://resources/enemies/hill_ogre_spawn_config.tres" id="27_5o5dd"]
 [ext_resource type="Resource" uid="uid://vpumjkuhowvd" path="res://resources/enemies/bone_witch_doctor_spawn_config.tres" id="28_d0ajt"]
 [ext_resource type="Resource" uid="uid://dded3xvyyu5qf" path="res://resources/enemies/round_puffer_spawn_config.tres" id="29_fymcc"]
-[ext_resource type="PackedScene" uid="uid://rielcgyu67wu" path="res://scenes/entities/enemies/wild_ratfolk.tscn" id="30_lbnhc"]
+[ext_resource type="Resource" uid="uid://bc5mjojwsl107" path="res://resources/enemies/wild_ratfolk_spawn_config.tres" id="30_sygq6"]
+[ext_resource type="Resource" uid="uid://cykb8droqd2e5" path="res://resources/enemies/acorn_gnome_spawn_config.tres" id="31_sygq6"]
+[ext_resource type="Resource" uid="uid://iy5cs76emn0m" path="res://resources/enemies/panda_monk_spawn_config.tres" id="32_0wrxw"]
+[ext_resource type="PackedScene" uid="uid://cbhm46hc25l67" path="res://scenes/entities/enemies/clutter_clam.tscn" id="33_cmg7y"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1690,10 +1693,10 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_umvgx")
 
-[sub_resource type="Resource" id="Resource_sygq6"]
+[sub_resource type="Resource" id="Resource_0wrxw"]
 script = ExtResource("11_tytul")
-enemy_type = 18
-scene = ExtResource("30_lbnhc")
+enemy_type = 21
+scene = ExtResource("33_cmg7y")
 metadata/_custom_type_script = "uid://b76bp07tl5gay"
 
 [sub_resource type="Resource" id="Resource_gb53w"]
@@ -1781,7 +1784,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt"), ExtResource("29_fymcc"), SubResource("Resource_sygq6")])
+spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt"), ExtResource("29_fymcc"), ExtResource("30_sygq6"), ExtResource("31_sygq6"), ExtResource("32_0wrxw"), SubResource("Resource_0wrxw")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 

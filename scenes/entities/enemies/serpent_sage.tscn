@@ -3,45 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_sel7q"]
 [ext_resource type="Resource" uid="uid://bcej3amoq658x" path="res://resources/enemies/serpent_sage.tres" id="2_1fxcy"]
 [ext_resource type="SpriteFrames" uid="uid://ddsb46p5dhsms" path="res://resources/enemies/serpent_sage_sprite_frames.tres" id="3_qjiks"]
-
-[sub_resource type="Animation" id="Animation_aq4qo"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"run"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox:monitoring")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
+[ext_resource type="Shape2D" uid="uid://dpyr0la3s8w5d" path="res://resources/enemies/collisions/serpent_sage_detection_zone_col.tres" id="4_ei6lc"]
+[ext_resource type="Shape2D" uid="uid://bsn7abxdpcjon" path="res://resources/enemies/collisions/serpent_sage_hurtbox_col.tres" id="4_l421v"]
+[ext_resource type="Shape2D" uid="uid://cyvvt2k1i55gd" path="res://resources/enemies/collisions/ serpent_sage_hitbox_col.tres" id="5_ei6lc"]
 
 [sub_resource type="Animation" id="Animation_jo6ol"]
 resource_name = "attack"
@@ -143,40 +107,43 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bfrcg"]
 _data = {
-&"RESET": SubResource("Animation_aq4qo"),
 &"attack": SubResource("Animation_jo6ol"),
 &"idle": SubResource("Animation_3r0l6"),
 &"run": SubResource("Animation_8arnk")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ib74t"]
-radius = 70.0
-
 [node name="SerpentSage" unique_id=1846937653 instance=ExtResource("1_sel7q")]
 enemy_params = ExtResource("2_1fxcy")
 
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
-position = Vector2(0, -46)
+position = Vector2(0, -50)
 sprite_frames = ExtResource("3_qjiks")
-animation = &"run"
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=730769275]
 libraries/ = SubResource("AnimationLibrary_bfrcg")
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-position = Vector2(0, -29)
+position = Vector2(0, -50)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_ei6lc")
 
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -50)
 
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("4_l421v")
+
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
-position = Vector2(0, -33)
+position = Vector2(0, -50)
+monitoring = true
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
-shape = SubResource("CircleShape2D_ib74t")
+shape = ExtResource("5_ei6lc")
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -105.0
-offset_top = -144.0
-offset_right = 107.0
-offset_bottom = -104.0
+offset_left = -73.0
+offset_top = -152.0
+offset_right = 75.0
+offset_bottom = -102.0

@@ -1,0 +1,5 @@
+[gd_resource type="CapsuleShape2D" format=3 uid="uid://chheqewnvrcpg"]
+
+[resource]
+radius = 17.0
+height = 42.0

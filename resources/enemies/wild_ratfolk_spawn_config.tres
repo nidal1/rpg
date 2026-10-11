@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://bc5mjojwsl107"]
+
+[ext_resource type="PackedScene" uid="uid://rielcgyu67wu" path="res://scenes/entities/enemies/wild_ratfolk.tscn" id="1_pgck3"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_slwme"]
+
+[resource]
+script = ExtResource("2_slwme")
+enemy_type = 18
+scene = ExtResource("1_pgck3")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

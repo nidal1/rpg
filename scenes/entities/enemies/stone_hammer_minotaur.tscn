@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_8od3n"]
 [ext_resource type="Resource" uid="uid://daufwk6mpa86g" path="res://scenes/entities/enemies/stone_hammer_minotaur.tres" id="2_okvfk"]
 [ext_resource type="SpriteFrames" uid="uid://b7e6fcqm7yg5a" path="res://resources/enemies/stone_hammer_minotaur_sprite_frames.tres" id="3_w85bw"]
+[ext_resource type="Shape2D" uid="uid://c06p7txg0newc" path="res://resources/enemies/collisions/stone_hammer_minotaur_detection_zone_col.tres" id="4_q0ec5"]
+[ext_resource type="Shape2D" uid="uid://drqj3yab0s7en" path="res://resources/enemies/collisions/stone_hammer_minotaur_hurtbox_col.tres" id="5_wdxyh"]
+[ext_resource type="Shape2D" uid="uid://dq53isr7l87db" path="res://resources/enemies/collisions/stone_hammer_minotaur_hitbox_col.tres" id="6_cfdn0"]
 
 [sub_resource type="Animation" id="Animation_w85bw"]
 resource_name = "attack"
@@ -109,9 +112,6 @@ _data = {
 &"run": SubResource("Animation_72v72")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_w85bw"]
-radius = 110.0
-
 [node name="StoneHammerMinotaur" unique_id=1846937653 instance=ExtResource("1_8od3n")]
 enemy_params = ExtResource("2_okvfk")
 entity_name = "Stone-Hammer Minotaur"
@@ -119,26 +119,31 @@ entity_name = "Stone-Hammer Minotaur"
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
 position = Vector2(0, -41)
 sprite_frames = ExtResource("3_w85bw")
-frame = 5
+frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=633008776]
 libraries/ = SubResource("AnimationLibrary_72v72")
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-position = Vector2(0, -38)
+position = Vector2(0, -45)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_q0ec5")
 
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -45)
 
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("5_wdxyh")
+
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
-position = Vector2(0, -34)
-monitoring = true
+position = Vector2(0, -45)
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
-shape = SubResource("CircleShape2D_w85bw")
+shape = ExtResource("6_cfdn0")
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -105.0
-offset_top = -184.0
-offset_right = 107.0
-offset_bottom = -144.0
+offset_left = -73.0
+offset_top = -192.0
+offset_right = 75.0
+offset_bottom = -142.0

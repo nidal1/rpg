@@ -5,33 +5,8 @@
 [ext_resource type="Resource" uid="uid://bp840jbh2pga0" path="res://resources/enemies/round_puffer.tres" id="2_mp6sk"]
 [ext_resource type="PackedScene" uid="uid://3sjf7305ppnx" path="res://scenes/entities/enemies/bomb.tscn" id="3_a7be5"]
 [ext_resource type="SpriteFrames" uid="uid://g25ouj17q7eq" path="res://resources/enemies/round_puffer_sprite_frames.tres" id="5_a7be5"]
-
-[sub_resource type="Animation" id="Animation_4mm08"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"attack"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
+[ext_resource type="Shape2D" uid="uid://v0rifrmvnx2i" path="res://resources/enemies/collisions/round_puffer_detection_zone_col.tres" id="6_rtwce"]
+[ext_resource type="Shape2D" uid="uid://dswhbdyuuygl0" path="res://resources/enemies/collisions/round_puffer_hurtbox_col.tres" id="6_t1mgn"]
 
 [sub_resource type="Animation" id="Animation_4o85i"]
 resource_name = "attack"
@@ -135,14 +110,10 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_62yrc"]
 _data = {
-&"RESET": SubResource("Animation_4mm08"),
 &"attack": SubResource("Animation_4o85i"),
 &"idle": SubResource("Animation_66jnp"),
 &"run": SubResource("Animation_s68xi")
 }
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_n08qk"]
-radius = 300.0
 
 [node name="RoundPuffer" unique_id=1846937653 instance=ExtResource("1_cl5x3")]
 script = ExtResource("2_cl5x3")
@@ -161,16 +132,25 @@ position = Vector2(0, 7)
 
 [node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
 position = Vector2(0, -35)
-shape = SubResource("CircleShape2D_n08qk")
+shape = ExtResource("6_rtwce")
 
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -28)
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("6_t1mgn")
 
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
 visible = false
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
 disabled = true
+
+[node name="EnemyStats" parent="." index="11" unique_id=2145423036]
+offset_left = -72.0
+offset_top = -128.0
+offset_right = 76.0
+offset_bottom = -78.0
 
 [node name="ArrowSpawningPosition" type="Node2D" parent="." index="12" unique_id=955787123]
 position = Vector2(14, -48)

@@ -5,33 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cdsmwc2pndl6s" path="res://scenes/entities/enemies/enemy_water_bullet.tscn" id="3_2igjs"]
 [ext_resource type="Resource" uid="uid://cuvyqpm2wif3p" path="res://resources/enemies/bone_witch_doctor.tres" id="4_yver5"]
 [ext_resource type="SpriteFrames" uid="uid://cdsdr5n8xhcyc" path="res://resources/enemies/bone_witch_doctor_sprite_frames.tres" id="5_2igjs"]
-
-[sub_resource type="Animation" id="Animation_yver5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"attack"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
+[ext_resource type="Shape2D" uid="uid://56r22fiace1m" path="res://resources/enemies/collisions/bone_witch_doctor_hurtbox_col.tres" id="6_i7sw4"]
 
 [sub_resource type="Animation" id="Animation_2igjs"]
 resource_name = "attack"
@@ -135,7 +109,6 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i7sw4"]
 _data = {
-&"RESET": SubResource("Animation_yver5"),
 &"attack": SubResource("Animation_2igjs"),
 &"idle": SubResource("Animation_i7sw4"),
 &"run": SubResource("Animation_2moot")
@@ -161,6 +134,9 @@ position = Vector2(0, -31)
 
 [node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
 shape = SubResource("CircleShape2D_yver5")
+
+[node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(1770202733) index="0" unique_id=605273056]
+shape = ExtResource("6_i7sw4")
 
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
 visible = false

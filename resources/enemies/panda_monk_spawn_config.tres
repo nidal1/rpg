@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://iy5cs76emn0m"]
+
+[ext_resource type="PackedScene" uid="uid://bk7rb07g5nlxr" path="res://scenes/entities/enemies/panda_monk.tscn" id="1_oki7s"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_nswa6"]
+
+[resource]
+script = ExtResource("2_nswa6")
+enemy_type = 20
+scene = ExtResource("1_oki7s")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

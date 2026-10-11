@@ -3,6 +3,24 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_lrnas"]
 [ext_resource type="Resource" uid="uid://dn7s3aoebsdiy" path="res://resources/enemies/pot_helm_brawler.tres" id="2_uw3cu"]
 [ext_resource type="SpriteFrames" uid="uid://dmr0m70fdfvyh" path="res://resources/enemies/pot_helm_brawler_sprite_frames.tres" id="3_n0yjq"]
+[ext_resource type="Shape2D" uid="uid://2u4mdq5jom1i" path="res://resources/enemies/collisions/pothelm_brawler_hurtbox_col.tres" id="4_iqmfe"]
+[ext_resource type="Shape2D" uid="uid://cbfsftq85bc3t" path="res://resources/enemies/collisions/pothelm_brawler_detection_zone_col.tres" id="4_uw3cu"]
+[ext_resource type="Shape2D" uid="uid://cmwjhapt8u3l8" path="res://resources/enemies/collisions/pothelm_brawler_hitbox_col.tres" id="5_lrnas"]
+
+[sub_resource type="Animation" id="Animation_lrnas"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_7jq01"]
 resource_name = "attack"
@@ -38,10 +56,10 @@ tracks/2/path = NodePath("Hitbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.10000001, 0.13333334),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [true, false]
+"values": [false, true, false]
 }
 
 [sub_resource type="Animation" id="Animation_m4dis"]
@@ -104,6 +122,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mvha0"]
 _data = {
+&"RESET": SubResource("Animation_lrnas"),
 &"attack": SubResource("Animation_7jq01"),
 &"idle": SubResource("Animation_m4dis"),
 &"run": SubResource("Animation_ogs8a")
@@ -116,19 +135,33 @@ enemy_params = ExtResource("2_uw3cu")
 libraries/ = SubResource("AnimationLibrary_mvha0")
 
 [node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
+position = Vector2(1, -32)
 sprite_frames = ExtResource("3_n0yjq")
 
 [node name="CollisionShape" parent="." index="3" unique_id=806179761]
 position = Vector2(0, 0)
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-position = Vector2(0, -27)
+position = Vector2(0, -32)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_uw3cu")
 
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -32)
 
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("4_iqmfe")
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+visible = false
+position = Vector2(0, -32)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = ExtResource("5_lrnas")
+
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -106.0
-offset_top = -126.0
-offset_right = 106.0
-offset_bottom = -86.0
+offset_left = -73.0
+offset_top = -150.0
+offset_right = 75.0
+offset_bottom = -100.0

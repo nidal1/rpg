@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_7ho21"]
 [ext_resource type="Resource" uid="uid://bas17pyf6jxwr" path="res://resources/enemies/angry_hornet.tres" id="2_mc5um"]
 [ext_resource type="SpriteFrames" uid="uid://be3qlpfmbqpu0" path="res://resources/enemies/angry_hornet_sprite_frames.tres" id="3_7ho21"]
+[ext_resource type="Shape2D" uid="uid://c8cebuf4oniev" path="res://resources/enemies/collisions/angry_hornet_detection_zone_col.tres" id="4_evwf0"]
+[ext_resource type="Shape2D" uid="uid://73x27uyh418x" path="res://resources/enemies/collisions/angry_hornet_hurtbox_col.tres" id="5_ducr7"]
+[ext_resource type="Shape2D" uid="uid://bck7jw5hjh02c" path="res://resources/enemies/collisions/angry_hornet_hitbox_col.tres" id="6_ux8v8"]
 
 [sub_resource type="Animation" id="Animation_usy1v"]
 resource_name = "attack"
@@ -109,19 +112,13 @@ _data = {
 &"run": SubResource("Animation_evwf0")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7ho21"]
-radius = 28.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_usy1v"]
-radius = 45.0
-
 [node name="AngryHornet" unique_id=1846937653 instance=ExtResource("1_7ho21")]
 enemy_params = ExtResource("2_mc5um")
 
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
 position = Vector2(0, -50)
 sprite_frames = ExtResource("3_7ho21")
-animation = &"run"
+frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1947104116]
 libraries/ = SubResource("AnimationLibrary_5qlxy")
@@ -129,20 +126,24 @@ libraries/ = SubResource("AnimationLibrary_5qlxy")
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
 position = Vector2(0, -44)
 
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_evwf0")
+
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
 position = Vector2(0, -44)
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
-shape = SubResource("CircleShape2D_7ho21")
+shape = ExtResource("5_ducr7")
 
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
 position = Vector2(0, -44)
+monitoring = true
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
-shape = SubResource("CircleShape2D_usy1v")
+shape = ExtResource("6_ux8v8")
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -104.0
-offset_top = -176.0
-offset_right = 108.0
-offset_bottom = -136.0
+offset_left = -74.0
+offset_top = -200.0
+offset_right = 74.0
+offset_bottom = -150.0

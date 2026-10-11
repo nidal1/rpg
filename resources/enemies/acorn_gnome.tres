@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyParams" format=3 uid="uid://puu56l615j8x"]
+
+[ext_resource type="Script" uid="uid://dooc2n45voqgj" path="res://resources/items/data_item.gd" id="1_eirbg"]
+[ext_resource type="Texture2D" uid="uid://u64k4uo5hda5" path="res://assets/sprites/enemies/Gnome/Gnome.png" id="2_8ky2y"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="3_40pxm"]
+
+[resource]
+script = ExtResource("3_40pxm")
+enemy_name = "Acorn Gnome"
+enemy_avatar = ExtResource("2_8ky2y")
+max_health = 60.0
+speed = 85.0
+attack_damage = 6.5
+attack_range = 65.0
+base_recovery_delay = 0.8
+base_attack_anim_duration = 0.233
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"

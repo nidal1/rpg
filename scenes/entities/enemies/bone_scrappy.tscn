@@ -3,6 +3,24 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_5abkj"]
 [ext_resource type="Resource" uid="uid://cw4ppatmuudij" path="res://resources/enemies/bone_scrappy.tres" id="2_ysk7l"]
 [ext_resource type="SpriteFrames" uid="uid://6rpq53b8b1ot" path="res://resources/enemies/bone_scrappy_sprite_frames.tres" id="3_w8i0b"]
+[ext_resource type="Shape2D" uid="uid://cer0i4n6mj6ps" path="res://resources/enemies/collisions/bone_scrappy_hurtbox_col.tres" id="4_0wqfm"]
+[ext_resource type="Shape2D" uid="uid://dhu86leakc1pv" path="res://resources/enemies/collisions/bone_scrappy_detection_zone_col.tres" id="4_vvpvx"]
+[ext_resource type="Shape2D" uid="uid://boob8w5kuxoyb" path="res://resources/enemies/collisions/bone_scrappy_hitbox_col.tres" id="6_d8dn2"]
+
+[sub_resource type="Animation" id="Animation_d8dn2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_ysk7l"]
 resource_name = "attack"
@@ -38,10 +56,10 @@ tracks/2/path = NodePath("Hitbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.06666667, 0.13333334),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [true, false]
+"values": [false, true, false]
 }
 
 [sub_resource type="Animation" id="Animation_w8i0b"]
@@ -104,6 +122,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5w2on"]
 _data = {
+&"RESET": SubResource("Animation_d8dn2"),
 &"attack": SubResource("Animation_ysk7l"),
 &"idle": SubResource("Animation_w8i0b"),
 &"run": SubResource("Animation_vvpvx")
@@ -171,10 +190,6 @@ states/run/position = Vector2(606.8, 102.144005)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_n8e8d"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_7mg8d"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_qa14q"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_5qf66"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_4kwvh")]
 graph_offset = Vector2(-64.941574, 90.59566)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ysk7l"]
-radius = 12.0
-height = 62.0
-
 [node name="BoneScrappy" unique_id=1846937653 groups=["BoneScrappy"] instance=ExtResource("1_5abkj")]
 enemy_params = ExtResource("2_ysk7l")
 entity_name = "Bone Scrappy"
@@ -183,7 +198,9 @@ entity_name = "Bone Scrappy"
 libraries/ = SubResource("AnimationLibrary_5w2on")
 
 [node name="AnimatedSprite" parent="." index="1" unique_id=484183233]
+position = Vector2(2, -29)
 sprite_frames = ExtResource("3_w8i0b")
+frame = 4
 
 [node name="AnimationTree" parent="." index="2" unique_id=637872991]
 tree_root = SubResource("AnimationNodeStateMachine_io3hq")
@@ -192,23 +209,31 @@ tree_root = SubResource("AnimationNodeStateMachine_io3hq")
 position = Vector2(0, 0)
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-scale = Vector2(20, 20)
+visible = false
+position = Vector2(0, -31.999998)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_vvpvx")
 
 [node name="Hurtbox" parent="." index="6" unique_id=1770202733]
-position = Vector2(0, -27)
+position = Vector2(0, -24)
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
-position = Vector2(0, -4)
-shape = SubResource("CapsuleShape2D_ysk7l")
+shape = ExtResource("4_0wqfm")
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+position = Vector2(0, -24)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = ExtResource("6_d8dn2")
 
 [node name="Label" parent="." index="8" unique_id=1619467209]
-visible = true
 offset_top = -144.0
 offset_right = 80.0
 offset_bottom = -99.0
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -104.0
-offset_top = -113.0
-offset_right = 108.0
-offset_bottom = -73.0
+offset_left = -72.0
+offset_top = -121.0
+offset_right = 76.0
+offset_bottom = -71.0

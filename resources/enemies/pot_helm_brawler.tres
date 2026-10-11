@@ -11,6 +11,7 @@ enemy_avatar = ExtResource("2_x4rno")
 max_health = 160.0
 speed = 45.0
 attack_damage = 14.0
+attack_range = 75.0
 base_recovery_delay = 1.5
 base_attack_anim_duration = 0.2
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

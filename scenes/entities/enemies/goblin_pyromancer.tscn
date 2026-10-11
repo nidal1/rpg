@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_28vuq"]
 [ext_resource type="Resource" uid="uid://p7y0tcemv8q" path="res://resources/enemies/goblin_pyromancer.tres" id="2_16kd2"]
 [ext_resource type="SpriteFrames" uid="uid://dity6j36mhhcb" path="res://resources/enemies/goblin_pyromancer_sprite_frames.tres" id="3_avcg1"]
+[ext_resource type="Shape2D" uid="uid://igxfnry6esmf" path="res://resources/enemies/collisions/goblin_pyromancer_hurtbox_col.tres" id="4_28vuq"]
+[ext_resource type="Shape2D" uid="uid://cg8n3vjd4v8pi" path="res://resources/enemies/collisions/goblin_pyromancer_detection_zone_col.tres" id="4_vtut2"]
+[ext_resource type="Shape2D" uid="uid://sl8lj1u4hbaq" path="res://resources/enemies/collisions/goblin_pyromancer_hitbox_col.tres" id="6_cridf"]
 
 [sub_resource type="Animation" id="Animation_rrinn"]
 resource_name = "attack"
@@ -38,10 +41,10 @@ tracks/2/path = NodePath("Hitbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.10000001, 0.13333334),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.10000001, 0.13333334),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [true, false]
+"values": [false, true, false]
 }
 
 [sub_resource type="Animation" id="Animation_vtut2"]
@@ -114,17 +117,32 @@ enemy_params = ExtResource("2_16kd2")
 entity_name = "Goblin Pyromancer"
 
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
-position = Vector2(0, -32)
+position = Vector2(1, -32)
 sprite_frames = ExtResource("3_avcg1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=546840397]
 libraries/ = SubResource("AnimationLibrary_vtut2")
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-position = Vector2(0, -30)
+position = Vector2(0, -24)
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
+shape = ExtResource("4_vtut2")
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(0, -24)
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("4_28vuq")
+
+[node name="Hitbox" parent="." index="7" unique_id=1192984412]
+position = Vector2(0, -24)
+
+[node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
+shape = ExtResource("6_cridf")
 
 [node name="EnemyStats" parent="." index="11" unique_id=2145423036]
-offset_left = -106.0
-offset_top = -112.0
-offset_right = 106.0
-offset_bottom = -72.0
+offset_left = -73.0
+offset_top = -125.0
+offset_right = 75.0
+offset_bottom = -75.0

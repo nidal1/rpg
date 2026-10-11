@@ -13,4 +13,5 @@ speed = 75.0
 attack_damage = 11.0
 attack_range = 320.0
 base_recovery_delay = 1.1
+base_attack_anim_duration = 0.267
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"

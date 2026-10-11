@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bauux0ffutq1y" path="res://scenes/entities/enemies/enemy.tscn" id="1_adrce"]
 [ext_resource type="Resource" uid="uid://d1w21fn7ff67p" path="res://resources/enemies/iron_shell_tortoise.tres" id="2_wfwrj"]
 [ext_resource type="SpriteFrames" uid="uid://cr8ck83v2ao5q" path="res://resources/enemies/iron_shell_tortoise_sprite_frames.tres" id="3_x7gwf"]
+[ext_resource type="Shape2D" uid="uid://ho7higtt62oo" path="res://resources/enemies/collisions/iron_shell_tortoise_detection_zone_col.tres" id="4_658jh"]
+[ext_resource type="Shape2D" uid="uid://378gn53wjwka" path="res://resources/enemies/collisions/iron_shell_tortoise_hurtbox_col.tres" id="5_yxlwe"]
+[ext_resource type="Shape2D" uid="uid://bb4vdhp0ma282" path="res://resources/enemies/collisions/iron_shell_tortoise_hitbox_col.tres" id="6_okvrs"]
 
 [sub_resource type="Animation" id="Animation_658jh"]
 resource_name = "attack"
@@ -109,12 +112,6 @@ _data = {
 &"run": SubResource("Animation_okvrs")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_b8jo2"]
-radius = 280.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_cdr66"]
-radius = 140.0
-
 [node name="IronShellTortoise" unique_id=1846937653 instance=ExtResource("1_adrce")]
 enemy_params = ExtResource("2_wfwrj")
 entity_name = "Iron-Shell Tortoise"
@@ -122,22 +119,29 @@ entity_name = "Iron-Shell Tortoise"
 [node name="AnimatedSprite" parent="." index="0" unique_id=484183233]
 position = Vector2(0, -46)
 sprite_frames = ExtResource("3_x7gwf")
-animation = &"run"
+frame = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1430602860]
 libraries/ = SubResource("AnimationLibrary_x66lh")
 
 [node name="DetectionZone" parent="." index="5" unique_id=1785946638]
-position = Vector2(0, -40)
+position = Vector2(0, -47)
 
 [node name="CollisionShape2D" parent="DetectionZone" index="0" unique_id=676842654]
-shape = SubResource("CircleShape2D_b8jo2")
+shape = ExtResource("4_658jh")
+
+[node name="Hurtbox" parent="." index="6" unique_id=1770202733]
+position = Vector2(0, -47)
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0" unique_id=605273056]
+shape = ExtResource("5_yxlwe")
 
 [node name="Hitbox" parent="." index="7" unique_id=1192984412]
-position = Vector2(0, -40)
+position = Vector2(0, -47)
+monitoring = true
 
 [node name="CollisionShape2D" parent="Hitbox" index="0" unique_id=474266529]
-shape = SubResource("CircleShape2D_cdr66")
+shape = ExtResource("6_okvrs")
 
 [node name="Label" parent="." index="8" unique_id=1619467209]
 visible = true
