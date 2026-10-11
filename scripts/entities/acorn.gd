@@ -3,7 +3,7 @@ class_name Acorn
 
 signal arrow_hit(area: Area2D)
 
-@export var speed: float = 100.0
+@export var speed: float = 500.0
 @export var max_distance: float = 600.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite
 

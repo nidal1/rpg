@@ -62,7 +62,11 @@ func _spawn_all_configured_enemies() -> void:
 		if not _is_config_valid(config):
 			continue
 		for _i in range(config.quantity):
-			_spawn_enemy_from_scene(config.scene)
+			var enemy: Enemy = _spawn_enemy_from_scene(config.scene)
+			if config.enemy_params:
+				enemy.set_enemy_params(config.enemy_params)
+				enemy._load_params()
+				print("load enemy params from enemies spawner script")
 
 ## Respawns a random enemy from the enabled spawn configurations.
 func _spawn_random_configured_enemy() -> void:

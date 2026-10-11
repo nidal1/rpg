@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemySpawnConfig" format=3 uid="uid://3cuuckkjeyex"]
+
+[ext_resource type="PackedScene" uid="uid://cbhm46hc25l67" path="res://scenes/entities/enemies/clutter_clam.tscn" id="1_8xf2a"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_k0qd4"]
+
+[resource]
+script = ExtResource("2_k0qd4")
+enemy_type = 21
+scene = ExtResource("1_8xf2a")
+enabled = false
+metadata/_custom_type_script = "uid://b76bp07tl5gay"

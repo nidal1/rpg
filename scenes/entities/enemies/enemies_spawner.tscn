@@ -1,10 +1,34 @@
 [gd_scene format=3 uid="uid://bqqhkgwtk31y3"]
 
 [ext_resource type="Script" uid="uid://b8ali241wtm3n" path="res://scripts/entities/enemies_spawner.gd" id="1_lkp2b"]
+[ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="2_fr7ww"]
+[ext_resource type="Resource" uid="uid://qo44dhxf14vu" path="res://resources/enemies/bone_scrappy_spawn_config.tres" id="3_dnesf"]
+[ext_resource type="Resource" uid="uid://xm8m8sej17sx" path="res://resources/enemies/goblin_spearhead_spawn_config.tres" id="4_3uhj5"]
+[ext_resource type="Resource" uid="uid://cvuxpslnc0vnh" path="res://resources/enemies/pot_helm_brawler_spawn_config.tres" id="5_tk1pi"]
+[ext_resource type="Resource" uid="uid://boceti3x87ahm" path="res://resources/enemies/landfin_spawn_config.tres" id="6_jh1jl"]
+[ext_resource type="Resource" uid="uid://1ff4driap6ax" path="res://resources/enemies/goblin_pyromancer_spawn_config.tres" id="7_qhr5t"]
+[ext_resource type="Resource" uid="uid://b3lm0jju0ip5v" path="res://resources/enemies/stone_hammer_minotaur_spawn_config.tres" id="8_r8yc7"]
+[ext_resource type="Resource" uid="uid://fchf2geh212y" path="res://resources/enemies/dungeon_spider_spawn_config.tres" id="9_jkv10"]
+[ext_resource type="Resource" uid="uid://bvtiqc4xq3bbm" path="res://resources/enemies/serpent_sage_spawn_config.tres" id="10_fwpwi"]
+[ext_resource type="Resource" uid="uid://bhelwdsw7imq4" path="res://resources/enemies/iron_shell_tortoise_spawn_config.tres" id="11_quohl"]
+[ext_resource type="Resource" uid="uid://cucbqwy8rv5cl" path="res://resources/enemies/dire_bear_spawn_config.tres" id="12_uuobs"]
+[ext_resource type="Resource" uid="uid://cmt75xwuqbaix" path="res://resources/enemies/sand_snake_spawn_config.tres" id="13_q2stw"]
+[ext_resource type="Resource" uid="uid://uufbjuc1pxhc" path="res://resources/enemies/shadow_bandit_spawn_config.tres" id="14_aeddu"]
+[ext_resource type="Resource" uid="uid://bgxu7cl8mpd4k" path="res://resources/enemies/vampire_bat_spawn_config.tres" id="15_ciu7y"]
+[ext_resource type="Resource" uid="uid://ba3mirtc4k2j6" path="res://resources/enemies/angry_hornet_spawn_config.tres" id="16_3tino"]
+[ext_resource type="Resource" uid="uid://di8jisqb5bhrm" path="res://resources/enemies/red_boarling_spawn_config.tres" id="17_d6812"]
+[ext_resource type="Resource" uid="uid://bqfc2hw6feniq" path="res://resources/enemies/hill_ogre_spawn_config.tres" id="18_jfgkh"]
+[ext_resource type="Resource" uid="uid://vpumjkuhowvd" path="res://resources/enemies/bone_witch_doctor_spawn_config.tres" id="19_2dm3o"]
+[ext_resource type="Resource" uid="uid://dded3xvyyu5qf" path="res://resources/enemies/round_puffer_spawn_config.tres" id="20_wu2l0"]
+[ext_resource type="Resource" uid="uid://bc5mjojwsl107" path="res://resources/enemies/wild_ratfolk_spawn_config.tres" id="21_q3c44"]
+[ext_resource type="Resource" uid="uid://cykb8droqd2e5" path="res://resources/enemies/acorn_gnome_spawn_config.tres" id="22_d1p00"]
+[ext_resource type="Resource" uid="uid://iy5cs76emn0m" path="res://resources/enemies/panda_monk_spawn_config.tres" id="23_n1j1f"]
+[ext_resource type="Resource" uid="uid://3cuuckkjeyex" path="res://resources/enemies/clutter_clam_spawn_config.tres" id="24_u8pdh"]
 
 [node name="EnemiesSpawner" type="Node2D" unique_id=1617310678 node_paths=PackedStringArray("spawn_point") groups=["enemies_spawner"]]
 script = ExtResource("1_lkp2b")
 spawn_point = NodePath("Marker2D")
+spawn_configs = Array[ExtResource("2_fr7ww")]([ExtResource("3_dnesf"), ExtResource("4_3uhj5"), ExtResource("5_tk1pi"), ExtResource("6_jh1jl"), ExtResource("7_qhr5t"), ExtResource("8_r8yc7"), ExtResource("9_jkv10"), ExtResource("10_fwpwi"), ExtResource("11_quohl"), ExtResource("12_uuobs"), ExtResource("13_q2stw"), ExtResource("14_aeddu"), ExtResource("15_ciu7y"), ExtResource("16_3tino"), ExtResource("17_d6812"), ExtResource("18_jfgkh"), ExtResource("19_2dm3o"), ExtResource("20_wu2l0"), ExtResource("21_q3c44"), ExtResource("22_d1p00"), ExtResource("23_n1j1f"), ExtResource("24_u8pdh")])
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1179470132]
 gizmo_extents = 50.0

@@ -11,3 +11,5 @@ class_name EnemySpawnConfig
 @export var quantity: int = 1
 ## Toggle to enable or skip spawning for this configuration.
 @export var enabled: bool = true
+
+@export var enemy_params: EnemyParams = null

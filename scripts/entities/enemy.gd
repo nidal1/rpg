@@ -148,21 +148,24 @@ func _play_attack_animation() -> void:
 	$AnimatedSprite.scale.x = last_facing_dir
 
 ## Loads the enemy's stats and parameters.
-func _load_params(params: EnemyParams) -> void:
-	max_health = params.max_health
+func _load_params() -> void:
+	max_health = enemy_params.max_health
 	current_health = max_health
-	speed = params.speed
-	attack_damage = params.attack_damage
-	attack_range = params.attack_range
-	base_recovery_delay = params.base_recovery_delay
+	speed = enemy_params.speed
+	attack_damage = enemy_params.attack_damage
+	attack_range = enemy_params.attack_range
+	base_recovery_delay = enemy_params.base_recovery_delay
 
-	enemy_name = params.enemy_name
-	enemy_level = params.enemy_level
-	enemy_rank = params.enemy_rank
-	base_attack_anim_duration = params.base_attack_anim_duration
+	enemy_name = enemy_params.enemy_name
+	enemy_level = enemy_params.enemy_level
+	enemy_rank = enemy_params.enemy_rank
+	base_attack_anim_duration = enemy_params.base_attack_anim_duration
 
 	_apply_progression_scaling()
-	_initialize_enemy_stats(max_health, params.enemy_avatar)
+	_initialize_enemy_stats(max_health, enemy_params.enemy_avatar)
+
+func set_enemy_params(params: EnemyParams):
+	enemy_params = params
 
 ## Initializes the enemy's UI stats.
 func _initialize_enemy_stats(_max_health: float, _avatar_texture: Texture2D) -> void:

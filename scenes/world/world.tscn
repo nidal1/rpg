@@ -16,28 +16,9 @@
 [ext_resource type="Script" uid="uid://dln27epbcp2ly" path="res://resources/items/equipable_item.gd" id="9_1yooq"]
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
 [ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="11_tytul"]
-[ext_resource type="Resource" uid="uid://qo44dhxf14vu" path="res://resources/enemies/bone_scrappy_spawn_config.tres" id="12_t634p"]
-[ext_resource type="Resource" uid="uid://xm8m8sej17sx" path="res://resources/enemies/goblin_spearhead_spawn_config.tres" id="13_6hctx"]
-[ext_resource type="Resource" uid="uid://cvuxpslnc0vnh" path="res://resources/enemies/pot_helm_brawler_spawn_config.tres" id="14_ues17"]
-[ext_resource type="Resource" uid="uid://boceti3x87ahm" path="res://resources/enemies/landfin_spawn_config.tres" id="15_xq18t"]
-[ext_resource type="Resource" uid="uid://1ff4driap6ax" path="res://resources/enemies/goblin_pyromancer_spawn_config.tres" id="16_t634p"]
-[ext_resource type="Resource" uid="uid://b3lm0jju0ip5v" path="res://resources/enemies/stone_hammer_minotaur_spawn_config.tres" id="17_6hctx"]
-[ext_resource type="Resource" uid="uid://fchf2geh212y" path="res://resources/enemies/dungeon_spider_spawn_config.tres" id="18_ues17"]
-[ext_resource type="Resource" uid="uid://bvtiqc4xq3bbm" path="res://resources/enemies/serpent_sage_spawn_config.tres" id="19_xq18t"]
-[ext_resource type="Resource" uid="uid://bhelwdsw7imq4" path="res://resources/enemies/iron_shell_tortoise_spawn_config.tres" id="20_x0nq1"]
-[ext_resource type="Resource" uid="uid://cucbqwy8rv5cl" path="res://resources/enemies/dire_bear_spawn_config.tres" id="21_ckok1"]
-[ext_resource type="Resource" uid="uid://cmt75xwuqbaix" path="res://resources/enemies/sand_snake_spawn_config.tres" id="22_ckok1"]
-[ext_resource type="Resource" uid="uid://uufbjuc1pxhc" path="res://resources/enemies/shadow_bandit_spawn_config.tres" id="23_2x71e"]
-[ext_resource type="Resource" uid="uid://bgxu7cl8mpd4k" path="res://resources/enemies/vampire_bat_spawn_config.tres" id="24_wnndm"]
-[ext_resource type="Resource" uid="uid://ba3mirtc4k2j6" path="res://resources/enemies/angry_hornet_spawn_config.tres" id="25_jyr8v"]
-[ext_resource type="Resource" uid="uid://di8jisqb5bhrm" path="res://resources/enemies/red_boarling_spawn_config.tres" id="26_5o5dd"]
-[ext_resource type="Resource" uid="uid://bqfc2hw6feniq" path="res://resources/enemies/hill_ogre_spawn_config.tres" id="27_5o5dd"]
-[ext_resource type="Resource" uid="uid://vpumjkuhowvd" path="res://resources/enemies/bone_witch_doctor_spawn_config.tres" id="28_d0ajt"]
-[ext_resource type="Resource" uid="uid://dded3xvyyu5qf" path="res://resources/enemies/round_puffer_spawn_config.tres" id="29_fymcc"]
-[ext_resource type="Resource" uid="uid://bc5mjojwsl107" path="res://resources/enemies/wild_ratfolk_spawn_config.tres" id="30_sygq6"]
-[ext_resource type="Resource" uid="uid://cykb8droqd2e5" path="res://resources/enemies/acorn_gnome_spawn_config.tres" id="31_sygq6"]
-[ext_resource type="Resource" uid="uid://iy5cs76emn0m" path="res://resources/enemies/panda_monk_spawn_config.tres" id="32_0wrxw"]
-[ext_resource type="PackedScene" uid="uid://cbhm46hc25l67" path="res://scenes/entities/enemies/clutter_clam.tscn" id="33_cmg7y"]
+[ext_resource type="PackedScene" uid="uid://djn23j8bcj1bc" path="res://scenes/entities/enemies/bone_scrappy.tscn" id="12_71ii3"]
+[ext_resource type="Script" uid="uid://cb7byq6j3gtg5" path="res://resources/items/consumable_item.gd" id="13_wbwoo"]
+[ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="14_tytul"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5qq27"]
 texture = ExtResource("1_gb53w")
@@ -1693,11 +1674,44 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_umvgx")
 
-[sub_resource type="Resource" id="Resource_0wrxw"]
+[sub_resource type="Resource" id="Resource_t634p"]
+script = ExtResource("13_wbwoo")
+heal_amount = 20
+item_id = "p_hp_02"
+item_name = "Small Health Potion"
+price = 25
+max_stack = 20
+grid_coordinate = Vector2(8, 0)
+
+[sub_resource type="Resource" id="Resource_6hctx"]
+script = ExtResource("13_wbwoo")
+heal_amount = 20
+potion_type = "MANA"
+item_id = "p_mp_02"
+item_name = "Small Mana Potion"
+price = 30
+max_stack = 20
+grid_coordinate = Vector2(8, 2)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ues17"]
+load_path = "res://.godot/imported/Skull.png-167d87c31203f5d1fd362aff95b7ab81.ctex"
+
+[sub_resource type="Resource" id="Resource_xq18t"]
+script = ExtResource("14_tytul")
+enemy_name = "Bone Scrappy"
+enemy_level = 15
+enemy_avatar = SubResource("CompressedTexture2D_ues17")
+speed = 65.0
+attack_range = 65.0
+base_recovery_delay = 1.2
+base_attack_anim_duration = 0.367
+custom_db_item_objects = Array[ExtResource("8_j2gmx")]([SubResource("Resource_t634p"), SubResource("Resource_6hctx")])
+metadata/_custom_type_script = "uid://bqkdldqfccf6o"
+
+[sub_resource type="Resource" id="Resource_bt7bg"]
 script = ExtResource("11_tytul")
-enemy_type = 21
-scene = ExtResource("33_cmg7y")
-metadata/_custom_type_script = "uid://b76bp07tl5gay"
+scene = ExtResource("12_71ii3")
+enemy_params = SubResource("Resource_xq18t")
 
 [sub_resource type="Resource" id="Resource_gb53w"]
 script = ExtResource("9_1yooq")
@@ -1784,7 +1798,7 @@ tile_set = SubResource("TileSet_mxkvs")
 
 [node name="EnemiesSpawner" parent="." unique_id=1617310678 instance=ExtResource("3_1fp7r")]
 position = Vector2(2501, 1586)
-spawn_configs = Array[ExtResource("11_tytul")]([ExtResource("12_t634p"), ExtResource("13_6hctx"), ExtResource("14_ues17"), ExtResource("15_xq18t"), ExtResource("16_t634p"), ExtResource("17_6hctx"), ExtResource("18_ues17"), ExtResource("19_xq18t"), ExtResource("20_x0nq1"), ExtResource("21_ckok1"), ExtResource("22_ckok1"), ExtResource("23_2x71e"), ExtResource("24_wnndm"), ExtResource("25_jyr8v"), ExtResource("26_5o5dd"), ExtResource("27_5o5dd"), ExtResource("28_d0ajt"), ExtResource("29_fymcc"), ExtResource("30_sygq6"), ExtResource("31_sygq6"), ExtResource("32_0wrxw"), SubResource("Resource_0wrxw")])
+spawn_configs = Array[ExtResource("11_tytul")]([SubResource("Resource_bt7bg")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
 
