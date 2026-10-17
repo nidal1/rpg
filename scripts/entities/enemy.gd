@@ -3,6 +3,17 @@
 extends Combatant
 class_name Enemy
 
+static var EnemiesStateMachineNames: Dictionary = {
+	"ENEMY_DEAD_STATE" : "enemydeadstate",
+	"ENEMY_IDLE_STATE" : "enemyidlestate",
+	"ENEMY_RUN_STATE" : "enemyrunstate",
+	"ENEMY_ATTACK_STATE" : "enemyattackstate",
+	"ENEMY_PATROL_STATE" : "enemypatrolstate",
+	"ENEMY_CHASE_STATE" : "enemychasestate",
+	"ENEMY_SPAWNED_STATE" : "enemyspawnedstate",
+	"ENEMY_WANDER_STATE" : "enemywnaderstate"
+}
+
 enum EnemiesNames {
 	BONE_SCREPPY,
 	POT_HELM_BRAWLER,
@@ -45,7 +56,7 @@ var drop_item_scene: PackedScene = preload("res://scenes/entities/items/drop.tsc
 var is_target_reached: bool = false
 var can_attack: bool = true
 var target: CharacterBody2D = null
-
+var is_out_of_spawn_zone: bool = false
 var attack_cooldown: float
 var attack_range: float
 var attack_damage: float
@@ -260,4 +271,6 @@ func _on_detection_zone_body_exited(body: Node2D) -> void:
 		target = null
 
 func _on_wander_cd_timeout() -> void:
+	if is_out_of_spawn_zone: 
+		return
 	state_machine.transition_to("enemywanderstate")

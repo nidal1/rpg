@@ -25,7 +25,10 @@
 [ext_resource type="Resource" uid="uid://iy5cs76emn0m" path="res://resources/enemies/panda_monk_spawn_config.tres" id="23_n1j1f"]
 [ext_resource type="Resource" uid="uid://3cuuckkjeyex" path="res://resources/enemies/clutter_clam_spawn_config.tres" id="24_u8pdh"]
 
-[node name="EnemiesSpawner" type="Node2D" unique_id=1617310678 node_paths=PackedStringArray("spawn_point") groups=["enemies_spawner"]]
+[node name="EnemiesSpawner" type="Area2D" unique_id=1161869842 node_paths=PackedStringArray("spawn_point") groups=["enemies_spawner"]]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
 script = ExtResource("1_lkp2b")
 spawn_point = NodePath("Marker2D")
 spawn_configs = Array[ExtResource("2_fr7ww")]([ExtResource("3_dnesf"), ExtResource("4_3uhj5"), ExtResource("5_tk1pi"), ExtResource("6_jh1jl"), ExtResource("7_qhr5t"), ExtResource("8_r8yc7"), ExtResource("9_jkv10"), ExtResource("10_fwpwi"), ExtResource("11_quohl"), ExtResource("12_uuobs"), ExtResource("13_q2stw"), ExtResource("14_aeddu"), ExtResource("15_ciu7y"), ExtResource("16_3tino"), ExtResource("17_d6812"), ExtResource("18_jfgkh"), ExtResource("19_2dm3o"), ExtResource("20_wu2l0"), ExtResource("21_q3c44"), ExtResource("22_d1p00"), ExtResource("23_n1j1f"), ExtResource("24_u8pdh")])
@@ -35,3 +38,5 @@ gizmo_extents = 50.0
 
 [node name="DropZone" type="Node2D" parent="." unique_id=434049936]
 unique_name_in_owner = true
+
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

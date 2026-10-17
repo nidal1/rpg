@@ -16,12 +16,17 @@ class_name EnemiesSpawner
 ## Time an enemy spends wandering before choosing a new action.
 @export var wander_cd_time: float = 20.0
 
+@export var collisation_shape: CollisionShape2D
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var drop_zone: Node2D = %DropZone
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
+	if collisation_shape: 
+		printerr("assing a collisation shape")
 	_spawn_all_configured_enemies()
+
 	EventBus.selected_lootable_items_picked_up.connect(remove_selected_drops)
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
@@ -101,3 +106,9 @@ func _get_random_direction(wander_length: float = 200.0) -> Vector2:
 		randf_range(-wander_length, wander_length),
 		randf_range(-wander_length, wander_length)
 	).normalized()
+
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		var enemy: Enemy = body
+		enemy.is_out_of_spawn_zone = true

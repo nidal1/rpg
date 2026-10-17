@@ -18,7 +18,7 @@ func physics_update(_delta: float) -> void:
 	actor._chase_target()
 
 	var dist_to_spawn_location = actor.global_position.distance_to(actor.spawn_position)
-	if dist_to_spawn_location > MAX_DISTANCE_TO_SPAWN_LOCATION:
+	if dist_to_spawn_location > MAX_DISTANCE_TO_SPAWN_LOCATION or actor.is_out_of_spawn_zone:
 		actor.set_target(null)
 		transitioned.emit("enemypatrolstate")
 		return

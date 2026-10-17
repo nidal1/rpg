@@ -22,3 +22,4 @@ func physics_update(_delta: float) -> void:
 	# If back at spawn position, go to idle
 	if actor.global_position.distance_to(actor.spawn_position) < 5:
 		transitioned.emit("enemyidlestate")
+		actor.is_out_of_spawn_zone = false

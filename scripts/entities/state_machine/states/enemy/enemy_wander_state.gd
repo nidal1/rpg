@@ -11,12 +11,15 @@ var random_position: Vector2
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func enter() -> void:
-	actor.on_wander_finished.connect(_on_wander_finished)
-	var random_direction = _random_direction()
-	if random_direction == Vector2.ZERO:
-		transitioned.emit("enemyidlestate")
-		return
-	random_position = actor.global_position + random_direction * 100
+	if not actor.is_out_of_spawn_zone:
+		actor.on_wander_finished.connect(_on_wander_finished)
+		var random_direction = _random_direction()
+		if random_direction == Vector2.ZERO:
+			transitioned.emit("enemyidlestate")
+			return
+		random_position = actor.global_position + random_direction * 100
+	else:
+		transitioned.emit("enemypatrolstate")
 
 func physics_update(_delta: float) -> void:
 	actor._wander(random_position)
