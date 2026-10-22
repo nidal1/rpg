@@ -31,9 +31,15 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	# TODO: The transition to the attack state must have :
+		# an enemy selected 
+		# enemy in the attack range
+	if event.is_action_pressed("attack"):
 		if state_machine:
 			state_machine.transition_to("playerattackstate")
+	
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		return
 
 func _physics_process(_delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")

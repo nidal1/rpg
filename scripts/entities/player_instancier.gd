@@ -19,6 +19,7 @@ class_name PlayerInstancier
 var player_instance: Player = null
 var old_camera_position: Vector2 = Vector2.ZERO
 var is_camera_in_player_position: bool = false
+var camera_zoom_off = Vector2.ONE
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "instance_position":
@@ -47,8 +48,24 @@ func _ready() -> void:
 		player_instance.global_position = target_pos
 		is_camera_in_player_position = player_instance.global_position.is_equal_approx(old_camera_position)
 		player_instance.force_update_transform()
+		player_camera.global_position = player_instance.global_position
+		
+		player_camera.zoom = camera_zoom_off
+		old_camera_position = player_camera.global_position
+
 
 func _physics_process(delta: float) -> void:
 	if player_instance and not is_camera_in_player_position:
 		player_camera.global_position = player_instance.global_position
 		old_camera_position = player_camera.global_position
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+		camera_zoom_off.x = clamp(camera_zoom_off.x - 0.1, 0.5, 1)
+		camera_zoom_off.y = clamp(camera_zoom_off.y - 0.1, 0.5, 1)
+		player_camera.zoom = camera_zoom_off
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+		camera_zoom_off.x = clamp(camera_zoom_off.x + 0.1, 0.5, 1)
+		camera_zoom_off.y = clamp(camera_zoom_off.y + 0.1, 0.5, 1)
+		player_camera.zoom = camera_zoom_off

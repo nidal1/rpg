@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c0e2g66nood77"]
+
+[ext_resource type="Script" uid="uid://d31vjfrk5msue" path="res://scripts/entities/selection_box.gd" id="1_u7jii"]
+[ext_resource type="Texture2D" uid="uid://bivkoic3xarw7" path="res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_04_88x88.png" id="2_u7jii"]
+
+[sub_resource type="Animation" id="Animation_u7jii"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mh560"]
+resource_name = "bounce"
+length = 4.5
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -3), Vector2(0, -6), Vector2(0, 0), Vector2(0, -3), Vector2(0, -6), Vector2(0, 0), Vector2(0, -3), Vector2(0, -6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l77lg"]
+_data = {
+&"RESET": SubResource("Animation_u7jii"),
+&"bounce": SubResource("Animation_mh560")
+}
+
+[node name="SelectionBox" type="Node2D" unique_id=1887301801]
+y_sort_enabled = true
+script = ExtResource("1_u7jii")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2084737031]
+libraries/ = SubResource("AnimationLibrary_l77lg")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=955873180]
+y_sort_enabled = true
+
+[node name="BackSide" type="Sprite2D" parent="Node2D" unique_id=1558459613]
+y_sort_enabled = true
+position = Vector2(0, -15.5)
+texture = ExtResource("2_u7jii")
+region_enabled = true
+region_rect = Rect2(0, 0, 88, 44)
+
+[node name="FrontSide" type="Sprite2D" parent="Node2D" unique_id=66566836]
+y_sort_enabled = true
+position = Vector2(0, 15.5)
+texture = ExtResource("2_u7jii")
+region_enabled = true
+region_rect = Rect2(0, 44, 88, 44)

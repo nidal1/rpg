@@ -11,9 +11,23 @@ var level_scaler: float = 1.2
 var drop_range: float = 50.0
 ## StatsManager instance for managing stats logic
 var stats_manager: StatsManager = StatsManager.new()
+var arrow_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_01.png")
+var pointing_curson = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_02.png")
+var forbidden_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_03.png")
+var selection_box_scene = load("res://scenes/ui/selection_box.tscn")
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
+	connect_global_event()
+	init_cursor()
+
+# ─── Public Methods ──────────────────────────────────────────────────────────
+func init_cursor():
+	Input.set_custom_mouse_cursor(arrow_cursor)
+	Input.set_custom_mouse_cursor(pointing_curson, Input.CURSOR_POINTING_HAND)
+	Input.set_custom_mouse_cursor(forbidden_cursor, Input.CURSOR_FORBIDDEN)
+
+func connect_global_event():
 	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.stat_allocated.connect(stats_manager.add_stat_point)
 	EventBus.stat_deallocated.connect(stats_manager.sub_stat_point)
@@ -29,7 +43,6 @@ func _ready() -> void:
 	EventBus.potions_consumed.connect(_on_potion_consumed)
 	EventBus.buy_item.connect(_on_buy_item)
 
-# ─── Public Methods ──────────────────────────────────────────────────────────
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
