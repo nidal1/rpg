@@ -82,7 +82,6 @@ y_sort_enabled = true
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
 position = Vector2(5227, 2842)
-selected_player = 0
 instance_position = Vector2(2351, 1179)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]
@@ -124,3 +123,5 @@ gizmo_extents = 31.7
 [node name="Merchant" parent="StorePosition" unique_id=267611840 node_paths=PackedStringArray("waypoints") instance=ExtResource("6_t5ptc")]
 custom_db_item_objects = Array[ExtResource("8_j2gmx")]([SubResource("Resource_gb53w"), SubResource("Resource_5qq27")])
 waypoints = [NodePath("../point_a"), NodePath("../point_b"), NodePath("../point_c")]
+
+[node name="SelectionBoxes" type="Node2D" parent="." unique_id=1795494987]

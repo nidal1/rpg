@@ -3,6 +3,7 @@ extends Node2D
 class_name PlayerInstancier
 @onready var player_camera: Camera2D = $PlayerCamera
 
+@export var camera_zoom_speed: float = 0.1
 @export var selected_player: CharacterClass.PlayerType = CharacterClass.PlayerType.WARRIOR
 @export var use_default_position: bool = true:
 	set(value):
@@ -62,10 +63,10 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-		camera_zoom_off.x = clamp(camera_zoom_off.x - 0.1, 0.5, 1)
-		camera_zoom_off.y = clamp(camera_zoom_off.y - 0.1, 0.5, 1)
+		camera_zoom_off.x = clamp(camera_zoom_off.x - camera_zoom_speed, 0.5, 1)
+		camera_zoom_off.y = clamp(camera_zoom_off.y - camera_zoom_speed, 0.5, 1)
 		player_camera.zoom = camera_zoom_off
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-		camera_zoom_off.x = clamp(camera_zoom_off.x + 0.1, 0.5, 1)
-		camera_zoom_off.y = clamp(camera_zoom_off.y + 0.1, 0.5, 1)
+		camera_zoom_off.x = clamp(camera_zoom_off.x + camera_zoom_speed, 0.5, 1)
+		camera_zoom_off.y = clamp(camera_zoom_off.y + camera_zoom_speed, 0.5, 1)
 		player_camera.zoom = camera_zoom_off

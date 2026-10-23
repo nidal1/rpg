@@ -14,7 +14,7 @@ var stats_manager: StatsManager = StatsManager.new()
 var arrow_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_01.png")
 var pointing_curson = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_02.png")
 var forbidden_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_03.png")
-var selection_box_scene = load("res://scenes/ui/selection_box.tscn")
+var selection_box_scene: PackedScene = load("res://scenes/ui/selection_box.tscn")
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -100,6 +100,18 @@ func drop_item(item: DataItem) -> void:
 			drop_zone.add_child(drop_scene)
 			drop_scene.global_position = random_position
 
+func instanciate_selection_box_at_position(pos: Vector2):
+	clear_selection_boxes()
+	
+	var selection_box_instance = selection_box_scene.instantiate()
+	get_node("/root/World/SelectionBoxes").add_child(selection_box_instance)
+	selection_box_instance.global_position = pos
+
+func clear_selection_boxes():
+	var selection_boxes_container = get_node("/root/World/SelectionBoxes")
+	if selection_boxes_container.get_children().size():
+		for child in selection_boxes_container.get_children():
+			child.queue_free()
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
 	var enemy_lvl: int = enemy.enemy_level if "enemy_level" in enemy else 1

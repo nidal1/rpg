@@ -67,6 +67,8 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickableDection" index="0" unique_id=1822611484]
 shape = SubResource("CircleShape2D_8akj5")
 
+[node name="NavigationAgent" type="NavigationAgent2D" parent="." index="7" unique_id=1912599269]
+
 [connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
 [connection signal="area_entered" from="PickableDection" to="." method="_on_pickable_dection_area_entered"]
 [connection signal="area_exited" from="PickableDection" to="." method="_on_pickable_dection_area_exited"]

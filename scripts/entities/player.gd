@@ -4,6 +4,9 @@
 extends Combatant
 class_name Player
 
+# ─── Local signals
+signal reached_the_targeted_position
+
 # ─── Exported Variables ──────────────────────────────────────────────────────
 ## The class data defining the player's starting stats and abilities.
 @export var character_class: CharacterClass
@@ -15,14 +18,19 @@ var combo_index: int = -1
 var combo_queued: bool = false
 ## The list of attacks forming the combo chain.
 var combo_chain: Array[AttackData] = []
+var target: Enemy = null
+var target_position: Vector2 = Vector2.ZERO
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent
 @onready var combo_timer: Timer = $ComboAttackCD
 @onready var attack_state: PlayerAttackState = $StateMachine/PlayerAttackState
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	super._ready()
+
+	reached_the_targeted_position.connect(_on_reached_the_targeted_position)
 
 	animation_tree = $AnimationTree
 	animation_playback = animation_tree["parameters/playback"]
@@ -31,19 +39,26 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var world_pos = get_global_mouse_position()
+		print("click: ", world_pos)
+		GameManager.instanciate_selection_box_at_position(world_pos)
+		target_position = world_pos
+		return
+
 	# TODO: The transition to the attack state must have :
 		# an enemy selected 
 		# enemy in the attack range
 	if event.is_action_pressed("attack"):
 		if state_machine:
 			state_machine.transition_to("playerattackstate")
-	
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		return
 
 func _physics_process(_delta: float) -> void:
 	direction.x = Input.get_axis("move_left", "move_right")
 	direction.y = Input.get_axis("move_up", "move_down")
+	if target_position != Vector2.ZERO:
+		_move_to_position()
+	
 	move_and_slide()
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
@@ -54,6 +69,18 @@ func _move() -> void:
 		if animation_playback and animation_tree and animation_tree.is_active():
 			animation_playback.travel("run")
 			_play_movement_animation()
+
+## Moves the enemy toward a specific target position using the NavigationAgent.
+func _move_to_position() -> void:
+	nav_agent.target_position = target_position
+	var next_pos = nav_agent.get_next_path_position()
+	direction = global_position.direction_to(next_pos)
+	print("distance to: ",global_position.distance_to(nav_agent.target_position))
+	if global_position.distance_to(nav_agent.target_position) < 5:
+		target_position = Vector2.ZERO
+		reached_the_targeted_position.emit()
+		return
+	_move()
 
 func _idle() -> void:
 	velocity = Vector2.ZERO
@@ -78,6 +105,12 @@ func take_damage(amount: float) -> void:
 	var current_hp = StatsData.get_stats().get_current_hp()
 	StatsData.get_stats().set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()
+
+func set_target(_target: Enemy):
+	target = _target
+
+func get_target():
+	return target
 
 func _on_damage_received() -> void:
 	var current_hp = StatsData.get_stats().get_current_hp()
@@ -165,6 +198,7 @@ func _flash_hit() -> void:
 func _get_defense() -> float:
 	return StatsData.get_stats().get_def()
 
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_pressed() -> void:
 	if combo_chain.size() > 0:
@@ -189,3 +223,6 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 		if area is DropItem:
 			var item: DataItem = area.item
 			EventBus.lootable_item_removed.emit(item)
+
+func _on_reached_the_targeted_position():
+	GameManager.clear_selection_boxes()

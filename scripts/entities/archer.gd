@@ -11,7 +11,6 @@ signal _animation_editor_arrow_attack()
 @export var attack_range: float = 300.0
 
 # ─── Public Variables ────────────────────────────────────────────────────────
-var target: CharacterBody2D = null
 var enemies_in_range: Array[CharacterBody2D] = []
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────

@@ -71,4 +71,3 @@ func _set_state(new_state: DeprecatedState) -> void:
 	current_state = new_state
 	_update_label_state()
 	_on_state_changed(new_state)
-

@@ -199,7 +199,7 @@ func _move_to_position(_target_position: Vector2) -> void:
 	nav_agent.target_position = _target_position
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
-	if global_position.distance_to(nav_agent.target_position) < 1:
+	if global_position.distance_to(nav_agent.target_position) < 5:
 		return
 	_move()
 
