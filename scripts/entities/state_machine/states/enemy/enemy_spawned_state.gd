@@ -8,7 +8,6 @@ func enter() -> void:
 	if actor.enemy_params:
 		actor._load_params()
 		
-		print("load enemy params from enemies spawner stats script")
 		EventBus.enemy_died.connect(_on_enemy_died)
 		EventBus.enemy_spawned.connect(_on_spawned)
 		transitioned.emit("enemyidlestate")

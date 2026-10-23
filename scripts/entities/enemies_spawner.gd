@@ -71,7 +71,6 @@ func _spawn_all_configured_enemies() -> void:
 			if config.enemy_params:
 				enemy.set_enemy_params(config.enemy_params)
 				enemy._load_params()
-				print("load enemy params from enemies spawner script")
 
 ## Respawns a random enemy from the enabled spawn configurations.
 func _spawn_random_configured_enemy() -> void:

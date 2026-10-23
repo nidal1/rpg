@@ -149,7 +149,6 @@ func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
 	character_class.base_stats = character_class.get_class_stats()
-	print(character_class.base_stats)
 	GameManager.register_player(self)
 
 ## Triggers the attack animation.
