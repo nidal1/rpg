@@ -41,7 +41,6 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var world_pos = get_global_mouse_position()
-		print("click: ", world_pos)
 		GameManager.instanciate_selection_box_at_position(world_pos)
 		target_position = world_pos
 		return
@@ -75,7 +74,6 @@ func _move_to_position() -> void:
 	nav_agent.target_position = target_position
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
-	print("distance to: ",global_position.distance_to(nav_agent.target_position))
 	if global_position.distance_to(nav_agent.target_position) < 5:
 		target_position = Vector2.ZERO
 		reached_the_targeted_position.emit()
