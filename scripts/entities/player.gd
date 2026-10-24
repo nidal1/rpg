@@ -4,9 +4,6 @@
 extends Combatant
 class_name Player
 
-# ─── Local signals
-signal reached_the_targeted_position
-
 # ─── Exported Variables ──────────────────────────────────────────────────────
 ## The class data defining the player's starting stats and abilities.
 @export var character_class: CharacterClass
@@ -19,7 +16,9 @@ var combo_queued: bool = false
 ## The list of attacks forming the combo chain.
 var combo_chain: Array[AttackData] = []
 var target: Enemy = null
-var target_position: Vector2 = Vector2.ZERO
+var mouse_target_position: Vector2
+var has_mouse_target: bool = false
+
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
@@ -30,8 +29,6 @@ var target_position: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	super._ready()
 
-	reached_the_targeted_position.connect(_on_reached_the_targeted_position)
-
 	animation_tree = $AnimationTree
 	animation_playback = animation_tree["parameters/playback"]
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
@@ -40,9 +37,9 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var world_pos = get_global_mouse_position()
-		GameManager.instanciate_selection_box_at_position(world_pos)
-		target_position = world_pos
+		var mouse_world_pos = get_global_mouse_position()
+		GameManager.instanciate_selection_box_at_position(mouse_world_pos)
+		set_target_position(mouse_world_pos)
 		return
 
 	# TODO: The transition to the attack state must have :
@@ -52,13 +49,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if state_machine:
 			state_machine.transition_to("playerattackstate")
 
-func _physics_process(_delta: float) -> void:
-	direction.x = Input.get_axis("move_left", "move_right")
-	direction.y = Input.get_axis("move_up", "move_down")
-	if target_position != Vector2.ZERO:
-		_move_to_position()
-	
-	move_and_slide()
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func _move() -> void:
@@ -69,14 +59,15 @@ func _move() -> void:
 			animation_playback.travel("run")
 			_play_movement_animation()
 
+func _move_and_slide():
+	move_and_slide()
+
 ## Moves the enemy toward a specific target position using the NavigationAgent.
 func _move_to_position() -> void:
-	nav_agent.target_position = target_position
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
 	if global_position.distance_to(nav_agent.target_position) < 5:
-		target_position = Vector2.ZERO
-		reached_the_targeted_position.emit()
+		clear_target_position()
 		return
 	_move()
 
@@ -109,6 +100,18 @@ func set_target(_target: Enemy):
 
 func get_target():
 	return target
+
+func set_target_position(_position: Vector2) -> void:
+	mouse_target_position = _position
+	has_mouse_target = true
+	nav_agent.target_position = _position
+
+func _get_target_position():
+	return mouse_target_position
+
+func clear_target_position() -> void:
+	has_mouse_target = false
+	GameManager.clear_selection_boxes()
 
 func _on_damage_received() -> void:
 	var current_hp = StatsData.get_stats().get_current_hp()
@@ -221,5 +224,3 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 			var item: DataItem = area.item
 			EventBus.lootable_item_removed.emit(item)
 
-func _on_reached_the_targeted_position():
-	GameManager.clear_selection_boxes()
