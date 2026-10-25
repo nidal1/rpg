@@ -128,3 +128,17 @@ signal potions_unequipped(potion: ConsumableItem)
 ## Emitted when potions are consumed.
 @warning_ignore("UNUSED_SIGNAL")
 signal potions_consumed(potion: ConsumableItem)
+
+# ─── Selection boxes ───────────────────────────────────────────────────────
+
+## Emitted when clearing selection boxes.
+@warning_ignore("UNUSED_SIGNAL")
+signal clear_selection_boxes()
+
+## Emitted when selecting an enemy.
+@warning_ignore("UNUSED_SIGNAL")
+signal select_enemy(enemy: Enemy)
+
+## Emitted when unselecting an enemy.
+@warning_ignore("UNUSED_SIGNAL")
+signal unselect_enemy(enemy: Enemy)

@@ -1,6 +1,6 @@
 ## GameManager
 ## Manages core game loops, leveling, experience, and global interactions.
-extends Node
+extends Node2D
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 ## Reference to the current player character.
@@ -15,11 +15,21 @@ var arrow_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_
 var pointing_curson = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_02.png")
 var forbidden_cursor = load("res://assets/ui/UI Elements/UI Elements/Cursors/Cursor_03.png")
 var selection_box_scene: PackedScene = load("res://scenes/ui/selection_box.tscn")
+var is_enemy_selected = false
+var selected_enemy: Enemy = null
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	connect_global_event()
 	init_cursor()
+
+# TODO: review others _unhandled_input instances 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+
+		targeting_enemy_or_ground()
+		return
+
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 func init_cursor():
@@ -42,6 +52,8 @@ func connect_global_event():
 	EventBus.potions_unequipped.connect(_on_potion_unequipped)
 	EventBus.potions_consumed.connect(_on_potion_consumed)
 	EventBus.buy_item.connect(_on_buy_item)
+	EventBus.select_enemy.connect(_on_select_enemy)
+	EventBus.clear_selection_boxes.connect(_on_clear_selection_boxes)
 
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
@@ -73,8 +85,8 @@ func scaling_level_up() -> void:
 	PlayerData.set_total_xp_to_next_level(new_required_xp)
 
 ## Randomizes a position near the specified position within the drop range.
-func randomize_drop_position(position: Vector2, _drop_range: float = drop_range) -> Vector2:
-	return position + Vector2(
+func randomize_drop_position(_position: Vector2, _drop_range: float = drop_range) -> Vector2:
+	return _position + Vector2(
 		randf_range(-_drop_range, _drop_range),
 		randf_range(-_drop_range, _drop_range)
 	)
@@ -100,18 +112,83 @@ func drop_item(item: DataItem) -> void:
 			drop_zone.add_child(drop_scene)
 			drop_scene.global_position = random_position
 
-func instanciate_selection_box_at_position(pos: Vector2):
-	clear_selection_boxes()
-	
-	var selection_box_instance = selection_box_scene.instantiate()
-	get_node("/root/World/SelectionBoxes").add_child(selection_box_instance)
-	selection_box_instance.global_position = pos
+func get_selection_box():
+	var selection_boxes_container = get_node("/root/World/SelectionBoxes")
+	var selection_boxes_children = selection_boxes_container.get_children()
+	if selection_boxes_children.size():
+		return selection_boxes_children[0]
+	return null
 
 func clear_selection_boxes():
 	var selection_boxes_container = get_node("/root/World/SelectionBoxes")
 	if selection_boxes_container.get_children().size():
 		for child in selection_boxes_container.get_children():
 			child.queue_free()
+
+func set_is_enemy_selected(_selected: bool):
+	is_enemy_selected = _selected
+
+func get_is_enemy_selected():
+	return is_enemy_selected
+
+func _get_enemy_at_position(pos: Vector2) -> Node2D:
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = pos
+	const ENEMY_HURTBOX_LAYER: int = 1 << 6
+	query.collision_mask = ENEMY_HURTBOX_LAYER
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+
+	var space = get_viewport().world_2d.direct_space_state
+	var results = space.intersect_point(query)
+
+	for result in results:
+		var collider = result.collider
+
+		var enemy = collider.get_parent()
+
+		if enemy and enemy.is_in_group("enemy"):
+			return enemy
+
+	return null
+
+func select_enemy(_enemy: Enemy) -> void:
+	clear_selection_boxes()
+
+	if selected_enemy:
+		set_is_enemy_selected(false)
+		EventBus.unselect_enemy.emit(selected_enemy)
+		selected_enemy = null
+
+	selected_enemy = _enemy
+	set_is_enemy_selected(true)
+	EventBus.select_enemy.emit(_enemy)
+
+func select_ground(pos: Vector2) -> void:
+	if selected_enemy:
+		set_is_enemy_selected(false)
+		EventBus.unselect_enemy.emit(selected_enemy)
+		selected_enemy = null
+	
+	create_selection_box(pos)
+	player_ref.set_target_position(pos)
+
+func targeting_enemy_or_ground():
+	var mouse_pos = get_global_mouse_position()
+	var enemy = _get_enemy_at_position(mouse_pos)
+
+	if enemy:
+		select_enemy(enemy)
+	else:
+		select_ground(mouse_pos)
+
+func create_selection_box(pos: Vector2):
+	clear_selection_boxes()
+	
+	var selection_box_instance = selection_box_scene.instantiate()
+	get_node("/root/World/SelectionBoxes").add_child(selection_box_instance)
+	selection_box_instance.global_position = pos
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
 	var enemy_lvl: int = enemy.enemy_level if "enemy_level" in enemy else 1
@@ -230,3 +307,12 @@ func _on_buy_item(_value: float, _data_item: DataItem):
 		var _items_to_add: Array[DataItem] = [_data_item]
 		EventBus.items_added_to_inventory.emit(_items_to_add)
 		EventBus.udpate_available_gold.emit(remaning)
+
+
+func _on_clear_selection_boxes():
+	clear_selection_boxes()
+
+func _on_select_enemy(_selected_enemy: Enemy):
+	selected_enemy = _selected_enemy
+	set_is_enemy_selected(true)
+	selected_enemy.set_selection_box_visibility(true)

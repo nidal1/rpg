@@ -74,6 +74,8 @@ var current_health: float = 0.0
 
 var current_timescale: float = 0.5
 
+var selected: bool = false
+
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
 @onready var wander_cd: Timer = $WanderCD
@@ -81,6 +83,7 @@ var current_timescale: float = 0.5
 @onready var enemy_hp_progress_bar: TextureProgressBar = $EnemyStats/VBoxContainer/HBoxContainer/EnemyHPProgressBar
 @onready var enemy_hp_points: Label = $EnemyStats/VBoxContainer/HBoxContainer/EnemyHPPoints
 @onready var enemy_name_label: Label = $EnemyStats/VBoxContainer/EnemyNameLabel
+@onready var selection_box: Node2D = $SelectionBox
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -92,7 +95,10 @@ func _ready() -> void:
 	animation_BA_attack_speed_parameter_path = "parameters/basic_attack/attack_speed/scale"
 	animation_tree.set_active(true)
 
+	selection_box.visible = false
 
+	EventBus.select_enemy.connect(_on_select_enemy)
+	EventBus.unselect_enemy.connect(_on_unselect_enemy)
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
@@ -110,6 +116,9 @@ func set_target(new_target: CharacterBody2D) -> void:
 ## Returns the current target.
 func get_target() -> CharacterBody2D:
 	return target
+
+func set_selection_box_visibility(_visibility: bool):
+	selection_box.visible = _visibility
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func _move() -> void:
@@ -274,3 +283,23 @@ func _on_wander_cd_timeout() -> void:
 	if is_out_of_spawn_zone: 
 		return
 	state_machine.transition_to("enemywanderstate")
+
+
+func _on_hurtbox_mouse_entered() -> void:
+	if not selected:
+		set_selection_box_visibility(true)
+
+
+func _on_hurtbox_mouse_exited() -> void:
+	if not selected:
+		set_selection_box_visibility(false)
+
+func _on_select_enemy(_enemy: Enemy):
+	if self == _enemy:
+		set_selection_box_visibility(true)
+		selected = true
+
+func _on_unselect_enemy(_enemy: Enemy):
+	if self == _enemy:
+		set_selection_box_visibility(false)
+		selected = false

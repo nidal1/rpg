@@ -81,7 +81,8 @@ y_sort_enabled = true
 [node name="Reikeuseu" parent="." unique_id=1924322231 instance=ExtResource("1_dlabj")]
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
-position = Vector2(5227, 2842)
+position = Vector2(6123, 3066)
+selected_player = 0
 instance_position = Vector2(2351, 1179)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]

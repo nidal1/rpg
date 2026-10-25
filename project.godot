@@ -29,7 +29,6 @@ ProgressionManager="*uid://drrbgbd86shga"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
-mouse_cursor/custom_image="uid://c7661trm0o6l6"
 
 [dotnet]
 

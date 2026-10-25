@@ -35,19 +35,7 @@ func _ready() -> void:
 	animation_tree.set_active(true)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var mouse_world_pos = get_global_mouse_position()
-		GameManager.instanciate_selection_box_at_position(mouse_world_pos)
-		set_target_position(mouse_world_pos)
-		return
 
-	# TODO: The transition to the attack state must have :
-		# an enemy selected 
-		# enemy in the attack range
-	if event.is_action_pressed("attack"):
-		if state_machine:
-			state_machine.transition_to("playerattackstate")
 
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
@@ -111,7 +99,7 @@ func _get_target_position():
 
 func clear_target_position() -> void:
 	has_mouse_target = false
-	GameManager.clear_selection_boxes()
+	EventBus.clear_selection_boxes.emit()
 
 func _on_damage_received() -> void:
 	var current_hp = StatsData.get_stats().get_current_hp()

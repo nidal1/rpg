@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dvr7dqk0dx8vc" path="res://assets/sprites/enemies/Goblin/Goblin.png" id="11_27tcs"]
 [ext_resource type="Texture2D" uid="uid://cnojqlrlaed06" path="res://assets/ui/UI Elements/UI Elements/Bars/SmallBar_Base_03.png" id="12_mag4a"]
 [ext_resource type="Texture2D" uid="uid://blnpc7bekbunn" path="res://assets/ui/UI Elements/UI Elements/Bars/SmallBar_Fill.png" id="13_0kssi"]
+[ext_resource type="PackedScene" uid="uid://c0e2g66nood77" path="res://scenes/ui/selection_box.tscn" id="16_ljcf0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ofdk"]
 radius = 170.0
@@ -30,6 +31,7 @@ radius = 142.00352
 y_sort_enabled = true
 collision_layer = 4
 collision_mask = 0
+input_pickable = true
 script = ExtResource("2_gflvi")
 enemy_params = null
 
@@ -60,7 +62,6 @@ shape = SubResource("CircleShape2D_6ofdk")
 debug_color = Color(0.50980395, 0.49803922, 1, 0.41960785)
 
 [node name="Hurtbox" type="Area2D" parent="." index="5" unique_id=1770202733]
-visible = false
 position = Vector2(0, -31)
 collision_layer = 64
 collision_mask = 0
@@ -148,7 +149,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 
+[node name="SelectionBox" parent="." index="11" unique_id=1887301801 instance=ExtResource("16_ljcf0")]
+visible = false
+
 [connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
 [connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]
+[connection signal="mouse_entered" from="Hurtbox" to="." method="_on_hurtbox_mouse_entered"]
+[connection signal="mouse_exited" from="Hurtbox" to="." method="_on_hurtbox_mouse_exited"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="WanderCD" to="." method="_on_wander_cd_timeout"]

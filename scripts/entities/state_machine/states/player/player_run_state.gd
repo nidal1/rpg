@@ -16,7 +16,7 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	# Mouse movement
-	if actor.has_mouse_target:
+	if actor.has_mouse_target and not GameManager.get_is_enemy_selected():
 
 		if actor.nav_agent.is_navigation_finished():
 			actor.clear_target_position()
