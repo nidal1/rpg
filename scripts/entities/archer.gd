@@ -8,7 +8,7 @@ signal _animation_editor_arrow_attack()
 
 # ─── Exported Variables ──────────────────────────────────────────────────────
 @export var arrow_scene: PackedScene
-@export var attack_range: float = 300.0
+
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 var enemies_in_range: Array[CharacterBody2D] = []
@@ -17,12 +17,15 @@ var enemies_in_range: Array[CharacterBody2D] = []
 @onready var arrow_spawning_position: Node2D = %ArrowSpawningPosition
 @onready var arrows_container: Node2D = %ArrowsContainer
 @onready var archer_unit: ArcherUnit = $ArcherUnit if has_node("ArcherUnit") else _get_or_create_archer_unit()
+@onready var detection_zone: Area2D = $DetectionZone
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	super._ready()
 	_animation_editor_arrow_attack.connect(_on_initialized_arrow_attack)
 	var cls = load("res://resources/classes/archer.tres")
+	attack_range = cls.attack_range
+	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
 	_load_classe(cls)
 
 # ─── Private Methods ─────────────────────────────────────────────────────────

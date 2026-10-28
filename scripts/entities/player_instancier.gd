@@ -20,7 +20,7 @@ class_name PlayerInstancier
 var player_instance: Player = null
 var old_camera_position: Vector2 = Vector2.ZERO
 var is_camera_in_player_position: bool = false
-var camera_zoom_off = Vector2.ONE
+var camera_zoom_off = Vector2(0.5,0.5)
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "instance_position":

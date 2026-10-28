@@ -15,6 +15,7 @@ var combo_index: int = -1
 var combo_queued: bool = false
 ## The list of attacks forming the combo chain.
 var combo_chain: Array[AttackData] = []
+var attack_range: float = 300
 var target: Enemy = null
 var mouse_target_position: Vector2
 var has_mouse_target: bool = false
@@ -145,11 +146,15 @@ func _load_classe(cls: CharacterClass) -> void:
 ## Triggers the attack animation.
 func _play_attack_animation(attack: AttackData) -> void:
 	if animation_tree and animation_BA_playback:
+		animation_BA_playback.travel(attack.anim_name)
 		animation_tree.set(
 			"parameters/basic_attack/BasicAttackStateMachine/%s/blend_position" % attack.anim_name,
 			last_facing_dir
 		)
-		animation_BA_playback.travel(attack.anim_name)
+		# if last_facing_dir <= 0:
+		# 	animation_player.play("attack1_left")
+		# else:
+		# 	animation_player.play("attack1_right")
 
 ## Starts the attack combo chain.
 func _start_combo() -> void:
@@ -211,4 +216,3 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 		if area is DropItem:
 			var item: DataItem = area.item
 			EventBus.lootable_item_removed.emit(item)
-

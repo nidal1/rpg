@@ -477,9 +477,10 @@ states/Start/position = Vector2(234.4, 85.44)
 states/attack1/node = SubResource("AnimationNodeBlendSpace1D_yipsv")
 states/attack1/position = Vector2(486, 84.8)
 transitions = ["Start", "attack1", SubResource("AnimationNodeStateMachineTransition_qa85n"), "attack1", "End", SubResource("AnimationNodeStateMachineTransition_5kssr")]
+graph_offset = Vector2(151, -8)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_5kssr"]
-graph_offset = Vector2(-367.32343, 87.9677)
+graph_offset = Vector2(-381.7599, 94.93331)
 nodes/BasicAttackStateMachine/node = SubResource("AnimationNodeStateMachine_yg8gi")
 nodes/BasicAttackStateMachine/position = Vector2(-16, 144)
 node_connections = [&"output", 0, &"BasicAttackStateMachine"]
@@ -532,7 +533,7 @@ states/idle/position = Vector2(375.6, 99.68)
 states/run/node = SubResource("AnimationNodeBlendSpace1D_fs3x2")
 states/run/position = Vector2(604.39996, 102.624)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_v86c1"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r7l6o"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_yipsv"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_fs3x2"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_q30b0")]
-graph_offset = Vector2(-260.67465, 58)
+graph_offset = Vector2(-80.67465, 107)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yipsv"]
 radius = 300.0
@@ -540,14 +541,12 @@ radius = 300.0
 [node name="Mage" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_diwrq")]
 script = ExtResource("2_6to3v")
 bullet_scene = ExtResource("3_diwrq")
-attack_range = 500.0
 character_class = ExtResource("4_diwrq")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")
-animation = &"attack1_right"
-flip_h = true
+animation = &"idle_right"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1048694170]
 libraries/ = SubResource("AnimationLibrary_jbr1l")

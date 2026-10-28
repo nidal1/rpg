@@ -14,6 +14,7 @@ metadata/_custom_type_script = "uid://bahe5wqw78xlr"
 [resource]
 script = ExtResource("2_enydv")
 avatar_texture = ExtResource("1_enydv")
+attack_range = 500.0
 combo_chain = Array[ExtResource("1_51576")]([SubResource("Resource_enydv")])
 base_stats = ExtResource("2_wys6e")
 metadata/_custom_type_script = "uid://7oleemb4eeqr"

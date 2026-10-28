@@ -519,8 +519,9 @@ radius = 300.0
 [node name="Archer" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_b2p8u")]
 script = ExtResource("2_r7l6o")
 arrow_scene = ExtResource("3_fs3x2")
-attack_range = 300.0
+attack_range = null
 character_class = ExtResource("3_yipsv")
+entity_name = null
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)

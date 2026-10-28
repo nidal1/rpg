@@ -8,7 +8,6 @@ signal _animation_editor_bullet_attack()
 
 # ─── Exported Variables ──────────────────────────────────────────────────────
 @export var bullet_scene: PackedScene
-@export var attack_range: float = 500.0
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 var enemies_in_range: Array[CharacterBody2D] = []
@@ -22,9 +21,10 @@ var enemies_in_range: Array[CharacterBody2D] = []
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
 	super._ready()
-	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
 	_animation_editor_bullet_attack.connect(_on_initialized_bullet_attack)
 	var cls = load("res://resources/classes/mage.tres")
+	attack_range = cls.attack_range
+	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
 	_load_classe(cls)
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
@@ -45,6 +45,7 @@ func _update_target() -> void:
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_animation_editor_bullet_attack() -> void:
+
 	_animation_editor_bullet_attack.emit()
 
 func _on_initialized_bullet_attack() -> void:

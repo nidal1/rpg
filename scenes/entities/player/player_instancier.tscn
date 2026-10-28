@@ -13,4 +13,5 @@ archer_scene = ExtResource("3_lw3fi")
 mage_scene = ExtResource("4_7pbky")
 
 [node name="PlayerCamera" type="Camera2D" parent="." unique_id=1684371786]
+zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true

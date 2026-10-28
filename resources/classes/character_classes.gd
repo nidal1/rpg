@@ -6,6 +6,7 @@ enum PlayerType {WARRIOR, ARCHER, MAGE, PRIEST, ALL}
 @export var player_type: PlayerType = PlayerType.WARRIOR
 @export var avatar_texture: Texture2D
 @export var speed: float = 300.0
+@export var attack_range: float = 300.0
 @export var combo_chain: Array[AttackData] = []
 @export var base_stats: CharacterStats
 
