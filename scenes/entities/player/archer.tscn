@@ -344,6 +344,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_yipsv"]
 resource_name = "run_left"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -383,6 +384,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_fs3x2"]
 resource_name = "run_right"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -519,15 +521,13 @@ radius = 300.0
 [node name="Archer" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_b2p8u")]
 script = ExtResource("2_r7l6o")
 arrow_scene = ExtResource("3_fs3x2")
-attack_range = null
 character_class = ExtResource("3_yipsv")
 entity_name = null
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")
-animation = &"attack1_right"
-flip_h = true
+animation = &"run_right"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1048694170]
 libraries/ = SubResource("AnimationLibrary_jbr1l")

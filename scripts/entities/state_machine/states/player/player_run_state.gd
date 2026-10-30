@@ -21,16 +21,15 @@ func _physics_process(_delta: float) -> void:
 		if actor.nav_agent.is_navigation_finished():
 			actor.clear_target_position()
 			actor.velocity = Vector2.ZERO
-
 			transitioned.emit("playeridlestate")
 			return
 
 		actor._move_to_position()
 		actor._move_and_slide()
 		return
-
-	# No movement
-	actor.velocity = Vector2.ZERO
-	actor._move_and_slide()
-
-	transitioned.emit("playeridlestate")
+		
+	if actor.state_machine.current_state is PlayerRunState:
+		# No movement
+		actor.velocity = Vector2.ZERO
+		actor._move_and_slide()
+		transitioned.emit("playeridlestate")

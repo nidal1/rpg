@@ -13,7 +13,8 @@ func enter() -> void:
 	actor._on_attack_pressed()
 
 func handle_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	# ONLY THE WARRIOR ACTOR CAN GO TO SECOND COMBO
+	if actor is Warrior and event.is_action_pressed("attack") and event.pressed:
 		actor._on_attack_pressed()
 
 func physics_update(_delta: float) -> void:

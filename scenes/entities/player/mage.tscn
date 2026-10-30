@@ -365,6 +365,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_yipsv"]
 resource_name = "run_left"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -404,6 +405,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_fs3x2"]
 resource_name = "run_right"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -546,7 +548,7 @@ character_class = ExtResource("4_diwrq")
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")
-animation = &"idle_right"
+animation = &"run_right"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1048694170]
 libraries/ = SubResource("AnimationLibrary_jbr1l")

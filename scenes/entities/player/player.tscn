@@ -37,6 +37,7 @@ shape = SubResource("CapsuleShape2D_1hmtu")
 debug_color = Color(1, 0, 0, 0.41960785)
 
 [node name="Label" parent="." index="4" unique_id=1619467209]
+visible = true
 offset_left = -41.0
 offset_top = -125.0
 offset_right = 39.0
