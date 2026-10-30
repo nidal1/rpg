@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://isn4yk7wjkyd" path="res://scripts/entities/state_machine/states/player/player_run_state.gd" id="4_bj7e2"]
 [ext_resource type="Script" uid="uid://cbfjljxqfyovd" path="res://scripts/entities/state_machine/states/player/player_attack_state.gd" id="5_1murt"]
 [ext_resource type="Script" uid="uid://dlmyx3rwudqws" path="res://scripts/entities/state_machine/states/player/player_dead_state.gd" id="6_5sj0x"]
+[ext_resource type="Script" uid="uid://0nchf5ugj5rd" path="res://scripts/entities/state_machine/states/player/player_chase_state.gd" id="7_bj7e2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1hmtu"]
 radius = 19.0
@@ -57,6 +58,9 @@ script = ExtResource("5_1murt")
 
 [node name="PlayerDeadState" type="Node" parent="StateMachine" index="3" unique_id=808757208]
 script = ExtResource("6_5sj0x")
+
+[node name="PlayerChaseState" type="Node" parent="StateMachine" index="4" unique_id=525035307]
+script = ExtResource("7_bj7e2")
 
 [node name="PickableDection" type="Area2D" parent="." index="6" unique_id=678009553]
 position = Vector2(0, -31)

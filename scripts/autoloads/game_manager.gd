@@ -182,6 +182,9 @@ func targeting_enemy_or_ground():
 	else:
 		select_ground(mouse_pos)
 
+func get_selected_enemy() -> Enemy:
+	return selected_enemy
+
 func create_selection_box(pos: Vector2):
 	clear_selection_boxes()
 	

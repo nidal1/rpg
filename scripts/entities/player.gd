@@ -76,6 +76,15 @@ func _attack() -> void:
 func _die() -> void:
 	queue_free()
 
+## Chases the current target.
+func _chase_target() -> void:
+	if GameManager.get_is_enemy_selected():
+		set_target( GameManager.get_selected_enemy() )
+		if not (target and is_instance_valid(target)): return
+		set_target_position(target.global_position)
+		_move_to_position()
+
+
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
@@ -94,6 +103,10 @@ func set_target_position(_position: Vector2) -> void:
 	mouse_target_position = _position
 	has_mouse_target = true
 	nav_agent.target_position = _position
+
+## Checks if the target is within attack range.
+func target_reached() -> bool:
+	return target and global_position.distance_to(GameManager.get_selected_enemy().global_position) <= attack_range
 
 func _get_target_position():
 	return mouse_target_position
