@@ -156,9 +156,7 @@ func select_enemy(_enemy: Enemy) -> void:
 	clear_selection_boxes()
 
 	if selected_enemy:
-		set_is_enemy_selected(false)
-		EventBus.unselect_enemy.emit(selected_enemy)
-		selected_enemy = null
+		unselect_enemy()
 
 	selected_enemy = _enemy
 	set_is_enemy_selected(true)
@@ -166,9 +164,7 @@ func select_enemy(_enemy: Enemy) -> void:
 
 func select_ground(pos: Vector2) -> void:
 	if selected_enemy:
-		set_is_enemy_selected(false)
-		EventBus.unselect_enemy.emit(selected_enemy)
-		selected_enemy = null
+		unselect_enemy()
 	
 	create_selection_box(pos)
 	player_ref.set_target_position(pos)
@@ -185,6 +181,12 @@ func targeting_enemy_or_ground():
 func get_selected_enemy() -> Enemy:
 	return selected_enemy
 
+func unselect_enemy():
+	set_is_enemy_selected(false)
+	EventBus.unselect_enemy.emit(selected_enemy)
+	player_ref.has_mouse_target = false
+	selected_enemy = null
+
 func create_selection_box(pos: Vector2):
 	clear_selection_boxes()
 	
@@ -198,6 +200,9 @@ func _on_enemy_died(enemy: Enemy) -> void:
 	var enemy_rank = enemy.enemy_rank if "enemy_rank" in enemy else ProgressionManager.EnemyRank.NORMAL
 	var xp_reward: int = ProgressionManager.get_enemy_xp_yield(enemy_lvl, enemy_rank, PlayerData.get_player_level())
 	
+	if get_selected_enemy() == enemy:
+		unselect_enemy()
+
 	if xp_reward > 0:
 		add_xp(xp_reward)
 	spawn_enemy_items(enemy)

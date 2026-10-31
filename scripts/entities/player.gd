@@ -52,10 +52,10 @@ func _move_and_slide():
 	move_and_slide()
 
 ## Moves the enemy toward a specific target position using the NavigationAgent.
-func _move_to_position() -> void:
+func _move_to_position(max_distance: float = 5) -> void:
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
-	if global_position.distance_to(nav_agent.target_position) < 5:
+	if global_position.distance_to(nav_agent.target_position) < max(5, max_distance):
 		clear_target_position()
 		return
 	_move()
@@ -82,7 +82,8 @@ func _chase_target() -> void:
 		set_target( GameManager.get_selected_enemy() )
 		if not (target and is_instance_valid(target)): return
 		set_target_position(target.global_position)
-		_move_to_position()
+		_move_to_position(attack_range)
+		_move_and_slide()
 
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
@@ -153,6 +154,7 @@ func _get_attack_damage() -> float:
 func _load_classe(cls: CharacterClass) -> void:
 	speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
+	attack_range = cls.attack_range
 	character_class.base_stats = character_class.get_class_stats()
 	GameManager.register_player(self)
 

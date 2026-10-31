@@ -23,10 +23,12 @@ func _ready() -> void:
 		if child is State:
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(_on_state_transitioned)
+			child.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	if initial_state:
 		current_state = initial_state
 		current_state.enter()
+		current_state.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _process(delta: float) -> void:
 	if current_state:
@@ -56,6 +58,11 @@ func _on_state_transitioned(state_name: String) -> void:
 	if current_state:
 		if current_state == new_state: return
 		current_state.exit()
+		if not (current_state is PlayerIdleState or current_state is EnemyIdleState):
+			current_state.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	current_state = new_state
+	if owner is Player:
+		print("🔍 [state_machine - ", get_stack()[0].function, "] current_state: ", current_state)
 	current_state.enter()
+	current_state.process_mode = Node.PROCESS_MODE_INHERIT
