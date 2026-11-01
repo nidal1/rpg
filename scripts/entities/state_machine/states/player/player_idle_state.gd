@@ -7,6 +7,14 @@ class_name PlayerIdleState
 func enter() -> void:
 	actor._idle()
 
+func push_actor_to_attack(_enemy_to_attack: Enemy):
+	var dist_to_enemy = actor.global_position.distance_to(_enemy_to_attack.global_position)
+	
+	var can_attack: bool = dist_to_enemy <= actor.attack_range
+
+	if can_attack: transitioned.emit("playerattackstate")
+	else: transitioned.emit("playerchasestate")
+
 func handle_input(event: InputEvent) -> void:
 	# TODO: The transition to the attack state must have :
 		# an enemy selected 
@@ -15,14 +23,17 @@ func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack") and event.pressed:
 		if GameManager.get_is_enemy_selected():
 
-			var dist_to_enemy = actor.global_position.distance_to(GameManager.get_selected_enemy().global_position)
-			
-			var can_attack: bool = dist_to_enemy <= actor.attack_range
-
-			if can_attack: transitioned.emit("playerattackstate")
-			else: transitioned.emit("playerchasestate")
-		return
+			push_actor_to_attack(GameManager.get_selected_enemy())
 		
+		else:
+			var enemies_in_range: Array[Enemy] = actor.enemies_in_range
+			if enemies_in_range.size():
+				var selected_enemy: Enemy = enemies_in_range[0]
+				if actor.enemies_in_range.has(selected_enemy):
+					EventBus.select_enemy.emit(selected_enemy)
+					push_actor_to_attack(selected_enemy)
+
+		return
 
 func _physics_process(_delta: float) -> void:
 	actor.direction.x = Input.get_axis("move_left", "move_right")

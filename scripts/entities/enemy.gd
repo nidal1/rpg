@@ -97,8 +97,8 @@ func _ready() -> void:
 
 	selection_box.visible = false
 
-	EventBus.select_enemy.connect(_on_select_enemy)
-	EventBus.unselect_enemy.connect(_on_unselect_enemy)
+	EventBus.enemy_selected.connect(_on_enemy_selected)
+	EventBus.enemy_unselected.connect(_on_enemy_unselected)
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
@@ -294,12 +294,12 @@ func _on_hurtbox_mouse_exited() -> void:
 	if not selected:
 		set_selection_box_visibility(false)
 
-func _on_select_enemy(_enemy: Enemy):
+func _on_enemy_selected(_enemy: Enemy):
 	if self == _enemy:
 		set_selection_box_visibility(true)
 		selected = true
 
-func _on_unselect_enemy(_enemy: Enemy):
+func _on_enemy_unselected(_enemy: Enemy):
 	if self == _enemy:
 		set_selection_box_visibility(false)
 		selected = false

@@ -15,6 +15,9 @@ height = 60.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_8akj5"]
 radius = 90.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bj7e2"]
+radius = 300.0
+
 [node name="Player" unique_id=1846937653 groups=["player"] instance=ExtResource("1_1hmtu")]
 collision_layer = 2
 script = ExtResource("2_635qg")
@@ -74,6 +77,17 @@ shape = SubResource("CircleShape2D_8akj5")
 
 [node name="NavigationAgent" type="NavigationAgent2D" parent="." index="7" unique_id=1912599269]
 
+[node name="DetectionZone" type="Area2D" parent="." index="8" unique_id=709478698]
+collision_layer = 0
+collision_mask = 4
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" index="0" unique_id=555537735]
+shape = SubResource("CircleShape2D_bj7e2")
+
 [connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
 [connection signal="area_entered" from="PickableDection" to="." method="_on_pickable_dection_area_entered"]
 [connection signal="area_exited" from="PickableDection" to="." method="_on_pickable_dection_area_exited"]
+[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

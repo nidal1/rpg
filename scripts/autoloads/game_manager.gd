@@ -53,6 +53,7 @@ func connect_global_event():
 	EventBus.potions_consumed.connect(_on_potion_consumed)
 	EventBus.buy_item.connect(_on_buy_item)
 	EventBus.select_enemy.connect(_on_select_enemy)
+	EventBus.unselect_enemy.connect(_on_unselect_enemy)
 	EventBus.clear_selection_boxes.connect(_on_clear_selection_boxes)
 
 ## Registers the player with the Game Manager and initializes data.
@@ -160,7 +161,7 @@ func select_enemy(_enemy: Enemy) -> void:
 
 	selected_enemy = _enemy
 	set_is_enemy_selected(true)
-	EventBus.select_enemy.emit(_enemy)
+	EventBus.enemy_selected.emit(_enemy)
 
 func select_ground(pos: Vector2) -> void:
 	if selected_enemy:
@@ -183,8 +184,8 @@ func get_selected_enemy() -> Enemy:
 
 func unselect_enemy():
 	set_is_enemy_selected(false)
-	EventBus.unselect_enemy.emit(selected_enemy)
 	player_ref.has_mouse_target = false
+	EventBus.enemy_unselected.emit(selected_enemy)
 	selected_enemy = null
 
 func create_selection_box(pos: Vector2):
@@ -321,6 +322,7 @@ func _on_clear_selection_boxes():
 	clear_selection_boxes()
 
 func _on_select_enemy(_selected_enemy: Enemy):
-	selected_enemy = _selected_enemy
-	set_is_enemy_selected(true)
-	selected_enemy.set_selection_box_visibility(true)
+	select_enemy(_selected_enemy)
+
+func _on_unselect_enemy():
+	unselect_enemy()

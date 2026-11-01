@@ -1,0 +1,261 @@
+<mxfile host="65bd71144e">
+    <diagram id="Qr3TiYxMs_gJzSOE0ilo" name="Page-1">
+        <mxGraphModel dx="907" dy="56" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-1" parent="1" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none;" value="PLAYER STATES" vertex="1">
+                    <mxGeometry height="40" width="260" x="440" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-43" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-2" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-45">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="230" y="190.21739130434798" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="PlayerIdleState" vertex="1">
+                    <mxGeometry height="60" width="180" x="330" y="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="PlayerRunState" vertex="1">
+                    <mxGeometry height="60" width="180" x="760" y="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-65" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-4" style="edgeStyle=none;html=1;" target="fs4VsxLsRGy77M9YmEED-64" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="PlayerAttackState" vertex="1">
+                    <mxGeometry height="60" width="200" x="320" y="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="EnemyDeadState" vertex="1">
+                    <mxGeometry height="60" width="200" x="520" y="520" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-6" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-3" value="movement keys pressed">
+                    <mxGeometry relative="1" x="0.36" y="20" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-7" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-2" value="Attack key released">
+                    <mxGeometry relative="1" x="1" y="-251" as="geometry">
+                        <mxPoint x="-250" y="231" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-14" parent="1" style="text;html=1;fontSize=24;fontStyle=1;strokeColor=none;fillColor=none;" value="ENEMY STATES" vertex="1">
+                    <mxGeometry height="40" width="260" x="1938" y="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="EnemySpawnedState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2018" y="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EnemyIdleState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2018" y="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="EnemyRunState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2558" y="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="EnemyWanderState" vertex="1">
+                    <mxGeometry height="60" width="220" x="1880" y="490" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="EnemyChaseState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2288" y="420" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EnemyAttackState" vertex="1">
+                    <mxGeometry height="60" width="220" x="1730" y="690" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cfe2f3;strokeColor=#6c8ebf;" value="EnemyPatrolState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2470" y="600" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4cccc;strokeColor=#990000;" value="EnemyDeadState" vertex="1">
+                    <mxGeometry height="60" width="220" x="2168" y="820" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-23" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-15" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-16" value="param load complete">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-24" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-16" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-17" value="movement starts">
+                    <mxGeometry relative="1" x="-0.0123" y="20" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-25" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-17" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-16" value="movement stops">
+                    <mxGeometry relative="1" x="0.0123" y="30" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-26" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-16" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-18" value="wander timeout">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="2110" y="420"/>
+                            <mxPoint x="2020" y="420"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-27" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-18" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-16" value="wander finished">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-28" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-16" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-19" value="player detected">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                        <Array as="points">
+                            <mxPoint x="2160" y="350"/>
+                            <mxPoint x="2368" y="350"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-29" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-16" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-20" value="target already in range">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-30" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-19" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-20" value="target reached">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-31" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-21" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="fs4VsxLsRGy77M9YmEED-19" value="player detected again">
+                    <mxGeometry relative="1" x="0.0372" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-32" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-21" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-16" value="reached spawn position">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-33" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-16" value="attack finished">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-34" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-19" value="target moved away">
+                    <mxGeometry relative="1" x="-0.2397" as="geometry">
+                        <mxPoint as="offset"/>
+                        <Array as="points">
+                            <mxPoint x="1920" y="750"/>
+                            <mxPoint x="1920" y="770"/>
+                            <mxPoint x="2370" y="770"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-35" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-16" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-36" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-17" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" x="0.2809" as="geometry">
+                        <mxPoint as="offset"/>
+                        <Array as="points">
+                            <mxPoint x="2618" y="570"/>
+                            <mxPoint x="2278" y="570"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-37" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-18" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-38" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-19" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="2408" y="650"/>
+                            <mxPoint x="2410" y="650"/>
+                            <mxPoint x="2410" y="835"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-39" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-20" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-40" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-21" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#990000;endArrow=block;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-22" value="health &lt;= 0">
+                    <mxGeometry relative="1" x="0.3613" as="geometry">
+                        <mxPoint as="offset"/>
+                        <Array as="points">
+                            <mxPoint x="2580" y="850"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-47" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-45" style="edgeStyle=none;html=1;" target="fs4VsxLsRGy77M9YmEED-46" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-48" connectable="0" parent="fs4VsxLsRGy77M9YmEED-47" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="Yes" vertex="1">
+                    <mxGeometry relative="1" x="-0.0741" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-52" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-45" style="edgeStyle=none;html=1;" target="fs4VsxLsRGy77M9YmEED-51" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-53" connectable="0" parent="fs4VsxLsRGy77M9YmEED-52" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="No" vertex="1">
+                    <mxGeometry relative="1" x="-0.2063" y="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-45" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;fillColor=light-dark(#d5e8d4, #ededed);strokeColor=#82B366;" value="Enemy&lt;br&gt;selected" vertex="1">
+                    <mxGeometry height="80" width="80" x="91" y="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-50" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-46" style="edgeStyle=none;html=1;" target="fs4VsxLsRGy77M9YmEED-49" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-58" connectable="0" parent="fs4VsxLsRGy77M9YmEED-50" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="Yes" vertex="1">
+                    <mxGeometry relative="1" x="-0.103" y="-1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-59" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-46" style="edgeStyle=none;html=1;exitX=0.98;exitY=0.493;exitDx=0;exitDy=0;entryX=0.001;entryY=0.402;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" target="fs4VsxLsRGy77M9YmEED-4">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="196" y="372.5" as="sourcePoint"/>
+                        <mxPoint x="320.0000000000002" y="377.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-60" connectable="0" parent="fs4VsxLsRGy77M9YmEED-59" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="No" vertex="1">
+                    <mxGeometry relative="1" x="-0.4299" y="-3" as="geometry">
+                        <mxPoint y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-46" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;strokeColor=#82B366;fillColor=light-dark(#d5e8d4, #ededed);" value="Distance to enemy&amp;nbsp;&lt;div&gt;&amp;gt;&lt;/div&gt;&lt;div&gt;attack range&lt;/div&gt;" vertex="1">
+                    <mxGeometry height="130" width="130" x="66" y="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-49" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#000000;strokeColor=#006EAF;" value="PlayerChaseState" vertex="1">
+                    <mxGeometry height="60" width="170" x="41" y="555" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-54" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-51" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-49">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-19" y="585"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-55" connectable="0" parent="fs4VsxLsRGy77M9YmEED-54" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="Yes" vertex="1">
+                    <mxGeometry relative="1" x="-0.3041" y="2" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-56" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-51" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-2">
+                    <mxGeometry relative="1" x="0.0633" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-69" y="120"/>
+                            <mxPoint x="420" y="120"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-57" connectable="0" parent="fs4VsxLsRGy77M9YmEED-56" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="No" vertex="1">
+                    <mxGeometry relative="1" x="-0.8604" y="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-51" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;strokeColor=#82B366;fillColor=light-dark(#d5e8d4, #ededed);" value="Enemies in detection zone" vertex="1">
+                    <mxGeometry height="110" width="100" x="-69" y="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-66" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-64" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="fs4VsxLsRGy77M9YmEED-5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-67" connectable="0" parent="fs4VsxLsRGy77M9YmEED-66" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="Yes" vertex="1">
+                    <mxGeometry relative="1" x="0.0034" y="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-68" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-64" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-2">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="620" y="205"/>
+                        </Array>
+                        <mxPoint x="620" y="190" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-69" connectable="0" parent="fs4VsxLsRGy77M9YmEED-68" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="No" vertex="1">
+                    <mxGeometry relative="1" x="-0.0026" y="-1" as="geometry">
+                        <mxPoint x="-1" y="62" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fs4VsxLsRGy77M9YmEED-64" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap;&quot;&gt;Enemy&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap;&quot;&gt;health &amp;lt;= 0&lt;/span&gt;&lt;/div&gt;" vertex="1">
+                    <mxGeometry height="80" width="80" x="580" y="340" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

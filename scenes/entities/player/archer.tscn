@@ -515,14 +515,10 @@ states/run/position = Vector2(604.39996, 102.624)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_v86c1"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r7l6o"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_yipsv"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_fs3x2"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_q30b0")]
 graph_offset = Vector2(-260.67465, 58)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_yipsv"]
-radius = 300.0
-
 [node name="Archer" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_b2p8u")]
 script = ExtResource("2_r7l6o")
 arrow_scene = ExtResource("3_fs3x2")
 character_class = ExtResource("3_yipsv")
-entity_name = null
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
@@ -547,17 +543,5 @@ position = Vector2(26, -51)
 [node name="ArrowsContainer" type="Node2D" parent="." index="10" unique_id=1931133280]
 unique_name_in_owner = true
 
-[node name="DetectionZone" type="Area2D" parent="." index="11" unique_id=2050446897]
-collision_layer = 0
-collision_mask = 4
-input_pickable = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" index="0" unique_id=1402293514]
-shape = SubResource("CircleShape2D_yipsv")
-
-[node name="PickableDection" parent="." index="12" unique_id=678009553]
+[node name="PickableDection" parent="." index="11" unique_id=678009553]
 visible = false
-
-[connection signal="body_entered" from="DetectionZone" to="." method="_on_detection_zone_body_entered"]
-[connection signal="body_exited" from="DetectionZone" to="." method="_on_detection_zone_body_exited"]

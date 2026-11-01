@@ -139,6 +139,14 @@ signal clear_selection_boxes()
 @warning_ignore("UNUSED_SIGNAL")
 signal select_enemy(enemy: Enemy)
 
+## Emitted when enemy is selected.
+@warning_ignore("UNUSED_SIGNAL")
+signal enemy_selected(enemy: Enemy)
+
 ## Emitted when unselecting an enemy.
 @warning_ignore("UNUSED_SIGNAL")
-signal unselect_enemy(enemy: Enemy)
+signal unselect_enemy()
+
+## Emitted when enemy is unselected.
+@warning_ignore("UNUSED_SIGNAL")
+signal enemy_unselected(enemy: Enemy)

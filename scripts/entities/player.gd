@@ -20,11 +20,13 @@ var target: Enemy = null
 var mouse_target_position: Vector2
 var has_mouse_target: bool = false
 
+var enemies_in_range: Array[Enemy] = []
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
 @onready var combo_timer: Timer = $ComboAttackCD
 @onready var attack_state: PlayerAttackState = $StateMachine/PlayerAttackState
+@onready var detection_zone: Area2D = $DetectionZone
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -34,10 +36,6 @@ func _ready() -> void:
 	animation_playback = animation_tree["parameters/playback"]
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
 	animation_tree.set_active(true)
-
-
-
-
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func _move() -> void:
@@ -231,3 +229,13 @@ func _on_pickable_dection_area_exited(area: Area2D) -> void:
 		if area is DropItem:
 			var item: DataItem = area.item
 			EventBus.lootable_item_removed.emit(item)
+
+func _on_detection_zone_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		if not body in enemies_in_range:
+			enemies_in_range.append(body)
+
+func _on_detection_zone_body_exited(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		if enemies_in_range.size() and body in enemies_in_range:
+			enemies_in_range.erase(body)
