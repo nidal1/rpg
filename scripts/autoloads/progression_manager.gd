@@ -126,3 +126,26 @@ func get_total_attack_cycle(base_anim_duration: float, current_timescale: float,
 func update_animation_timescale(anim_tree: AnimationTree, current_timescale: float, parameter_path: String = "parameters/TimeScale/scale") -> void:
 	if is_instance_valid(anim_tree) and anim_tree.is_active():
 		anim_tree.set(parameter_path, current_timescale)
+
+
+## 8. Player XP Addition & Level-Up Handler
+## Adds XP to player and handles level-up if threshold reached
+func add_player_xp(amount: int, player_level: int, scaler: float) -> void:
+	var current_xp = PlayerData.get_current_xp() + amount
+	PlayerData.set_current_xp(current_xp)
+
+	if current_xp >= PlayerData.get_total_xp_to_next_level():
+		handle_level_up(player_level, scaler)
+
+
+## 9. Player Level-Up Handler
+## Handles player level up progression
+func handle_level_up(current_level: int, scaler: float) -> void:
+	var new_level = current_level + 1
+	PlayerData.set_player_level(new_level)
+
+	var new_required_xp = get_required_xp_for_level(new_level, scaler)
+	PlayerData.set_total_xp_to_next_level(new_required_xp)
+
+	StatsData.get_stats().update_current_health_and_mana()
+	EventBus.level_up.emit()
