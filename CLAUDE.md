@@ -1,10 +1,12 @@
 # CLAUDE.md — 2D Action RPG (Godot 4)
 
 ## Project Overview
-A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.x** using **GDScript**. The codebase consists of 57 modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
+A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium scope (~3-4 hours gameplay) built natively in **Godot 4.6** using **GDScript**. The codebase consists of 60+ modular GDScript files implementing state machines, dynamic equipment/gems/potion systems, inventory, stat allocations, pathfinding AI, and custom UI components.
 
 - **Viewport:** 1280×720, `canvas_items` stretch mode
 - **Rendering:** Mobile renderer, DirectX 12 (Windows), pixel art (nearest-filter textures)
+- **Engine Version:** Godot 4.6
+- **Physics Engine:** Jolt Physics (3D), default 2D physics
 
 ---
 
@@ -12,8 +14,8 @@ A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium
 *   **Engine:** Godot 4.6 (GDScript)
 *   **Rendering:** 2D pixel art (`textures/canvas_textures/default_texture_filter=0`)
 *   **Physics:** `CharacterBody2D` for entities, `Area2D` for hitboxes/hurtboxes/projectiles/drops
-*   **Pathfinding:** `NavigationAgent2D` for intelligent enemy pathfinding and obstacle avoidance
-*   **Running the Project:** Execute `godot --path .` from the command line, or open the project folder directly in the Godot 4 Editor.
+*   **Pathfinding:** `NavigationAgent2D` for intelligent enemy pathfinding and obstacle avoidance, also used by Player for click-to-move/targeting
+*   **Running the Project:** Execute `godot --path .` from the command line, or open the project folder directly in the Godot 4 Editor
 
 ---
 
@@ -25,7 +27,7 @@ A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium
 | `move_right` | D |
 | `move_up` | W |
 | `move_down` | S |
-| `attack` | Left Mouse Button |
+| `attack` | Q |
 | `interact` | E or F |
 | `pause` | Escape |
 | `open_inventory` | I or Tab |
@@ -37,28 +39,30 @@ A 2D Action RPG with a dark fantasy, Moroccan, and Arabic folklore theme. Medium
 ### Scene Hierarchy
 ```
 Character.tscn              → Base CollisionShape2D + Label (debug) + StateMachine
-  ├── Player.tscn           → Adds Camera2D, ComboAttackCD, Hurtbox, StateMachine, PickableDetection
+  ├── Player.tscn           → Adds Camera2D, ComboAttackCD, Hurtbox, StateMachine, PickableDetection, NavigationAgent, DetectionZone
   │     ├── Warrior.tscn    → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox (melee)
   │     ├── Archer.tscn     → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container (ranged)
-  │     └── Mage.tscn       → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container, DetectionZone (spell)
-  └── Enemy.tscn            → Adds NavigationAgent2D, DetectionZone, Hurtbox, StateMachine, WanderCD, EnemyStats UI
-        └── Goblin.tscn     → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, Hitbox (melee enemy)
+  │     └── Mage.tscn       → Adds AnimatedSprite2D, AnimationPlayer, AnimationTree, SpawningPositions, Container (spell)
+  └── Enemy.tscn            → Adds NavigationAgent2D, DetectionZone, Hurtbox, StateMachine, WanderCD, EnemyStats UI, SelectionBox
+        └── (Various enemy types: BoneScrappy, AngryHornet, AcornGnome, DireBear, GoblinSpearhead, etc.)
 ```
 
 ### Script Hierarchy
 ```
 Character.gd (CharacterBody2D)  → Base world entity: entity_name, speed, movement, state machine, label debug
-  ├── NPC.gd (NPC)             → Non-combat entity: interaction_area, npc_name, dialogue_text, _interact()
-  └── Combatant.gd (Combatant) → Base combat entity: animation_BA_playback, take_damage (defense reduction), hit flashing, combat virtual hooks
-        ├── Player.gd (Player) → Input, combo management, movement, PickableDetection callbacks
-        │     ├── Warrior.gd   → Melee: loads warrior.tres in _ready(), handles Hitbox area_entered → take_damage
-        │     ├── Archer.gd    → Ranged: loads archer.tres in _ready(), targets enemies, spawns Arrow projectiles
-        │     └── Mage.gd      → Ranged: loads mage.tres in _ready(), targets enemies, spawns WaterBullet projectiles
-        └── Enemy.gd (Enemy)   → Base AI: NavigationAgent2D pathfinding, wander/chase movement, item dropping, HP bar UI
-              └── Goblin.gd    → Melee enemy: animation blending, Hitbox area_entered → take_damage
+  ├── NPC.gd (NPC)               → Non-combat entity: interaction_area, npc_name, dialogue_text, _interact()
+  └── Combatant.gd (Combatant)   → Base combat entity: animation_BA_playback, take_damage (defense reduction), hit flashing, combat virtual hooks
+        ├── Player.gd (Player)   → Input, combo management, movement, targeting (enemy/ground), PickableDetection callbacks, NavigationAgent
+        │     ├── Warrior.gd     → Melee: loads warrior.tres in _ready(), handles Hitbox area_entered → take_damage
+        │     ├── Archer.gd      → Ranged: loads archer.tres in _ready(), targets enemies, spawns Arrow projectiles
+        │     └── Mage.gd        → Ranged: loads mage.tres in _ready(), targets enemies, spawns WaterBullet projectiles
+        └── Enemy.gd (Enemy)     → Base AI: NavigationAgent2D pathfinding, wander/chase movement, item dropping, HP bar UI, selection box
+              ├── EnemyArcher.gd → Ranged enemy: spawns Arrow projectiles
+              ├── EnemyMage.gd   → Ranged enemy: spawns EnemyWaterBullet projectiles
+              └── (Various melee enemies with animation blending and Hitbox area_entered → take_damage)
 ```
 
-> **Class loading pattern:** Each concrete player class (`Warrior`, `Archer`, `Mage`) loads its own `.tres` resource with `load("res://resources/classes/<class>.tres")` inside its `_ready()` and calls `_load_classe(cls)`, which sets `max_health`, `max_mana`, `speed`, `combo_chain`, and registers with `GameManager`.
+> **Class loading pattern:** Each concrete player class (`Warrior`, `Archer`, `Mage`) loads its own `.tres` resource with `load("res://resources/classes/<class>.tres")` inside its `_ready()` and calls `_load_classe(cls)`, which sets `max_health`, `max_mana`, `speed`, `combo_chain`, `attack_range`, and registers with `GameManager`.
 
 ---
 
@@ -78,8 +82,9 @@ The state machine separates entity states into decoupled, modular nodes under a 
 ### Player States (`states/player/`)
 | Class Name | Lowercase Key | Description |
 | :--- | :--- | :--- |
-| `PlayerIdleState` | `playeridlestate` | Calls `actor._idle()`, transitions to `playerrunstate` on movement input. |
+| `PlayerIdleState` | `playeridlestate` | Calls `actor._idle()`, transitions to `playerrunstate` or `playerchasestate` based on input and targeting. |
 | `PlayerRunState` | `playerrunstate` | Calls `actor._move()`, transitions to `playeridlestate` when no movement. |
+| `PlayerChaseState` | `playerchasestate` | Tracks enemy/ground targets via NavigationAgent, calls `actor._chase_target()` or `actor._move_to_ground_target()`. |
 | `PlayerAttackState` | `playerattackstate` | Stops movement, calls `actor._on_attack_pressed()`. Listens to `attack_ended` signal before returning to `playeridlestate`. |
 | `PlayerDeadState` | `playerdeadstate` | Stops movement, triggers `actor._die()`. |
 
@@ -98,6 +103,36 @@ The state machine separates entity states into decoupled, modular nodes under a 
 ---
 
 ## Dynamic Gameplay Systems
+
+### Player Targeting System (Enum-Based)
+The player uses an enum-based targeting system for both combat and movement:
+
+*   **`TargetType` Enum:**
+    *   `NONE` — No active target
+    *   `ENEMY` — Following/attacking an enemy
+    *   `POSITION` — Moving to a ground position (click-to-move)
+
+*   **Target Management Methods:**
+    *   `set_enemy_target(enemy: Enemy)` — Sets an enemy as the current target
+    *   `set_ground_target(pos: Vector2)` — Sets a ground position as the current target
+    *   `clear_target()` — Clears all targeting state
+    *   `has_target()` — Returns true if any target is active
+    *   `is_targeting_enemy()` — Returns true if currently targeting an enemy
+    *   `is_targeting_position()` — Returns true if currently targeting a ground position
+    *   `get_current_target_position()` — Gets the current target position (works for both types)
+    *   `target_reached()` — Checks if the current target has been reached
+    *   `get_enemy_target()` — Gets the current enemy target (null if not targeting)
+
+*   **Chase System:**
+    *   `_chase_target()` — Updates NavigationAgent to track moving enemy, calls `_move_to_position(attack_range)`
+    *   `_move_to_ground_target()` — Moves toward ground position, stops within 5 pixels
+    *   `PlayerChaseState` manages the chase logic, transitions back to idle when target is reached or lost
+
+*   **Enemy Selection:**
+    *   `GameManager` handles mouse-click targeting via `_unhandled_input`
+    *   `EventBus.select_enemy(enemy)` and `EventBus.unselect_enemy()` manage selection state
+    *   Selected enemies display a visible `SelectionBox` node
+    *   `DetectionZone` (Area2D) tracks `enemies_in_range` array for combat decisions
 
 ### Lootable Items (Loot & Pickup)
 *   **Naming Convention:** All dropped and picked items follow the `Lootable Item` convention in UI and logic.
@@ -131,13 +166,12 @@ Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is
 | :--- | :--- | :--- |
 | `HELMET` | `EquipableItem.ArmorType.HEAD` / `HELMET` | `helmet_slot` |
 | `CHEST` | `EquipableItem.ArmorType.CHEST` / `ARMOR` | `chest_slot` |
-| `BOOTS` | `EquipableItem.ArmorType.FEET` / `BOOTS` | `boots_s_lot` *(note: typo in node name)* |
+| `BOOTS` | `EquipableItem.ArmorType.FEET` / `BOOTS` | `boots_slot` |
 | `SHIELD` | `EquipableItem.ArmorType.SHIELD` | `shield_slot` |
 | `RING` | `EquipableItem.ArmorType.RING` | `ring_slot` |
 | `AMULET` | `EquipableItem.ArmorType.NECKLACE` / `AMULET` | `amulet_slot` |
 | `CLOAK` | `EquipableItem.ArmorType.CLOAK` | `cloak_slot` |
 | `WEAPON` | `EquipableItem.WeaponType` (SWORD, AXE, DAGGER, etc.) | `weapon_slot` |
-| `GLOVES` | *(reserved — no UI slot wired)* | — |
 | `PET` | *(reserved)* | `pet_slot` |
 
 **Equip Flow:**
@@ -173,11 +207,11 @@ Hovering an `InventorySlot` shows a floating popup with full item details:
 *   **`WeaponTableDetails`:** Extends base; displays base attack power label (`base_damage`).
 *   **`ArmorTableDetails`:** Extends base; displays base defense label (`base_defense`).
 
-### Projectiles (`arrow.gd`, `water_bullet.gd`)
+### Projectiles (`arrow.gd`, `water_bullet.gd`, `enemy_water_bullet.gd`)
 *   Both extend `Area2D`. Fields: `speed = 1000.0`, `max_distance = 600.0`, `direction`, `velocity`, `distance_traveled`.
-*   `Arrow` emits `arrow_hit(area)`. `WaterBullet` emits `bullet_hit(area)`.
+*   `Arrow` emits `arrow_hit(area)`. `WaterBullet` emits `bullet_hit(area)`. `EnemyWaterBullet` is used by enemy mages.
 *   **Lifecycle:** Instantiated as top-level (`set_as_top_level(true)`), added to `arrows_container` / `bullets_container`. Auto `queue_free()` when `distance_traveled >= max_distance` or on obstacle hit.
-*   **Spawning position:** Both `Archer` and `Mage` use a scene-internal `%ArrowSpawningPosition` / `%BulletSpawningPosition` Marker2D. Position offset (`Vector2(26.0, -51.0)`) is mirrored by `last_facing_dir`.
+*   **Spawning position:** Both `Archer` and `Mage` use a scene-internal `%ArrowSpawningPosition` / `%BulletSpawningPosition` Marker2D. Position offset (e.g., `Vector2(26.0, -51.0)`) is mirrored by `last_facing_dir`.
 *   **Targeting:** The projectile always fires toward the `target`'s `Hurtbox` node global position (if it exists), else the target body's position. Falls back to `last_facing_dir` if no target.
 *   **Trigger:** AnimationPlayer calls a method in the script (e.g., `_on_animation_editor_arrow_attack()`), which emits a private signal (`_animation_editor_arrow_attack`), which is connected to the actual spawning handler. This double-indirection lets the animator trigger projectiles at an exact frame.
 *   **Range:** `attack_range = 300.0` for Archer, `attack_range = 500.0` for Mage. Projectile `max_distance` is computed as `attack_range - POSITION_OFFSET.x - SPRITE_WIDTH/2`.
@@ -201,13 +235,18 @@ The stat system is split across three layers — data (`StatsData`), logic (`Sta
 *   **Backup copy (`__temp_allocated_stats`):** Stores the last committed state. Cannot go below temp values.
 *   **`save_stats()`:** Copies working → backup. Sets `__allocate_point_saved = true` if `__stat_points_available <= 0`.
 *   **`cancel_stats()`:** Reverts working from backup. Sets `__allocate_point_saved = false`.
-*   **XP:** Starts at 0, target is `75` XP for level 2. Each level-up scales target by `level_scaler = 1.2`.
+*   **XP:** Starts at 0, target is calculated by `ProgressionManager.get_required_xp_for_level(level, scaler)`. Each level-up scales target by `level_scaler = 1.2`.
+
+### Progression System (`progression_manager.gd`)
+*   **Autoload:** Manages XP scaling and enemy ranking system.
+*   **`get_required_xp_for_level(level: int, scaler: float) → int`:** Calculates XP required for next level using exponential scaling.
+*   **`EnemyRank` Enum:** `NORMAL`, `ELITE`, `BOSS`, `WORLD_BOSS` — used for enemy classification and potential loot/XP scaling.
 
 ---
 
 ## Global Autoloads (Singletons)
 
-Autoload order in `project.godot`: `EventBus` → `GameManager` → `SaveManager` → `PlayerData` → `StatsData`.
+Autoload order in `project.godot`: `EventBus` → `GameManager` → `SaveManager` → `PlayerData` → `StatsData` → `ProgressionManager`.
 
 > **Note:** `StatsManager` is **NOT** an autoload. It is instantiated as `StatsManager.new()` inside `GameManager` and stored at `GameManager.stats_manager`.
 
@@ -216,11 +255,14 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 
 | Group | Signal | Payload |
 | :--- | :--- | :--- |
-| **UI/HUD Init** | `initialize_hero_stats_ui` | *(none)* |
-| | `update_hero_avatar_texture` | `texture: Texture2D` |
+| **UI/HUD** | `update_hero_avatar_texture` | `texture: Texture2D` |
+| | `toggle_hud_visiblity` | *(none)* |
+| | `toggle_merchant_store_panel_visibility` | `items: Array[DataItem]` |
+| | `buy_item` | `value: float, data_item: DataItem` |
+| | `udpate_available_gold` | `value: int` |
 | **Combat/Progression** | `enemy_died` | `enemy: Enemy` |
 | | `enemy_spawned` | `enemy: Enemy, spawn_position: Vector2` |
-| | `level_up` | `new_level: int` *(emitted without arg from GameManager)* |
+| | `level_up` | `new_level: int` |
 | **Stats Bars** | `hero_hp_changed` | `current_hp: float, max_hp: float` |
 | | `hero_mp_changed` | `current_mp: float, max_mp: float` |
 | | `hero_xp_changed` | `current_xp: int, total_xp: int` |
@@ -247,7 +289,11 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 | **Potions** | `potions_added_to_list` | `potion: ConsumableItem` |
 | | `potions_unequipped` | `potion: ConsumableItem` |
 | | `potions_consumed` | `potion: ConsumableItem` |
-| **Merchant** | `buy_item` | `value: float, data_item: DataItem` |
+| **Selection** | `clear_selection_boxes` | *(none)* |
+| | `select_enemy` | `enemy: Enemy` |
+| | `enemy_selected` | `enemy: Enemy` |
+| | `unselect_enemy` | *(none)* |
+| | `enemy_unselected` | `enemy: Enemy` |
 
 ### `StatsData` (`stats_data.gd`)
 **Pure data layer autoload.** Owns the live `CharacterStats` resource and all stat allocation state. No signal emissions — called by `StatsManager`.
@@ -264,21 +310,23 @@ Centralized signal broker. All signals carry `@warning_ignore("UNUSED_SIGNAL")`.
 ### `PlayerData` (`player_data.gd`)
 Central store for player **progress and inventory**. Stat allocation has been moved to `StatsData`/`StatsManager`.
 
-*   **Level & XP:** `get/set_player_level()`, `get/set_current_xp()` (emits `hero_xp_changed`), `get/set_total_xp_to_next_level()` (emits `hero_xp_changed`). Starts at level 1, 0 XP, 75 XP target.
+*   **Level & XP:** `get/set_player_level()`, `get/set_current_xp()` (emits `hero_xp_changed`), `get/set_total_xp_to_next_level()` (emits `hero_xp_changed`). Starts at level 1, 0 XP, with target calculated by `ProgressionManager`.
 *   **Inventory:** `add/remove_lootable_item(item: DataItem)`, `add/remove_inventory_item(item: DataItem)`.
 *   **Equipment:** `get_equipements() → Dictionary`, `add/remove_equipable_item(item: EquipableItem)`. Keyed by uppercase equipment category string (`WEAPON`, `HELMET`, `CHEST`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, etc.).
 *   **Potions:** `add_potion(potion: ConsumableItem)`, `remove_potion_from_list(potion: ConsumableItem)`. Internally stores `__potions = {"HEALTH": [], "MANA": []}`.
 *   **Constants** (kept for backward compat): `STAT_NAMES`, `STAT_NAMES_NO_FLT`, `POINTS_STATS_PER_LEVEL`.
 
 ### `GameManager` (`game_manager.gd`)
-Orchestrates top-level game flow. Key public variables: `player_ref: Character`, `level_scaler: float = 1.2`, `drop_range: float = 50.0`, `stats_manager: StatsManager`.
+Orchestrates top-level game flow. Key public variables: `player_ref: Character`, `level_scaler: float = 1.2`, `drop_range: float = 50.0`, `stats_manager: StatsManager`, `is_enemy_selected: bool`, `selected_enemy: Enemy`.
 
 *   **`register_player(player)`:** Sets `player_ref`, calls `stats_manager.initialize(player.character_class.get_class_stats())`, emits `EventBus.initialize_hero_stats_ui`.
 *   **`add_xp(amount)`:** Increments XP via `PlayerData.set_current_xp()` (which emits `hero_xp_changed`), calls `level_up()` if threshold met.
 *   **`level_up()`:** Increments `player_level`, calls `stats_manager.update_available_points_on_level_up()`, `scaling_level_up()`, `StatsData.get_stats().update_current_health_and_mana()`, emits `EventBus.level_up`.
+*   **`scaling_level_up()`:** Calculates next level's required XP using `ProgressionManager.get_required_xp_for_level()`.
 *   **`spawn_enemy_items(enemy)`:** Gets drop zone from `enemy.get_parent().get_drop_zone()`, calls `enemy._drop_item()`, adds drops at randomized positions.
 *   **`drop_item(item: DataItem)`:** Loads `drop.tscn`, gets the first `enemies_spawner` group node's drop zone, places item near `player_ref.global_position` ± `drop_range`.
-*   **`_ready()` signal connections:** `enemy_died`, `stat_allocated`→`stats_manager.add_stat_point`, `stat_deallocated`→`stats_manager.sub_stat_point`, `save_stats_points`→`stats_manager.save_stats`, `cancel_stats_points`→`stats_manager.cancel_stats`, `buy_item`→`_on_buy_item`, plus all loot/inventory/equipment/potion signals.
+*   **`_unhandled_input(event)`:** Handles mouse-click targeting for enemies and ground positions via `targeting_enemy_or_ground()`.
+*   **`_ready()` signal connections:** `enemy_died`, `stat_allocated`→`stats_manager.add_stat_point`, `stat_deallocated`→`stats_manager.sub_stat_point`, `save_stats_points`→`stats_manager.save_stats`, `cancel_stats_points`→`stats_manager.cancel_stats`, `buy_item`→`_on_buy_item`, plus all loot/inventory/equipment/potion/selection signals.
 
 ### `StatsManager` (`stats_manager.gd`)
 **Business logic layer.** Instantiated inside `GameManager` (`var stats_manager: StatsManager = StatsManager.new()`). Wraps `StatsData` mutations and emits the appropriate `EventBus` signals after each change.
@@ -290,6 +338,11 @@ Orchestrates top-level game flow. Key public variables: `player_ref: Character`,
 *   **`calculate_equipment_bonus(equipement: EquipableItem, operation = "equip")`:** Evaluates `equipement.base_damage` for weapon power and `equipement.base_defense` for armor defense in `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()`.
 *   **`get_total(stat_name)` / `get_allocated_stat(stat_name)` / `get_temp_allocated_stat(stat_name)`:** Thin delegation wrappers to `StatsData`.
 
+### `ProgressionManager` (`progression_manager.gd`)
+**Level progression and enemy ranking system.** Autoload that manages XP calculations and enemy classification.
+
+*   **`get_required_xp_for_level(level: int, scaler: float = 1.2) → int`:** Calculates XP required for next level using exponential formula.
+*   **`EnemyRank` Enum:** Defines enemy difficulty tiers (`NORMAL`, `ELITE`, `BOSS`, `WORLD_BOSS`).
 
 ### `SaveManager` (`save_manager.gd`)
 Stub node. Reserved for save/load persistence logic. No active implementation.
@@ -300,24 +353,30 @@ Stub node. Reserved for save/load persistence logic. No active implementation.
 
 ```
 res://
+├── addons/
+│   └── item_db_selector/       → Custom editor plugin for item database management
 ├── assets/                     → Audio, sprite sheets, tilesets, UI themes
-│   ├── sprites/player/         → Class assets (warrior, archer, mage)
-│   ├── sprites/enemies/        → Monster assets (goblin, etc.)
+│   ├── sprites/
+│   │   ├── player/             → Class assets (warrior, archer, mage)
+│   │   ├── enemies/            → Monster sprite sheets (30+ enemy types)
+│   │   └── items/              → weapons.png, armors.png (atlas textures)
 │   ├── tilesets/
-│   ├── ui/
+│   ├── ui/                     → UI Elements, cursors, fonts
 │   └── audio/{sfx,music}/
 ├── data/
 │   └── items_data.json         → Master item reference database (reference only, not runtime)
 ├── scenes/
 │   ├── world/
 │   │   ├── world.tscn          → Main game world scene
-│   │   └── zones/
+│   │   ├── reikeuseu.tscn      → Specific world/zone scene
+│   │   └── landscape_tilemaps.tscn
 │   ├── entities/
 │   │   ├── player/             → character.tscn, player.tscn, warrior.tscn, archer.tscn, mage.tscn
-│   │   │                         arrow.tscn, water_bullet.tscn
-│   │   ├── enemies/            → enemy.tscn, goblin.tscn, enemies_spawner.tscn
+│   │   │                         arrow.tscn, water_bullet.tscn, player_instancier.tscn
+│   │   ├── enemies/            → enemy.tscn, enemy_water_bullet.tscn
+│   │   │                         (30+ enemy variants: bone_scrappy, angry_hornet, dire_bear, etc.)
 │   │   ├── items/              → drop.tscn
-│   │   └── npcs/               → (reserved)
+│   │   └── npcs/               → merchant.tscn
 │   ├── ui/
 │   │   ├── in_game_ui.tscn
 │   │   ├── lootable_item_slot.tscn
@@ -325,34 +384,45 @@ res://
 │   │   ├── inventory_slot.tscn
 │   │   ├── equipement_slot.tscn
 │   │   ├── potion_slot.tscn
+│   │   ├── selection_box.tscn
+│   │   ├── merchant_store_slot.tscn
+│   │   ├── merchant_buy_item_modal.tscn
 │   │   └── item/               → armor_table_details.tscn, weapon_table_details.tscn,
-│   │                              item_stats_row.tscn, gem_panel.tscn
+│   │                              item_stats_row.tscn, gem_panel.tscn, item_card_details.tscn
 │   └── components/             → (reserved)
 ├── scripts/
 │   ├── autoloads/              → event_bus.gd, game_manager.gd, player_data.gd, save_manager.gd,
-│   │                             stats_data.gd, stats_manager.gd
-│   ├── entities/               → character.gd, combatant.gd, npc.gd, player.gd, enemy.gd, warrior.gd, archer.gd, mage.gd,
-│   │   │                         goblin.gd, arrow.gd, water_bullet.gd, enemies_spawner.gd,
+│   │                             stats_data.gd, stats_manager.gd, progression_manager.gd
+│   ├── entities/               → character.gd, combatant.gd, npc.gd, player.gd, enemy.gd,
+│   │   │                         warrior.gd, archer.gd, mage.gd, enemy_archer.gd, enemy_mage.gd,
+│   │   │                         arrow.gd, water_bullet.gd, enemy_water_bullet.gd,
+│   │   │                         enemies_spawner.gd, merchant.gd,
 │   │   │                         in_game_ui.gd, lootable_item_slot.gd, inventory_slot.gd,
 │   │   │                         equipement_slot.gd, potion_slot.gd, stat_container.gd,
 │   │   │                         stats_ui.gd, equipable_table_details.gd, armor_table_details.gd,
 │   │   │                         weapon_table_details.gd, gem_panel.gd, item_stats_row.gd,
-│   │   │                         item_stats_upgrade_label.gd
+│   │   │                         item_stats_upgrade_label.gd, merchant_buy_item_modal.gd,
+│   │   │                         merchant_store_slot.gd, selection_box.gd, item_card_details.gd,
+│   │   │                         ranged_combatant.gd, archer_unit.gd, mage_unit.gd,
+│   │   │                         player_instancier.gd
 │   │   └── state_machine/      → state.gd, state_machine.gd
 │   │       └── states/
-│   │           ├── player/     → player_idle_state.gd, player_run_state.gd,
+│   │           ├── player/     → player_idle_state.gd, player_run_state.gd, player_chase_state.gd,
 │   │           │                 player_attack_state.gd, player_dead_state.gd
 │   │           └── enemy/      → enemy_spawned_state.gd, enemy_idle_state.gd, enemy_wander_state.gd,
 │   │                             enemy_patrol_state.gd, enemy_run_state.gd, enemy_chase_state.gd,
 │   │                             enemy_attack_state.gd, enemy_dead_state.gd
 │   ├── resources/              → attack_data.gd, drop.gd
-│   └── utils/
+│   └── utils/                  → verify_item_system.gd
 └── resources/
     ├── classes/                → warrior.tres, archer.tres, mage.tres, priest.tres + character_classes.gd
-    ├── stats/                  → warrior_stats.tres, archer_stats.tres, mage_stats.tres, priest.tres + character_stats.gd
+    ├── stats/                  → warrior_stats.tres, archer_stats.tres, mage_stats.tres, priest_stats.tres + character_stats.gd
     ├── attacks/                → combo attack configurations (.tres)
-    ├── enemies/                → enemy_params.gd + goblin.tres
-    └── items/                  → item.gd, equipable.gd, weapon.gd, armor.gd, gem.gd, consumable.gd, potion.gd
+    ├── enemies/                → enemy_params.gd + (30+ enemy .tres files with spawn configs and sprite frames)
+    │                             collisions/ (shape resources for all enemies)
+    └── items/                  → data_item.gd, equipable_item.gd, weapon.gd, armor.gd, gem.gd,
+        │                         consumable_item.gd, potion.gd, quest_item.gd
+        │                         (Legacy: item.gd, equipable.gd, consumable.gd — deprecated)
         ├── gems/               → amethyst.tres, diamond.tres, emerald.tres, ruby.tres, sapphire.tres, topaz.tres
         ├── warrior/
         │   ├── weapons/        → hand_axe.tres, iron_dagger.tres
@@ -383,6 +453,13 @@ A flat JSON reference database documenting all game items by tier and category. 
 | **6** | `player_hurtbox` | Area where player accepts damage |
 | **7** | `enemy_hurtbox` | Area where enemy accepts damage |
 | **8** | `items` | Dropped item `DropItem` Area2D nodes |
+| **9** | `npc_interaction` | NPC interaction zones |
+
+### Navigation Layers
+| Layer | Name | Purpose |
+| :--- | :--- | :--- |
+| **1** | `ground` | Walkable terrain for navigation |
+| **2** | `cliffs` | Non-walkable elevated terrain |
 
 ### Hitbox / Hurtbox Settings
 
@@ -392,7 +469,7 @@ A flat JSON reference database documenting all game items by tier and category. 
 | **Enemy Body CollisionShape** | 3 | 1 | — | — |
 | **Player Hurtbox** | 6 | none | OFF | ON |
 | **Enemy Hurtbox** | 7 | none | OFF | ON |
-| **Warrior Hitbox (Melee)** | 4 | 7 | ON | OFF |
+| **Player Hitbox (Melee)** | 4 | 7 | ON | OFF |
 | **Enemy Hitbox (Melee)** | 5 | 6 | ON | OFF |
 
 ---
@@ -405,10 +482,11 @@ Registered in `project.godot` under `[global_group]`:
 | :--- | :--- |
 | `character` | Base character nodes |
 | `player` | Player body (used by enemy detection zone to acquire target) |
-| `enemy` | Enemy bodies (used by projectile/hitbox hit detection) |
+| `enemy` | Enemy bodies (used by projectile/hitbox hit detection, targeting) |
 | `warrior` | Warrior-specific nodes |
 | `archer` | Archer-specific nodes |
 | `goblin` | Goblin-specific nodes |
+| `BoneScrappy` | BoneScrappy enemy variant |
 | `enemies_spawner` | `EnemiesSpawner` nodes (used by `GameManager.drop_item()`) |
 | `pickable` | `DropItem` Area2D nodes (used by player's `PickableDetection`) |
 
@@ -426,6 +504,7 @@ enum PlayerType { WARRIOR, ARCHER, MAGE, PRIEST, ALL }
 @export var player_type: PlayerType = PlayerType.WARRIOR
 @export var avatar_texture: Texture2D
 @export var speed: float = 300.0
+@export var attack_range: float = 300.0
 @export var combo_chain: Array[AttackData] = []
 @export var base_stats: CharacterStats
 
@@ -446,8 +525,8 @@ extends Resource
 @export var DEX: int = 0
 @export var WIS: int = 0
 @export var LUC: int = 0
-@export var CURRENT_HEALTH: float = 0.0   # ← NEW: tracks live HP
-@export var CURRENT_MANA: float = 0.0     # ← NEW: tracks live MP
+@export var CURRENT_HEALTH: float = 0.0   # Tracks live HP
+@export var CURRENT_MANA: float = 0.0     # Tracks live MP
 
 @export var __bonus_stats: Dictionary  # max_health, max_mana, STR, REC, INT, WIS, DEX, LUC, weapon_power, armor_defense, armor_resist
 
@@ -473,12 +552,14 @@ func get_crit_damage() -> float # 1.5 + floor(total("LUC") × 0.0075) — multip
 # Allocation helpers
 func get_allocated_stats() -> Dictionary         # {STR, REC, INT, WIS, DEX, LUC}
 func get_base_stats_value(key: String) -> int
-func from_dict_to_base_stats(stats: Dictionary) -> void  # ← NEW: writes dict into STR/REC/… fields
+func from_dict_to_base_stats(stats: Dictionary) -> void  # writes dict into STR/REC/… fields
 func get_total(key: String) -> int               # base + bonus
 
 # Bonus management
 func add_stat_bonus(stat: String, value: int) -> void
 func remove_stat_bonus(stat: String, value: int) -> void
+func add_stat_bonuses(bonuses: Dictionary) -> void
+func remove_stat_bonuses(bonuses: Dictionary) -> void
 func get_stats_bonus_dict() -> Dictionary
 func get_primary_stats_breakdown() -> Dictionary
 func get_secondary_stats_breakdown() -> Dictionary
@@ -515,9 +596,10 @@ extends Resource
 ### Item System (`resources/items/`)
 Inheritance chain:
 ```
-DataItem  →  EquipableItem
+DataItem  →  EquipableItem  (Weapon, Armor)
           →  ConsumableItem
-          →  Gem (extends Item / DataItem)
+          →  QuestItem
+          →  Gem (legacy extends Item)
 
 Legacy (DEPRECATED): Item, Equipable, Weapon, Armor, Consumable, Potion
 ```
@@ -530,7 +612,11 @@ extends Resource
 @export var item_id: String = ""
 @export var item_name: String = ""
 @export var price: int = 0
+@export var max_stack: int = 1
 @export var grid_coordinate: Vector2 = Vector2.ZERO
+@export var cell_size: Vector2 = Vector2(64, 64)
+
+var id: String  # Backward compatibility alias for item_id
 
 func get_item_texture() -> AtlasTexture
 ```
@@ -555,6 +641,9 @@ enum WeaponType { DAGGER, SWORD, TWO_HANDED_SWORD, MELEE, TOOL_MELEE, AXE, TOOL_
 @export var gems: Array[Gem] = []
 @export var stat_bonus: Dictionary
 
+const WEAPONS_ATLAS_PATH = "res://assets/sprites/items/weapons.png"
+const ARMORS_ATLAS_PATH = "res://assets/sprites/items/armors.png"
+
 func is_armor() -> bool
 func get_item_texture() -> AtlasTexture
 func get_gems() -> Array[Gem]
@@ -576,7 +665,7 @@ enum ConsumableType { POTION, POISON }
 #### `Gem` (`gem.gd`)
 ```gdscript
 class_name Gem
-extends Item
+extends Item  # Legacy inheritance
 
 enum GemType { RUBY, SAPPHIRE, EMERALD, TOPAZ, AMETHYST, DIAMOND }
 
@@ -653,14 +742,17 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 | :--- | :--- | :--- | :--- |
 | `_move()` | `Player.gd`, `Enemy.gd` | `Character.gd` | Physics movement (`velocity = dir * speed`) + travel run animation |
 | `_idle()` | `Player.gd`, `Enemy.gd` | `Character.gd` | Zero velocity + travel idle animation |
-| `_play_movement_animation()` | `Player.gd`, `Goblin.gd` | `Character.gd` | Sets `parameters/run/blend_position` on the AnimationTree |
-| `_play_idle_animation()` | `Player.gd`, `Goblin.gd` | `Character.gd` | Sets `parameters/idle/blend_position` on the AnimationTree |
+| `_move_to_position(max_distance)` | `Player.gd` | N/A | Navigates using NavigationAgent2D toward current target |
+| `_chase_target()` | `Player.gd` | N/A | Updates NavigationAgent to track enemy target, moves within attack range |
+| `_move_to_ground_target()` | `Player.gd` | N/A | Moves toward ground position target, stops within 5 pixels |
+| `_play_movement_animation()` | `Player.gd`, concrete enemies | `Character.gd` | Sets `parameters/run/blend_position` on the AnimationTree |
+| `_play_idle_animation()` | `Player.gd`, concrete enemies | `Character.gd` | Sets `parameters/idle/blend_position` on the AnimationTree |
 | `_attack()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Start combo or trigger attack cooldown timer |
 | `_die()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `queue_free()` |
 | `_on_damage_received()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Hit flash, UI update, transition to DeadState |
 | `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
 | `_get_defense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_stats().get_def()` for player; `enemy_params.defense` for enemy |
-| `_play_attack_animation()` | `Player.gd`, `Goblin.gd` | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
+| `_play_attack_animation()` | `Player.gd`, concrete enemies | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
 | `_interact()` | Custom NPCs | `NPC.gd` | Virtual method for non-combat NPC interaction |
 
 `take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_defense())`.
@@ -673,14 +765,19 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 2.  **Top-Level Projectiles:** `set_as_top_level(true)` must be called on projectile instances before positioning them. This detaches them from the shooter's transform hierarchy so they fly straight regardless of shooter movement.
 3.  **State Machine Transitions:** Use lowercase string keys (e.g., `transitioned.emit("enemychasestate")`). The `StateMachine` calls `.to_lower()` on all lookups. Do not use enums for state transitions.
 4.  **Hitbox Toggling:** Enable/disable `CollisionShape2D` nodes on Hitboxes exclusively from AnimationPlayer timeline tracks. Never enable hitboxes in persistent `_process`/`_physics_process` scripts.
-5.  **Scene Inheritance:** All subclass scenes (Warrior, Archer, Mage, Goblin) must be **Inherited Scenes** from their parent template (`Player.tscn` or `Enemy.tscn`) to preserve node configurations.
+5.  **Scene Inheritance:** All subclass scenes (Warrior, Archer, Mage, enemy variants) must be **Inherited Scenes** from their parent template (`Player.tscn` or `Enemy.tscn`) to preserve node configurations.
 6.  **Item Drop-back:** Use `GameManager.drop_item(item)` to re-spawn items. Do not add `drop.tscn` instances directly to the scene tree from UI scripts.
-7.  **Equipment Validation:** Always validate `player_type` via `GameManager._on_equip_item()` (triggered by `EventBus.equip_item`). Never equip items directly from UI scripts.
-8.  **Equipment Keys:** `PlayerData.__equipable_items` uses string keys: `Armor.ArmorType.keys()[item.armor_type]` for armors, `"WEAPON"` for weapons. These must match exactly: `HELMET`, `CHEST`, `GLOVES`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, `WEAPON`, `PET`.
-9.  **Rarity/Rarety Typo:** The codebase consistently spells `Rarity` as `Rarety` (both the enum name `Item.Rarety` and the property `item.rarety`). Match this spelling in all new code to avoid type mismatches.
-10. **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `StatsData.initialize_from_character_stats()` duplicates this instance. After any equipment change, call `player_ref.character_class.set_class_stats(StatsData.get_stats())` to persist back to the class resource.
-11. **StateMachine awaits owner.ready:** State nodes access `actor` and `state_machine` via `@onready`. This works because `StateMachine._ready()` itself `await owner.ready` before entering any states. Do not reference `actor` in state `_init()` or before the state machine is ready.
-12. **Character debug Label:** `Character.gd` has an `@onready var label: Label = $Label` that updates each `_process` frame to display the current state name. This is a development aid — keep the `Label` node in all character scenes.
-13. **Stats Access Pattern:** Always read live stats through `StatsData.get_stats()` (returns the `CharacterStats` resource). Never hold a long-lived reference to the `CharacterStats` instance across frames — it could be replaced on re-initialization.
-14. **StatsManager is NOT an autoload:** `StatsManager` is a plain `Node` class instantiated at `GameManager.stats_manager`. Do not reference it as a global. Call `StatsManager` methods only from `GameManager` signal handlers or via `EventBus` signals.
-15. **HP/MP Signal Flow:** When player takes damage, emit `EventBus.hero_hp_changed(current_hp, max_hp)` — **not** `stats_updated`. `hero_hp_changed` triggers the smooth tween animation in `StatsUI`. `stats_updated` is for full stat panel refreshes (allocation, equipment changes, level up). Mixing them causes animation glitches.
+7.  **Equipment Validation:** Always validate `player_class` and `required_level` via `GameManager._on_equip_item()` (triggered by `EventBus.equip_item`). Never equip items directly from UI scripts.
+8.  **Equipment Keys:** `PlayerData.__equipable_items` uses string keys: `equipment_type.to_upper()` for most items. These must match exactly: `HELMET`, `CHEST`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, `WEAPON`, `PET`.
+9.  **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `StatsData.initialize_from_character_stats()` duplicates this instance. After any equipment change, call `player_ref.character_class.set_class_stats(StatsData.get_stats())` to persist back to the class resource.
+10. **StateMachine awaits owner.ready:** State nodes access `actor` and `state_machine` via `@onready`. This works because `StateMachine._ready()` itself `await owner.ready` before entering any states. Do not reference `actor` in state `_init()` or before the state machine is ready.
+11. **Character debug Label:** `Character.gd` has an `@onready var label: Label = $Label` that updates each `_process` frame to display the current state name. This is a development aid — keep the `Label` node in all character scenes.
+12. **Stats Access Pattern:** Always read live stats through `StatsData.get_stats()` (returns the `CharacterStats` resource). Never hold a long-lived reference to the `CharacterStats` instance across frames — it could be replaced on re-initialization.
+13. **StatsManager is NOT an autoload:** `StatsManager` is a plain `Node` class instantiated at `GameManager.stats_manager`. Do not reference it as a global. Call `StatsManager` methods only from `GameManager` signal handlers or via `EventBus` signals.
+14. **HP/MP Signal Flow:** When player takes damage, emit `EventBus.hero_hp_changed(current_hp, max_hp)` — **not** `stats_updated`. `hero_hp_changed` triggers the smooth tween animation in `StatsUI`. `stats_updated` is for full stat panel refreshes (allocation, equipment changes, level up). Mixing them causes animation glitches.
+15. **Targeting System:** Use the enum-based targeting system (`TargetType.ENEMY`, `TargetType.POSITION`, `TargetType.NONE`) for all player movement and combat decisions. Always check `is_targeting_enemy()` or `is_targeting_position()` before accessing target data. Clear targets via `clear_target()` when targets are destroyed or deselected.
+16. **Enemy Selection:** Only one enemy can be selected at a time. Selection is managed via `GameManager.is_enemy_selected` and `GameManager.selected_enemy`. Use `EventBus.select_enemy(enemy)` and `EventBus.unselect_enemy()` to manage selection state. The `SelectionBox` node visibility indicates selection status.
+17. **NavigationAgent2D Usage:** Both Player and Enemy use NavigationAgent2D. Always update `nav_agent.target_position` before calling navigation methods. Check `nav_agent.is_navigation_finished()` or distance checks to determine arrival.
+18. **Enemy Spawner Drop Zone:** All item drops must be parented to the spawner's `DropZone` node, accessed via `enemy.get_parent().get_drop_zone()`. This ensures proper cleanup when items are picked up.
+19. **Progression Manager:** Use `ProgressionManager.get_required_xp_for_level(level, scaler)` for all XP calculations. Do not hardcode XP values.
+20. **Legacy Code:** The codebase contains deprecated item classes (`Item`, `Equipable`, `Consumable`, `Potion`) that are being replaced by `DataItem` hierarchy. New code should use `DataItem` → `EquipableItem` / `ConsumableItem` / `QuestItem`. `Gem` still extends legacy `Item` for backward compatibility.
