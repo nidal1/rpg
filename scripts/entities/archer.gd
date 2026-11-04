@@ -39,4 +39,5 @@ func _on_initialized_arrow_attack() -> void:
 	if archer_unit:
 		archer_unit.arrow_scene = arrow_scene
 		archer_unit.attack_range = attack_range
-		archer_unit.shoot_arrow(self, arrow_spawning_position, arrows_container, target, "enemy")
+		var current_target = get_enemy_target()
+		archer_unit.shoot_arrow(self, arrow_spawning_position, arrows_container, current_target, "enemy")

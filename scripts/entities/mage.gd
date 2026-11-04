@@ -42,4 +42,5 @@ func _on_initialized_bullet_attack() -> void:
 	if mage_unit:
 		mage_unit.bullet_scene = bullet_scene
 		mage_unit.attack_range = attack_range
-		mage_unit.cast_bullet(self, bullet_spawning_position, bullets_container, target, "enemy")
+		var current_target = get_enemy_target()
+		mage_unit.cast_bullet(self, bullet_spawning_position, bullets_container, current_target, "enemy")

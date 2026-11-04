@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="Qr3TiYxMs_gJzSOE0ilo" name="Page-1">
-        <mxGraphModel dx="907" dy="56" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1968" dy="1830" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -200,6 +200,9 @@
                 <mxCell id="fs4VsxLsRGy77M9YmEED-46" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;strokeColor=#82B366;fillColor=light-dark(#d5e8d4, #ededed);" value="Distance to enemy&amp;nbsp;&lt;div&gt;&amp;gt;&lt;/div&gt;&lt;div&gt;attack range&lt;/div&gt;" vertex="1">
                     <mxGeometry height="130" width="130" x="66" y="310" as="geometry"/>
                 </mxCell>
+                <mxCell id="t-SSC_tzQORAMGQXby7v-2" edge="1" parent="1" source="fs4VsxLsRGy77M9YmEED-49" style="edgeStyle=none;html=1;" target="t-SSC_tzQORAMGQXby7v-1" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
                 <mxCell id="fs4VsxLsRGy77M9YmEED-49" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#000000;strokeColor=#006EAF;" value="PlayerChaseState" vertex="1">
                     <mxGeometry height="60" width="170" x="41" y="555" as="geometry"/>
                 </mxCell>
@@ -254,6 +257,23 @@
                 </mxCell>
                 <mxCell id="fs4VsxLsRGy77M9YmEED-64" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap;&quot;&gt;Enemy&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap;&quot;&gt;health &amp;lt;= 0&lt;/span&gt;&lt;/div&gt;" vertex="1">
                     <mxGeometry height="80" width="80" x="580" y="340" as="geometry"/>
+                </mxCell>
+                <mxCell id="t-SSC_tzQORAMGQXby7v-3" edge="1" parent="1" source="t-SSC_tzQORAMGQXby7v-1" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="fs4VsxLsRGy77M9YmEED-3">
+                    <mxGeometry relative="1" x="-0.5265" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="260" y="720"/>
+                            <mxPoint x="850" y="720"/>
+                            <mxPoint x="850" y="280"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="t-SSC_tzQORAMGQXby7v-4" connectable="0" parent="t-SSC_tzQORAMGQXby7v-3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;" value="Yes" vertex="1">
+                    <mxGeometry relative="1" x="-0.9402" y="-2" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="t-SSC_tzQORAMGQXby7v-1" parent="1" style="rhombus;whiteSpace=wrap;html=1;shapeInside=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#000000;rounded=1;" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap; background-color: light-dark(rgb(27, 161, 226), rgb(18, 18, 18));&quot;&gt;movement&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 11px; white-space: nowrap; background-color: light-dark(rgb(27, 161, 226), rgb(18, 18, 18));&quot;&gt;keys pressed&lt;/span&gt;&lt;/div&gt;" vertex="1">
+                    <mxGeometry height="100" width="101" x="79" y="670" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

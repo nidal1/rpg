@@ -1,35 +1,34 @@
-
+## PlayerRunState
+## State representing the player running/moving.
 extends State
 class_name PlayerRunState
 
-
-func _physics_process(_delta: float) -> void:
-
+func physics_update(_delta: float) -> void:
 	# Keyboard movement has priority
 	if actor.direction != Vector2.ZERO:
-
-		if actor.has_mouse_target:
-			actor.clear_target_position()
+		EventBus.clear_selection_boxes.emit()
+		# Clear any mouse/enemy target when using keyboard
+		if actor.has_target():
+			EventBus.unselect_enemy.emit()
+			
 
 		actor._move()
 		actor._move_and_slide()
 		return
 
-	# Mouse movement
-	if actor.has_mouse_target and not GameManager.get_is_enemy_selected():
-
-		if actor.nav_agent.is_navigation_finished():
-			actor.clear_target_position()
+	# Ground position movement
+	if actor.is_targeting_position():
+		if actor.target_reached() or actor.nav_agent.is_navigation_finished():
+			EventBus.unselect_enemy.emit()
 			actor.velocity = Vector2.ZERO
 			transitioned.emit("playeridlestate")
 			return
 
-		actor._move_to_position()
-		actor._move_and_slide()
+		actor._move_to_ground_target()
 		return
-		
+
+	# No movement - return to idle
 	if actor.state_machine.current_state is PlayerRunState:
-		# No movement
 		actor.velocity = Vector2.ZERO
 		actor._move_and_slide()
 		transitioned.emit("playeridlestate")

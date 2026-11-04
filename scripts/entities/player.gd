@@ -4,6 +4,14 @@
 extends Combatant
 class_name Player
 
+# ─── Enums ───────────────────────────────────────────────────────────────────
+## Defines the type of target the player is currently pursuing.
+enum TargetType {
+	NONE,      ## No active target
+	ENEMY,     ## Following/attacking an enemy
+	POSITION   ## Moving to a ground position
+}
+
 # ─── Exported Variables ──────────────────────────────────────────────────────
 ## The class data defining the player's starting stats and abilities.
 @export var character_class: CharacterClass
@@ -16,9 +24,13 @@ var combo_queued: bool = false
 ## The list of attacks forming the combo chain.
 var combo_chain: Array[AttackData] = []
 var attack_range: float = 300
-var target: Enemy = null
-var mouse_target_position: Vector2
-var has_mouse_target: bool = false
+
+## Current target type (NONE, ENEMY, or POSITION)
+var target_type: TargetType = TargetType.NONE
+## The enemy being targeted (only valid when target_type == ENEMY)
+var target_enemy: Enemy = null
+## The ground position being targeted (only valid when target_type == POSITION)
+var target_position: Vector2 = Vector2.ZERO
 
 var enemies_in_range: Array[Enemy] = []
 
@@ -37,6 +49,8 @@ func _ready() -> void:
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
 	animation_tree.set_active(true)
 
+	EventBus.enemy_unselected.connect(_on_enemy_unselected)
+
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func _move() -> void:
 	velocity = direction.normalized() * speed
@@ -49,12 +63,13 @@ func _move() -> void:
 func _move_and_slide():
 	move_and_slide()
 
-## Moves the enemy toward a specific target position using the NavigationAgent.
+## Moves the player toward the current nav_agent target position.
 func _move_to_position(max_distance: float = 5) -> void:
 	var next_pos = nav_agent.get_next_path_position()
 	direction = global_position.direction_to(next_pos)
 	if global_position.distance_to(nav_agent.target_position) < max(5, max_distance):
-		clear_target_position()
+		if target_type == TargetType.POSITION:
+			clear_target()
 		return
 	_move()
 
@@ -74,14 +89,23 @@ func _attack() -> void:
 func _die() -> void:
 	queue_free()
 
-## Chases the current target.
+## Chases the current enemy target.
 func _chase_target() -> void:
-	if GameManager.get_is_enemy_selected():
-		set_target( GameManager.get_selected_enemy() )
-		if not (target and is_instance_valid(target)): return
-		set_target_position(target.global_position)
-		_move_to_position(attack_range)
-		_move_and_slide()
+	if not is_targeting_enemy():
+		return
+
+	# Update nav agent to track moving enemy
+	nav_agent.target_position = target_enemy.global_position
+	_move_to_position(attack_range)
+	_move_and_slide()
+
+## Moves toward a ground position target.
+func _move_to_ground_target() -> void:
+	if not is_targeting_position():
+		return
+
+	_move_to_position(5.0)  # Stop within 5 pixels
+	_move_and_slide()
 
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
@@ -92,27 +116,61 @@ func take_damage(amount: float) -> void:
 	StatsData.get_stats().set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()
 
-func set_target(_target: Enemy):
-	target = _target
+## Sets an enemy as the current target.
+func set_enemy_target(enemy: Enemy) -> void:
+	target_type = TargetType.ENEMY
+	target_enemy = enemy
+	target_position = Vector2.ZERO
+	nav_agent.target_position = enemy.global_position
 
-func get_target():
-	return target
+## Sets a ground position as the current target.
+func set_ground_target(pos: Vector2) -> void:
+	target_type = TargetType.POSITION
+	target_enemy = null
+	target_position = pos
+	nav_agent.target_position = pos
 
-func set_target_position(_position: Vector2) -> void:
-	mouse_target_position = _position
-	has_mouse_target = true
-	nav_agent.target_position = _position
+## Clears all targeting state.
+func clear_target() -> void:
+	target_type = TargetType.NONE
+	target_enemy = null
+	target_position = Vector2.ZERO
 
-## Checks if the target is within attack range.
+## Returns true if the player has any active target.
+func has_target() -> bool:
+	return target_type != TargetType.NONE
+
+## Returns true if currently targeting an enemy.
+func is_targeting_enemy() -> bool:
+	return target_type == TargetType.ENEMY and target_enemy != null and is_instance_valid(target_enemy)
+
+## Returns true if currently targeting a ground position.
+func is_targeting_position() -> bool:
+	return target_type == TargetType.POSITION
+
+## Gets the current target position (works for both enemy and ground targets).
+func get_current_target_position() -> Vector2:
+	match target_type:
+		TargetType.ENEMY:
+			return target_enemy.global_position if is_targeting_enemy() else Vector2.ZERO
+		TargetType.POSITION:
+			return target_position
+		_:
+			return Vector2.ZERO
+
+## Checks if the current target has been reached.
 func target_reached() -> bool:
-	return target and global_position.distance_to(GameManager.get_selected_enemy().global_position) <= attack_range
+	match target_type:
+		TargetType.ENEMY:
+			return is_targeting_enemy() and global_position.distance_to(target_enemy.global_position) <= attack_range
+		TargetType.POSITION:
+			return global_position.distance_to(target_position) <= 5.0
+		_:
+			return false
 
-func _get_target_position():
-	return mouse_target_position
-
-func clear_target_position() -> void:
-	has_mouse_target = false
-	EventBus.clear_selection_boxes.emit()
+## Gets the current enemy target (null if not targeting an enemy).
+func get_enemy_target() -> Enemy:
+	return target_enemy if is_targeting_enemy() else null
 
 func _on_damage_received() -> void:
 	var current_hp = StatsData.get_stats().get_current_hp()
@@ -239,3 +297,6 @@ func _on_detection_zone_body_exited(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
 		if enemies_in_range.size() and body in enemies_in_range:
 			enemies_in_range.erase(body)
+
+func _on_enemy_unselected(_enemy: Enemy):
+	clear_target()

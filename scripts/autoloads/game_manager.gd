@@ -23,6 +23,7 @@ func _ready() -> void:
 	connect_global_event()
 	init_cursor()
 
+
 # TODO: review others _unhandled_input instances 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -161,14 +162,22 @@ func select_enemy(_enemy: Enemy) -> void:
 
 	selected_enemy = _enemy
 	set_is_enemy_selected(true)
+
+	# Tell player to target this enemy
+	if player_ref:
+		player_ref.set_enemy_target(_enemy)
+
 	EventBus.enemy_selected.emit(_enemy)
 
 func select_ground(pos: Vector2) -> void:
 	if selected_enemy:
 		unselect_enemy()
-	
+
 	create_selection_box(pos)
-	player_ref.set_target_position(pos)
+
+	# Tell player to move to this position
+	if player_ref:
+		player_ref.set_ground_target(pos)
 
 func targeting_enemy_or_ground():
 	var mouse_pos = get_global_mouse_position()
@@ -184,7 +193,11 @@ func get_selected_enemy() -> Enemy:
 
 func unselect_enemy():
 	set_is_enemy_selected(false)
-	player_ref.has_mouse_target = false
+
+	# Clear player's target
+	if player_ref:
+		player_ref.clear_target()
+
 	EventBus.enemy_unselected.emit(selected_enemy)
 	selected_enemy = null
 

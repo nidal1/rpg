@@ -11,7 +11,7 @@ static var EnemiesStateMachineNames: Dictionary = {
 	"ENEMY_PATROL_STATE" : "enemypatrolstate",
 	"ENEMY_CHASE_STATE" : "enemychasestate",
 	"ENEMY_SPAWNED_STATE" : "enemyspawnedstate",
-	"ENEMY_WANDER_STATE" : "enemywnaderstate"
+	"ENEMY_WANDER_STATE" : "enemywanderstate"
 }
 
 enum EnemiesNames {
