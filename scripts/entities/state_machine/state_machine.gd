@@ -62,7 +62,5 @@ func _on_state_transitioned(state_name: String) -> void:
 			current_state.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	current_state = new_state
-	if owner is Player:
-		print("🔍 [state_machine - ", get_stack()[0].function, "] current_state: ", current_state)
 	current_state.enter()
 	current_state.process_mode = Node.PROCESS_MODE_INHERIT

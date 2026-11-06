@@ -60,6 +60,7 @@ func _initialize_managers() -> void:
 
 func connect_global_events() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
+	EventBus.level_up.connect(_on_level_up)
 	EventBus.stat_allocated.connect(stats_manager.add_stat_point)
 	EventBus.stat_deallocated.connect(stats_manager.sub_stat_point)
 	EventBus.save_stats_points.connect(stats_manager.save_stats)
@@ -94,8 +95,6 @@ func _on_enemy_died(enemy: Enemy) -> void:
 
 	if xp_reward > 0:
 		ProgressionManager.add_player_xp(xp_reward, PlayerData.get_player_level(), level_scaler)
-		# Update stats manager after level-up
-		stats_manager.update_available_points_on_level_up()
 
 	loot_manager.spawn_enemy_drops(enemy)
 
@@ -113,3 +112,7 @@ func _on_select_enemy(enemy: Enemy) -> void:
 
 func _on_unselect_enemy() -> void:
 	targeting_manager.clear_selection(player_ref as Player)
+
+func _on_level_up() -> void:
+	# Update stats manager after level-up
+		stats_manager.update_available_points_on_level_up()
