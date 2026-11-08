@@ -6,6 +6,11 @@ extends Control
 # ─── Exported Variables ──────────────────────────────────────────────────────
 @export var openTexture: Texture2D
 @export var closeTexture: Texture2D
+@export var merchant_buy_item_modal_scene: PackedScene
+@export var armor_table_details_scene: PackedScene
+@export var weapon_table_details_scene: PackedScene
+@export var item_card_details_scene: PackedScene
+@export var skill_row_scene: PackedScene
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 var lootable_item_slots: Array[LootableItemSlot] = []
@@ -78,12 +83,14 @@ var item_card_details_instance: ItemCardDetails
 @onready var merchant_container: GridContainer = $HUD/MerchantPanel/VBoxContainer/MarginContainer/ScrollContainer/MerchantContainer
 @onready var merchant_store_slot_scene: PackedScene = preload("res://scenes/ui/merchant_store_slot.tscn")
 
+# Skills section
+@onready var passive_skills_container: VBoxContainer = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/PassivePanel/VBoxContainer/ScrollContainer/PassiveSkillsContainer
+@onready var buff_skills_container: VBoxContainer = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel/VBoxContainer/ScrollContainer/BuffSkillsContainer
+@onready var attack_skills_container: VBoxContainer = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer/ScrollContainer/AttackSkillsContainer
+
 # Global Popups
 @onready var popups: Node2D = $Popups
-@export var merchant_buy_item_modal_scene: PackedScene
-@export var armor_table_details_scene: PackedScene
-@export var weapon_table_details_scene: PackedScene
-@export var item_card_details_scene: PackedScene
+
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -105,13 +112,20 @@ func _ready() -> void:
 
 	EventBus.potions_added_to_list.connect(_on_potion_slot_potions_added_to_list)
 	EventBus.udpate_available_gold.connect(_on_udpate_available_gold)
+	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
 	
+
+
 	_initialize_hero_stats()
 	_initialize_lootable_items_panel()
 	_initialize_inventory_tab()
+
+	load_buff_skills()
+	load_attack_skills()
+	load_passive_skills()
 
 # StatsUI component
 var stats_ui: StatsUI = StatsUI.new()
@@ -364,3 +378,30 @@ func _on_mana_potion_texture_button_pressed() -> void:
 
 func _on_udpate_available_gold(_value: int):
 	available_gold_label.text = str("Available Gold: ",_value)
+
+func load_buff_skills():
+	var buff_skills = GameManager.skills_manager.buff_skills
+
+	for skill in buff_skills:
+		var _skill_row_instance: SkillRow = skill_row_scene.instantiate()
+		_skill_row_instance.skill_data = skill
+		buff_skills_container.add_child(_skill_row_instance)
+	pass
+
+func load_attack_skills():
+	var attack_skills = GameManager.skills_manager.attack_skills
+
+	for skill in attack_skills:
+		var _skill_row_instance: SkillRow = skill_row_scene.instantiate()
+		_skill_row_instance.skill_data = skill
+		attack_skills_container.add_child(_skill_row_instance)
+	pass
+
+func load_passive_skills():
+	var passive_skills = GameManager.skills_manager.passive_skills
+
+	for skill in passive_skills:
+		var _skill_row_instance: SkillRow = skill_row_scene.instantiate()
+		_skill_row_instance.skill_data = skill
+		passive_skills_container.add_child(_skill_row_instance)
+	pass

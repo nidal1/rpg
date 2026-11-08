@@ -2,16 +2,11 @@
 ## Coordinates game systems through specialized managers.
 extends Node2D
 
-# ─── Preloads ────────────────────────────────────────────────────────────────
-const LootManager = preload("res://scripts/managers/loot_manager.gd")
-const EquipmentManager = preload("res://scripts/managers/equipment_manager.gd")
-const TargetingManager = preload("res://scripts/managers/targeting_manager.gd")
-const InputManager = preload("res://scripts/managers/input_manager.gd")
-
 # ─── Public Variables ────────────────────────────────────────────────────────
 var player_ref: Character = null
 var level_scaler: float = 1.2
 var stats_manager: StatsManager = StatsManager.new()
+var skills_manager: SkillsManager = SkillsManager.new()
 
 # ─── Manager Instances ───────────────────────────────────────────────────────
 var loot_manager: LootManager
@@ -39,6 +34,9 @@ func register_player(player: Character) -> void:
 	player_ref = player
 	var character_stats = player_ref.character_class.get_class_stats()
 	stats_manager.initialize(character_stats)
+	skills_manager.initialize(player_ref.character_class)
+	add_child(stats_manager)
+	add_child(skills_manager)
 
 func get_is_enemy_selected() -> bool:
 	return targeting_manager.is_enemy_currently_selected()

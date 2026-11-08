@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://c25l38pmqxy6a"]
+
+[ext_resource type="Script" uid="uid://c821gi0vyre4t" path="res://scripts/entities/skill_row.gd" id="1_0e78h"]
+[ext_resource type="Texture2D" uid="uid://ccd7tepvro6dg" path="res://assets/sprites/items/armors.png" id="1_uenww"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0e78h"]
+atlas = ExtResource("1_uenww")
+region = Rect2(0, 0, 64, 64)
+
+[node name="SkillRow" type="Panel" unique_id=2057574879]
+custom_minimum_size = Vector2(0, 64)
+offset_right = 333.0
+offset_bottom = 64.0
+size_flags_horizontal = 3
+tooltip_text = "This is a small description of this skill"
+script = ExtResource("1_0e78h")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1137420513]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Container" type="Container" parent="HBoxContainer" unique_id=1214452461]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Container" unique_id=484231397]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SkillTexture" type="TextureRect" parent="HBoxContainer/Container/MarginContainer" unique_id=485284869]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = SubResource("AtlasTexture_0e78h")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=645444635]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=511261196]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SkillName" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1015863125]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 13
+text = "Mana Training"
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=505269737]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = " Lv"
+
+[node name="SkillLevel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=916133761]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "2"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=989833999]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1390032880]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "required level"
+
+[node name="RequiredLevel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1853756188]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "3"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=416950409]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=276392856]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=494315447]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Point"
+
+[node name="SkillPointsCost" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1795084865]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "2"
+
+[node name="AddButton" type="Button" parent="HBoxContainer" unique_id=1020194097]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Add"

@@ -1,0 +1,312 @@
+{
+	"skills": {
+		"tank": {
+			"passive": [
+				{
+					"skill_id": "tank_passive_toughness",
+					"skill_name": "Toughness",
+					"description": "Permanently increases the character's total maximum health points (Max HP) by +150. (Cost: Passive | Cooldown: None)",
+					"mp_cost": 0,
+					"cast_time": 0.0,
+					"cooldown": 0.0,
+					"level": 0,
+					"max_level": 5,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"stat_type": "max_hp",
+					"bonus_value": 150.0,
+					"is_percentage": false,
+					"icon_path":"res://assets/sprites/skills/tank_passive_toughness.png"
+				}
+			],
+			"buff": [
+				{
+					"skill_id": "tank_iron_def",
+					"skill_name": "Iron Defense",
+					"description": "Boosts physical defense by +40 for 10.0s to withstand heavy combat. (MP: 20 | Cast: Instant | CD: 15.0s)",
+					"mp_cost": 20,
+					"cast_time": 0.0,
+					"cooldown": 15.0,
+					"level": 0,
+					"max_level": 5,
+					"required_player_level": 2,
+					"skill_points_cost": 1,
+					"buff_type": "physical_defence",
+					"value": 40.0,
+					"duration": 10.0,
+					"is_percentage": false,
+					"icon_path":"res://assets/sprites/skills/tank_iron_def.png"
+				}
+			],
+			"attack": [
+				{
+					"skill_id": "tank_shield_bash",
+					"skill_name": "Shield Bash",
+					"description": "Deals 30.0 physical damage and stuns the target for 2.0s. (MP: 15 | Cast: Instant | CD: 8.0s | Range: 2.0m)",
+					"mp_cost": 15,
+					"cast_time": 0.0,
+					"cooldown": 8.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"skill_target_type": "enemy",
+					"skill_range": 2.0,
+					"damage": 30.0,
+					"cc_effect": "stun",
+					"cc_duration": 2.0,
+					"icon_path":"res://assets/sprites/skills/tank_shield_bash.png"
+				},
+				{
+					"skill_id": "tank_ground_slam",
+					"skill_name": "Ground Slam",
+					"description": "Unleashes a shockwave dealing 45.0 area damage to surrounding enemies. (MP: 25 | Cast: 0.2s | CD: 10.0s | Range: 3.0m)",
+					"mp_cost": 25,
+					"cast_time": 0.2,
+					"cooldown": 10.0,
+					"level": 0,
+					"max_level": 4,
+					"required_player_level": 3,
+					"skill_points_cost": 1,
+					"skill_target_type": "aoe",
+					"skill_range": 3.0,
+					"damage": 45.0,
+					"cc_effect": "none",
+					"cc_duration": 0.0,
+					"icon_path":"res://assets/sprites/skills/tank_ground_slam.png"
+				}
+			]
+		},
+		"warrior": {
+			"passive": [
+				{
+					"skill_id": "warrior_passive_strength",
+					"skill_name": "Brute Force",
+					"description": "Permanently increases physical attack power by +20. (Cost: Passive | Cooldown: None)",
+					"mp_cost": 0,
+					"cast_time": 0.0,
+					"cooldown": 0.0,
+					"level": 0,
+					"max_level": 5,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"stat_type": "attack_power",
+					"bonus_value": 20.0,
+					"is_percentage": false,
+					"icon_path":"res://assets/sprites/skills/warrior_passive_strength.png"
+				}
+			],
+			"buff": [
+				{
+					"skill_id": "warrior_rage",
+					"skill_name": "Battle Rage",
+					"description": "Enters a rage state, increasing attack speed by +20% for 6.0s. (MP: 25 | Cast: Instant | CD: 20.0s)",
+					"mp_cost": 25,
+					"cast_time": 0.0,
+					"cooldown": 20.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 3,
+					"skill_points_cost": 1,
+					"buff_type": "attack_speed",
+					"value": 20.0,
+					"duration": 6.0,
+					"is_percentage": true,
+					"icon_path":"res://assets/sprites/skills/warrior_rage.png"
+				}
+			],
+			"attack": [
+				{
+					"skill_id": "warrior_heavy_slash",
+					"skill_name": "Heavy Slash",
+					"description": "Deals 55.0 physical damage and inflicts bleeding for 5.0s. (MP: 15 | Cast: Instant | CD: 4.0s | Range: 2.5m)",
+					"mp_cost": 15,
+					"cast_time": 0.0,
+					"cooldown": 4.0,
+					"level": 0,
+					"max_level": 5,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"skill_target_type": "enemy",
+					"skill_range": 2.5,
+					"damage": 55.0,
+					"cc_effect": "bleeding",
+					"cc_duration": 5.0,
+					"icon_path":"res://assets/sprites/skills/warrior_heavy_slash.png"
+				},
+				{
+					"skill_id": "warrior_whirlwind",
+					"skill_name": "Whirlwind",
+					"description": "Spins to strike all nearby enemies for 60.0 damage and slows them for 3.0s. (MP: 30 | Cast: Instant | CD: 8.0s | Range: 3.5m)",
+					"mp_cost": 30,
+					"cast_time": 0.0,
+					"cooldown": 8.0,
+					"level": 0,
+					"max_level": 4,
+					"required_player_level": 4,
+					"skill_points_cost": 2,
+					"skill_target_type": "aoe",
+					"skill_range": 3.5,
+					"damage": 60.0,
+					"cc_effect": "slow",
+					"cc_duration": 3.0,
+					"icon_path":"res://assets/sprites/skills/warrior_whirlwind.png"
+				}
+			]
+		},
+		"mage": {
+			"passive": [
+				{
+					"skill_id": "mage_passive_mind",
+					"skill_name": "Arcane Mind",
+					"description": "Permanently increases the maximum mana pool (Max MP) by +100. (Cost: Passive | Cooldown: None)",
+					"mp_cost": 0,
+					"cast_time": 0.0,
+					"cooldown": 0.0,
+					"level": 0,
+					"max_level": 5,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"stat_type": "max_mp",
+					"bonus_value": 100.0,
+					"is_percentage": false,
+					"icon_path":"res://assets/sprites/skills/mage_passive_mind.png"
+				}
+			],
+			"buff": [
+				{
+					"skill_id": "mage_mana_shield",
+					"skill_name": "Mana Barrier",
+					"description": "Creates a magical barrier absorbing 50.0 damage for 8.0s. (MP: 30 | Cast: 0.5s | CD: 25.0s)",
+					"mp_cost": 30,
+					"cast_time": 0.5,
+					"cooldown": 25.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 4,
+					"skill_points_cost": 2,
+					"buff_type": "absorption",
+					"value": 50.0,
+					"duration": 8.0,
+					"is_percentage": false,
+					"icon_path":"res://assets/sprites/skills/mage_mana_shield.png"
+				}
+			],
+			"attack": [
+				{
+					"skill_id": "mage_frost_bolt",
+					"skill_name": "Frost Bolt",
+					"description": "Deals 65.0 magical damage and slows target's movement for 4.0s. (MP: 20 | Cast: 1.0s | CD: 5.0s | Range: 8.0m)",
+					"mp_cost": 20,
+					"cast_time": 1.0,
+					"cooldown": 5.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"skill_target_type": "enemy",
+					"skill_range": 8.0,
+					"damage": 65.0,
+					"cc_effect": "slow",
+					"cc_duration": 4.0,
+					"icon_path":"res://assets/sprites/skills/mage_frost_bolt.png"
+				},
+				{
+					"skill_id": "mage_fireball_aoe",
+					"skill_name": "Fireball AoE",
+					"description": "Deals 75.0 area magical damage and burns targets for 4.0s. (MP: 35 | Cast: 1.5s | CD: 6.0s | Range: 8.0m)",
+					"mp_cost": 35,
+					"cast_time": 1.5,
+					"cooldown": 6.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 2,
+					"skill_points_cost": 2,
+					"skill_target_type": "aoe",
+					"skill_range": 8.0,
+					"damage": 75.0,
+					"cc_effect": "burn",
+					"cc_duration": 4.0,
+					"icon_path":"res://assets/sprites/skills/mage_fireball_aoe.png"
+				}
+			]
+		},
+		"archer": {
+			"passive": [
+				{
+					"skill_id": "archer_passive_sharp",
+					"skill_name": "Sharpshooter",
+					"description": "Permanently increases critical hit damage power by +15%. (Cost: Passive | Cooldown: None)",
+					"mp_cost": 0,
+					"cast_time": 0.0,
+					"cooldown": 0.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 3,
+					"skill_points_cost": 2,
+					"stat_type": "critical_damage",
+					"bonus_value": 15.0,
+					"is_percentage": true,
+					"icon_path": "res://assets/sprites/skills/archer_passive_sharp.png"
+				}
+			],
+			"buff": [
+				{
+					"skill_id": "archer_rapid_focus",
+					"skill_name": "Rapid Focus",
+					"description": "Increases attack speed by +15% for 8.0s. (MP: 25 | Cast: Instant | CD: 12.0s)",
+					"mp_cost": 25,
+					"cast_time": 0.0,
+					"cooldown": 12.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 2,
+					"skill_points_cost": 1,
+					"buff_type": "attack_speed",
+					"value": 15.0,
+					"duration": 8.0,
+					"is_percentage": true,
+					"icon_path": "res://assets/sprites/skills/archer_rapid_focus.png"
+				}
+			],
+			"attack": [
+				{
+					"skill_id": "archer_frost_arrow",
+					"skill_name": "Frost Arrow",
+					"description": "Deals 40.0 damage and slows enemy movement for 3.0s. (MP: 20 | Cast: Instant | CD: 5.0s | Range: 7.0m)",
+					"mp_cost": 20,
+					"cast_time": 0.0,
+					"cooldown": 5.0,
+					"level": 0,
+					"max_level": 4,
+					"required_player_level": 1,
+					"skill_points_cost": 1,
+					"skill_target_type": "enemy",
+					"skill_range": 7.0,
+					"damage": 40.0,
+					"cc_effect": "slow",
+					"cc_duration": 3.0,
+					"icon_path": "res://assets/sprites/skills/archer_frost_arrow.png"
+				},
+				{
+					"skill_id": "archer_volley",
+					"skill_name": "Arrow Volley",
+					"description": "Deals 50.0 area damage and blinds enemies for 2.5s. (MP: 30 | Cast: 0.5s | CD: 9.0s | Range: 9.0m)",
+					"mp_cost": 30,
+					"cast_time": 0.5,
+					"cooldown": 9.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": 3,
+					"skill_points_cost": 2,
+					"skill_target_type": "aoe",
+					"skill_range": 9.0,
+					"damage": 50.0,
+					"cc_effect": "blind",
+					"cc_duration": 2.5,
+					"icon_path": "res://assets/sprites/skills/archer_volley.png"
+				}
+			]
+		}
+	}
+}
