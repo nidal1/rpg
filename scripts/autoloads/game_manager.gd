@@ -114,3 +114,4 @@ func _on_unselect_enemy() -> void:
 func _on_level_up() -> void:
 	# Update stats manager after level-up
 		stats_manager.update_available_points_on_level_up()
+		skills_manager.update_player_current_skills_points_on_level_up()

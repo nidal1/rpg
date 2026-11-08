@@ -127,20 +127,37 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 10
 
-[node name="SkillsTabContainer" type="TabContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer" unique_id=2046427911]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer" unique_id=1047626072]
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer" unique_id=1988671216]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=747481562]
+layout_mode = 2
+text = "Usable Points"
+
+[node name="SkillsPoints" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=604804900]
+layout_mode = 2
+text = "4"
+
+[node name="SkillsTabContainer" type="TabContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer" unique_id=2046427911]
+layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 tabs_position = 1
 tab_0/title = "Passive"
 tab_1/title = "Buff"
 tab_2/title = "Attack"
 
-[node name="PassivePanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer" unique_id=1159894866]
+[node name="PassivePanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer" unique_id=1159894866]
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Passive"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/PassivePanel" unique_id=582913071]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/PassivePanel" unique_id=582913071]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -148,63 +165,47 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/PassivePanel/VBoxContainer" unique_id=535131808]
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/PassivePanel/VBoxContainer" unique_id=535131808]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="PassiveSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/PassivePanel/VBoxContainer/ScrollContainer" unique_id=1453840493]
+[node name="PassiveSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/PassivePanel/VBoxContainer/ScrollContainer" unique_id=1453840493]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="BuffPanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer" unique_id=1707767653]
+[node name="BuffPanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer" unique_id=1707767653]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_name = "Buff"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel" unique_id=1988671216]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 0
-offset_right = 405.0
-offset_bottom = 30.0
-alignment = 2
-
-[node name="Label" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel/HBoxContainer" unique_id=747481562]
-layout_mode = 2
-text = "Usable Points"
-
-[node name="SkillsPoints" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel/HBoxContainer" unique_id=604804900]
-layout_mode = 2
-text = "4"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel" unique_id=584369067]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/BuffPanel" unique_id=584369067]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel/VBoxContainer" unique_id=223702521]
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/BuffPanel/VBoxContainer" unique_id=223702521]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="BuffSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/BuffPanel/VBoxContainer/ScrollContainer" unique_id=147690664]
+[node name="BuffSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/BuffPanel/VBoxContainer/ScrollContainer" unique_id=147690664]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="AttackPanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer" unique_id=1051687342]
+[node name="AttackPanel" type="Panel" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer" unique_id=1051687342]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 metadata/_tab_name = "Attack"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel" unique_id=980486338]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/AttackPanel" unique_id=980486338]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -212,25 +213,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer" unique_id=2100244309]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-alignment = 2
-
-[node name="Label" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer/HBoxContainer" unique_id=96539387]
-layout_mode = 2
-text = "Usable Points"
-
-[node name="SkillsPoints" type="Label" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer/HBoxContainer" unique_id=1677100923]
-layout_mode = 2
-text = "4"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer" unique_id=43121494]
+[node name="ScrollContainer" type="ScrollContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/AttackPanel/VBoxContainer" unique_id=43121494]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="AttackSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/SkillsTabContainer/AttackPanel/VBoxContainer/ScrollContainer" unique_id=1331499494]
+[node name="AttackSkillsContainer" type="VBoxContainer" parent="HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/AttackPanel/VBoxContainer/ScrollContainer" unique_id=1331499494]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

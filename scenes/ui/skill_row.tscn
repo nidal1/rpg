@@ -105,3 +105,5 @@ text = "2"
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "Add"
+
+[connection signal="pressed" from="HBoxContainer/AddButton" to="." method="_on_add_button_pressed"]

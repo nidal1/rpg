@@ -1,5 +1,5 @@
 extends Skill
-class_name Buff
+class_name BuffSkill
 
 # Buffs
 enum BuffType {

@@ -17,3 +17,9 @@ func _ready() -> void:
 		required_level.text = str(skill_data.required_player_level)
 		skill_points_cost.text = str(skill_data.skill_points_cost)
 		tooltip_text = skill_data.description
+
+func toggle_button(_disabled: bool):
+	add_button.disabled = _disabled
+
+func _on_add_button_pressed() -> void:
+	EventBus.upgrade_skill.emit(skill_data)

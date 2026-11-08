@@ -34,9 +34,9 @@ func load_skills_from_json(file_path: String) -> void:
 	# دور على كل كلاس (Tank, Warrior, Mage, Archer)
 	for class_name_str in skills_by_class.keys():
 		loaded_skills[class_name_str] = {
-			"attack": [],
-			"buff": [],
-			"passive": []
+			"attack": [] as Array[AttackSkill],
+			"buff": [] as Array[BuffSkill],
+			"passive": [] as Array[PassiveSkill]
 		}
 		
 		var class_data = skills_by_class[class_name_str]
@@ -102,8 +102,8 @@ func _parse_attack_skill(data: Dictionary) -> AttackSkill:
 	
 	return skill
 
-func _parse_buff_skill(data: Dictionary) -> Buff:
-	var skill = Buff.new()
+func _parse_buff_skill(data: Dictionary) -> BuffSkill:
+	var skill = BuffSkill.new()
 	_populate_base_skill(skill, data)
 	
 	skill.value = data.get("value", 0.0)
@@ -138,22 +138,22 @@ func _string_to_cc_enum(cc_name: String) -> AttackSkill.CrowdControl:
 		"slow": return AttackSkill.CrowdControl.slow
 		_: return AttackSkill.CrowdControl.none
 
-func _string_to_buff_enum(buff_name: String) -> Buff.BuffType:
+func _string_to_buff_enum(buff_name: String) -> BuffSkill.BuffType:
 	match buff_name:
-		"attack_power": return Buff.BuffType.attack_power
-		"critical_damage": return Buff.BuffType.critical_damage
-		"attack_speed": return Buff.BuffType.attack_speed
-		"casting_speed": return Buff.BuffType.casting_speed
-		"physical_defence": return Buff.BuffType.physical_defence
-		"magical_resistance": return Buff.BuffType.magical_resistance
-		"max_hp": return Buff.BuffType.max_hp
-		"max_mp": return Buff.BuffType.max_mp
-		"regeneration": return Buff.BuffType.regeneration
-		"absorption": return Buff.BuffType.absorption
-		"movement_speed": return Buff.BuffType.movement_speed
-		"accuracy": return Buff.BuffType.accuracy
-		"evasion": return Buff.BuffType.evasion
-		_: return Buff.BuffType.none
+		"attack_power": return BuffSkill.BuffType.attack_power
+		"critical_damage": return BuffSkill.BuffType.critical_damage
+		"attack_speed": return BuffSkill.BuffType.attack_speed
+		"casting_speed": return BuffSkill.BuffType.casting_speed
+		"physical_defence": return BuffSkill.BuffType.physical_defence
+		"magical_resistance": return BuffSkill.BuffType.magical_resistance
+		"max_hp": return BuffSkill.BuffType.max_hp
+		"max_mp": return BuffSkill.BuffType.max_mp
+		"regeneration": return BuffSkill.BuffType.regeneration
+		"absorption": return BuffSkill.BuffType.absorption
+		"movement_speed": return BuffSkill.BuffType.movement_speed
+		"accuracy": return BuffSkill.BuffType.accuracy
+		"evasion": return BuffSkill.BuffType.evasion
+		_: return BuffSkill.BuffType.none
 
 func _string_to_passive_enum(stat_name: String) -> PassiveSkill.PassiveStatType:
 	match stat_name:

@@ -12,11 +12,12 @@ const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 const POINTS_STATS_PER_LEVEL = 5
 
 
+
 # ─── Private Variables ───────────────────────────────────────────────────────
 var __player_level: int = 1
 var __current_xp: int = 0
+var __current_skills_points: int = 0
 var __total_xp_to_next_level: int = 75
-var __base_stats: CharacterStats = null
 var __lootable_items: Array[DataItem] = []
 var __inventory_items: Array[DataItem] = []
 var __equipable_items: Dictionary = {
@@ -38,6 +39,12 @@ var __potions: Dictionary = {
 }
 
 var __available_gold: int = 1000
+
+var __player_upgraded_skills = {
+	"passive": [] as Array[PassiveSkill],
+	"attack": [] as Array[AttackSkill],
+	"buff": [] as Array[BuffSkill],
+}
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -136,3 +143,20 @@ func get_available_gold():
 
 func set_available_gold(new_gold: int):
 	__available_gold = new_gold
+
+# ─── Skills ───────────────────────────────────────────────────────────────
+func set_player_upgraded_skills(_skill: Skill):
+	if _skill is AttackSkill:
+		__player_upgraded_skills["attack"].append(_skill)
+	
+	elif _skill is PassiveSkill:
+		__player_upgraded_skills["passive"].append(_skill)
+	
+	elif _skill is BuffSkill:
+		__player_upgraded_skills["buff"].append(_skill)
+
+func get_player_current_skills_points() -> int:
+	return __current_skills_points
+
+func set_player_current_skills_points(_points):
+	__current_skills_points = _points
