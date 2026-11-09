@@ -4,7 +4,18 @@ class_name Skill
 # basic info
 @export var skill_id : String
 @export var skill_name : String
-@export var description : String
+@export var base_description: String :  # الوصف الأصلي لي فيه #value#
+	set(val):
+		base_description = val
+		notify_property_list_changed()
+@export var description : String:
+	get:
+		var desc: String = base_description
+		var val = str(get_value())
+		if desc.contains("#value#"):
+			desc = desc.replace("#value#", val)
+		return desc
+
 @export var skill_icon : Texture2D
 @export var skill_owner: Array[CharacterClass.PlayerType]
 
@@ -16,7 +27,7 @@ class_name Skill
 # Progression & Requirements
 @export var level: int
 @export var max_level: int
-@export var required_player_level: int
+@export var required_player_level: Array[int]
 @export var skill_points_cost: int
 
 @export var skill_disabled = false:
@@ -25,13 +36,18 @@ class_name Skill
 		return skill_disabled
 
 func check_skill_requirements():
-	var lacks_max_level = level == max_level
+	if PlayerData:
+		var lacks_max_level = level == max_level
 
-	var lacks_sp = PlayerData.get_player_current_skills_points() < skill_points_cost
+		var lacks_sp = PlayerData.get_player_current_skills_points() < skill_points_cost
 
-	var lacks_level = PlayerData.get_player_level() != required_player_level
+		var lacks_level = PlayerData.get_player_level() != required_player_level[level]
 
-	self.skill_disabled = lacks_max_level or lacks_sp or lacks_level
+		self.skill_disabled = lacks_max_level or lacks_sp or lacks_level
+
+func get_value() -> float:
+	return 0.0
+
 
 func stringify() -> String:
 	var icon_info = "None"

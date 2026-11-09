@@ -41,6 +41,7 @@ func load_skills_from_json(file_path: String) -> void:
 		
 		var class_data = skills_by_class[class_name_str]
 		
+		
 		# 1. قراءة الـ Attack Skills
 		if class_data.has("attack"):
 			for dict_data in class_data["attack"]:
@@ -64,13 +65,18 @@ func load_skills_from_json(file_path: String) -> void:
 func _populate_base_skill(skill_res: Skill, data: Dictionary) -> void:
 	skill_res.skill_id = data.get("skill_id", "")
 	skill_res.skill_name = data.get("skill_name", "")
-	skill_res.description = data.get("description", "")
+	skill_res.base_description = data.get("description", "")
 	skill_res.mp_cost = data.get("mp_cost", 0)
 	skill_res.cast_time = data.get("cast_time", 0.0)
 	skill_res.cooldown = data.get("cooldown", 0.0)
 	skill_res.level = data.get("level", 1)
 	skill_res.max_level = data.get("max_level", 1)
-	skill_res.required_player_level = data.get("required_player_level", 1)
+
+	var raw_data_array = data.get("required_player_level", [1])
+	var typed_data: Array[int] = []
+	for val in raw_data_array:
+		typed_data.append(float(val))
+	skill_res.required_player_level = typed_data
 	skill_res.skill_points_cost = data.get("skill_points_cost", 1)
 	
 	# تحميل الأيقونة أوتوماتيكيا من icon_path اللي فـ JSON
@@ -93,7 +99,11 @@ func _parse_attack_skill(data: Dictionary) -> AttackSkill:
 		skill.skill_target_type = AttackSkill.TargetType.enemy
 		
 	skill.skill_range = data.get("skill_range", 1.0)
-	skill.damage = data.get("damage", 0.0)
+	var raw_data_array = data.get("damage", [0.0])
+	var typed_data: Array[float] = []
+	for val in raw_data_array:
+		typed_data.append(float(val))
+	skill.damage = typed_data
 	skill.cc_duration = data.get("cc_duration", 0.0)
 	
 	# تحويل Crowd Control Enum
@@ -105,8 +115,11 @@ func _parse_attack_skill(data: Dictionary) -> AttackSkill:
 func _parse_buff_skill(data: Dictionary) -> BuffSkill:
 	var skill = BuffSkill.new()
 	_populate_base_skill(skill, data)
-	
-	skill.value = data.get("value", 0.0)
+	var raw_data_array = data.get("value", [0.0])
+	var typed_data: Array[float] = []
+	for val in raw_data_array:
+		typed_data.append(float(val))
+	skill.value = typed_data
 	skill.duration = data.get("duration", 0.0)
 	skill.is_percentage = data.get("is_percentage", false)
 	
@@ -118,8 +131,11 @@ func _parse_buff_skill(data: Dictionary) -> BuffSkill:
 func _parse_passive_skill(data: Dictionary) -> PassiveSkill:
 	var skill = PassiveSkill.new()
 	_populate_base_skill(skill, data)
-	
-	skill.bonus_value = data.get("bonus_value", 0.0)
+	var raw_data_array = data.get("bonus_value", [0.0])
+	var typed_data: Array[float] = []
+	for val in raw_data_array:
+		typed_data.append(float(val))
+	skill.bonus_value = typed_data
 	skill.is_percentage = data.get("is_percentage", false)
 	
 	var stat_str = data.get("stat_type", "max_hp")

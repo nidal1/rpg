@@ -429,5 +429,7 @@ func _on_udpate_available_gold(_value: int):
 func _on_upgrade_skill(_skill: Skill):
 	skills_points.text = str(PlayerData.get_player_current_skills_points())
 	for skr in skills_instances:
+		if skr.skill_data.skill_id == _skill.skill_id:
+			skr.set_skill_data(_skill)
 		skr.toggle_button(skr.skill_data.skill_disabled)
 		

@@ -155,6 +155,26 @@ func set_player_upgraded_skills(_skill: Skill):
 	elif _skill is BuffSkill:
 		__player_upgraded_skills["buff"].append(_skill)
 
+func player_upgraded_skill_exist(_skill: Skill):
+	if _skill is AttackSkill and (_skill in __player_upgraded_skills["attack"]):
+		return true
+	elif _skill is PassiveSkill and (_skill in __player_upgraded_skills["passive"]):
+		return true
+	elif _skill is BuffSkill and (_skill in __player_upgraded_skills["buff"]):
+		return true
+	return false
+
+func remove_player_upgraded_skill_exist(_skill: Skill):
+	if not player_upgraded_skill_exist(_skill):
+		return 
+	
+	if _skill is AttackSkill and (_skill in __player_upgraded_skills["attack"]):
+		__player_upgraded_skills["attack"].erase(_skill)
+	elif _skill is PassiveSkill and (_skill in __player_upgraded_skills["passive"]):
+		__player_upgraded_skills["passive"].erase(_skill)
+	elif _skill is BuffSkill and (_skill in __player_upgraded_skills["buff"]):
+		__player_upgraded_skills["buff"].erase(_skill)
+
 func get_player_current_skills_points() -> int:
 	return __current_skills_points
 

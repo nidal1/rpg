@@ -23,6 +23,10 @@ enum BuffType {
 }
 
 @export var buff_type: BuffType
-@export var value: float
+@export var value: Array[float]
 @export var duration: float
 @export var is_percentage: bool
+
+func get_value() -> float:
+	var idx = clampi(level - 1, 0, value.size() - 1)
+	return value[idx] if not value.is_empty() else 0.0

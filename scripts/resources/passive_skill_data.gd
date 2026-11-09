@@ -12,5 +12,9 @@ enum PassiveStatType {
 }
 
 @export var stat_type: PassiveStatType
-@export var bonus_value: float 
+@export var bonus_value: Array[float] 
 @export var is_percentage: bool
+
+func get_value() -> float:
+	var idx = clampi(level - 1, 0, bonus_value.size() - 1)
+	return bonus_value[idx] if not bonus_value.is_empty() else 0.0

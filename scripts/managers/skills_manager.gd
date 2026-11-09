@@ -32,6 +32,8 @@ func update_player_current_skills_points_on_level_up():
 func _on_upgrade_skill(_skill: Skill):
 	var available_skills_points = PlayerData.get_player_current_skills_points()
 	if available_skills_points >= _skill.skill_points_cost:
+		PlayerData.remove_player_upgraded_skill_exist(_skill)
+		_skill.level += 1
 		PlayerData.set_player_current_skills_points(available_skills_points -  _skill.skill_points_cost)
 		PlayerData.set_player_upgraded_skills(_skill)
 	else: 

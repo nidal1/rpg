@@ -23,6 +23,10 @@ enum CrowdControl {
 @export var skill_range: float
 
 #Combat & Effects
-@export var damage: float
+@export var damage: Array[float] = []
 @export var cc_effect: CrowdControl
 @export var cc_duration: float
+
+func get_value() -> float:
+	var idx = clampi(level - 1, 0, damage.size() - 1)
+	return damage[idx] if not damage.is_empty() else 0.0
