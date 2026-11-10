@@ -111,7 +111,7 @@ func _on_select_enemy(enemy: Enemy) -> void:
 func _on_unselect_enemy() -> void:
 	targeting_manager.clear_selection(player_ref as Player)
 
-func _on_level_up() -> void:
+func _on_level_up(_new_level: int) -> void:
 	# Update stats manager after level-up
-		stats_manager.update_available_points_on_level_up()
-		skills_manager.update_player_current_skills_points_on_level_up()
+	stats_manager.update_available_points_on_level_up()
+	skills_manager.update_player_current_skills_points_on_level_up()

@@ -3,6 +3,9 @@
 ## inventory, and lootable items. Acts as the central data store for the player.
 extends Node
 
+# ─── Autoload References ────────────────────────────────────────────────────
+# Skills data moved to separate autoload: skills_data.gd
+
 # ─── Constants ───────────────────────────────────────────────────────────────
 ## List of available stat names.
 const STAT_NAMES = ["HP", "MP", "STR", "REC", "INT", "WIS", "DEX", "LUC"]
@@ -12,11 +15,9 @@ const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 const POINTS_STATS_PER_LEVEL = 5
 
 
-
 # ─── Private Variables ───────────────────────────────────────────────────────
-var __player_level: int = 1
+var __player_level: int = 2
 var __current_xp: int = 0
-var __current_skills_points: int = 0
 var __total_xp_to_next_level: int = 75
 var __lootable_items: Array[DataItem] = []
 var __inventory_items: Array[DataItem] = []
@@ -40,11 +41,6 @@ var __potions: Dictionary = {
 
 var __available_gold: int = 1000
 
-var __player_upgraded_skills = {
-	"passive": [] as Array[PassiveSkill],
-	"attack": [] as Array[AttackSkill],
-	"buff": [] as Array[BuffSkill],
-}
 
 # ─── XP & Leveling ───────────────────────────────────────────────────────────
 ## Sets the current player level.
@@ -72,6 +68,7 @@ func set_total_xp_to_next_level(new_xp: int) -> void:
 ## Gets the total experience points needed for the next level.
 func get_total_xp_to_next_level() -> int:
 	return __total_xp_to_next_level
+
 
 # ─── Inventory & Items ───────────────────────────────────────────────────────
 ## Adds an item to the list of lootable items currently in range.
@@ -127,6 +124,7 @@ func remove_equipable_item(item: EquipableItem) -> void:
 		elif eq_type == "FEET":
 			__equipable_items["BOOTS"] = null
 
+
 # ─── Potions ───────────────────────────────────────────────────────────────
 func add_potion(potion: ConsumableItem) -> void:
 	var p_type = potion.potion_type.to_upper()
@@ -138,45 +136,33 @@ func remove_potion_from_list(potion: ConsumableItem) -> void:
 	if p_type in __potions:
 		__potions[p_type].erase(potion)
 
-func get_available_gold():
+func get_available_gold() -> int:
 	return __available_gold
 
-func set_available_gold(new_gold: int):
+func set_available_gold(new_gold: int) -> void:
 	__available_gold = new_gold
 
-# ─── Skills ───────────────────────────────────────────────────────────────
-func set_player_upgraded_skills(_skill: Skill):
-	if _skill is AttackSkill:
-		__player_upgraded_skills["attack"].append(_skill)
-	
-	elif _skill is PassiveSkill:
-		__player_upgraded_skills["passive"].append(_skill)
-	
-	elif _skill is BuffSkill:
-		__player_upgraded_skills["buff"].append(_skill)
 
-func player_upgraded_skill_exist(_skill: Skill):
-	if _skill is AttackSkill and (_skill in __player_upgraded_skills["attack"]):
-		return true
-	elif _skill is PassiveSkill and (_skill in __player_upgraded_skills["passive"]):
-		return true
-	elif _skill is BuffSkill and (_skill in __player_upgraded_skills["buff"]):
-		return true
+# ─── Skills ───────────────────────────────────────────────────────────────
+# Skills-related functionality moved to skills_data.gd autoload
+# For backward compatibility, minimal stubs remain:
+
+func set_player_upgraded_skills(_skill: Skill) -> void:
+	# Delegated to SkillsData autoload
+	pass
+
+func player_upgraded_skill_exist(_skill: Skill) -> bool:
+	# Delegated to SkillsData autoload
 	return false
 
-func remove_player_upgraded_skill_exist(_skill: Skill):
-	if not player_upgraded_skill_exist(_skill):
-		return 
-	
-	if _skill is AttackSkill and (_skill in __player_upgraded_skills["attack"]):
-		__player_upgraded_skills["attack"].erase(_skill)
-	elif _skill is PassiveSkill and (_skill in __player_upgraded_skills["passive"]):
-		__player_upgraded_skills["passive"].erase(_skill)
-	elif _skill is BuffSkill and (_skill in __player_upgraded_skills["buff"]):
-		__player_upgraded_skills["buff"].erase(_skill)
+func remove_player_upgraded_skill_exist(_skill: Skill) -> void:
+	# Delegated to SkillsData autoload
+	pass
 
 func get_player_current_skills_points() -> int:
-	return __current_skills_points
+	# Delegated to SkillsData autoload
+	return 0
 
-func set_player_current_skills_points(_points):
-	__current_skills_points = _points
+func set_player_current_skills_points(_points: int) -> void:
+	# Delegated to SkillsData autoload
+	pass

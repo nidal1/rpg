@@ -52,7 +52,6 @@ func setup_ui_references(
 	EventBus.hero_mp_changed.connect(_on_hero_mp_changed)
 	EventBus.hero_xp_changed.connect(_on_hero_xp_changed)
 	EventBus.stat_points_available_changed.connect(_on_stat_points_available_changed)
-	EventBus.level_up.connect(_on_level_up)
 
 	set_hero_avatar_texture(hero_avatar.texture)
 	var hp = int(round(StatsData.get_stats().get_max_hp()))
@@ -177,6 +176,12 @@ func update_xp_bar_smooth(current_xp: int, total_xp: int) -> void:
 		xp_tween = create_tween()
 		xp_tween.tween_property(level_progress_bar, "value", current_xp, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
+func update_stats_on_level_up() -> void:
+	set_level_label_text("%s" % [PlayerData.get_player_level()])
+	set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
+	set_stats_points_label_text("Stats points: %s" % StatsData.get_stat_points_available())
+
+
 # Called to update the hero avatar texture.
 func on_hero_avatar_texture(texture: Texture2D) -> void:
 	set_hero_avatar_texture(texture)
@@ -203,10 +208,6 @@ func _on_hero_xp_changed(current_xp: int, total_xp: int) -> void:
 func _on_stat_points_available_changed(_points: int) -> void:
 	update_stats_panel()
 
-func _on_level_up() -> void:
-	set_level_label_text("%s" % [PlayerData.get_player_level()])
-	set_level_progress_bar_max_value(PlayerData.get_total_xp_to_next_level())
-	set_stats_points_label_text("Stats points: %s" % StatsData.get_stat_points_available())
 
 func _xp_changed(current_xp: int) -> void:
 	set_level_progress_bar_value(current_xp)

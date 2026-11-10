@@ -117,7 +117,8 @@ func _ready() -> void:
 	EventBus.udpate_available_gold.connect(_on_udpate_available_gold)
 
 	EventBus.upgrade_skill.connect(_on_upgrade_skill)
-	
+	EventBus.level_up.connect(_on_level_up)
+
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
@@ -220,7 +221,7 @@ func __update_merchant_store_items(items: Array[DataItem]):
 		item_slot.mouse_clicked.connect(_on_merchant_store_item_clicked)
 
 func __update_skills_points():
-	skills_points.text = str(PlayerData.get_player_current_skills_points())
+	skills_points.text = str(SkillsData.get_player_current_skills_points())
 
 func load_buff_skills():
 	var buff_skills: Array[BuffSkill] = GameManager.skills_manager.buff_skills
@@ -258,6 +259,17 @@ func load_passive_skills():
 		
 		skills_instances.append(_skill_row_instance)
 	pass
+
+func update_skills_rows_instances():
+	__update_skills_points()
+	var _upgraded_skills = SkillsData.get_player_upgraded_skills()
+	for class_data in _upgraded_skills:
+		for skl in _upgraded_skills[class_data]:
+			for skr in skills_instances:
+				if skr.skill_data.skill_id == skl.skill_id:
+					skr.set_skill_data(skl)
+				skr.toggle_button(skr.skill_data.skill_disabled)
+
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_show_item_card_details(item: DataItem):
@@ -427,9 +439,8 @@ func _on_udpate_available_gold(_value: int):
 	available_gold_label.text = str("Available Gold: ",_value)
 
 func _on_upgrade_skill(_skill: Skill):
-	skills_points.text = str(PlayerData.get_player_current_skills_points())
-	for skr in skills_instances:
-		if skr.skill_data.skill_id == _skill.skill_id:
-			skr.set_skill_data(_skill)
-		skr.toggle_button(skr.skill_data.skill_disabled)
+	__update_skills_points()
 		
+func _on_level_up(_new_level: int):
+	stats_ui.update_stats_on_level_up()
+	update_skills_rows_instances()

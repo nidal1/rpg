@@ -36,12 +36,12 @@ class_name Skill
 		return skill_disabled
 
 func check_skill_requirements():
-	if PlayerData:
+	if SkillsData:
 		var lacks_max_level = level == max_level
 
-		var lacks_sp = PlayerData.get_player_current_skills_points() < skill_points_cost
+		var lacks_sp = SkillsData.get_player_current_skills_points() < skill_points_cost
 
-		var lacks_level = PlayerData.get_player_level() != required_player_level[level]
+		var lacks_level = PlayerData.get_player_level() < required_player_level[level]
 
 		self.skill_disabled = lacks_max_level or lacks_sp or lacks_level
 

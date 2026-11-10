@@ -10,6 +10,7 @@ class_name SkillRow
 var skill_data : Skill
 
 func _ready() -> void:
+	EventBus.upgrade_skill.connect(_on_upgrade_skill)
 	if skill_data:
 		skill_texture.texture = skill_data.skill_icon
 		skill_name.text = str(skill_data.skill_name)
@@ -32,3 +33,8 @@ func set_skill_data(_value: Skill):
 
 func _on_add_button_pressed() -> void:
 	EventBus.upgrade_skill.emit(skill_data)
+
+func _on_upgrade_skill(_skill: Skill):
+	if skill_data.skill_id == _skill.skill_id:
+		set_skill_data(_skill)
+		toggle_button(skill_data.skill_disabled)

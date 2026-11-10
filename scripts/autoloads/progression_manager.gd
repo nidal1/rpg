@@ -148,4 +148,4 @@ func handle_level_up(current_level: int, scaler: float) -> void:
 	PlayerData.set_total_xp_to_next_level(new_required_xp)
 
 	StatsData.get_stats().update_current_health_and_mana()
-	EventBus.level_up.emit()
+	EventBus.level_up.emit(new_level)
