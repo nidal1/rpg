@@ -23,8 +23,8 @@ func unequip_item(item: EquipableItem, player_ref: Character, stats_manager: Sta
 		EventBus.items_added_to_inventory.emit(items_to_add)
 
 		if player_ref and player_ref.character_class:
-			player_ref.character_class.set_class_stats(StatsData.get_stats())
-		EventBus.stats_updated.emit(StatsData)
+			player_ref.character_class.set_class_stats(StatsData)
+		EventBus.stats_updated.emit()
 
 ## Handles unequipping a potion.
 func unequip_potion(potion: ConsumableItem) -> void:
@@ -40,11 +40,11 @@ func consume_potion(potion: ConsumableItem) -> void:
 	var p_type = potion.potion_type.to_upper()
 
 	if p_type == "HEALTH":
-		StatsData.get_stats().set_current_hp(StatsData.get_stats().get_current_hp() + heal_amount)
+		StatsData.set_current_hp(StatsData.get_current_hp() + heal_amount)
 	elif p_type == "MANA":
-		StatsData.get_stats().set_current_mp(StatsData.get_stats().get_current_mp() + heal_amount)
+		StatsData.set_current_mp(StatsData.get_current_mp() + heal_amount)
 
-	EventBus.stats_updated.emit(StatsData)
+	EventBus.stats_updated.emit()
 
 ## Handles purchasing an item from merchant.
 func purchase_item(quantity: float, item: DataItem) -> void:
@@ -98,8 +98,8 @@ func _equip_equipable_item(eq: EquipableItem, inventory_slot: InventorySlot, pla
 		inventory_slot.set_item(old_item)
 
 	if player_ref and player_ref.character_class:
-		player_ref.character_class.set_class_stats(StatsData.get_stats())
-	EventBus.stats_updated.emit(StatsData)
+		player_ref.character_class.set_class_stats(StatsData)
+	EventBus.stats_updated.emit()
 
 func _equip_consumable_item(potion: ConsumableItem, inventory_slot: InventorySlot) -> void:
 	PlayerData.add_potion(potion)

@@ -54,8 +54,8 @@ func setup_ui_references(
 	EventBus.stat_points_available_changed.connect(_on_stat_points_available_changed)
 
 	set_hero_avatar_texture(hero_avatar.texture)
-	var hp = int(round(StatsData.get_stats().get_max_hp()))
-	var mana = int(round(StatsData.get_stats().get_max_mp()))
+	var hp = int(round(StatsData.get_max_hp()))
+	var mana = int(round(StatsData.get_max_mp()))
 	set_hp_max_value(hp)
 	set_hp_bar_value(hp)
 	set_mana_max_value(mana)
@@ -106,8 +106,8 @@ func initialize_stats_tab() -> void:
 	update_stats_panel()
 
 ## Updates the entire stats UI (both Stats Panel and Hero HUD).
-func update_stats(stats_data: StatsData = null) -> void:
-	update_all_stats_ui(stats_data)
+func update_stats() -> void:
+	update_all_stats_ui()
 
 func update_stats_panel() -> void:
 	if not stats_container: return
@@ -124,21 +124,16 @@ func update_stats_panel() -> void:
 
 ## Master update method dispatched whenever stats change.
 ## Updates both the Stats Panel tab and the Hero HUD.
-func update_all_stats_ui(stats_data: StatsData = null) -> void:
+func update_all_stats_ui() -> void:
 	update_stats_panel()
-	var stats: CharacterStats = stats_data.get_stats() if stats_data else (StatsData.get_stats() if StatsData else null)
-	if stats:
-		update_hero_hud(stats)
+	update_hero_hud()
 
-func update_hero_hud(stats: CharacterStats = null) -> void:
-	if not stats and StatsData:
-		stats = StatsData.get_stats()
-	if not stats: return
-	var max_hp = int(round(stats.get_max_hp()))
-	var max_mana = int(round(stats.get_max_mp()))
+func update_hero_hud() -> void:
+	var max_hp = int(round(StatsData.get_max_hp()))
+	var max_mana = int(round(StatsData.get_max_mp()))
 	
-	var current_hp = stats.get_current_hp()
-	var current_mana = stats.get_current_mp()
+	var current_hp = StatsData.get_current_hp()
+	var current_mana = StatsData.get_current_mp()
 
 	if hp_bar: 
 		hp_bar.max_value = max_hp

@@ -15,14 +15,13 @@ func has_save_game(filepath: String = DEFAULT_SAVE_PATH) -> bool:
 
 ## Saves the player's level, XP, stat allocation, and base stats to a JSON file.
 func save_game(filepath: String = DEFAULT_SAVE_PATH) -> Error:
-	var base_stats = PlayerData.get_base_stats()
 	var save_data = {
 		"level": PlayerData.get_player_level(),
 		"current_xp": PlayerData.get_current_xp(),
 		"total_xp_to_next_level": PlayerData.get_total_xp_to_next_level(),
 		"stat_points_available": PlayerData.get_stat_points_available(),
 		"allocated_stats": PlayerData.get_stat_alloc(),
-		"base_stats": base_stats.to_dict() if base_stats else {}
+		"base_stats": StatsData.to_dict()
 	}
 	
 	var file = FileAccess.open(filepath, FileAccess.WRITE)
@@ -81,7 +80,7 @@ func load_game(filepath: String = DEFAULT_SAVE_PATH) -> Error:
 		base_stats.from_dict_to_base_stats(save_data["base_stats"])
 		
 	PlayerData.save_stats()
-	EventBus.stats_updated.emit(StatsData)
+	EventBus.stats_updated.emit()
 	EventBus.stat_points_available_changed.emit(PlayerData.get_stat_points_available())
 	print("SaveManager: Game successfully loaded from ", filepath)
 	game_loaded.emit()

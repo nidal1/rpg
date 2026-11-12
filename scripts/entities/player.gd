@@ -112,8 +112,8 @@ func _move_to_ground_target() -> void:
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
 	var reduced_damage = max(1.0, amount - _get_defense())
-	var current_hp = StatsData.get_stats().get_current_hp()
-	StatsData.get_stats().set_current_hp(max(0.0, current_hp - reduced_damage))
+	var current_hp = StatsData.get_current_hp()
+	StatsData.set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()
 
 ## Sets an enemy as the current target.
@@ -173,8 +173,8 @@ func get_enemy_target() -> Enemy:
 	return target_enemy if is_targeting_enemy() else null
 
 func _on_damage_received() -> void:
-	var current_hp = StatsData.get_stats().get_current_hp()
-	var max_hp = StatsData.get_stats().get_max_hp()
+	var current_hp = StatsData.get_current_hp()
+	var max_hp = StatsData.get_max_hp()
 	EventBus.hero_hp_changed.emit(current_hp if current_hp > 0.0 else 0.0, max_hp)
 	_flash_hit()
 	if current_hp <= 0:
@@ -260,7 +260,7 @@ func _flash_hit() -> void:
 	modulate = Color.WHITE
 
 func _get_defense() -> float:
-	return StatsData.get_stats().get_def()
+	return StatsData.get_def()
 
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────

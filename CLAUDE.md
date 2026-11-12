@@ -180,11 +180,11 @@ Full 10-slot equipment panel in the **Equipements Tab** of the HUD. Each slot is
 3. Determines equipment category key: `equipment_type.to_upper()`.
 4. If slot empty: `PlayerData.add_equipable_item(item)` → `stats_manager.calculate_equipment_bonus(item)` → `EventBus.item_equipped.emit(inventory_slot)`.
 5. If slot occupied (swap): removes old item bonus, adds new item, puts old item back into inventory slot.
-6. After any equip/unequip: `player_ref.character_class.set_class_stats(StatsData.get_stats())` and `EventBus.stats_updated.emit(StatsData)`.
+6. After any equip/unequip: `player_ref.character_class.set_class_stats(StatsData)` and `EventBus.stats_updated.emit()`.
 7. `InGameUI._on_item_equipped()` routes to the correct `EquipementSlot.set_item()` and clears the `InventorySlot`.
 
 **Stat Effect & Gem Bonuses:**
-`StatsManager.calculate_equipment_bonus(equipement, operation)` evaluates `equipement.base_damage` for weapon power bonus and `equipement.base_defense` for armor defense bonus in `StatsData.get_stats()`. Socketed gems and stat bonuses are managed via `EquipableItem` methods.
+`StatsManager.calculate_equipment_bonus(equipement, operation)` evaluates `equipement.base_damage` for weapon power bonus and `equipement.base_defense` for armor defense bonus in `StatsData`. Socketed gems and stat bonuses are managed via `EquipableItem` methods.
 
 ### Gem System (`gem.gd`, `gem_panel.gd`, `equipable_item.gd`)
 *   **Gems Socketing:** `EquipableItem` supports up to `gems_slots_count` socketed gems (`gems: Array[Gem]`).
@@ -321,7 +321,7 @@ Orchestrates top-level game flow. Key public variables: `player_ref: Character`,
 
 *   **`register_player(player)`:** Sets `player_ref`, calls `stats_manager.initialize(player.character_class.get_class_stats())`, emits `EventBus.initialize_hero_stats_ui`.
 *   **`add_xp(amount)`:** Increments XP via `PlayerData.set_current_xp()` (which emits `hero_xp_changed`), calls `level_up()` if threshold met.
-*   **`level_up()`:** Increments `player_level`, calls `stats_manager.update_available_points_on_level_up()`, `scaling_level_up()`, `StatsData.get_stats().update_current_health_and_mana()`, emits `EventBus.level_up`.
+*   **`level_up()`:** Increments `player_level`, calls `stats_manager.update_available_points_on_level_up()`, `scaling_level_up()`, `StatsData.update_current_health_and_mana()`, emits `EventBus.level_up`.
 *   **`scaling_level_up()`:** Calculates next level's required XP using `ProgressionManager.get_required_xp_for_level()`.
 *   **`spawn_enemy_items(enemy)`:** Gets drop zone from `enemy.get_parent().get_drop_zone()`, calls `enemy._drop_item()`, adds drops at randomized positions.
 *   **`drop_item(item: DataItem)`:** Loads `drop.tscn`, gets the first `enemies_spawner` group node's drop zone, places item near `player_ref.global_position` ± `drop_range`.
@@ -335,7 +335,7 @@ Orchestrates top-level game flow. Key public variables: `player_ref: Character`,
 *   **`add_stat_point(stat_name)` / `sub_stat_point(stat_name)`:** Delegates to `StatsData`, emits signals on success.
 *   **`save_stats()` / `cancel_stats()`:** Delegates to `StatsData`, always emits signals.
 *   **`update_available_points_on_level_up()`:** Adds `POINTS_PER_LEVEL` to available points, resets temp points and `allocate_point_saved`, emits signals.
-*   **`calculate_equipment_bonus(equipement: EquipableItem, operation = "equip")`:** Evaluates `equipement.base_damage` for weapon power and `equipement.base_defense` for armor defense in `StatsData.get_stats().add_stat_bonus()` / `remove_stat_bonus()`.
+*   **`calculate_equipment_bonus(equipement: EquipableItem, operation = "equip")`:** Evaluates `equipement.base_damage` for weapon power and `equipement.base_defense` for armor defense in `StatsData.add_stat_bonus()` / `remove_stat_bonus()`.
 *   **`get_total(stat_name)` / `get_allocated_stat(stat_name)` / `get_temp_allocated_stat(stat_name)`:** Thin delegation wrappers to `StatsData`.
 
 ### `ProgressionManager` (`progression_manager.gd`)
@@ -751,7 +751,7 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 | `_die()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `queue_free()` |
 | `_on_damage_received()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Hit flash, UI update, transition to DeadState |
 | `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
-| `_get_defense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_stats().get_def()` for player; `enemy_params.defense` for enemy |
+| `_get_defense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_def()` for player; `enemy_params.defense` for enemy |
 | `_play_attack_animation()` | `Player.gd`, concrete enemies | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
 | `_interact()` | Custom NPCs | `NPC.gd` | Virtual method for non-combat NPC interaction |
 
@@ -769,10 +769,10 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 6.  **Item Drop-back:** Use `GameManager.drop_item(item)` to re-spawn items. Do not add `drop.tscn` instances directly to the scene tree from UI scripts.
 7.  **Equipment Validation:** Always validate `player_class` and `required_level` via `GameManager._on_equip_item()` (triggered by `EventBus.equip_item`). Never equip items directly from UI scripts.
 8.  **Equipment Keys:** `PlayerData.__equipable_items` uses string keys: `equipment_type.to_upper()` for most items. These must match exactly: `HELMET`, `CHEST`, `BOOTS`, `SHIELD`, `RING`, `AMULET`, `CLOAK`, `WEAPON`, `PET`.
-9.  **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `StatsData.initialize_from_character_stats()` duplicates this instance. After any equipment change, call `player_ref.character_class.set_class_stats(StatsData.get_stats())` to persist back to the class resource.
+9.  **Class Stats are Duplicated:** `CharacterClass.get_class_stats()` returns `base_stats` — `StatsData.initialize_from_character_stats()` duplicates this instance. After any equipment change, call `player_ref.character_class.set_class_stats(StatsData)` to persist back to the class resource.
 10. **StateMachine awaits owner.ready:** State nodes access `actor` and `state_machine` via `@onready`. This works because `StateMachine._ready()` itself `await owner.ready` before entering any states. Do not reference `actor` in state `_init()` or before the state machine is ready.
 11. **Character debug Label:** `Character.gd` has an `@onready var label: Label = $Label` that updates each `_process` frame to display the current state name. This is a development aid — keep the `Label` node in all character scenes.
-12. **Stats Access Pattern:** Always read live stats through `StatsData.get_stats()` (returns the `CharacterStats` resource). Never hold a long-lived reference to the `CharacterStats` instance across frames — it could be replaced on re-initialization.
+12. **Stats Access Pattern:** Always read live stats through `StatsData` (returns the `CharacterStats` resource). Never hold a long-lived reference to the `CharacterStats` instance across frames — it could be replaced on re-initialization.
 13. **StatsManager is NOT an autoload:** `StatsManager` is a plain `Node` class instantiated at `GameManager.stats_manager`. Do not reference it as a global. Call `StatsManager` methods only from `GameManager` signal handlers or via `EventBus` signals.
 14. **HP/MP Signal Flow:** When player takes damage, emit `EventBus.hero_hp_changed(current_hp, max_hp)` — **not** `stats_updated`. `hero_hp_changed` triggers the smooth tween animation in `StatsUI`. `stats_updated` is for full stat panel refreshes (allocation, equipment changes, level up). Mixing them causes animation glitches.
 15. **Targeting System:** Use the enum-based targeting system (`TargetType.ENEMY`, `TargetType.POSITION`, `TargetType.NONE`) for all player movement and combat decisions. Always check `is_targeting_enemy()` or `is_targeting_position()` before accessing target data. Clear targets via `clear_target()` when targets are destroyed or deselected.

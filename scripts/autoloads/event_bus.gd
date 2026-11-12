@@ -53,7 +53,7 @@ signal stat_allocated(stat_name: String)
 signal stat_deallocated(stat_name: String)
 ## Emitted when stats are updated in the UI.
 @warning_ignore("UNUSED_SIGNAL")
-signal stats_updated(stats_data: StatsData)
+signal stats_updated()
 ## Emitted to save the current stat points allocation.
 @warning_ignore("UNUSED_SIGNAL")
 signal save_stats_points()
