@@ -13,6 +13,7 @@ class_name PlayerInstancier
 @export var instance_position: Vector2 = Vector2.ZERO
 
 @export_group("Player Scenes")
+@export var tank_scene: PackedScene
 @export var warrior_scene: PackedScene
 @export var archer_scene: PackedScene
 @export var mage_scene: PackedScene
@@ -35,6 +36,8 @@ func _ready() -> void:
 		return
 
 	match selected_player:
+		CharacterClass.PlayerType.TANK:
+			if tank_scene: player_instance = tank_scene.instantiate()
 		CharacterClass.PlayerType.WARRIOR:
 			if warrior_scene: player_instance = warrior_scene.instantiate()
 		CharacterClass.PlayerType.ARCHER:

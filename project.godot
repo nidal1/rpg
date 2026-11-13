@@ -50,6 +50,7 @@ enemies_spawner=""
 archer=""
 pickable=""
 BoneScrappy=""
+tank=""
 
 [input]
 

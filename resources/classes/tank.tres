@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://d0d2vgh4bd1bn"]
+
+[ext_resource type="Texture2D" uid="uid://cl1jcfogy6vfk" path="res://assets/ui/UI Elements/UI Elements/Human Avatars/Avatars_01.png" id="1_wj8of"]
+[ext_resource type="Resource" uid="uid://ci6c0b2x530ob" path="res://resources/stats/tank_stats.tres" id="2_wj8of"]
+[ext_resource type="Script" uid="uid://bahe5wqw78xlr" path="res://scripts/resources/attack_data.gd" id="3_filbo"]
+[ext_resource type="Script" uid="uid://7oleemb4eeqr" path="res://resources/classes/character_classes.gd" id="4_bxi21"]
+
+[sub_resource type="Resource" id="Resource_ubu7b"]
+script = ExtResource("3_filbo")
+anim_name = "attack1"
+damage = 5.0
+metadata/_custom_type_script = "uid://bahe5wqw78xlr"
+
+[sub_resource type="Resource" id="Resource_qqrho"]
+script = ExtResource("3_filbo")
+anim_name = "attack2"
+damage = 5.0
+metadata/_custom_type_script = "uid://bahe5wqw78xlr"
+
+[resource]
+script = ExtResource("4_bxi21")
+player_type = 0
+avatar_texture = ExtResource("1_wj8of")
+attack_range = 66.0
+combo_chain = Array[ExtResource("3_filbo")]([SubResource("Resource_ubu7b"), SubResource("Resource_qqrho")])
+base_stats = ExtResource("2_wj8of")
+metadata/_custom_type_script = "uid://7oleemb4eeqr"

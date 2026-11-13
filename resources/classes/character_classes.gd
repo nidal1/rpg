@@ -1,7 +1,7 @@
 class_name CharacterClass
 extends Resource
 
-enum PlayerType {WARRIOR, ARCHER, MAGE, PRIEST, ALL}
+enum PlayerType {TANK, WARRIOR, ARCHER, MAGE, PRIEST, ALL}
 
 @export var player_type: PlayerType = PlayerType.WARRIOR
 @export var avatar_texture: Texture2D
