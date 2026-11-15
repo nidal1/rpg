@@ -20,8 +20,6 @@ func _ready() -> void:
 	super._ready()
 	_animation_editor_bullet_attack.connect(_on_initialized_bullet_attack)
 	var cls = load("res://resources/classes/mage.tres")
-	attack_range = cls.attack_range
-	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
 	_load_classe(cls)
 
 # ─── Private Methods ─────────────────────────────────────────────────────────

@@ -5,8 +5,8 @@ const STAT_NAMES_NO_FLT: Array[String] = ["STR", "REC", "INT", "WIS", "DEX", "LU
 const POINTS_PER_LEVEL: int = 5
 
 
-func initialize(character_stats: CharacterStats) -> void:
-	StatsData.initialize_from_character_stats(character_stats)
+func initialize(_character: Character) -> void:
+	StatsData.initialize_character_stats(_character)
 	EventBus.stats_updated.emit()
 	EventBus.stat_points_available_changed.emit(StatsData.get_stat_points_available())
 
@@ -65,3 +65,15 @@ func get_allocated_stat(stat_name: String) -> int:
 
 func get_temp_allocated_stat(stat_name: String) -> int:
 	return StatsData.get_temp_allocated_stat(stat_name) if StatsData else 0
+
+func calculate_skills_stats(_skill: Skill):
+	if _skill is PassiveSkill:
+		var dic = _skill.get_value()
+		var stat_type = dic["stat_type"]
+		var is_percent = dic['is_percentage_value']
+
+		var stat_value = dic["value"]
+		if is_percent:
+			stat_value = 1.0 + stat_value /100
+		StatsData.set_passive_stat(stat_type, stat_value)
+		EventBus.stats_updated.emit()

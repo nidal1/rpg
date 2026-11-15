@@ -27,6 +27,10 @@ enum CrowdControl {
 @export var cc_effect: CrowdControl
 @export var cc_duration: float
 
-func get_value() -> float:
+func get_value() -> Dictionary:
 	var idx = clampi(level - 1, 0, damage.size() - 1)
-	return damage[idx] if not damage.is_empty() else 0.0
+	#return damage[idx] if not damage.is_empty() else 0.0
+	return {
+		'value': damage[idx] if not damage.is_empty() else 0.0,
+		'stat_type': ""
+	}

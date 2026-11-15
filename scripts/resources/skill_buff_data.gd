@@ -4,7 +4,7 @@ class_name BuffSkill
 # Buffs
 enum BuffType {
 	# Offensive Buffs
-	attack_power,
+	attack_damage,
 	critical_damage,
 	attack_speed,
 	casting_speed,
@@ -27,6 +27,10 @@ enum BuffType {
 @export var duration: float
 @export var is_percentage: bool
 
-func get_value() -> float:
+func get_value() -> Dictionary:
 	var idx = clampi(level - 1, 0, value.size() - 1)
-	return value[idx] if not value.is_empty() else 0.0
+	return {
+		"value": value[idx] if not value.is_empty() else 0.0,
+		"stat_type": BuffType.keys()[buff_type],
+		"is_percentage_value": is_percentage
+	}

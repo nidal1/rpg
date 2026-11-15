@@ -739,6 +739,7 @@ visible = false
 y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_6bvwb")
 animation = &"attack1_right"
+frame = 2
 offset = Vector2(0, -33)
 flip_h = true
 
@@ -758,7 +759,6 @@ parameters/run/blend_position = 0.0
 position = Vector2(0, -28)
 collision_layer = 8
 collision_mask = 64
-monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" index="0" unique_id=96951588]

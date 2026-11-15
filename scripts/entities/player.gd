@@ -49,6 +49,7 @@ func _ready() -> void:
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
 	animation_tree.set_active(true)
 
+	EventBus.stats_updated.connect(_on_stats_updated)
 	EventBus.enemy_unselected.connect(_on_enemy_unselected)
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
@@ -191,26 +192,26 @@ func _play_idle_animation() -> void:
 func _get_attack_damage() -> float:
 	var base_damage: float = 0.0
 	if combo_chain.size() == 1:
-		base_damage = combo_chain[0].damage
+		base_damage = StatsData.get_attack_damage()
 	elif combo_index >= 0 and combo_index < combo_chain.size():
-		base_damage = combo_chain[combo_index].damage
+		base_damage = StatsData.get_attack_damage()
 	
 	# combine attack-specific damage with stat-based power
 	match character_class.player_type:
 		CharacterClass.PlayerType.WARRIOR:
-			return base_damage + character_class.get_class_stats().get_melee_atk()
+			return base_damage + StatsData.get_melee_atk()
 		CharacterClass.PlayerType.ARCHER:
-			return base_damage + character_class.get_class_stats().get_ranged_atk()
+			return base_damage + StatsData.get_ranged_atk()
 		CharacterClass.PlayerType.MAGE, CharacterClass.PlayerType.PRIEST:
-			return base_damage + character_class.get_class_stats().get_magic_atk()
+			return base_damage + StatsData.get_magic_atk()
 		_: return base_damage
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Initializes the player's stats based on the selected class.
 func _load_classe(cls: CharacterClass) -> void:
-	speed = cls.speed # Inherited from Character base class
+	# speed = cls.speed # Inherited from Character base class
 	combo_chain = cls.combo_chain.duplicate(true)
-	attack_range = cls.attack_range
+	# attack_range = cls.attack_range
 	character_class.base_stats = character_class.get_class_stats()
 	GameManager.register_player(self)
 
@@ -300,3 +301,6 @@ func _on_detection_zone_body_exited(body: Node2D) -> void:
 
 func _on_enemy_unselected(_enemy: Enemy):
 	clear_target()
+
+func _on_stats_updated():
+	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range

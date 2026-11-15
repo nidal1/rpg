@@ -11,14 +11,21 @@ const POINTS_STATS_PER_LEVEL = 5
 
 # ─── Private Variables ───────────────────────────────────────────────────────
 var __base_stats: Dictionary = {
-	"STR": 0,
-	"REC": 0,
-	"INT": 0,
-	"WIS": 0,
-	"DEX": 0,
-	"LUC": 0,
-	"HP": 0,
-	"MP": 0,
+	"HP": 0.0,
+	"MP": 0.0,
+	"STR": 0.0,
+	"REC": 0.0,
+	"INT": 0.0,
+	"WIS": 0.0,
+	"DEX": 0.0,
+	"LUC": 0.0,
+	"weapon_power": 0.0,
+	"armor_defense": 0.0,
+	"armor_resist": 0.0,
+	"attack_damage": 0.0,
+	"attack_speed": 0.0,
+	"attack_range": 0.0,
+	"movement_speed": 0.0
 }
 
 var __bonus_stats: Dictionary = {
@@ -32,35 +39,42 @@ var __bonus_stats: Dictionary = {
 	"LUC": 0,
 	"weapon_power": 0.0,
 	"armor_defense": 0.0,
-	"armor_resist": 0.0
+	"armor_resist": 0.0,
+	"attack_damage": 0.0,
+	"attack_speed": 0.0,
+	"attack_range": 0.0,
+	"movement_speed": 0.0
 }
 
 var __passive_stats: Dictionary = {
-	"HP": 0.0,
-	"MP": 0.0,
-	"STR": 0,
-	"REC": 0,
-	"INT": 0,
-	"WIS": 0,
-	"DEX": 0,
-	"LUC": 0,
-	"weapon_power": 0.0,
-	"armor_defense": 0.0,
-	"armor_resist": 0.0
+	"max_hp": 0.0,
+	"max_mp": 0.0,
+	"attack_damage": 0.0,
+	"attack_speed": 0.0,
+	"movement_speed": 0.0,
+	"physical_defence": 0.0,
+	"magical_resistance": 0.0,
+	"critical_damage": 0.0
 }
 
 var __buff_stats: Dictionary = {
-	"HP": 0.0,
-	"MP": 0.0,
-	"STR": 0,
-	"REC": 0,
-	"INT": 0,
-	"WIS": 0,
-	"DEX": 0,
-	"LUC": 0,
-	"weapon_power": 0.0,
-	"armor_defense": 0.0,
-	"armor_resist": 0.0
+	"max_hp": 0.0,
+	"max_mp": 0.0,
+	"STR": 0.0,
+	"REC": 0.0,
+	"INT": 0.0,
+	"WIS": 0.0,
+	"DEX": 0.0,
+	"LUC": 0.0,
+	"attack_damage": 0.0,
+	"attack_speed": 0.0,
+	"attack_range": 0.0,
+	"movement_speed": 0.0,
+	"physical_defence": 0.0,
+	"magical_resistance": 0.0,
+	"critical_chance": 0.0,
+	"critical_damage": 0.0,
+	"absorption": 0.0
 }
 
 var __stat_points_available: int = 0
@@ -77,12 +91,20 @@ var __allocated_stats: Dictionary = {
 var __temp_allocated_stats: Dictionary = {}
 var bonus_stats: Dictionary = {}
 
-func initialize_from_character_stats(cs: CharacterStats) -> void:
-	if not cs: return
-	__base_stats = cs.get_base_stats()
-	__bonus_stats = cs.get_stats_bonus_dict()
+
+
+func initialize_character_stats(_character: Character) -> void:
+	var cc: CharacterClass = _character.character_class
+	if not cc: return
+	__base_stats = cc.get_class_stats().get_base_stats()
+	__bonus_stats = cc.get_class_stats().get_stats_bonus_dict()
 	__allocated_stats = __base_stats.duplicate()
 	__temp_allocated_stats = __allocated_stats.duplicate()
+
+	_character.speed = get_movement_speed()
+	_character.attack_range = get_attack_range()
+
+
 
 	update_current_health_and_mana()
 
@@ -178,16 +200,7 @@ func update_current_health_and_mana():
 	__base_stats["MP"] = get_max_mp()
 
 func get_base_stats() -> Dictionary:
-	return {
-		"STR": get_base_stat("STR"),
-		"REC": get_base_stat("REC"),
-		"INT": get_base_stat("INT"),
-		"WIS": get_base_stat("WIS"),
-		"DEX": get_base_stat("DEX"),
-		"LUC": get_base_stat("LUC"),
-		"HP": get_max_hp(),
-		"MP": get_max_mp(),
-	}
+	return __base_stats
 
 func get_base_stats_value(key: String) -> int:
 	if __base_stats.keys().has(key):
@@ -235,12 +248,41 @@ func get_secondary_stats_breakdown() -> Dictionary:
 		"max_mp": get_max_mp(),
 		"def": get_def(),
 		"resist": get_resist(),
+		"attack_damage": get_attack_damage(),
+		"attack_speed": get_attack_speed(),
+		"attack_range": get_attack_range(),
+		"movement_speed": get_movement_speed(),
 		"melee_atk": get_melee_atk(),
 		"ranged_atk": get_ranged_atk(),
 		"magic_atk": get_magic_atk(),
 		"crit_chance": get_crit_chance(),
 		"crit_damage": get_crit_damage()
 	}
+
+func get_attack_damage():
+	var total_attack_damage = get_total("attack_damage")
+	var passive_attack_damage = __passive_stats.get("attack_damage", 0.0)
+	var buff_attack_damage = __buff_stats.get("attack_damage", 0.0)
+	return total_attack_damage + passive_attack_damage + buff_attack_damage
+
+func get_attack_speed():
+	var total_attack_speed = get_total("attack_speed")
+	var passive_attack_speed = __passive_stats.get("attack_speed", 0.0)
+	var buff_attack_speed = __buff_stats.get("attack_speed", 0.0)
+
+	return total_attack_speed + passive_attack_speed + buff_attack_speed
+
+func get_attack_range():
+	var total_attack_range = get_total("attack_range")
+	var buff_attack_range = __buff_stats.get("attack_range", 0.0)
+
+	return total_attack_range + buff_attack_range
+
+func get_movement_speed():
+	var total_movement_speed = get_total("movement_speed")
+	var buff_movement_speed = __buff_stats.get("movement_speed", 0.0)
+
+	return total_movement_speed + buff_movement_speed
 
 func get_stats_bonus_value(stat: String) -> int:
 	return __bonus_stats.get(stat, 0)
@@ -257,20 +299,20 @@ func get_base_armor_resist() -> float:
 ## Calculates maximum health points.
 func get_max_hp() -> float:
 	var base_hp = 100.0
-	var hp_bonus = (get_total("REC")) * 5.0
+	var total_hp = (get_total("REC")) * 5.0
 	var max_hp_bonus = get_bonus_max_hp()
-	var passive_hp = __passive_stats.get("MP", 0)
-	var buff_hp = __buff_stats.get("MP", 0)
-	return base_hp + hp_bonus + max_hp_bonus + passive_hp + buff_hp
+	var passive_hp = __passive_stats.get("max_hp", 0)
+	var buff_hp = __buff_stats.get("max_hp", 0)
+	return base_hp + total_hp + max_hp_bonus + passive_hp + buff_hp
 
 ## Calculates maximum mana points.
 func get_max_mp() -> float:
 	var base_mp = 50.0
-	var mp_bonus = (get_total("WIS")) * 5.0
+	var total_mp = (get_total("WIS")) * 5.0
 	var max_mp_bonus = get_bonus_max_mp()
-	var passive_mp = __passive_stats.get("MP", 0)
-	var buff_mp = __buff_stats.get("MP", 0)
-	return base_mp + mp_bonus + max_mp_bonus + passive_mp + buff_mp
+	var passive_mp = __passive_stats.get("max_mp", 0)
+	var buff_mp = __buff_stats.get("max_mp", 0)
+	return base_mp + total_mp + max_mp_bonus + passive_mp + buff_mp
 
 func get_current_hp() -> float:
 	return __base_stats["HP"]
@@ -288,48 +330,81 @@ func set_current_mp(current_mp: float):
 
 ## Calculates physical defense.
 func get_def() -> float:
-	return __base_stats["REC"] + get_bonus_armor_defense()
+	var total_rec = get_total("REC")
+	var total_armor_defense = get_total("armor_defense")
+	var passive_physical_defence = __passive_stats.get("physical_defence", 0.0)
+	var buff_physical_defence = __buff_stats.get("physical_defence", 0.0)
+
+	return total_rec + total_armor_defense + passive_physical_defence + buff_physical_defence
 
 ## Calculates magical resistance.
 func get_resist() -> float:
-	return __base_stats["WIS"] + get_bonus_armor_resist()
+	var total_wis = get_total("WIS")
+	var total_armor_resist = get_total("armor_resist")
+	var passive_magical_resistance = __passive_stats.get("magical_resistance", 0.0)
+	var buff_magical_resistance = __buff_stats.get("magical_resistance", 0.0)
+
+	return total_wis + total_armor_resist + passive_magical_resistance + buff_magical_resistance
 
 ## Calculates melee attack power.
 func get_melee_atk() -> float:
-	return floor(get_total("STR") * 1.3) + floor(get_total("DEX") * 0.25) + get_total("weapon_power")
+	var total_str = floor(get_total("STR") * 1.3)
+	var total_dex = floor(get_total("DEX") * 0.25)
+	var total_weapon_power = get_total("weapon_power")
+	var attack_damage = get_attack_damage()
+
+	return total_str + total_dex + total_weapon_power + attack_damage
 
 ## Calculates ranged attack power.
 func get_ranged_atk() -> float:
-	return floor(get_total("STR") * 1.3) + floor(get_total("LUC") * 0.3) + floor(get_total("DEX") * 0.2) + get_total("weapon_power")
+	var total_str = floor(get_total("STR") * 1.3)
+	var total_luc = floor(get_total("LUC") * 0.3)
+	var total_dex = floor(get_total("DEX") * 0.2)
+	var total_weapon_power = get_total("weapon_power")
+	var attack_damage = get_attack_damage()
+
+	return total_str + total_luc + total_dex + total_weapon_power + attack_damage
 
 ## Calculates magic attack power.
 func get_magic_atk() -> float:
-	return floor(get_total("INT") * 1.3) + floor(get_total("WIS") * 0.2) + get_total("weapon_power")
+	var total_int = floor(get_total("INT") * 1.3)
+	var total_wis = floor(get_total("WIS") * 0.2)
+	var total_weapon_power = get_total("weapon_power")
+	var attack_damage = get_attack_damage()
+
+	return total_int + total_wis + total_weapon_power + attack_damage
 
 ## Calculates critical hit chance percentage.
 func get_crit_chance() -> float:
-	return floor(get_total("LUC") * 0.2) # percent
+	var total_luc = floor(get_total("LUC") * 0.2)
+	var buff_critical_chance = __buff_stats.get("critical_chance", 0.0)
+
+	return total_luc + buff_critical_chance # percent
 
 ## Calculates critical hit damage multiplier.
 func get_crit_damage() -> float:
-	return 1.5 + floor(get_total("LUC") * 0.0075) # multiplier
+	var total_luc = floor(get_total("LUC") * 0.0075)
+	var passive_critical_damage = __passive_stats.get("critical_damage", 0.0)
+	var buff_critical_damage = __buff_stats.get("critical_damage", 0.0)
 
-func set_str(new_str: int) -> void:
+	return 1.5 + total_luc + passive_critical_damage + buff_critical_damage # multiplier
+
+func set_str(new_str: float) -> void:
 	__base_stats['STR'] = new_str
 
-func set_rec(new_rec: int) -> void:
+func set_rec(new_rec: float) -> void:
 	__base_stats['REC'] = new_rec
 
-func set_int(new_int: int) -> void:
+func set_int(new_int: float) -> void:
 	__base_stats['INT'] = new_int
 
-func set_wis(new_wis: int) -> void:
+func set_wis(new_wis: float) -> void:
 	__base_stats['WIS'] = new_wis
 
-func set_dex(new_dex: int) -> void:
+func set_dex(new_dex: float) -> void:
 	__base_stats['DEX'] = new_dex
 
-func set_luc(new_luc: int) -> void:
+func set_luc(new_luc: float) -> void:
 	__base_stats['LUC'] = new_luc
 
 ## Calculates bonus maximum health points.
@@ -364,7 +439,6 @@ func get_bonus_dex() -> int:
 func get_bonus_luc() -> int:
 	return get_stats_bonus_value("LUC")
 
-
 ## Calculates bonus weapon power.
 func get_bonus_weapon_power() -> float:
 	return get_stats_bonus_value("weapon_power")
@@ -392,3 +466,27 @@ func to_dict() -> Dictionary:
 		"DEX": get_base_stat("DEX"),
 		"LUC": get_base_stat("LUC")
 	}
+
+func set_passive_stat(key: String, new_value: float) -> void:
+	if __passive_stats.has(key):
+		__passive_stats[key] = new_value
+	else:
+		push_error("Key '" + key + "' not found in __passive_stats")
+
+func set_buff_stat(key: String, new_value: float) -> void:
+	if __buff_stats.has(key):
+		__buff_stats[key] = new_value
+	else:
+		push_error("Key '" + key + "' not found in __buff_stats")
+
+func add_buff_stat(key: String, delta: float) -> void:
+	if __buff_stats.has(key):
+		__buff_stats[key] = float(__buff_stats[key]) + delta
+	else:
+		push_error("Key '" + key + "' not found in __buff_stats")
+
+func remove_buff_stat(key: String, delta: float) -> void:
+	if __buff_stats.has(key):
+		__buff_stats[key] = float(__buff_stats[key]) - delta
+	else:
+		push_error("Key '" + key + "' not found in __buff_stats")

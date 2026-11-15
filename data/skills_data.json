@@ -19,7 +19,7 @@
 						20
 					],
 					"skill_points_cost": 1,
-					"stat_type": "max_hp",
+					"stat_type": "HP",
 					"bonus_value": [
 						100.0,
 						150.0,
@@ -138,7 +138,7 @@
 						19
 					],
 					"skill_points_cost": 1,
-					"stat_type": "attack_power",
+					"stat_type": "attack_damage",
 					"bonus_value": [
 						10.0,
 						20.0,
@@ -154,7 +154,7 @@
 				{
 					"skill_id": "warrior_rage",
 					"skill_name": "Battle Rage",
-					"description": "Enters a rage state, increasing #value# attack speed for 6.0s. (MP: 25 | Cast: Instant | CD: 20.0s)",
+					"description": "Enters a rage state, increasing #value#% of attack speed for 6.0s. (MP: 25 | Cast: Instant | CD: 20.0s)",
 					"mp_cost": 25,
 					"cast_time": 0.0,
 					"cooldown": 20.0,
@@ -273,7 +273,7 @@
 				{
 					"skill_id": "mage_mana_shield",
 					"skill_name": "Mana Barrier",
-					"description": "Creates a magical barrier #value# absorbing damage for 8.0s. (MP: 30 | Cast: 0.5s | CD: 25.0s)",
+					"description": "Creates a magical barrier that absorbs up to #value# damage for 8.0s. (MP: 30 | Cast: 0.5s | CD: 25.0s)",
 					"mp_cost": 30,
 					"cast_time": 0.5,
 					"cooldown": 25.0,
@@ -356,7 +356,7 @@
 				{
 					"skill_id": "archer_passive_sharp",
 					"skill_name": "Sharpshooter",
-					"description": "Permanently increases critical hit #value# damage power. (Cost: Passive | Cooldown: None)",
+					"description": "Permanently increases critical hit #value#% of damage damage. (Cost: Passive | Cooldown: None)",
 					"mp_cost": 0,
 					"cast_time": 0.0,
 					"cooldown": 0.0,
@@ -382,7 +382,7 @@
 				{
 					"skill_id": "archer_rapid_focus",
 					"skill_name": "Rapid Focus",
-					"description": "Increases #value# attack speed for 8.0s. (MP: 25 | Cast: Instant | CD: 12.0s)",
+					"description": "Increases #value#% of attack speed for 8.0s. (MP: 25 | Cast: Instant | CD: 12.0s)",
 					"mp_cost": 25,
 					"cast_time": 0.0,
 					"cooldown": 12.0,

@@ -32,9 +32,8 @@ func _unhandled_input(event: InputEvent) -> void:
 ## Registers the player with the Game Manager and initializes data.
 func register_player(player: Character) -> void:
 	player_ref = player
-	var character_stats = player_ref.character_class.get_class_stats()
-	stats_manager.initialize(character_stats)
-	skills_manager.initialize(player_ref.character_class)
+	stats_manager.initialize(player)
+	skills_manager.initialize(player.character_class)
 	add_child(stats_manager)
 	add_child(skills_manager)
 
@@ -82,6 +81,9 @@ func connect_global_events() -> void:
 	EventBus.unselect_enemy.connect(_on_unselect_enemy)
 	EventBus.clear_selection_boxes.connect(targeting_manager.clear_all_selection_boxes)
 
+	# Skills events
+	EventBus.skill_upgraded.connect(_on_skill_upgraded)
+
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
 	var enemy_lvl: int = enemy.enemy_level if "enemy_level" in enemy else 1
@@ -115,3 +117,6 @@ func _on_level_up(_new_level: int) -> void:
 	# Update stats manager after level-up
 	stats_manager.update_available_points_on_level_up()
 	skills_manager.update_player_current_skills_points_on_level_up()
+
+func _on_skill_upgraded(_skill: Skill):
+	stats_manager.calculate_skills_stats(_skill)

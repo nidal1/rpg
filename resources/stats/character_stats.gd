@@ -9,6 +9,14 @@ class_name CharacterStats
 @export var DEX: int = 0
 @export var LUC: int = 0
 
+@export var HP: float = 0.0
+@export var MP: float = 0.0
+
+@export var movement_speed: float = 300.0
+@export var attack_range: float = 300.0
+@export var attack_damage: float = 10.0
+@export var attack_speed: float = 1.0
+
 # ─── Bonus stats (set by equipment or gems) ───────────
 @export var __bonus_stats: Dictionary = {
 	"max_health": 0.0,
@@ -21,7 +29,11 @@ class_name CharacterStats
 	"LUC": 0,
 	"weapon_power": 0.0,
 	"armor_defense": 0.0,
-	"armor_resist": 0.0
+	"armor_resist": 0.0,
+	"attack_damage": 0.0,
+	"attack_speed": 0.0,
+	"attack_range": 0.0,
+	"movement_speed": 0.0
 }
 
 ## Returns a copy of the stats.
@@ -33,26 +45,22 @@ func get_instance() -> CharacterStats:
 
 func get_base_stats() -> Dictionary:
 	return {
+		"HP": HP,
+		"MP": MP,
 		"STR": STR,
 		"REC": REC,
 		"INT": INT,
 		"WIS": WIS,
 		"DEX": DEX,
-		"LUC": LUC
+		"LUC": LUC,
+		"weapon_power": 0.0,
+		"armor_defense": 0.0,
+		"armor_resist": 0.0,
+		"attack_damage": attack_damage,
+		"attack_speed": attack_speed,
+		"attack_range": attack_range,
+		"movement_speed": movement_speed
 	}
-
-func get_base_stats_value(key: String) -> int:
-	match key:
-		"STR": return STR
-		"REC": return REC
-		"INT": return INT
-		"WIS": return WIS
-		"DEX": return DEX
-		"LUC": return LUC
-		_: return 0
 
 func get_stats_bonus_dict() -> Dictionary:
 	return __bonus_stats
-
-func get_stats_bonus_value(stat: String) -> int:
-	return __bonus_stats.get(stat, 0)

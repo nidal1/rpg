@@ -19,7 +19,6 @@ func _ready() -> void:
 	super._ready()
 	_animation_editor_arrow_attack.connect(_on_initialized_arrow_attack)
 	var cls = load("res://resources/classes/archer.tres")
-	attack_range = cls.attack_range
 	_load_classe(cls)
 
 # ─── Private Methods ─────────────────────────────────────────────────────────

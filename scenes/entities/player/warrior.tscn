@@ -669,8 +669,8 @@ states/attack2/position = Vector2(510.64, 99.82081)
 transitions = ["attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_18p7g"), "Start", "attack1", SubResource("AnimationNodeStateMachineTransition_fg2wu"), "attack1", "End", SubResource("AnimationNodeStateMachineTransition_7dqom"), "attack2", "End", SubResource("AnimationNodeStateMachineTransition_go8vc")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_yk2xr"]
-graph_offset = Vector2(0, 89.12904)
-nodes/output/position = Vector2(544, 160)
+graph_offset = Vector2(76.08403, 42.0568)
+nodes/output/position = Vector2(720, 112)
 nodes/BasicAttackStateMachine/node = SubResource("AnimationNodeStateMachine_wghkl")
 nodes/BasicAttackStateMachine/position = Vector2(208, 112)
 node_connections = [&"output", 0, &"BasicAttackStateMachine"]

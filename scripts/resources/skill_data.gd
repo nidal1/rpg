@@ -11,7 +11,7 @@ class_name Skill
 @export var description : String:
 	get:
 		var desc: String = base_description
-		var val = str(get_value())
+		var val = str(get_value()["value"])
 		if desc.contains("#value#"):
 			desc = desc.replace("#value#", val)
 		return desc
@@ -45,8 +45,12 @@ func check_skill_requirements():
 
 		self.skill_disabled = lacks_max_level or lacks_sp or lacks_level
 
-func get_value() -> float:
-	return 0.0
+func get_value() -> Dictionary:
+	return {
+		'value': 0.0,
+		'stat_type': "",
+		"is_percentage_value": false
+	}
 
 
 func stringify() -> String:

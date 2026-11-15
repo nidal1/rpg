@@ -156,3 +156,7 @@ signal enemy_unselected(enemy: Enemy)
 ## Emitted when upgrading a skill.
 @warning_ignore("UNUSED_SIGNAL")
 signal upgrade_skill(skill: Skill)
+
+## Emitted when skill upgraded.
+@warning_ignore("UNUSED_SIGNAL")
+signal skill_upgraded(skill: Skill)

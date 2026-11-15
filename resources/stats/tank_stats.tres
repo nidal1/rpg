@@ -10,4 +10,5 @@ INT = 10
 WIS = 10
 DEX = 9
 LUC = 14
+attack_range = 66.0
 metadata/_custom_type_script = "uid://clqa147vich2f"

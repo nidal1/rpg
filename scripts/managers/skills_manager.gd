@@ -29,6 +29,8 @@ func update_player_current_skills_points_on_level_up():
 
 	SkillsData.set_player_current_skills_points(available_skills_points)
 
+
+
 func _on_upgrade_skill(_skill: Skill):
 	var available_skills_points = SkillsData.get_player_current_skills_points()
 	if available_skills_points >= _skill.skill_points_cost:
@@ -36,5 +38,6 @@ func _on_upgrade_skill(_skill: Skill):
 		_skill.level += 1
 		SkillsData.set_player_current_skills_points(available_skills_points -  _skill.skill_points_cost)
 		SkillsData.set_player_upgraded_skills(_skill)
+		EventBus.skill_upgraded.emit(_skill)
 	else:
 		push_error("available_skills_points smaller than the skill points cost")

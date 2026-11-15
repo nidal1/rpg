@@ -156,7 +156,7 @@ func _string_to_cc_enum(cc_name: String) -> AttackSkill.CrowdControl:
 
 func _string_to_buff_enum(buff_name: String) -> BuffSkill.BuffType:
 	match buff_name:
-		"attack_power": return BuffSkill.BuffType.attack_power
+		"attack_damage": return BuffSkill.BuffType.attack_damage
 		"critical_damage": return BuffSkill.BuffType.critical_damage
 		"attack_speed": return BuffSkill.BuffType.attack_speed
 		"casting_speed": return BuffSkill.BuffType.casting_speed
@@ -175,7 +175,7 @@ func _string_to_passive_enum(stat_name: String) -> PassiveSkill.PassiveStatType:
 	match stat_name:
 		"max_hp": return PassiveSkill.PassiveStatType.max_hp
 		"max_mp": return PassiveSkill.PassiveStatType.max_mp
-		"attack_power": return PassiveSkill.PassiveStatType.attack_power
+		"attack_damage": return PassiveSkill.PassiveStatType.attack_damage
 		"physical_defence": return PassiveSkill.PassiveStatType.physical_defence
 		"magical_resistance": return PassiveSkill.PassiveStatType.magical_resistance
 		"movement_speed": return PassiveSkill.PassiveStatType.movement_speed
