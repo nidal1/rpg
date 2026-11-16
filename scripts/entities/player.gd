@@ -112,7 +112,7 @@ func _move_to_ground_target() -> void:
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
-	var reduced_damage = max(1.0, amount - _get_defense())
+	var reduced_damage = max(1.0, amount - _get_physical_defense())
 	var current_hp = StatsData.get_current_hp()
 	StatsData.set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()
@@ -190,21 +190,16 @@ func _play_idle_animation() -> void:
 		animation_tree.set("parameters/idle/blend_position", last_facing_dir)
 
 func _get_attack_damage() -> float:
-	var base_damage: float = 0.0
-	if combo_chain.size() == 1:
-		base_damage = StatsData.get_attack_damage()
-	elif combo_index >= 0 and combo_index < combo_chain.size():
-		base_damage = StatsData.get_attack_damage()
 	
 	# combine attack-specific damage with stat-based power
 	match character_class.player_type:
 		CharacterClass.PlayerType.WARRIOR:
-			return base_damage + StatsData.get_melee_atk()
+			return StatsData.get_melee_atk()
 		CharacterClass.PlayerType.ARCHER:
-			return base_damage + StatsData.get_ranged_atk()
+			return StatsData.get_ranged_atk()
 		CharacterClass.PlayerType.MAGE, CharacterClass.PlayerType.PRIEST:
-			return base_damage + StatsData.get_magic_atk()
-		_: return base_damage
+			return StatsData.get_magic_atk()
+		_: return 0.0
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Initializes the player's stats based on the selected class.
@@ -260,8 +255,8 @@ func _flash_hit() -> void:
 	if not is_instance_valid(self): return
 	modulate = Color.WHITE
 
-func _get_defense() -> float:
-	return StatsData.get_def()
+func _get_physical_defense() -> float:
+	return StatsData.get_physical_defense()
 
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────

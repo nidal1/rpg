@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_dw5xd")
-STR = 1
-REC = 3
-INT = 8
-WIS = 6
-DEX = 3
-LUC = 2
+STR = 7
+REC = 9
+INT = 15
+WIS = 12
+DEX = 13
+LUC = 9
 attack_range = 500.0
 metadata/_custom_type_script = "uid://clqa147vich2f"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_i3l3q")
 STR = 10
-REC = 12
+REC = 14
 INT = 10
 WIS = 10
 DEX = 9

@@ -541,7 +541,7 @@ func get_current_hp() -> float
 func get_current_mp() -> float
 func set_current_hp(value: float) -> void   # clamped 0..get_max_hp()
 func set_current_mp(value: float) -> void   # clamped 0..get_max_mp()
-func get_def() -> float         # REC + bonus_armor_defense
+func get_physical_defense() -> float         # REC + bonus_armor_defense
 func get_resist() -> float      # WIS + bonus_armor_resist
 func get_melee_atk() -> float   # floor(total("STR")×1.3) + floor(total("DEX")×0.25) + total("weapon_power")
 func get_ranged_atk() -> float  # floor(total("STR")×1.3) + floor(total("LUC")×0.3) + floor(total("DEX")×0.2) + total("weapon_power")
@@ -751,11 +751,11 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 | `_die()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `queue_free()` |
 | `_on_damage_received()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Hit flash, UI update, transition to DeadState |
 | `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
-| `_get_defense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_def()` for player; `enemy_params.defense` for enemy |
+| `_get_physical_defenseense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_physical_defense()` for player; `enemy_params.defense` for enemy |
 | `_play_attack_animation()` | `Player.gd`, concrete enemies | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
 | `_interact()` | Custom NPCs | `NPC.gd` | Virtual method for non-combat NPC interaction |
 
-`take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_defense())`.
+`take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_physical_defenseense())`.
 
 ---
 

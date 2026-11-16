@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_8i51v")
-STR = 3
-REC = 3
-INT = 1
-DEX = 8
-WIS = 2
-LUC = 6
+STR = 11
+REC = 10
+INT = 7
+WIS = 10
+DEX = 14
+LUC = 13
 metadata/_custom_type_script = "uid://clqa147vich2f"

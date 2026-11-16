@@ -66,14 +66,13 @@ func get_allocated_stat(stat_name: String) -> int:
 func get_temp_allocated_stat(stat_name: String) -> int:
 	return StatsData.get_temp_allocated_stat(stat_name) if StatsData else 0
 
-func calculate_skills_stats(_skill: Skill):
+func calculate_upgraded_skills_stats(_skill: Skill):
+	
 	if _skill is PassiveSkill:
-		var dic = _skill.get_value()
-		var stat_type = dic["stat_type"]
-		var is_percent = dic['is_percentage_value']
-
-		var stat_value = dic["value"]
-		if is_percent:
-			stat_value = 1.0 + stat_value /100
-		StatsData.set_passive_stat(stat_type, stat_value)
-		EventBus.stats_updated.emit()
+		StatsData.set_passive_stat(_skill)
+	
+	if _skill is BuffSkill:
+		StatsData.set_buff_stat(_skill)
+	
+	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
+	EventBus.stats_updated.emit()

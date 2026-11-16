@@ -91,7 +91,7 @@ var __allocated_stats: Dictionary = {
 var __temp_allocated_stats: Dictionary = {}
 var bonus_stats: Dictionary = {}
 
-
+var secondary_stats
 
 func initialize_character_stats(_character: Character) -> void:
 	var cc: CharacterClass = _character.character_class
@@ -104,6 +104,7 @@ func initialize_character_stats(_character: Character) -> void:
 	_character.speed = get_movement_speed()
 	_character.attack_range = get_attack_range()
 
+	secondary_stats = get_secondary_stats_breakdown()
 
 
 	update_current_health_and_mana()
@@ -246,7 +247,7 @@ func get_secondary_stats_breakdown() -> Dictionary:
 	return {
 		"max_hp": get_max_hp(),
 		"max_mp": get_max_mp(),
-		"def": get_def(),
+		"def": get_physical_defense(),
 		"resist": get_resist(),
 		"attack_damage": get_attack_damage(),
 		"attack_speed": get_attack_speed(),
@@ -300,10 +301,9 @@ func get_base_armor_resist() -> float:
 func get_max_hp() -> float:
 	var base_hp = 100.0
 	var total_hp = (get_total("REC")) * 5.0
-	var max_hp_bonus = get_bonus_max_hp()
 	var passive_hp = __passive_stats.get("max_hp", 0)
 	var buff_hp = __buff_stats.get("max_hp", 0)
-	return base_hp + total_hp + max_hp_bonus + passive_hp + buff_hp
+	return base_hp + total_hp  + passive_hp + buff_hp
 
 ## Calculates maximum mana points.
 func get_max_mp() -> float:
@@ -329,7 +329,7 @@ func set_current_mp(current_mp: float):
 		__base_stats["MP"] = current_mp
 
 ## Calculates physical defense.
-func get_def() -> float:
+func get_physical_defense() -> float:
 	var total_rec = get_total("REC")
 	var total_armor_defense = get_total("armor_defense")
 	var passive_physical_defence = __passive_stats.get("physical_defence", 0.0)
@@ -467,17 +467,99 @@ func to_dict() -> Dictionary:
 		"LUC": get_base_stat("LUC")
 	}
 
-func set_passive_stat(key: String, new_value: float) -> void:
-	if __passive_stats.has(key):
-		__passive_stats[key] = new_value
-	else:
-		push_error("Key '" + key + "' not found in __passive_stats")
+func set_passive_stat(_skill: PassiveSkill) -> void:
+	var dic = _skill.get_value()
+	var key = dic["stat_type"]
+	var is_percent = dic['is_percentage_value']
+	var stat_value = dic["value"]
 
-func set_buff_stat(key: String, new_value: float) -> void:
-	if __buff_stats.has(key):
-		__buff_stats[key] = new_value
+	if not __passive_stats.has(key):
+		push_error("Key '" + key + "' not found in __passive_stats")
+		return
+
+	if is_percent:
+		var percent = stat_value / 100.0
+		match key:
+			"max_hp":
+				var total_hp = 100.0 + (get_total("REC") * 5.0)
+				__passive_stats[key] = total_hp * percent
+			"max_mp":
+				var total_mp = 50.0 + (get_total("WIS") * 5.0)
+				__passive_stats[key] = total_mp * percent
+			"attack_damage":
+				__passive_stats[key] = get_total("attack_damage") * percent
+			"movement_speed":
+				__passive_stats[key] = get_total("movement_speed") * percent
+			"physical_defence":
+				var phys_def = get_total("REC") + get_total("armor_defense")
+				__passive_stats[key] = phys_def * percent
+			"magical_resistance":
+				var mag_res = get_total("WIS") + get_total("armor_resist")
+				__passive_stats[key] = mag_res * percent
+			"critical_damage":
+				# أو percent حسب كيفاش مخدوم عندك crit_damage
+				__passive_stats[key] = percent 
+			_:
+				__passive_stats[key] = 0.0
 	else:
+		match key:
+			"max_hp", "max_mp", "attack_damage", "movement_speed", "physical_defence", "magical_resistance", "critical_damage":
+				__passive_stats[key] = stat_value
+			_:
+				__passive_stats[key] = 0.0
+
+func set_buff_stat(_skill: BuffSkill) -> void:
+	var dic = _skill.get_value()
+	var key = dic["stat_type"]
+	var is_percent = dic['is_percentage_value']
+	print("🔍 [stats_data - ", get_stack()[0].function, "] is_percent: ", is_percent)
+	var stat_value = dic["value"]
+
+	if not __buff_stats.has(key):
 		push_error("Key '" + key + "' not found in __buff_stats")
+		return
+
+	if is_percent:
+		var percent = stat_value / 100.0
+		match key:
+			# Primary Stats (كنحسبو النسبة على Base + Bonus ديال الخصائص الأساسية)
+			"STR", "REC", "INT", "WIS", "DEX", "LUC":
+				__buff_stats[key] = get_total(key) * percent
+
+			# Derived Combat Stats
+			"max_hp":
+				var total_hp = 100.0 + (get_total("REC") * 5.0)
+				__buff_stats[key] = total_hp * percent
+			"max_mp":
+				var total_mp = 50.0 + (get_total("WIS") * 5.0)
+				__buff_stats[key] = total_mp * percent
+			"attack_damage":
+				__buff_stats[key] = get_total("attack_damage") * percent
+			"attack_speed":
+				__buff_stats[key] = get_total("attack_speed") * percent
+			"attack_range":
+				__buff_stats[key] = get_total("attack_range") * percent
+			"movement_speed":
+				__buff_stats[key] = get_total("movement_speed") * percent
+			"physical_defence":
+				var phys_def = get_total("REC") + get_total("armor_defense")
+				__buff_stats[key] = phys_def * percent
+			"magical_resistance":
+				var mag_res = get_total("WIS") + get_total("armor_resist")
+				__buff_stats[key] = mag_res * percent
+			
+			# الستاتات الخاصة اللي كيتعاملوا كمعاملات أو نسب مباشرة
+			"critical_chance", "critical_damage", "absorption":
+				__buff_stats[key] = percent
+			_:
+				__buff_stats[key] = 0.0
+	else:
+		# إيلا كانت القيمة ثابتة (Flat)، كتتضاف مباشرة لأي Stat فالمجموعة
+		match key:
+			"STR", "REC", "INT", "WIS", "DEX", "LUC", "max_hp", "max_mp", "attack_damage", "attack_speed", "attack_range", "movement_speed", "physical_defence", "magical_resistance", "critical_chance", "critical_damage", "absorption":
+				__buff_stats[key] = stat_value
+			_:
+				__buff_stats[key] = 0.0
 
 func add_buff_stat(key: String, delta: float) -> void:
 	if __buff_stats.has(key):

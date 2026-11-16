@@ -10,27 +10,16 @@
 [ext_resource type="Script" uid="uid://bdni6r45tltxs" path="res://resources/items/gem.gd" id="9_gb53w"]
 [ext_resource type="Script" uid="uid://b76bp07tl5gay" path="res://resources/enemies/enemy_spawn_config.gd" id="11_tytul"]
 [ext_resource type="PackedScene" uid="uid://djn23j8bcj1bc" path="res://scenes/entities/enemies/bone_scrappy.tscn" id="12_71ii3"]
-[ext_resource type="Script" uid="uid://cb7byq6j3gtg5" path="res://resources/items/consumable_item.gd" id="13_wbwoo"]
 [ext_resource type="Script" uid="uid://bqkdldqfccf6o" path="res://resources/enemies/enemy_params.gd" id="14_tytul"]
 
-[sub_resource type="Resource" id="Resource_t634p"]
-script = ExtResource("13_wbwoo")
-heal_amount = 20
-item_id = "p_hp_02"
-item_name = "Small Health Potion"
-price = 25
-max_stack = 20
-grid_coordinate = Vector2(8, 0)
-
-[sub_resource type="Resource" id="Resource_6hctx"]
-script = ExtResource("13_wbwoo")
-heal_amount = 20
-potion_type = "MANA"
-item_id = "p_mp_02"
-item_name = "Small Mana Potion"
-price = 30
-max_stack = 20
-grid_coordinate = Vector2(8, 2)
+[sub_resource type="Resource" id="Resource_dlabj"]
+script = ExtResource("9_1yooq")
+equipment_type = "DAGGER"
+player_class = "WARRIOR"
+base_damage = 5
+item_id = "w_ir_01"
+item_name = "Iron Dagger"
+price = 50
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ues17"]
 load_path = "res://.godot/imported/Skull.png-167d87c31203f5d1fd362aff95b7ab81.ctex"
@@ -44,7 +33,7 @@ speed = 65.0
 attack_range = 65.0
 base_recovery_delay = 1.2
 base_attack_anim_duration = 0.367
-custom_db_item_objects = Array[ExtResource("8_j2gmx")]([SubResource("Resource_t634p"), SubResource("Resource_6hctx")])
+custom_db_item_objects = Array[ExtResource("8_j2gmx")]([SubResource("Resource_dlabj")])
 metadata/_custom_type_script = "uid://bqkdldqfccf6o"
 
 [sub_resource type="Resource" id="Resource_bt7bg"]
@@ -82,8 +71,7 @@ y_sort_enabled = true
 [node name="Reikeuseu" parent="." unique_id=1924322231 instance=ExtResource("1_dlabj")]
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
-position = Vector2(3074, 1929)
-selected_player = 0
+position = Vector2(1499, 1953)
 instance_position = Vector2(2351, 1179)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]

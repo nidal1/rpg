@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_1bdra")
-STR = 800
-REC = 6
-INT = 1
-WIS = 1
-DEX = 4
-LUC = 2
+STR = 16
+REC = 11
+INT = 8
+WIS = 7
+DEX = 12
+LUC = 11
 attack_range = 66.0
 metadata/_custom_type_script = "uid://clqa147vich2f"
