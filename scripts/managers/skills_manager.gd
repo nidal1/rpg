@@ -23,13 +23,15 @@ func initialize(character_class : CharacterClass) -> void:
 	update_player_current_skills_points_on_level_up()
 
 	EventBus.upgrade_skill.connect(_on_upgrade_skill)
+	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
 
 func update_player_current_skills_points_on_level_up():
 	var available_skills_points = SkillsData.get_player_current_skills_points() + SKILLS_POINTS_PER_LEVEL
 
 	SkillsData.set_player_current_skills_points(available_skills_points)
 
-
+func end_buff_skill_duration(_skill: BuffSkill):
+	SkillsData.remove_player_upgraded_skill_exist(_skill)
 
 func _on_upgrade_skill(_skill: Skill):
 	var available_skills_points = SkillsData.get_player_current_skills_points()
@@ -41,3 +43,6 @@ func _on_upgrade_skill(_skill: Skill):
 		EventBus.skill_upgraded.emit(_skill)
 	else:
 		push_error("available_skills_points smaller than the skill points cost")
+
+func _on_buff_skill_duration_ended(_skill: BuffSkill, _value: float):
+	end_buff_skill_duration(_skill)

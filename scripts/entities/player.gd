@@ -39,6 +39,7 @@ var enemies_in_range: Array[Enemy] = []
 @onready var combo_timer: Timer = $ComboAttackCD
 @onready var attack_state: PlayerAttackState = $StateMachine/PlayerAttackState
 @onready var detection_zone: Area2D = $DetectionZone
+@onready var buffs_durations_container: Node = $BuffsDurationsContainer
 
 # ─── Built-in Methods ────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -51,6 +52,7 @@ func _ready() -> void:
 
 	EventBus.stats_updated.connect(_on_stats_updated)
 	EventBus.enemy_unselected.connect(_on_enemy_unselected)
+	EventBus.buff_skill_duration_started.connect(_on_buff_skill_duration_started)
 
 # ─── Overridden Virtual Methods ──────────────────────────────────────────────
 func _move() -> void:
@@ -299,3 +301,10 @@ func _on_enemy_unselected(_enemy: Enemy):
 
 func _on_stats_updated():
 	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
+
+func _on_buff_skill_duration_started(_skill: BuffSkill, _value: float):
+	var _id = _skill.skill_id
+	var _duration = _skill.duration
+
+	var _buff_duration = BuffSkillDuration.new(_skill, _value)
+	buffs_durations_container.add_child(_buff_duration)

@@ -4,11 +4,11 @@ class_name StatsManager
 const STAT_NAMES_NO_FLT: Array[String] = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 const POINTS_PER_LEVEL: int = 5
 
-
 func initialize(_character: Character) -> void:
 	StatsData.initialize_character_stats(_character)
 	EventBus.stats_updated.emit()
 	EventBus.stat_points_available_changed.emit(StatsData.get_stat_points_available())
+	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
 
 func add_stat_point(stat_name: String) -> bool:
 	if StatsData.add_stat_point(stat_name):
@@ -72,7 +72,14 @@ func calculate_upgraded_skills_stats(_skill: Skill):
 		StatsData.set_passive_stat(_skill)
 	
 	if _skill is BuffSkill:
-		StatsData.set_buff_stat(_skill)
-	
+		var val = StatsData.set_buff_stat(_skill)
+		EventBus.buff_skill_duration_started.emit(_skill, val)
 	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
 	EventBus.stats_updated.emit()
+
+func skill_duration_ended(_skill: BuffSkill):
+	pass
+
+func _on_buff_skill_duration_ended(_skill: BuffSkill, _value: float):
+	var key = _skill.get_value()["stat_type"]
+	StatsData.remove_buff_stat(key, _value)

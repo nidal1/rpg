@@ -160,3 +160,11 @@ signal upgrade_skill(skill: Skill)
 ## Emitted when skill upgraded.
 @warning_ignore("UNUSED_SIGNAL")
 signal skill_upgraded(skill: Skill)
+
+## Emitted when buff skill duration started.
+@warning_ignore("UNUSED_SIGNAL")
+signal buff_skill_duration_started(skill: BuffSkill, value: float)
+
+## Emitted when buff skill duration ended.
+@warning_ignore("UNUSED_SIGNAL")
+signal buff_skill_duration_ended(skill: BuffSkill, value: float)

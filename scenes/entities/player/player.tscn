@@ -86,6 +86,8 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" index="0" unique_id=555537735]
 shape = SubResource("CircleShape2D_bj7e2")
 
+[node name="BuffsDurationsContainer" type="Node" parent="." index="9" unique_id=1076978771]
+
 [connection signal="timeout" from="ComboAttackCD" to="." method="_on_combo_attack_cd_timeout"]
 [connection signal="area_entered" from="PickableDection" to="." method="_on_pickable_dection_area_entered"]
 [connection signal="area_exited" from="PickableDection" to="." method="_on_pickable_dection_area_exited"]
