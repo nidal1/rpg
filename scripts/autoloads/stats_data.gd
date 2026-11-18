@@ -512,7 +512,6 @@ func set_buff_stat(_skill: BuffSkill) -> float:
 	var dic = _skill.get_value()
 	var key = dic["stat_type"]
 	var is_percent = dic['is_percentage_value']
-	print("🔍 [stats_data - ", get_stack()[0].function, "] is_percent: ", is_percent)
 	var stat_value = dic["value"]
 	var value: float = 0.0
 	if not __buff_stats.has(key):

@@ -168,3 +168,15 @@ signal buff_skill_duration_started(skill: BuffSkill, value: float)
 ## Emitted when buff skill duration ended.
 @warning_ignore("UNUSED_SIGNAL")
 signal buff_skill_duration_ended(skill: BuffSkill, value: float)
+
+## Emitted when add a skill to the skills bar.
+@warning_ignore("UNUSED_SIGNAL")
+signal add_skill_to_skillsbar(skill: Skill)
+
+## Emitted when a skill slot clicked.
+@warning_ignore("UNUSED_SIGNAL")
+signal skill_slot_clicked(skill: Skill)
+
+## Emitted when add a active effect to active effects bar.
+@warning_ignore("UNUSED_SIGNAL")
+signal add_active_effect_to_effectsbar(skill: Skill)

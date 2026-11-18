@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cjw4u0xxh488q"]
+
+[ext_resource type="Texture2D" uid="uid://rlhuv23k1fi7" path="res://assets/ui/UI Elements/UI Elements/Banners/Banner_Slots.png" id="1_q4ota"]
+[ext_resource type="Script" uid="uid://c3novn5ymjyj8" path="res://scripts/entities/skill_slot.gd" id="2_o1hcj"]
+[ext_resource type="Texture2D" uid="uid://ciglq358k5823" path="res://assets/ui/UI Elements/UI Elements/Bars/skill_slot_filled_progressbar.png" id="3_yu5lf"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o1hcj"]
+texture = ExtResource("1_q4ota")
+
+[node name="SkillSlot" type="Panel" unique_id=1223865305]
+custom_minimum_size = Vector2(50, 50)
+theme_override_styles/panel = SubResource("StyleBoxTexture_o1hcj")
+script = ExtResource("2_o1hcj")
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=512337386]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="CDProgressBar" type="TextureProgressBar" parent="." unique_id=1692796948]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+fill_mode = 4
+texture_progress = ExtResource("3_yu5lf")
+
+[node name="CDTimer" type="Timer" parent="." unique_id=1817450683]
+
+[node name="CDTimeLeftLabel" type="Label" parent="." unique_id=117289254]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.9682575, 0.9682575, 0.9682575, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_outline_size = 2
+text = "0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="timeout" from="CDTimer" to="." method="_on_cd_timer_timeout"]

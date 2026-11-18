@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d0011dxm3xhia"]
+
+[ext_resource type="Texture2D" uid="uid://cl1sg0cilti2a" path="res://assets/sprites/skills/archer_passive_sharp.png" id="1_2fwyf"]
+[ext_resource type="Script" uid="uid://blf2uu8mnn4tw" path="res://scripts/entities/active_effect_slot.gd" id="1_mr5kv"]
+[ext_resource type="Texture2D" uid="uid://ijctovhxoxsa" path="res://assets/ui/UI Elements/UI Elements/Bars/active_skill_effect_bar_progression_under.png" id="2_mr5kv"]
+[ext_resource type="Texture2D" uid="uid://faha7ypivn5c" path="res://assets/ui/UI Elements/UI Elements/Bars/active_skill_effect_bar_progression_progress.png" id="3_byiyb"]
+
+[node name="ActiveEffectSlot" type="VBoxContainer" unique_id=1784882116]
+custom_minimum_size = Vector2(40, 40)
+script = ExtResource("1_mr5kv")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1093587785]
+layout_mode = 2
+
+[node name="ActiveEffectTexture" type="TextureRect" parent="CenterContainer" unique_id=949917804]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture = ExtResource("1_2fwyf")
+expand_mode = 2
+
+[node name="CDActiveEffect" type="TextureProgressBar" parent="." unique_id=627531241]
+layout_mode = 2
+size_flags_vertical = 3
+value = 100.0
+texture_under = ExtResource("2_mr5kv")
+texture_progress = ExtResource("3_byiyb")
+
+[node name="CDActiveEffectTimer" type="Timer" parent="." unique_id=819346945]
+
+[connection signal="timeout" from="CDActiveEffectTimer" to="." method="_on_cd_active_effect_timer_timeout"]

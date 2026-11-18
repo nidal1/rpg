@@ -9,6 +9,7 @@ func initialize(_character: Character) -> void:
 	EventBus.stats_updated.emit()
 	EventBus.stat_points_available_changed.emit(StatsData.get_stat_points_available())
 	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
+	EventBus.skill_slot_clicked.connect(_on_skill_slot_clicked)
 
 func add_stat_point(stat_name: String) -> bool:
 	if StatsData.add_stat_point(stat_name):
@@ -66,20 +67,24 @@ func get_allocated_stat(stat_name: String) -> int:
 func get_temp_allocated_stat(stat_name: String) -> int:
 	return StatsData.get_temp_allocated_stat(stat_name) if StatsData else 0
 
-func calculate_upgraded_skills_stats(_skill: Skill):
+func calculate_passive_skills_stats(_skill: Skill):
 	
-	if _skill is PassiveSkill:
-		StatsData.set_passive_stat(_skill)
-	
-	if _skill is BuffSkill:
-		var val = StatsData.set_buff_stat(_skill)
-		EventBus.buff_skill_duration_started.emit(_skill, val)
+	StatsData.set_passive_stat(_skill)
 	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
+	
 	EventBus.stats_updated.emit()
-
-func skill_duration_ended(_skill: BuffSkill):
-	pass
 
 func _on_buff_skill_duration_ended(_skill: BuffSkill, _value: float):
 	var key = _skill.get_value()["stat_type"]
 	StatsData.remove_buff_stat(key, _value)
+	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
+	
+	EventBus.stats_updated.emit()
+
+func _on_skill_slot_clicked(_skill: Skill):
+	if _skill is BuffSkill:
+		var val = StatsData.set_buff_stat(_skill)
+		EventBus.buff_skill_duration_started.emit(_skill, val)
+		EventBus.add_active_effect_to_effectsbar.emit(_skill)
+		StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
+		EventBus.stats_updated.emit()

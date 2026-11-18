@@ -119,4 +119,7 @@ func _on_level_up(_new_level: int) -> void:
 	skills_manager.update_player_current_skills_points_on_level_up()
 
 func _on_skill_upgraded(_skill: Skill):
-	stats_manager.calculate_upgraded_skills_stats(_skill)
+	if _skill is PassiveSkill:
+		stats_manager.calculate_passive_skills_stats(_skill)
+	else:
+		EventBus.add_skill_to_skillsbar.emit(_skill)

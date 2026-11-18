@@ -26,10 +26,20 @@
 [ext_resource type="Texture2D" uid="uid://ilool20evaxa" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_9.png" id="9_y68uj"]
 [ext_resource type="Texture2D" uid="uid://0lud3t4ji2du" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_7.png" id="10_2mxn5"]
 [ext_resource type="Texture2D" uid="uid://b3y183bg8576m" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_5.png" id="10_p7bhm"]
+[ext_resource type="PackedScene" uid="uid://d0011dxm3xhia" path="res://scenes/ui/active_effect_slot.tscn" id="11_1fyp7"]
 [ext_resource type="Script" uid="uid://byefa5snk07d4" path="res://scripts/entities/equipement_slot.gd" id="11_b7ceb"]
 [ext_resource type="Texture2D" uid="uid://bie6mta5n5i4b" path="res://assets/ui/UI Elements/UI Elements/Icons/ui/equipement_slot_8.png" id="11_x5m13"]
 [ext_resource type="Texture2D" uid="uid://b4sq84taajpdf" path="res://assets/ui/UI Elements/UI Banners from the store page/papers/SpecialPaper.png" id="24_025po"]
 [ext_resource type="PackedScene" uid="uid://c4c7qy28qw872" path="res://scenes/ui/potion_slot.tscn" id="25_mk8tb"]
+[ext_resource type="PackedScene" uid="uid://cjw4u0xxh488q" path="res://scenes/ui/skill_slot.tscn" id="31_cxdun"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxdun"]
+region = Rect2(0, 0, 448, 448)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kvb6y"]
+texture = SubResource("AtlasTexture_cxdun")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_m3i8w"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oo1a1"]
 
@@ -67,8 +77,98 @@ armor_table_details_scene = ExtResource("4_splfo")
 weapon_table_details_scene = ExtResource("4_b7ceb")
 item_card_details_scene = ExtResource("6_j3b8l")
 skill_row_scene = ExtResource("9_cxdun")
+skill_slot_scene = ExtResource("31_cxdun")
+active_effects_slot_scene = ExtResource("11_1fyp7")
+
+[node name="PotionsContainer" type="Control" parent="." unique_id=276690427]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="PotionsContainer" unique_id=2092123190]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 73.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PotionsContainer/MarginContainer" unique_id=5584311]
+layout_mode = 2
+
+[node name="HealthPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=2076065514 instance=ExtResource("25_mk8tb")]
+layout_mode = 2
+
+[node name="ManaPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=1730970027 instance=ExtResource("25_mk8tb")]
+layout_mode = 2
+potion_type = 1
+
+[node name="SkillsContainer" type="Control" parent="." unique_id=953958664]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SkillsContainer" unique_id=2108599869]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="SkillsContainer/MarginContainer" unique_id=876851976]
+custom_minimum_size = Vector2(428, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_kvb6y")
+
+[node name="SkillsBar" type="GridContainer" parent="SkillsContainer/MarginContainer/Panel" unique_id=906156424]
+material = SubResource("CanvasItemMaterial_m3i8w")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.0
+offset_top = -25.0
+offset_right = 214.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 8
+
+[node name="ActiveEffectsContainer" type="HBoxContainer" parent="." unique_id=136299965]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_right = 450.0
+offset_bottom = 40.0
+grow_horizontal = 2
 
 [node name="HUD" type="Panel" parent="." unique_id=146381664]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -556,11 +656,16 @@ grow_horizontal = 2
 
 [node name="HeroPanelControl" type="Control" parent="Control" unique_id=1751487538]
 layout_mode = 1
-anchors_preset = 0
-offset_left = 64.0
-offset_top = 141.0
-offset_right = 104.0
-offset_bottom = 181.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = 233.0
+offset_bottom = 273.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="Texture" type="TextureRect" parent="Control/HeroPanelControl" unique_id=1122515766]
 layout_mode = 1
@@ -589,14 +694,16 @@ stretch_mode = 4
 
 [node name="LootableItems" type="Control" parent="Control" unique_id=307788716]
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = 3
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-offset_left = -107.0
-offset_top = 141.0
-offset_right = -67.0
-offset_bottom = 181.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = 184.0
+offset_bottom = 224.0
 grow_horizontal = 0
+grow_vertical = 0
 
 [node name="Texture" type="TextureRect" parent="Control/LootableItems" unique_id=698670176]
 layout_mode = 1
@@ -671,6 +778,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LootableItemsTable" type="Panel" parent="Control" unique_id=1587979812]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -866,40 +974,6 @@ theme_override_font_sizes/font_size = 14
 text = "100 / 100"
 
 [node name="Popups" type="Node2D" parent="." unique_id=1004954947]
-
-[node name="PotionsContainer" type="Control" parent="." unique_id=276690427]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -56.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="PotionsContainer" unique_id=2092123190]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 73.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PotionsContainer/MarginContainer" unique_id=5584311]
-layout_mode = 2
-
-[node name="HealthPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=2076065514 instance=ExtResource("25_mk8tb")]
-layout_mode = 2
-
-[node name="ManaPotionSlot" parent="PotionsContainer/MarginContainer/HBoxContainer" unique_id=1730970027 instance=ExtResource("25_mk8tb")]
-layout_mode = 2
-potion_type = 1
 
 [connection signal="pressed" from="Control/HeroPanelControl/PanelButton" to="." method="_on_panel_button_pressed"]
 [connection signal="pressed" from="Control/LootableItems/ToggleLootableItemsButton" to="." method="_on_toggle_lootable_items_button_pressed"]

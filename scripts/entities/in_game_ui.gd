@@ -11,6 +11,8 @@ extends Control
 @export var weapon_table_details_scene: PackedScene
 @export var item_card_details_scene: PackedScene
 @export var skill_row_scene: PackedScene
+@export var skill_slot_scene: PackedScene
+@export var active_effects_slot_scene: PackedScene
 
 # ─── Public Variables ────────────────────────────────────────────────────────
 var lootable_item_slots: Array[LootableItemSlot] = []
@@ -27,6 +29,9 @@ var item_card_details_visible: bool = false
 var item_card_details_instance: ItemCardDetails
 
 var skills_instances: Array[SkillRow] = []
+var skills_slots_instances: Array[SkillSlot] = []
+var skills_slots_per_row = 8
+var skills_slots_rows = 1
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 # Hero stats section
@@ -90,6 +95,8 @@ var skills_instances: Array[SkillRow] = []
 @onready var buff_skills_container: VBoxContainer = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/BuffPanel/VBoxContainer/ScrollContainer/BuffSkillsContainer
 @onready var attack_skills_container: VBoxContainer = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/SkillsTabContainer/AttackPanel/VBoxContainer/ScrollContainer/AttackSkillsContainer
 @onready var skills_points: Label = $HUD/TabsPanel/TabContainer/SkillsPanel/MarginContainer/VBoxContainer/HBoxContainer/SkillsPoints
+@onready var skills_bar: GridContainer = $SkillsContainer/MarginContainer/Panel/SkillsBar
+@onready var active_effects_container: HBoxContainer = $ActiveEffectsContainer
 
 # Global Popups
 @onready var popups: Node2D = $Popups
@@ -119,6 +126,9 @@ func _ready() -> void:
 	EventBus.upgrade_skill.connect(_on_upgrade_skill)
 	EventBus.level_up.connect(_on_level_up)
 
+	EventBus.add_skill_to_skillsbar.connect(_on_add_skill_to_skillsbar)
+	EventBus.add_active_effect_to_effectsbar.connect(_on_add_active_effect_to_effectsbar)
+	
 	pick_all_dropped_items_button.pressed.connect(_pick_all_lootable_items)
 	pick_selected_dropped_items_button.pressed.connect(_pick_selected_lootable_items)
 	cancel_dropped_items_button.pressed.connect(_close_lootable_items_panel)
@@ -127,7 +137,7 @@ func _ready() -> void:
 	_initialize_lootable_items_panel()
 	_initialize_inventory_tab()
 	_intialize_skills_tab()
-
+	_initialize_skills_bar()
 
 
 # StatsUI component
@@ -164,6 +174,12 @@ func _intialize_skills_tab():
 	load_attack_skills()
 	load_passive_skills()
 	__update_skills_points()
+
+func _initialize_skills_bar():
+	for i in range(skills_slots_per_row):
+		var skill_slot_instance = skill_slot_scene.instantiate()
+		skills_bar.add_child(skill_slot_instance)
+		skills_slots_instances.append(skill_slot_instance)
 
 # ─── Logic Methods ───────────────────────────────────────────────────────────
 func _pick_all_lootable_items() -> void:
@@ -444,3 +460,14 @@ func _on_upgrade_skill(_skill: Skill):
 func _on_level_up(_new_level: int):
 	stats_ui.update_stats_on_level_up()
 	update_skills_rows_instances()
+
+func _on_add_skill_to_skillsbar(_skill: Skill):
+	for slot in skills_slots_instances:
+		if slot.is_empty:
+			slot.set_slot( _skill)
+			break
+
+func _on_add_active_effect_to_effectsbar(_skill: Skill):
+	var eff_instance: ActiveEffectSlot = active_effects_slot_scene.instantiate()
+	eff_instance.set_slot(_skill)
+	active_effects_container.add_child(eff_instance)
