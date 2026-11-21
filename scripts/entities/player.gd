@@ -48,6 +48,7 @@ func _ready() -> void:
 	animation_tree = $AnimationTree
 	animation_playback = animation_tree["parameters/playback"]
 	animation_BA_playback = animation_tree["parameters/basic_attack/BasicAttackStateMachine/playback"]
+	player_animation_BA_attack_speed_parameter_path = "parameters/basic_attack/BasicAttackStateMachine/%s/attack_speed/scale"
 	animation_tree.set_active(true)
 
 	EventBus.stats_updated.connect(_on_stats_updated)
@@ -235,10 +236,14 @@ func _start_combo() -> void:
 func _execute_attack() -> void:
 	if combo_index < 0 or combo_index >= combo_chain.size(): return
 	var attack: AttackData = combo_chain[combo_index]
+	var speed_scale := _get_attack_speed_scale()
+
+	_set_attack_timescale(attack, speed_scale)
+
 	if animation_playback and animation_tree and animation_tree.is_active():
 		animation_playback.travel("basic_attack")
 		_play_attack_animation(attack)
-	combo_timer.wait_time = attack.combo_window
+	combo_timer.wait_time = max(0.05, attack.combo_window / speed_scale)
 	combo_timer.start()
 
 ## Ends the combo chain.
@@ -260,6 +265,16 @@ func _flash_hit() -> void:
 func _get_physical_defense() -> float:
 	return StatsData.get_physical_defense()
 
+func _get_attack_speed_scale() -> float:
+	return StatsData.get_attack_speed()
+
+func _set_attack_timescale(attack: AttackData, speed_scale: float) -> void:
+	if not animation_tree:
+		return
+
+	var scale_path := player_animation_BA_attack_speed_parameter_path % attack.anim_name
+	if animation_tree.get(scale_path) != null:
+		animation_tree.set(scale_path, speed_scale)
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_pressed() -> void:

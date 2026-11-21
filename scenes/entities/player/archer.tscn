@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bb06lhlufgtoe" path="res://scenes/entities/player/arrow.tscn" id="3_fs3x2"]
 [ext_resource type="Resource" uid="uid://bxaw1bhe0v7yt" path="res://resources/classes/archer.tres" id="3_yipsv"]
 [ext_resource type="Texture2D" uid="uid://hk7qi63ewkjw" path="res://assets/sprites/player/Blue Units/Archer/Archer_Run.png" id="4_r7l6o"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://crlf2qqs5os2c" path="res://resources/player/player_animation_node_state_machine.tres" id="8_fs3x2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yipsv"]
 atlas = ExtResource("2_v86c1")
@@ -432,89 +433,6 @@ _data = {
 &"run_right": SubResource("Animation_fs3x2")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fs3x2"]
-animation = &"attack1_right"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q30b0"]
-animation = &"attack1_left"
-
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_yipsv"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_fs3x2")
-blend_point_0/pos = 1.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_q30b0")
-blend_point_1/pos = -1.0
-blend_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qa85n"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5kssr"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_yg8gi"]
-states/End/position = Vector2(901.6, 85.312004)
-states/Start/position = Vector2(234.4, 85.44)
-states/attack1/node = SubResource("AnimationNodeBlendSpace1D_yipsv")
-states/attack1/position = Vector2(486, 84.8)
-transitions = ["Start", "attack1", SubResource("AnimationNodeStateMachineTransition_qa85n"), "attack1", "End", SubResource("AnimationNodeStateMachineTransition_5kssr")]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_5kssr"]
-graph_offset = Vector2(-367.32343, 87.9677)
-nodes/BasicAttackStateMachine/node = SubResource("AnimationNodeStateMachine_yg8gi")
-nodes/BasicAttackStateMachine/position = Vector2(-16, 144)
-node_connections = [&"output", 0, &"BasicAttackStateMachine"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v86c1"]
-animation = &"idle_right"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cdk6h"]
-animation = &"idle_left"
-
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_r7l6o"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_v86c1")
-blend_point_0/pos = 1.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_cdk6h")
-blend_point_1/pos = -1.0
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r7l6o"]
-animation = &"run_right"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yipsv"]
-animation = &"run_left"
-
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_fs3x2"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_r7l6o")
-blend_point_0/pos = 1.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_yipsv")
-blend_point_1/pos = -1.0
-blend_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v86c1"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r7l6o"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yipsv"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fs3x2"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q30b0"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_yipsv"]
-states/Start/position = Vector2(182.4, 100)
-states/basic_attack/node = SubResource("AnimationNodeBlendTree_5kssr")
-states/basic_attack/position = Vector2(375.44504, 253.20001)
-states/idle/node = SubResource("AnimationNodeBlendSpace1D_r7l6o")
-states/idle/position = Vector2(375.6, 99.68)
-states/run/node = SubResource("AnimationNodeBlendSpace1D_fs3x2")
-states/run/position = Vector2(604.39996, 102.624)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_v86c1"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r7l6o"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_yipsv"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_fs3x2"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_q30b0")]
-graph_offset = Vector2(-260.67465, 58)
-
 [node name="Archer" unique_id=1846937653 groups=["archer"] instance=ExtResource("1_b2p8u")]
 script = ExtResource("2_r7l6o")
 arrow_scene = ExtResource("3_fs3x2")
@@ -530,9 +448,12 @@ libraries/ = SubResource("AnimationLibrary_jbr1l")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=929997336]
 active = false
-tree_root = SubResource("AnimationNodeStateMachine_yipsv")
+tree_root = ExtResource("8_fs3x2")
 anim_player = NodePath("../AnimationPlayer")
-parameters/basic_attack/BasicAttackStateMachine/attack1/blend_position = 0.0
+parameters/basic_attack/BasicAttackStateMachine/attack1/attack_speed/scale = 1.0
+parameters/basic_attack/BasicAttackStateMachine/attack1/BlendSpace1D/blend_position = 0.0
+parameters/basic_attack/BasicAttackStateMachine/attack2/attack_speed/scale = 1.0
+parameters/basic_attack/BasicAttackStateMachine/attack2/BlendSpace1D/blend_position = 0.0
 parameters/idle/blend_position = 0.0
 parameters/run/blend_position = 0.0
 

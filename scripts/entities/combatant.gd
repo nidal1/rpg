@@ -7,7 +7,8 @@ class_name Combatant
 
 ## Playback for basic attacks.
 var animation_BA_playback: AnimationNodeStateMachinePlayback = null
-var animation_BA_attack_speed_parameter_path: String
+var enemy_animation_BA_attack_speed_parameter_path: String
+var player_animation_BA_attack_speed_parameter_path: String
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the combatant using defense reduction logic.

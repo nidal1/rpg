@@ -92,7 +92,7 @@ func _ready() -> void:
 	
 	animation_tree = $AnimationTree
 	animation_playback = animation_tree["parameters/playback"]
-	animation_BA_attack_speed_parameter_path = "parameters/basic_attack/attack_speed/scale"
+	enemy_animation_BA_attack_speed_parameter_path = "parameters/basic_attack/attack_speed/scale"
 	animation_tree.set_active(true)
 
 	selection_box.visible = false
@@ -263,7 +263,7 @@ func _apply_progression_scaling() -> void:
 	attack_cooldown = ProgressionManager.get_total_attack_cycle(base_attack_anim_duration, current_timescale, base_recovery_delay)
 	
 	# Update AnimationTree TimeScale parameter node
-	ProgressionManager.update_animation_timescale(animation_tree, current_timescale, animation_BA_attack_speed_parameter_path)
+	ProgressionManager.update_animation_timescale(animation_tree, current_timescale, enemy_animation_BA_attack_speed_parameter_path)
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_hitbox_area_entered(area: Area2D) -> void:
