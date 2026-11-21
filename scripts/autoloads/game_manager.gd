@@ -83,6 +83,20 @@ func connect_global_events() -> void:
 
 	# Skills events
 	EventBus.skill_upgraded.connect(_on_skill_upgraded)
+	EventBus.skill_slot_clicked.connect(_on_skill_slot_clicked)
+	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
+
+func execute_skill(_skill: Skill):
+	if _skill is BuffSkill:
+		stats_manager.add_buff_stat(_skill)
+		skills_manager.add_active_skill(_skill)
+
+func reset_skill(_skill: Skill, _value: float):
+	if _skill is BuffSkill:
+		stats_manager.remove_buff_stat(_skill, _value)
+		skills_manager.remove_active_skill(_skill)
+
+
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:
@@ -123,3 +137,10 @@ func _on_skill_upgraded(_skill: Skill):
 		stats_manager.calculate_passive_skills_stats(_skill)
 	else:
 		EventBus.add_skill_to_skillsbar.emit(_skill)
+
+
+func _on_skill_slot_clicked(_skill: Skill):
+	execute_skill(_skill)
+
+func _on_buff_skill_duration_ended(_skill: BuffSkill, _value: float):
+	reset_skill(_skill, _value)

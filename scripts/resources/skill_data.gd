@@ -45,6 +45,9 @@ func check_skill_requirements():
 
 		self.skill_disabled = lacks_max_level or lacks_sp or lacks_level
 
+func can_cast_skill() -> bool:
+	return false
+
 func get_value() -> Dictionary:
 	return {
 		'value': 0.0,

@@ -11,6 +11,8 @@ var passive_skills: Array[PassiveSkill] = []
 var buff_skills: Array[BuffSkill] = []
 var attack_skills: Array[AttackSkill] = []
 
+var active_skills: Array[Skill] = []
+
 func initialize(character_class : CharacterClass) -> void:
 	player_character_class = str(CharacterClass.PlayerType.keys()[character_class.player_type]).to_lower()
 
@@ -32,6 +34,12 @@ func update_player_current_skills_points_on_level_up():
 
 func end_buff_skill_duration(_skill: BuffSkill):
 	SkillsData.remove_player_upgraded_skill_exist(_skill)
+
+func add_active_skill(_skill: Skill):
+	active_skills.append(_skill)
+
+func remove_active_skill(_skill: Skill):
+	active_skills.erase(_skill)
 
 func _on_upgrade_skill(_skill: Skill):
 	var available_skills_points = SkillsData.get_player_current_skills_points()

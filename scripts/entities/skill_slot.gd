@@ -13,13 +13,11 @@ func _ready() -> void:
 	EventBus.buff_skill_duration_started.connect(_on_buff_skill_duration_started)
 	disable_progress_bar()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if cd_started and cd_timer.time_left > 0:
 		var cd_amout = (cd_timer.time_left / cd_timer.wait_time) * 100
 		cd_progress_bar.value = cd_amout
 		cd_time_left_label.text = str(snapped(cd_timer.time_left, 0.1))
-		
-
 
 var current_skill: Skill
 
@@ -52,6 +50,11 @@ func enable_progress_bar():
 func _on_texture_button_pressed() -> void:
 	enable_progress_bar()
 	if current_skill:
+		if not current_skill.can_cast_skill():
+			disable_progress_bar()
+			print("player mp less than the skill mp cost")
+			return
+		
 		EventBus.skill_slot_clicked.emit(current_skill)
 
 
