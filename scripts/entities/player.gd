@@ -116,7 +116,6 @@ func _move_to_ground_target() -> void:
 ## Applies damage to the character.
 func take_damage(hit_data: Dictionary) -> void:
 	var _hit = hit_data.get("hit")
-	print("🔍 [player - ", get_stack()[0].function, "] _hit: ", _hit)
 	var _is_crit = hit_data.get("is_crit")
 	var _damage = hit_data.get("damage")
 

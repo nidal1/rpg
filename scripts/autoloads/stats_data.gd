@@ -8,6 +8,10 @@ const STAT_NAMES_NO_FLT = ["STR", "REC", "INT", "WIS", "DEX", "LUC"]
 ## Number of stat points awarded per level up.
 const POINTS_STATS_PER_LEVEL = 5
 
+const BASE_HIT_CHANCE: float = 90.0
+const HIT_CHANCE_SCALING: float = 0.5
+const MIN_HIT_CHANCE: float = 5.0
+const MAX_HIT_CHANCE: float = 99.0
 
 # ─── Private Variables ───────────────────────────────────────────────────────
 var __base_stats: Dictionary = {
@@ -415,9 +419,12 @@ func get_evasion() -> float:
 	return dex_eva + luc_eva + buff_eva
 
 func get_hit_chance(attacker_accuracy: float, defender_evasion: float) -> float:
-	var base_hit_chance: float = 90.0
 	var diff: float = attacker_accuracy - defender_evasion
-	return clampf(base_hit_chance + (diff * 0.5), 5.0, 99.0)
+	return clampf(
+		BASE_HIT_CHANCE + (diff * HIT_CHANCE_SCALING),
+		MIN_HIT_CHANCE,
+		MAX_HIT_CHANCE
+	)
 
 func roll_hit(defender_evasion: float) -> bool:
 	var hit_chance: float = get_hit_chance(get_accuracy(), defender_evasion)
