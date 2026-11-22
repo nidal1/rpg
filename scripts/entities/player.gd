@@ -321,6 +321,9 @@ func _on_enemy_unselected(_enemy: Enemy):
 	clear_target()
 
 func _on_stats_updated():
+	var stats = StatsData.get_secondary_stats_breakdown()
+	speed = stats.get("movement_speed", 0.0)
+	attack_range = stats.get("attack_range", 0.0)
 	detection_zone.get_node("CollisionShape2D").shape.radius = attack_range
 
 func _on_buff_skill_duration_started(_skill: BuffSkill, _value: float):

@@ -403,6 +403,31 @@
 					"duration": 8.0,
 					"is_percentage": true,
 					"icon_path": "res://assets/sprites/skills/archer_rapid_focus.png"
+				},
+				{
+					"skill_id": "wind_stride",
+					"skill_name": "Wind Stride",
+					"description": "Increases movement speed by #value#% for 10.0s. (MP: 20 | Cast: 0.0s | CD: 18.0s)",
+					"mp_cost": 20,
+					"cast_time": 0.0,
+					"cooldown": 18.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": [
+						3,
+						9,
+						16
+					],
+					"skill_points_cost": 1,
+					"buff_type": "movement_speed",
+					"value": [
+						15.0,
+						25.0,
+						40.0
+					],
+					"duration": 10.0,
+					"is_percentage": true,
+					"icon_path": "res://assets/sprites/skills/wind_stride.png"
 				}
 			],
 			"attack": [
