@@ -12,7 +12,8 @@ var player_animation_BA_attack_speed_parameter_path: String
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the combatant using defense reduction logic.
-func take_damage(amount: float) -> void: pass
+func take_damage(hit_data: Dictionary) -> void: pass
+func get_evasion() -> float: return 0.0
 
 # ─── Virtual Methods ─────────────────────────────────────────────────────────
 ## Virtual method for attack logic.
@@ -25,10 +26,12 @@ func _die() -> void: pass
 func _on_damage_received() -> void: pass
 
 ## Virtual method that returns the current attack damage.
-func _get_attack_damage() -> float: return 0.0
+func _get_attack_damage(_defender_eva: float) -> Dictionary: return {"hit": false, "is_crit": false, "damage": 0.0}
 
 ## Virtual method that returns the current defense.
 func _get_defense() -> float: return 0.0
+
+
 
 # ─── Private / Protected Methods ─────────────────────────────────────────────
 ## Flashes the combatant red to indicate damage taken.

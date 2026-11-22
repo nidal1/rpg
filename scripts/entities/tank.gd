@@ -11,5 +11,6 @@ func _ready() -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	var target_node = area.get_parent()
 	if area.name == "Hurtbox" and target_node.is_in_group("enemy"):
-		var damage: float = _get_attack_damage()
-		target_node.take_damage(damage)
+		var evasion = target_node.get_evasion()
+		var hit_data: Dictionary = _get_attack_damage(evasion)
+		target_node.take_damage(hit_data)

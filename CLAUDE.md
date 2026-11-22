@@ -751,11 +751,11 @@ All entities use a **Virtual Functions Override Pattern** to keep state machine 
 | `_die()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `queue_free()` |
 | `_on_damage_received()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Hit flash, UI update, transition to DeadState |
 | `_get_attack_damage()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | Returns current attack damage (stat-based for player, `attack_damage` for enemy) |
-| `_get_physical_defenseense()` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_physical_defense()` for player; `enemy_params.defense` for enemy |
+| `_get_physical_defense` | `Player.gd`, `Enemy.gd` | `Combatant.gd` | `StatsData.get_physical_defense()` for player; `enemy_params.defense` for enemy |
 | `_play_attack_animation()` | `Player.gd`, concrete enemies | `Combatant.gd` / `Enemy.gd` | Sets attack blend position, travels to attack node |
 | `_interact()` | Custom NPCs | `NPC.gd` | Virtual method for non-combat NPC interaction |
 
-`take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_physical_defenseense())`.
+`take_damage(amount)` in `Combatant.gd` applies defense reduction: `reduced = max(1.0, amount - _get_physical_defense)`.
 
 ---
 

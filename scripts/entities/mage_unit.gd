@@ -45,7 +45,9 @@ func cast_bullet(
 func _on_bullet_hit(area: Area2D, owner_combatant: Combatant, target_group: String) -> void:
 	var hit_target = area.get_parent()
 	if hit_target and hit_target.is_in_group(target_group):
-		hit_target.take_damage(owner_combatant._get_attack_damage())
+		var evasion = hit_target.get_evasion()
+		var hit_data = owner_combatant._get_attack_damage(evasion)
+		hit_target.take_damage(hit_data)
 		if owner_combatant is Player and hit_target.has_method("get_target") and hit_target.has_method("set_target"):
 			if hit_target.get_target() != owner_combatant or not is_instance_valid(hit_target.get_target()):
 				hit_target.set_target(owner_combatant)

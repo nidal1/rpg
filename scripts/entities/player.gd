@@ -114,11 +114,21 @@ func _move_to_ground_target() -> void:
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
-func take_damage(amount: float) -> void:
+func take_damage(hit_data: Dictionary) -> void:
+	var _hit = hit_data.get("hit")
+	print("🔍 [player - ", get_stack()[0].function, "] _hit: ", _hit)
+	var _is_crit = hit_data.get("is_crit")
+	var _damage = hit_data.get("damage")
+
+	if not _hit:
+		print("The hit is evaded")
+		return 
+
 	var absorption = max(0.0, float(StatsData.get_absorption()))
-	var absorbed_amount = max(0.0, amount - absorption)
-	
+	var absorbed_amount = max(0.0, _damage - absorption)
+
 	if absorbed_amount <= 0.0:
+		print("The damage is absorbed")
 		return
 
 	var reduced_damage = max(1.0, absorbed_amount - _get_physical_defense())
@@ -182,6 +192,9 @@ func target_reached() -> bool:
 func get_enemy_target() -> Enemy:
 	return target_enemy if is_targeting_enemy() else null
 
+func get_evasion() -> float:
+	return StatsData.get_evasion()
+
 func _on_damage_received() -> void:
 	var current_hp = StatsData.get_current_hp()
 	var max_hp = StatsData.get_max_hp()
@@ -198,17 +211,27 @@ func _play_idle_animation() -> void:
 	if animation_tree:
 		animation_tree.set("parameters/idle/blend_position", last_facing_dir)
 
-func _get_attack_damage() -> float:
-	
+func _get_attack_damage(defender_eva: float) -> Dictionary:
+	if not StatsData.roll_hit(defender_eva):
+		return {"hit": false, "is_crit": false, "damage": 0.0}
+
+	var base_damage: float = 0.0
 	# combine attack-specific damage with stat-based power
 	match character_class.player_type:
 		CharacterClass.PlayerType.WARRIOR:
-			return StatsData.get_melee_atk()
+			base_damage = StatsData.get_melee_atk()
 		CharacterClass.PlayerType.ARCHER:
-			return StatsData.get_ranged_atk()
+			base_damage = StatsData.get_ranged_atk()
 		CharacterClass.PlayerType.MAGE, CharacterClass.PlayerType.PRIEST:
-			return StatsData.get_magic_atk()
-		_: return 0.0
+			base_damage = StatsData.get_magic_atk()
+		_: base_damage = 0.0
+	
+	
+
+	var is_crit: bool = (randf() * 100.0) < StatsData.get_crit_chance()
+	var final_damage: float = base_damage * StatsData.get_crit_damage() if is_crit else base_damage
+
+	return {"hit": true, "is_crit": is_crit, "damage": final_damage}
 
 # ─── Private Methods ─────────────────────────────────────────────────────────
 ## Initializes the player's stats based on the selected class.

@@ -104,8 +104,16 @@ func _physics_process(_delta: float) -> void:
 
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
-func take_damage(amount: float) -> void:
-	var reduced_damage = max(1.0, amount - _get_defense())
+func take_damage(hit_data: Dictionary) -> void:
+	var _hit = hit_data.get("hit")
+	var _is_crit = hit_data.get("is_crit")
+	var _damage = hit_data.get("damage")
+
+	if not _hit:
+		print("The hit is evaded")
+		return 
+
+	var reduced_damage = max(1.0, _damage - _get_defense())
 	current_health -= reduced_damage
 	_on_damage_received()
 
@@ -155,8 +163,8 @@ func _on_damage_received() -> void:
 	if current_health <= 0:
 		state_machine.transition_to("enemydeadstate")
 
-func _get_attack_damage() -> float:
-	return attack_damage
+func _get_attack_damage(_defender_eva: float) -> Dictionary:
+	return {"hit": true, "is_crit": false, "damage": attack_damage}
 
 func _play_movement_animation() -> void:
 	$AnimatedSprite.scale.x = last_facing_dir
@@ -269,7 +277,9 @@ func _apply_progression_scaling() -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	var target_node = area.get_parent()
 	if target_node.is_in_group("player"):
-		target_node.take_damage(_get_attack_damage())
+		var evasion = target_node.get_evasion()
+		var hit_data: Dictionary = _get_attack_damage(evasion)
+		target_node.take_damage(hit_data)
 
 func _on_detection_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):

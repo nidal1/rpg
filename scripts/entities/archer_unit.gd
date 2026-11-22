@@ -45,5 +45,7 @@ func shoot_arrow(
 func _on_arrow_hit(area: Area2D, owner_combatant: Combatant, target_group: String) -> void:
 	var hit_target = area.get_parent()
 	if hit_target and hit_target.is_in_group(target_group):
-		hit_target.take_damage(owner_combatant._get_attack_damage())
+		var evasion = hit_target.get_evasion()
+		var hit_data = owner_combatant._get_attack_damage(evasion)
+		hit_target.take_damage(hit_data)
 		arrow_hit.emit(hit_target)

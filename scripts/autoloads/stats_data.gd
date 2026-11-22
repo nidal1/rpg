@@ -76,7 +76,9 @@ var __buff_stats: Dictionary = {
 	"critical_chance": 0.0,
 	"critical_damage": 0.0,
 	"absorption": 0.0,
-	"cast_speed": 0.0
+	"cast_speed": 0.0,
+	"accuracy": 0.0,
+	"evasion": 0.0,
 }
 
 var __stat_points_available: int = 0
@@ -260,7 +262,9 @@ func get_secondary_stats_breakdown() -> Dictionary:
 		"ranged_atk": get_ranged_atk(),
 		"magic_atk": get_magic_atk(),
 		"crit_chance": get_crit_chance(),
-		"crit_damage": get_crit_damage()
+		"crit_damage": get_crit_damage(),
+		"accuracy": get_accuracy(),
+		"evasion": get_evasion()
 	}
 
 func get_attack_damage():
@@ -392,11 +396,32 @@ func get_crit_chance() -> float:
 
 ## Calculates critical hit damage multiplier.
 func get_crit_damage() -> float:
-	var total_luc = floor(get_total("LUC") * 0.0075)
-	var passive_critical_damage = __passive_stats.get("critical_damage", 0.0)
-	var buff_critical_damage = __buff_stats.get("critical_damage", 0.0)
+	var luc_crit_dmg = float(get_total("LUC")) * 0.0075
+	var passive_critical_damage: float = __passive_stats.get("critical_damage", 0.0)
+	var buff_critical_damage: float = __buff_stats.get("critical_damage", 0.0)
 
-	return 1.5 + total_luc + passive_critical_damage + buff_critical_damage # multiplier
+	return 1.5 + luc_crit_dmg + passive_critical_damage + buff_critical_damage
+
+func get_accuracy() -> float:
+	var dex_acc = floor(float(get_total("DEX")) * 1.2)
+	var luc_acc = floor(float(get_total("LUC")) * 0.3)
+	var buff_acc: float = __buff_stats.get("accuracy", 0.0)
+	return dex_acc + luc_acc + buff_acc
+
+func get_evasion() -> float:
+	var dex_eva = floor(float(get_total("DEX")) * 0.8)
+	var luc_eva = floor(float(get_total("LUC")) * 0.5)
+	var buff_eva: float = __buff_stats.get("evasion", 0.0)
+	return dex_eva + luc_eva + buff_eva
+
+func get_hit_chance(attacker_accuracy: float, defender_evasion: float) -> float:
+	var base_hit_chance: float = 90.0
+	var diff: float = attacker_accuracy - defender_evasion
+	return clampf(base_hit_chance + (diff * 0.5), 5.0, 99.0)
+
+func roll_hit(defender_evasion: float) -> bool:
+	var hit_chance: float = get_hit_chance(get_accuracy(), defender_evasion)
+	return (randf() * 100.0) < hit_chance
 
 func get_absorption():
 	return __buff_stats.get("absorption", 0.0)
@@ -567,9 +592,12 @@ func set_buff_stat(_skill: BuffSkill) -> float:
 				var mag_res = get_total("WIS") + get_total("armor_resist")
 				value = mag_res * percent
 				__buff_stats[key] = value
-			
+			"critical_chance":
+				# get_crit_chance() kat-khdem b percentage points (masalan 10.0 = 10%)
+				value = stat_value
+				__buff_stats[key] = value
 			# الستاتات الخاصة اللي كيتعاملوا كمعاملات أو نسب مباشرة
-			"critical_chance", "critical_damage", "absorption":
+			"critical_damage", "absorption":
 				value = percent
 				__buff_stats[key] = value
 			_:
