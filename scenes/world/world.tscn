@@ -72,6 +72,7 @@ y_sort_enabled = true
 
 [node name="PlayerInstancier" parent="." unique_id=1605576321 instance=ExtResource("1_mxkvs")]
 position = Vector2(1499, 1953)
+selected_player = 3
 instance_position = Vector2(2351, 1179)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=164055995]

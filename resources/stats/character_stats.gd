@@ -16,6 +16,7 @@ class_name CharacterStats
 @export var attack_range: float = 300.0
 @export var attack_damage: float = 10.0
 @export var attack_speed: float = 1.0
+@export var cast_speed: float = 1.0
 
 # ─── Bonus stats (set by equipment or gems) ───────────
 @export var __bonus_stats: Dictionary = {
@@ -33,7 +34,8 @@ class_name CharacterStats
 	"attack_damage": 0.0,
 	"attack_speed": 0.0,
 	"attack_range": 0.0,
-	"movement_speed": 0.0
+	"movement_speed": 0.0,
+	"cast_speed": 0.0
 }
 
 ## Returns a copy of the stats.
@@ -59,7 +61,8 @@ func get_base_stats() -> Dictionary:
 		"attack_damage": attack_damage,
 		"attack_speed": attack_speed,
 		"attack_range": attack_range,
-		"movement_speed": movement_speed
+		"movement_speed": movement_speed,
+		"cast_speed": cast_speed
 	}
 
 func get_stats_bonus_dict() -> Dictionary:

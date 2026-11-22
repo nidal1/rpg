@@ -25,7 +25,8 @@ var __base_stats: Dictionary = {
 	"attack_damage": 0.0,
 	"attack_speed": 0.0,
 	"attack_range": 0.0,
-	"movement_speed": 0.0
+	"movement_speed": 0.0,
+	"cast_speed": 0.0
 }
 
 var __bonus_stats: Dictionary = {
@@ -74,7 +75,8 @@ var __buff_stats: Dictionary = {
 	"magical_resistance": 0.0,
 	"critical_chance": 0.0,
 	"critical_damage": 0.0,
-	"absorption": 0.0
+	"absorption": 0.0,
+	"cast_speed": 0.0
 }
 
 var __stat_points_available: int = 0
@@ -253,6 +255,7 @@ func get_secondary_stats_breakdown() -> Dictionary:
 		"attack_speed": get_attack_speed(),
 		"attack_range": get_attack_range(),
 		"movement_speed": get_movement_speed(),
+		"cast_speed": get_casting_speed(),
 		"melee_atk": get_melee_atk(),
 		"ranged_atk": get_ranged_atk(),
 		"magic_atk": get_magic_atk(),
@@ -284,6 +287,12 @@ func get_movement_speed():
 	var buff_movement_speed = __buff_stats.get("movement_speed", 0.0)
 
 	return total_movement_speed + buff_movement_speed
+
+func get_casting_speed():
+	var base_cast_speed = get_base_stat("cast_speed")
+	var buff_cast_speed = __buff_stats.get("cast_speed", 0.0)
+
+	return base_cast_speed + buff_cast_speed
 
 func get_stats_bonus_value(stat: String) -> int:
 	return __bonus_stats.get(stat, 0)
@@ -388,6 +397,9 @@ func get_crit_damage() -> float:
 	var buff_critical_damage = __buff_stats.get("critical_damage", 0.0)
 
 	return 1.5 + total_luc + passive_critical_damage + buff_critical_damage # multiplier
+
+func get_absorption():
+	return __buff_stats.get("absorption", 0.0)
 
 func set_str(new_str: float) -> void:
 	__base_stats['STR'] = new_str

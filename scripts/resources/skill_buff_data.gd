@@ -7,7 +7,7 @@ enum BuffType {
 	attack_damage,
 	critical_damage,
 	attack_speed,
-	casting_speed,
+	cast_speed,
 	# Defensive & Survival Buffs
 	physical_defence,
 	magical_resistance,

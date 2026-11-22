@@ -159,7 +159,7 @@ func _string_to_buff_enum(buff_name: String) -> BuffSkill.BuffType:
 		"attack_damage": return BuffSkill.BuffType.attack_damage
 		"critical_damage": return BuffSkill.BuffType.critical_damage
 		"attack_speed": return BuffSkill.BuffType.attack_speed
-		"casting_speed": return BuffSkill.BuffType.casting_speed
+		"casting_speed": return BuffSkill.BuffType.cast_speed
 		"physical_defence": return BuffSkill.BuffType.physical_defence
 		"magical_resistance": return BuffSkill.BuffType.magical_resistance
 		"max_hp": return BuffSkill.BuffType.max_hp

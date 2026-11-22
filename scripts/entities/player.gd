@@ -115,7 +115,13 @@ func _move_to_ground_target() -> void:
 # ─── Public Methods ──────────────────────────────────────────────────────────
 ## Applies damage to the character.
 func take_damage(amount: float) -> void:
-	var reduced_damage = max(1.0, amount - _get_physical_defense())
+	var absorption = max(0.0, float(StatsData.get_absorption()))
+	var absorbed_amount = max(0.0, amount - absorption)
+	
+	if absorbed_amount <= 0.0:
+		return
+
+	var reduced_damage = max(1.0, absorbed_amount - _get_physical_defense())
 	var current_hp = StatsData.get_current_hp()
 	StatsData.set_current_hp(max(0.0, current_hp - reduced_damage))
 	_on_damage_received()

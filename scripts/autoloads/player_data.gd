@@ -16,7 +16,7 @@ const POINTS_STATS_PER_LEVEL = 5
 
 
 # ─── Private Variables ───────────────────────────────────────────────────────
-var __player_level: int = 3
+var __player_level: int = 4
 var __current_xp: int = 0
 var __total_xp_to_next_level: int = 75
 var __lootable_items: Array[DataItem] = []
