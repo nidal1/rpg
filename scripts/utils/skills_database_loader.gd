@@ -125,6 +125,7 @@ func _parse_buff_skill(data: Dictionary) -> BuffSkill:
 	
 	var buff_str = data.get("buff_type", "none")
 	skill.buff_type = _string_to_buff_enum(buff_str)
+	skill.active_scene_path = data.get("active_scene_path", "")
 	
 	return skill
 
@@ -164,7 +165,8 @@ func _string_to_buff_enum(buff_name: String) -> BuffSkill.BuffType:
 		"magical_resistance": return BuffSkill.BuffType.magical_resistance
 		"max_hp": return BuffSkill.BuffType.max_hp
 		"max_mp": return BuffSkill.BuffType.max_mp
-		"regeneration": return BuffSkill.BuffType.regeneration
+		"hp_regeneration": return BuffSkill.BuffType.hp_regeneration
+		"mp_regeneration": return BuffSkill.BuffType.mp_regeneration
 		"absorption": return BuffSkill.BuffType.absorption
 		"movement_speed": return BuffSkill.BuffType.movement_speed
 		"accuracy": return BuffSkill.BuffType.accuracy

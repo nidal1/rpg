@@ -13,7 +13,8 @@ enum BuffType {
 	magical_resistance,
 	max_hp,
 	max_mp,
-	regeneration,
+	hp_regeneration,
+	mp_regeneration,
 	absorption,
 	# Utility & Movement Buffs
 	movement_speed,
@@ -26,6 +27,7 @@ enum BuffType {
 @export var value: Array[float]
 @export var duration: float
 @export var is_percentage: bool
+@export var active_scene_path: String
 
 func can_cast_skill() -> bool:
 	# TODO: 
@@ -43,5 +45,14 @@ func get_value() -> Dictionary:
 	return {
 		"value": value[idx] if not value.is_empty() else 0.0,
 		"stat_type": BuffType.keys()[buff_type],
-		"is_percentage_value": is_percentage
+		"is_percentage_value": is_percentage,
+		"active_scene": load_active_scene()
+
 	}
+
+func load_active_scene():
+	if active_scene_path:
+		var inst = load(active_scene_path).instantiate()
+		return inst
+	
+	return null

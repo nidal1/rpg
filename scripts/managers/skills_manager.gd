@@ -38,6 +38,11 @@ func end_buff_skill_duration(_skill: BuffSkill):
 func add_active_skill(_skill: Skill):
 	active_skills.append(_skill)
 
+	var active_skill_inst = _skill.get_value()["active_scene"]
+	if active_skill_inst:
+		active_skill_inst.skill = _skill
+		add_child(active_skill_inst)
+
 func remove_active_skill(_skill: Skill):
 	active_skills.erase(_skill)
 

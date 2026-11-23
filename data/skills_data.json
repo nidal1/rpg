@@ -59,7 +59,8 @@
 					],
 					"duration": 10.0,
 					"is_percentage": false,
-					"icon_path": "res://assets/sprites/skills/tank_iron_def.png"
+					"icon_path": "res://assets/sprites/skills/tank_iron_def.png",
+					"active_scene_path":""
 				}
 			],
 			"attack": [
@@ -174,7 +175,8 @@
 					],
 					"duration": 6.0,
 					"is_percentage": true,
-					"icon_path": "res://assets/sprites/skills/warrior_rage.png"
+					"icon_path": "res://assets/sprites/skills/warrior_rage.png",
+					"active_scene_path": ""
 				}
 			],
 			"attack": [
@@ -293,7 +295,60 @@
 					],
 					"duration": 8.0,
 					"is_percentage": false,
-					"icon_path": "res://assets/sprites/skills/mage_mana_shield.png"
+					"icon_path": "res://assets/sprites/skills/mage_mana_shield.png",
+					"active_scene_path": ""
+				},
+				{
+					"skill_id": "vital_surge",
+					"skill_name": "Vital Surge",
+					"description": "Restores #value# HP per second for 12.0s. (MP: 25 | Cast: 0.0s | CD: 20.0s)",
+					"mp_cost": 25,
+					"cast_time": 0.0,
+					"cooldown": 20.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": [
+						4,
+						11,
+						18
+					],
+					"skill_points_cost": 1,
+					"buff_type": "hp_regeneration",
+					"value": [
+						15.0,
+						30.0,
+						50.0
+					],
+					"duration": 12.0,
+					"is_percentage": false,
+					"icon_path": "res://assets/sprites/skills/vital_surge.png",
+					"active_scene_path": "res://scenes/entities/skills/regeneration.tscn"
+				},
+				{
+					"skill_id": "mana_flow",
+					"skill_name": "Mana Flow",
+					"description": "Restores #value# MP per second for 15.0s. (MP: 15 | Cast: 0.0s | CD: 22.0s)",
+					"mp_cost": 15,
+					"cast_time": 0.0,
+					"cooldown": 22.0,
+					"level": 0,
+					"max_level": 3,
+					"required_player_level": [
+						5,
+						12,
+						19
+					],
+					"skill_points_cost": 1,
+					"buff_type": "mp_regeneration",
+					"value": [
+						10.0,
+						20.0,
+						35.0
+					],
+					"duration": 15.0,
+					"is_percentage": false,
+					"icon_path": "res://assets/sprites/skills/mana_flow.png",
+					"active_scene_path": "res://scenes/entities/skills/regeneration.tscn"
 				}
 			],
 			"attack": [
@@ -402,7 +457,8 @@
 					],
 					"duration": 8.0,
 					"is_percentage": true,
-					"icon_path": "res://assets/sprites/skills/archer_rapid_focus.png"
+					"icon_path": "res://assets/sprites/skills/archer_rapid_focus.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "wind_stride",
@@ -427,7 +483,8 @@
 					],
 					"duration": 10.0,
 					"is_percentage": true,
-					"icon_path": "res://assets/sprites/skills/wind_stride.png"
+					"icon_path": "res://assets/sprites/skills/wind_stride.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "eagle_eye",
@@ -452,7 +509,8 @@
 					],
 					"duration": 12.0,
 					"is_percentage": false,
-					"icon_path": "res://assets/sprites/skills/eagle_eye.png"
+					"icon_path": "res://assets/sprites/skills/eagle_eye.png",
+					"active_scene_path": ""
 				}
 			],
 			"attack": [

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c2atp1oxwo810"]
+
+[ext_resource type="Script" uid="uid://mlof3chwqkte" path="res://scripts/entities/regeneration_buff_skill.gd" id="1_m16j4"]
+
+[node name="Regeneration" type="Timer" unique_id=826157373]
+autostart = true
+script = ExtResource("1_m16j4")
+
+[connection signal="timeout" from="." to="." method="_on_timeout"]
