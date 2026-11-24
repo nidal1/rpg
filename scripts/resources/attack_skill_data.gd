@@ -29,7 +29,9 @@ enum CrowdControl {
 @export var active_scene_path: String
 
 func can_cast_skill() -> bool:
-	return true
+	var player_has_enough_mp = StatsData.get_base_stat("MP") >= mp_cost
+	if player_has_enough_mp : return true
+	return false
 
 func get_value() -> Dictionary:
 	var idx = clampi(level - 1, 0, damage.size() - 1)

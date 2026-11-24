@@ -160,8 +160,14 @@ func _die() -> void:
 func _on_damage_received() -> void:
 	_set_hp_progress_bar_value(max(0.0, current_health))
 	_flash_hit()
+	
+	if not target:
+		target = GameManager.player_ref
+
 	if current_health <= 0:
 		state_machine.transition_to("enemydeadstate")
+	else:
+		state_machine.transition_to("enemyattackstate")
 
 func _get_attack_damage(_defender_eva: float) -> Dictionary:
 	return {"hit": true, "is_crit": false, "damage": attack_damage}

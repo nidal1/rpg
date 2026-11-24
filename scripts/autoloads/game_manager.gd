@@ -87,6 +87,11 @@ func connect_global_events() -> void:
 	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
 
 func execute_skill(_skill: Skill, _skill_slot: SkillSlot):
+	if not _skill.can_cast_skill():
+		print("cannot cast the skill")
+		_skill_slot.disable_progress_bar()
+		return 
+
 	if _skill is BuffSkill:
 		stats_manager.add_buff_stat(_skill)
 		skills_manager.add_active_skill(_skill)
@@ -97,6 +102,8 @@ func execute_skill(_skill: Skill, _skill_slot: SkillSlot):
 			printerr("No enemy is selected")
 			_skill_slot.disable_progress_bar()
 			return
+			
+		stats_manager.consume_mana_on_cast_skill(_skill)
 		skills_manager.injecting_the_skill_into_the_scene(_skill, _enemy)
 		return
 

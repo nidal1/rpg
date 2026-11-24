@@ -75,9 +75,7 @@ func calculate_passive_skills_stats(_skill: Skill):
 	EventBus.stats_updated.emit()
 
 func add_buff_stat(_skill: BuffSkill):
-	var mp_cost = _skill.mp_cost
-	var base_mp = StatsData.get_base_stat("MP")
-	StatsData.__base_stats["MP"] = base_mp - mp_cost
+	consume_mana_on_cast_skill(_skill)
 	
 	var val = StatsData.set_buff_stat(_skill)
 	
@@ -91,4 +89,13 @@ func remove_buff_stat(_skill: BuffSkill, _value: float):
 	StatsData.remove_buff_stat(key, _value)
 	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
 	
+	EventBus.stats_updated.emit()
+
+func consume_mana_on_cast_skill(_skill: Skill):
+	
+	var mp_cost = _skill.mp_cost
+	var base_mp = StatsData.get_base_stat("MP")
+	StatsData.__base_stats["MP"] = base_mp - mp_cost
+
+	StatsData.secondary_stats = StatsData.get_secondary_stats_breakdown()
 	EventBus.stats_updated.emit()
