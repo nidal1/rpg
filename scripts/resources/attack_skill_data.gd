@@ -26,11 +26,23 @@ enum CrowdControl {
 @export var damage: Array[float] = []
 @export var cc_effect: CrowdControl
 @export var cc_duration: float
+@export var active_scene_path: String
+
+func can_cast_skill() -> bool:
+	return true
 
 func get_value() -> Dictionary:
 	var idx = clampi(level - 1, 0, damage.size() - 1)
 	#return damage[idx] if not damage.is_empty() else 0.0
 	return {
 		'value': damage[idx] if not damage.is_empty() else 0.0,
-		'stat_type': ""
+		'stat_type': "",
+		"active_scene": load_active_scene()
 	}
+
+func load_active_scene():
+	if active_scene_path:
+		var inst = load(active_scene_path).instantiate()
+		return inst
+	
+	return null

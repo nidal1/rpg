@@ -88,7 +88,8 @@
 					],
 					"cc_effect": "stun",
 					"cc_duration": 2.0,
-					"icon_path": "res://assets/sprites/skills/tank_shield_bash.png"
+					"icon_path": "res://assets/sprites/skills/tank_shield_bash.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "tank_ground_slam",
@@ -116,7 +117,8 @@
 					],
 					"cc_effect": "none",
 					"cc_duration": 0.0,
-					"icon_path": "res://assets/sprites/skills/tank_ground_slam.png"
+					"icon_path": "res://assets/sprites/skills/tank_ground_slam.png",
+					"active_scene_path": ""
 				}
 			]
 		},
@@ -208,7 +210,8 @@
 					],
 					"cc_effect": "bleeding",
 					"cc_duration": 5.0,
-					"icon_path": "res://assets/sprites/skills/warrior_heavy_slash.png"
+					"icon_path": "res://assets/sprites/skills/warrior_heavy_slash.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "warrior_whirlwind",
@@ -236,7 +239,8 @@
 					],
 					"cc_effect": "slow",
 					"cc_duration": 3.0,
-					"icon_path": "res://assets/sprites/skills/warrior_whirlwind.png"
+					"icon_path": "res://assets/sprites/skills/warrior_whirlwind.png",
+					"active_scene_path": ""
 				}
 			]
 		},
@@ -376,7 +380,8 @@
 					],
 					"cc_effect": "slow",
 					"cc_duration": 4.0,
-					"icon_path": "res://assets/sprites/skills/mage_frost_bolt.png"
+					"icon_path": "res://assets/sprites/skills/mage_frost_bolt.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "mage_fireball_aoe",
@@ -402,7 +407,8 @@
 					],
 					"cc_effect": "burn",
 					"cc_duration": 4.0,
-					"icon_path": "res://assets/sprites/skills/mage_fireball_aoe.png"
+					"icon_path": "res://assets/sprites/skills/mage_fireball_aoe.png",
+					"active_scene_path": ""
 				}
 			]
 		},
@@ -540,7 +546,8 @@
 					],
 					"cc_effect": "slow",
 					"cc_duration": 3.0,
-					"icon_path": "res://assets/sprites/skills/archer_frost_arrow.png"
+					"icon_path": "res://assets/sprites/skills/archer_frost_arrow.png",
+					"active_scene_path": ""
 				},
 				{
 					"skill_id": "archer_volley",
@@ -566,7 +573,8 @@
 					],
 					"cc_effect": "blind",
 					"cc_duration": 2.5,
-					"icon_path": "res://assets/sprites/skills/archer_volley.png"
+					"icon_path": "res://assets/sprites/skills/archer_volley.png",
+					"active_scene_path": "res://scenes/entities/skills/arrow_volley_attack_skill.tscn"
 				}
 			]
 		}

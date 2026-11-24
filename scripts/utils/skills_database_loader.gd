@@ -110,6 +110,7 @@ func _parse_attack_skill(data: Dictionary) -> AttackSkill:
 	var cc_str = data.get("cc_effect", "none")
 	skill.cc_effect = _string_to_cc_enum(cc_str)
 	
+	skill.active_scene_path = data.get("active_scene_path", "")
 	return skill
 
 func _parse_buff_skill(data: Dictionary) -> BuffSkill:

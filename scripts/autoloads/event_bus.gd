@@ -175,8 +175,13 @@ signal add_skill_to_skillsbar(skill: Skill)
 
 ## Emitted when a skill slot clicked.
 @warning_ignore("UNUSED_SIGNAL")
-signal skill_slot_clicked(skill: Skill)
+signal skill_slot_clicked(skill: Skill, skill_slot: SkillSlot)
+
 
 ## Emitted when add a active effect to active effects bar.
 @warning_ignore("UNUSED_SIGNAL")
 signal add_active_effect_to_effectsbar(skill: Skill)
+
+## Emitted when attack skill cooldown started.
+@warning_ignore("UNUSED_SIGNAL")
+signal attack_skill_cd_started(skill: Skill)

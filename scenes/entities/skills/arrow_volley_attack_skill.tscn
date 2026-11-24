@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://kn1a7mi1jpuw"]
+
+[ext_resource type="Texture2D" uid="uid://b1fh3ck8fwwql" path="res://assets/sprites/player/Blue Units/Archer/Arrow.png" id="1_rkp0s"]
+[ext_resource type="Script" uid="uid://chci6p63yk17t" path="res://scripts/entities/arrow_volley_attack_skill.gd" id="2_00yyr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_00yyr"]
+radius = 72.0
+
+[node name="ArrowVolleyAttackSkill" type="Area2D" unique_id=1910705307]
+z_index = 1
+collision_layer = 8
+collision_mask = 64
+input_pickable = false
+monitorable = false
+script = ExtResource("2_00yyr")
+
+[node name="AttackCD" type="Timer" parent="." unique_id=507845902]
+wait_time = 2.5
+one_shot = true
+autostart = true
+
+[node name="Particles" type="CPUParticles2D" parent="." unique_id=1934984862]
+position = Vector2(-72, -72)
+amount = 5
+texture = ExtResource("1_rkp0s")
+lifetime = 0.5
+speed_scale = 1.5
+draw_order = 1
+emission_shape = 3
+emission_rect_extents = Vector2(80, 30)
+direction = Vector2(50, 60)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+angle_min = -45.0
+angle_max = -45.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=665123954]
+shape = SubResource("CircleShape2D_00yyr")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="AttackCD" to="." method="_on_attack_cd_timeout"]

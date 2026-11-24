@@ -11,6 +11,7 @@ var cd_started = false
 
 func _ready() -> void:
 	EventBus.buff_skill_duration_started.connect(_on_buff_skill_duration_started)
+	EventBus.attack_skill_cd_started.connect(_on_attack_skill_cd_started)
 	disable_progress_bar()
 
 func _physics_process(_delta: float) -> void:
@@ -55,7 +56,7 @@ func _on_texture_button_pressed() -> void:
 			print("player mp less than the skill mp cost")
 			return
 		
-		EventBus.skill_slot_clicked.emit(current_skill)
+		EventBus.skill_slot_clicked.emit(current_skill, self)
 
 
 func _on_buff_skill_duration_started(_skill: Skill, _value: float):
@@ -64,6 +65,11 @@ func _on_buff_skill_duration_started(_skill: Skill, _value: float):
 	cd_timer.start()
 	cd_started = true
 
+func _on_attack_skill_cd_started(_skill: Skill):
+	var cd = _skill.cooldown
+	cd_timer.wait_time = cd
+	cd_timer.start()
+	cd_started = true
 
 func _on_cd_timer_timeout() -> void:
 	cd_started = false

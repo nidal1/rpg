@@ -86,10 +86,19 @@ func connect_global_events() -> void:
 	EventBus.skill_slot_clicked.connect(_on_skill_slot_clicked)
 	EventBus.buff_skill_duration_ended.connect(_on_buff_skill_duration_ended)
 
-func execute_skill(_skill: Skill):
+func execute_skill(_skill: Skill, _skill_slot: SkillSlot):
 	if _skill is BuffSkill:
 		stats_manager.add_buff_stat(_skill)
 		skills_manager.add_active_skill(_skill)
+		return
+	if _skill is AttackSkill:
+		var _enemy = targeting_manager.selected_enemy
+		if not _enemy:
+			printerr("No enemy is selected")
+			_skill_slot.disable_progress_bar()
+			return
+		skills_manager.injecting_the_skill_into_the_scene(_skill, _enemy)
+		return
 
 func reset_skill(_skill: Skill, _value: float):
 	if _skill is BuffSkill:
@@ -139,8 +148,8 @@ func _on_skill_upgraded(_skill: Skill):
 		EventBus.add_skill_to_skillsbar.emit(_skill)
 
 
-func _on_skill_slot_clicked(_skill: Skill):
-	execute_skill(_skill)
+func _on_skill_slot_clicked(_skill: Skill, _skill_slot: SkillSlot):
+	execute_skill(_skill, _skill_slot)
 
 func _on_buff_skill_duration_ended(_skill: BuffSkill, _value: float):
 	reset_skill(_skill, _value)

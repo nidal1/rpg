@@ -46,6 +46,17 @@ func add_active_skill(_skill: Skill):
 func remove_active_skill(_skill: Skill):
 	active_skills.erase(_skill)
 
+func injecting_the_skill_into_the_scene(_skill: AttackSkill, _enemy: Enemy):
+	
+	var dic = _skill.get_value()
+	var active_scene = dic["active_scene"]
+	active_scene.global_position = _enemy.global_position
+	active_scene.skill = _skill
+	add_child(active_scene)
+	EventBus.attack_skill_cd_started.emit(_skill)
+
+
+# ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_upgrade_skill(_skill: Skill):
 	var available_skills_points = SkillsData.get_player_current_skills_points()
 	if available_skills_points >= _skill.skill_points_cost:
