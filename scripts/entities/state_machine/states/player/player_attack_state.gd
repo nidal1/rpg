@@ -19,11 +19,17 @@ func enter() -> void:
 
 	if not attack_ended.is_connected(_on_attack_end):
 		attack_ended.connect(_on_attack_end)
-	actor._on_attack_pressed()
+	
+	if actor.attack_type == Player.AttackType.BASIC_ATTACK:
+		actor._on_attack_pressed()
+	elif actor.attack_type == Player.AttackType.SKILL_ATTACK:
+		GameManager.cast_attack_skill()
+		actor._casting_skill()
 
 func handle_input(event: InputEvent) -> void:
 	# ONLY THE WARRIOR ACTOR CAN GO TO SECOND COMBO
 	if (actor is Warrior or actor is Tank) and event.is_action_pressed("attack") and event.pressed:
+		actor.attack_type = Player.AttackType.BASIC_ATTACK
 		actor._on_attack_pressed()
 
 func physics_update(_delta: float) -> void:
@@ -40,4 +46,6 @@ func physics_update(_delta: float) -> void:
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_attack_end() -> void:
+	actor.attack_type = Player.AttackType.NONE
+	actor.attack_skill = null
 	transitioned.emit("playeridlestate")

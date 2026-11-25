@@ -441,7 +441,8 @@ character_class = ExtResource("3_yipsv")
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="." index="0" unique_id=1016072717]
 position = Vector2(0, -33)
 sprite_frames = SubResource("SpriteFrames_jd30i")
-animation = &"run_right"
+animation = &"attack1_right"
+flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1048694170]
 libraries/ = SubResource("AnimationLibrary_jbr1l")
@@ -456,6 +457,7 @@ parameters/basic_attack/BasicAttackStateMachine/attack2/attack_speed/scale = 1.0
 parameters/basic_attack/BasicAttackStateMachine/attack2/BlendSpace1D/blend_position = 0.0
 parameters/idle/blend_position = 0.0
 parameters/run/blend_position = 0.0
+parameters/skill_attack/blend_position = 0.0
 
 [node name="ArrowSpawningPosition" type="Node2D" parent="." index="9" unique_id=1206811450]
 unique_name_in_owner = true

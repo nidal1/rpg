@@ -21,6 +21,7 @@ enum CrowdControl {
 # targeting and range
 @export var skill_target_type: TargetType = TargetType.enemy
 @export var skill_range: float
+@export var skill_distance: float
 
 #Combat & Effects
 @export var damage: Array[float] = []

@@ -42,6 +42,9 @@ scene = ExtResource("12_71ii3")
 quantity = 2
 enemy_params = SubResource("Resource_xq18t")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5qq27"]
+radius = 356.24
+
 [sub_resource type="Resource" id="Resource_gb53w"]
 script = ExtResource("9_1yooq")
 equipment_type = "DAGGER"
@@ -85,7 +88,10 @@ position = Vector2(2501, 1586)
 spawn_configs = Array[ExtResource("11_tytul")]([SubResource("Resource_bt7bg")])
 
 [node name="EnemiesSpawner2" parent="EnemiesAreas" unique_id=1161869842 instance=ExtResource("3_1fp7r")]
-position = Vector2(1945, 2172)
+position = Vector2(2091, 2103)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemiesAreas/EnemiesSpawner2" unique_id=1466035685]
+shape = SubResource("CircleShape2D_5qq27")
 
 [node name="EnemiesSpawner3" parent="EnemiesAreas" unique_id=1303535767 instance=ExtResource("3_1fp7r")]
 position = Vector2(962, 2450)

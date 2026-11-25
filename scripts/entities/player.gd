@@ -12,6 +12,12 @@ enum TargetType {
 	POSITION   ## Moving to a ground position
 }
 
+enum AttackType {
+	BASIC_ATTACK,
+	SKILL_ATTACK,
+	NONE
+}
+
 # ─── Exported Variables ──────────────────────────────────────────────────────
 ## The class data defining the player's starting stats and abilities.
 @export var character_class: CharacterClass
@@ -24,6 +30,7 @@ var combo_queued: bool = false
 ## The list of attacks forming the combo chain.
 var combo_chain: Array[AttackData] = []
 var attack_range: float = 300
+var skill_attack_range: float = 300
 
 ## Current target type (NONE, ENEMY, or POSITION)
 var target_type: TargetType = TargetType.NONE
@@ -33,6 +40,9 @@ var target_enemy: Enemy = null
 var target_position: Vector2 = Vector2.ZERO
 
 var enemies_in_range: Array[Enemy] = []
+
+var attack_type: AttackType = AttackType.NONE
+var attack_skill: AttackSkill = null
 
 # ─── OnReady Variables ───────────────────────────────────────────────────────
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent
@@ -249,10 +259,21 @@ func _play_attack_animation(attack: AttackData) -> void:
 			"parameters/basic_attack/BasicAttackStateMachine/%s/blend_position" % attack.anim_name,
 			last_facing_dir
 		)
-		# if last_facing_dir <= 0:
-		# 	animation_player.play("attack1_left")
-		# else:
-		# 	animation_player.play("attack1_right")
+
+## Triggers the attack animation.
+func _play_skill_attack_animation() -> void:
+	animation_playback.travel("skill_attack")
+	animation_tree.set(
+		"parameters/skill_attack/blend_position",
+			last_facing_dir
+		)
+	var speed_scale := _get_attack_speed_scale()
+	var _wait_time = max(0.05, combo_chain[0].combo_window / speed_scale)
+	await get_tree().create_timer(max(0.05, _wait_time)).timeout
+
+	if attack_state:
+		attack_state.attack_ended.emit()
+
 
 ## Starts the attack combo chain.
 func _start_combo() -> void:
@@ -282,6 +303,10 @@ func _end_combo() -> void:
 	combo_queued = false
 	if attack_state:
 		attack_state.attack_ended.emit()
+
+func _casting_skill():
+	if animation_playback and animation_tree and animation_tree.is_active():
+		_play_skill_attack_animation()
 
 ## Flashes the player red to indicate damage taken.
 func _flash_hit() -> void:

@@ -99,6 +99,7 @@ func _parse_attack_skill(data: Dictionary) -> AttackSkill:
 		skill.skill_target_type = AttackSkill.TargetType.enemy
 		
 	skill.skill_range = data.get("skill_range", 1.0)
+	skill.skill_distance = data.get("skill_distance", 1.0)
 	var raw_data_array = data.get("damage", [0.0])
 	var typed_data: Array[float] = []
 	for val in raw_data_array:

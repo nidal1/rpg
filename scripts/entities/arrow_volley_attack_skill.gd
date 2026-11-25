@@ -10,8 +10,6 @@ func _get_attack_damage(defender_eva: float) -> Dictionary:
 		return {"hit": false, "is_crit": false, "damage": 0.0}
 
 	var base_damage: float = skill.get_value()["value"]
-	
-	
 
 	var is_crit: bool = (randf() * 100.0) < StatsData.get_crit_chance()
 	var final_damage: float = base_damage * StatsData.get_crit_damage() if is_crit else base_damage
@@ -21,8 +19,8 @@ func _get_attack_damage(defender_eva: float) -> Dictionary:
 
 func _on_attack_cd_timeout() -> void:
 	particles.emitting = false
+	monitoring = false
 	await get_tree().create_timer(2).timeout
-	print("queue free")
 	queue_free()
 
 func _on_area_entered(area: Area2D) -> void:

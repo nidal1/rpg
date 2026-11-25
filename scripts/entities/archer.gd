@@ -32,7 +32,8 @@ func _get_or_create_archer_unit() -> ArcherUnit:
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_animation_editor_arrow_attack() -> void:
-	_animation_editor_arrow_attack.emit()
+	if attack_type == AttackType.BASIC_ATTACK:
+		_animation_editor_arrow_attack.emit()
 
 func _on_initialized_arrow_attack() -> void:
 	if archer_unit:

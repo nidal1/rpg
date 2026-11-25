@@ -41,6 +41,7 @@ fill_mode = 4
 texture_progress = ExtResource("3_yu5lf")
 
 [node name="CDTimer" type="Timer" parent="." unique_id=1817450683]
+one_shot = true
 
 [node name="CDTimeLeftLabel" type="Label" parent="." unique_id=117289254]
 layout_mode = 1

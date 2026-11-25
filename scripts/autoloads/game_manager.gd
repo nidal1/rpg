@@ -103,8 +103,10 @@ func execute_skill(_skill: Skill, _skill_slot: SkillSlot):
 			_skill_slot.disable_progress_bar()
 			return
 			
-		stats_manager.consume_mana_on_cast_skill(_skill)
-		skills_manager.injecting_the_skill_into_the_scene(_skill, _enemy)
+		player_ref.attack_type = Player.AttackType.SKILL_ATTACK
+		player_ref.attack_skill = _skill
+		player_ref.skill_attack_range = _skill.skill_distance
+		
 		return
 
 func reset_skill(_skill: Skill, _value: float):
@@ -112,7 +114,12 @@ func reset_skill(_skill: Skill, _value: float):
 		stats_manager.remove_buff_stat(_skill, _value)
 		skills_manager.remove_active_skill(_skill)
 
-
+func cast_attack_skill():
+	var _enemy = targeting_manager.selected_enemy
+	if not (_enemy and player_ref.attack_skill):
+		return
+	stats_manager.consume_mana_on_cast_skill(player_ref.attack_skill)
+	skills_manager.injecting_the_skill_into_the_scene(player_ref.attack_skill, _enemy)
 
 # ─── Signal Handlers ─────────────────────────────────────────────────────────
 func _on_enemy_died(enemy: Enemy) -> void:

@@ -8,6 +8,7 @@ class_name SkillSlot
 
 var is_empty = true
 var cd_started = false
+var current_skill: Skill
 
 func _ready() -> void:
 	EventBus.buff_skill_duration_started.connect(_on_buff_skill_duration_started)
@@ -20,18 +21,19 @@ func _physics_process(_delta: float) -> void:
 		cd_progress_bar.value = cd_amout
 		cd_time_left_label.text = str(snapped(cd_timer.time_left, 0.1))
 
-var current_skill: Skill
-
 func set_slot(_skill: Skill):
 	current_skill = _skill
 	if _skill != null:
 		is_empty = false
+		texture_button.tooltip_text = current_skill.description
+		
 		if current_skill.skill_icon:
 			texture_button.texture_normal = current_skill.skill_icon
 
 func clear_slot():
 	current_skill = null
 	is_empty = false
+	tooltip_text = ""
 
 func disable_progress_bar():
 	cd_progress_bar.visible = false
@@ -40,6 +42,8 @@ func disable_progress_bar():
 	texture_button.disabled = false
 	cd_time_left_label.visible = false
 	cd_time_left_label.z_index = -1
+	if current_skill:
+		texture_button.tooltip_text = current_skill.description
 
 func enable_progress_bar():
 	cd_progress_bar.visible = true
@@ -47,6 +51,8 @@ func enable_progress_bar():
 	texture_button.disabled = true
 	cd_time_left_label.visible = true
 	cd_time_left_label.z_index = 0
+	if current_skill:
+		texture_button.tooltip_text = current_skill.description
 
 func _on_texture_button_pressed() -> void:
 	enable_progress_bar()

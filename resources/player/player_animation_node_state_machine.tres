@@ -99,6 +99,19 @@ blend_point_1/node = SubResource("AnimationNodeAnimation_xlqiu")
 blend_point_1/pos = -1.0
 blend_mode = 1
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k042p"]
+animation = &"attack1_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5xxnu"]
+animation = &"attack1_left"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_sjly3"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_k042p")
+blend_point_0/pos = 1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_5xxnu")
+blend_point_1/pos = -1.0
+blend_mode = 1
+
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bj7e2"]
 advance_mode = 2
 
@@ -112,6 +125,12 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8akj5"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5jfi8"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k042p"]
+switch_mode = 2
+advance_mode = 2
+
 [resource]
 states/Start/position = Vector2(167.2, 82.240005)
 states/basic_attack/node = SubResource("AnimationNodeBlendTree_yk2xr")
@@ -120,5 +139,7 @@ states/idle/node = SubResource("AnimationNodeBlendSpace1D_7wli1")
 states/idle/position = Vector2(336.24, 82.39873)
 states/run/node = SubResource("AnimationNodeBlendSpace1D_1murt")
 states/run/position = Vector2(517.52, 81.598724)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_bj7e2"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_1murt"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_5sj0x"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_j0oqr"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_8akj5")]
+states/skill_attack/node = SubResource("AnimationNodeBlendSpace1D_sjly3")
+states/skill_attack/position = Vector2(516.74854, 244.70946)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_bj7e2"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_1murt"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_5sj0x"), "basic_attack", "idle", SubResource("AnimationNodeStateMachineTransition_j0oqr"), "idle", "basic_attack", SubResource("AnimationNodeStateMachineTransition_8akj5"), "idle", "skill_attack", SubResource("AnimationNodeStateMachineTransition_5jfi8"), "skill_attack", "idle", SubResource("AnimationNodeStateMachineTransition_k042p")]
 graph_offset = Vector2(-114.73738, 25.947273)
