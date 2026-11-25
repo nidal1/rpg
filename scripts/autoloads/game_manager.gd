@@ -161,7 +161,6 @@ func _on_skill_upgraded(_skill: Skill):
 	else:
 		EventBus.add_skill_to_skillsbar.emit(_skill)
 
-
 func _on_skill_slot_clicked(_skill: Skill, _skill_slot: SkillSlot):
 	execute_skill(_skill, _skill_slot)
 
